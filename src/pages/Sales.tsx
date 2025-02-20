@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Filter, Download, RefreshCcw, MessageSquare, Plus, Search, MoreHorizontal, ChevronDown } from 'lucide-react';
+import { Filter, Download, RefreshCcw, MessageSquare, Plus, Search } from 'lucide-react';
 
 interface MetricCardProps {
   title: string;
@@ -49,7 +49,6 @@ const PipelineStage: React.FC<PipelineStageProps> = ({ stage, deals, value, prog
 export default function Sales() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedFilter, setSelectedFilter] = useState('all');
   const [selectedTimeframe, setSelectedTimeframe] = useState('this_month');
   const [isRefreshing, setIsRefreshing] = useState(false);
 
@@ -110,10 +109,6 @@ export default function Sales() {
     console.log('Opening new deal form...');
   };
 
-  const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedFilter(e.target.value);
-  };
-
   const handleTimeframeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedTimeframe(e.target.value);
   };
@@ -142,13 +137,6 @@ export default function Sales() {
                 <option value="this_year">This Year</option>
               </select>
             </div>
-            <button 
-              onClick={() => setSelectedFilter(prev => prev === 'all' ? 'active' : 'all')}
-              className="flex items-center px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50"
-            >
-              <Filter className="h-4 w-4 mr-2" />
-              Filters
-            </button>
             <button 
               onClick={handleExport}
               className="flex items-center px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50"

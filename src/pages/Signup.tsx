@@ -1,16 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, User, Mail, Lock, Building2, ArrowRight, Check } from 'lucide-react';
-
-interface FormData {
-  firstName: string;
-  lastName: string;
-  companyName: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  acceptTerms: boolean;
-}
+import { ArrowLeft, User, Mail, Lock, Building2, ArrowRight } from 'lucide-react';
 
 export default function Signup() {
   const handleSubmit = async (e: React.FormEvent) => {
@@ -18,7 +8,7 @@ export default function Signup() {
     // Handle signup logic
   };
 
-  const handleSocialSignup = async (provider: 'google' | 'facebook') => {
+  const handleSocialSignup = async () => {
     // Handle social signup
   };
 
@@ -224,7 +214,7 @@ export default function Signup() {
 
             <div className="mt-6 grid grid-cols-2 gap-3">
               <button
-                onClick={() => handleSocialSignup('google')}
+                onClick={() => handleSocialSignup()}
                 className="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
               >
                 <img
@@ -235,7 +225,7 @@ export default function Signup() {
                 <span>Google</span>
               </button>
               <button
-                onClick={() => handleSocialSignup('facebook')}
+                onClick={() => handleSocialSignup()}
                 className="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
               >
                 <img

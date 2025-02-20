@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { RefreshCcw, Plus, Zap, Clock, BarChart2, Search, Settings, Filter, X } from 'lucide-react';
+import { RefreshCcw, Plus, Zap, Clock, BarChart2, Search, Settings, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface MetricCardProps {

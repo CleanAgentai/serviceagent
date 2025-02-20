@@ -11,17 +11,11 @@ import {
   ChevronRight,
   Plus,
   X,
-  Check,
-  AlertCircle,
   Lock,
   Mail,
   Phone,
   Globe,
-  Key,
-  CreditCardIcon,
-  Calendar,
-  FileText,
-  Download
+  Key
 } from 'lucide-react';
 
 interface SettingsNavItemProps {
