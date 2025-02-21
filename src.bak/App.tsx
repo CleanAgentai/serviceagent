@@ -5,7 +5,6 @@ import { AuthProvider } from '@/app/providers/AuthContext';
 import { ProtectedRoute } from '@/app/shared/auth/ProtectedRoute';
 import { ErrorBoundary } from '@/app/shared/common/ErrorBoundary';
 import { LoadingState } from '@/app/shared/common/LoadingState';
-import { Navigation } from '@/modules/landing/components/Navigation';
 import { Footer } from '@/modules/landing/components/Footer';
 
 // Public Pages
@@ -20,6 +19,7 @@ import { AboutUs } from '@/modules/company/AboutUs';
 import { Contact } from '@/modules/company/Contact';
 import { Blog } from '@/modules/blog/Blog';
 import { BlogPost } from '@/modules/blog/BlogPost';
+import { BookDemo } from '@/modules/demo/BookDemo';
 import { NotFound } from '@/modules/error/NotFound';
 
 // Dashboard Pages
@@ -35,15 +35,9 @@ const Settings = React.lazy(() => import('@/modules/dashboard/Settings'));
 const Integrations = React.lazy(() => import('@/modules/dashboard/Integrations'));
 const Help = React.lazy(() => import('@/modules/dashboard/Help'));
 
-// Help Articles
-const QuickStartGuide = React.lazy(() => import('@/modules/dashboard/help/articles/QuickStartGuide'));
-const InitialSetup = React.lazy(() => import('@/modules/dashboard/help/articles/InitialSetup'));
-const DashboardOverview = React.lazy(() => import('@/modules/dashboard/help/articles/DashboardOverview'));
-
 // Layout wrapper for public routes
 const PublicLayout = () => (
   <div className="flex flex-col min-h-screen">
-    <Navigation />
     <main className="flex-grow">
       <Outlet />
     </main>
@@ -59,14 +53,11 @@ function App() {
           <BrowserRouter>
             <React.Suspense fallback={<LoadingState variant="full" message="Loading page..." />}>
               <Routes>
-                {/* Auth Routes - No Navigation/Footer */}
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/auth/callback" element={<AuthCallback />} />
-
-                {/* Public Routes with Navigation/Footer */}
+                {/* Public Routes with Footer */}
                 <Route element={<PublicLayout />}>
                   <Route path="/" element={<LandingPage />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/signup" element={<Signup />} />
                   <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                   <Route path="/terms-of-service" element={<TermsOfService />} />
                   <Route path="/cookie-policy" element={<CookiePolicy />} />
@@ -74,6 +65,8 @@ function App() {
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/blog" element={<Blog />} />
                   <Route path="/blog/:slug" element={<BlogPost />} />
+                  <Route path="/book-demo" element={<BookDemo />} />
+                  <Route path="/auth/callback" element={<AuthCallback />} />
                 </Route>
 
                 {/* Protected Dashboard Routes - No Footer */}
@@ -95,9 +88,6 @@ function App() {
                   <Route path="settings" element={<Settings />} />
                   <Route path="integrations" element={<Integrations />} />
                   <Route path="help" element={<Help />} />
-                  <Route path="help/articles/quickstart" element={<QuickStartGuide />} />
-                  <Route path="help/articles/setup" element={<InitialSetup />} />
-                  <Route path="help/articles/dashboard" element={<DashboardOverview />} />
                   <Route path="*" element={<NotFound />} />
                 </Route>
               </Routes>
