@@ -55,11 +55,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           data: {
             full_name: fullName,
           },
-          emailRedirectTo: `${getSiteUrl()}/auth/callback`,
-          // Add this to skip email confirmation
-          gotrue_meta_security: {
-            captcha_token: null
-          }
+          emailRedirectTo: `${getSiteUrl()}/auth/callback`
         },
       });
       
