@@ -10,20 +10,16 @@ export function Navigation() {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
-  const scrollToFeatures = (e: React.MouseEvent) => {
+  const scrollToSection = (sectionId: string) => (e: React.MouseEvent) => {
     e.preventDefault();
     if (!isHomePage) {
-      window.location.href = '/#features';
+      window.location.href = `/#${sectionId}`;
       return;
     }
-    const featuresSection = document.getElementById('features');
-    if (featuresSection) {
-      featuresSection.scrollIntoView({ behavior: 'smooth' });
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
     }
-  };
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -34,29 +30,33 @@ export function Navigation() {
           <Link 
             to="/" 
             className="flex items-center space-x-2"
-            onClick={scrollToTop}
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           >
             <img
               src="/CleanAgent Logo.png"
               alt="CleanAgent Logo"
-              className="h-12 w-auto"
+              className="h-8 w-auto"
             />
+            <span className="text-xl font-bold">
+              <span className="text-blue-600">Clean</span>
+              <span className="text-blue-600">Agent</span>
+            </span>
           </Link>
 
           {/* Navigation Links */}
           <div className="hidden md:flex items-center space-x-8">
             <button
-              onClick={scrollToFeatures}
+              onClick={scrollToSection('features')}
               className="text-gray-600 hover:text-gray-900 transition-colors"
             >
               Features
             </button>
-            <Link
-              to="/pricing"
+            <button
+              onClick={scrollToSection('pricing')}
               className="text-gray-600 hover:text-gray-900 transition-colors"
             >
               Pricing
-            </Link>
+            </button>
             <Link
               to="/about-us"
               className="text-gray-600 hover:text-gray-900 transition-colors"

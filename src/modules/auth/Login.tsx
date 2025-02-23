@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Mail, Lock, ArrowRight } from 'lucide-react';
+import { Mail, Lock, ArrowRight } from 'lucide-react';
 import { useAuth } from '@/app/providers/AuthContext';
 
 export function Login() {
@@ -43,45 +43,27 @@ export function Login() {
     setIsLoading(true);
 
     try {
+      console.log(`Attempting ${provider} login...`);
       const { error: socialError } = await (provider === 'google' ? signInWithGoogle() : signInWithFacebook());
-      if (socialError) throw socialError;
+      
+      if (socialError) {
+        console.error(`${provider} login error:`, socialError);
+        throw socialError;
+      }
+      
       // Navigation will be handled by the auth callback
+      console.log(`${provider} login initiated successfully`);
     } catch (err: any) {
-      setError(`${provider} login failed. Please try again.`);
+      console.error(`${provider} login failed:`, err);
+      setError(err.message || `${provider} login failed. Please try again.`);
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      {/* Navigation */}
-      <nav className="sticky top-0 z-10 bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <Link
-              to="/"
-              className="flex items-center text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              <ArrowLeft className="h-5 w-5 mr-2" />
-              Back to Home
-            </Link>
-            <Link to="/" className="flex items-center space-x-2">
-              <img
-                src="/logo-icon.svg"
-                alt="CleanAgent Logo"
-                className="h-8 w-8"
-              />
-              <span className="text-xl font-bold">
-                <span className="text-blue-600">Clean</span>
-                <span className="text-blue-600">Agent</span>
-              </span>
-            </Link>
-          </div>
-        </div>
-      </nav>
-
-      <div className="max-w-md mx-auto px-4 py-12">
+    <div className="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome back!</h1>

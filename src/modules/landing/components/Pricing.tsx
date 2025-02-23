@@ -195,7 +195,7 @@ export default function Pricing() {
           <div className="max-w-3xl mx-auto mt-24 text-center">
             <div className="bg-gradient-to-r from-blue-50 to-teal-50 rounded-2xl p-8 sm:p-12">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                Not sure which plan is right for you?
+                Not sure if this is right for you?
               </h2>
               <p className="text-lg text-gray-600 mb-8">
                 Schedule a personalized demo with our team to see how CleanAgent.AI can help your business grow.

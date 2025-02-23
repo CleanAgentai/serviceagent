@@ -2,6 +2,12 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { User, AuthError } from '@supabase/supabase-js';
 import { supabase } from '@/app/lib/supabase';
 
+// Get the site URL from environment or window location
+const getSiteUrl = () => {
+  const url = import.meta.env.VITE_SITE_URL || window.location.origin;
+  return url.replace(/\/$/, ''); // Remove trailing slash if present
+};
+
 interface AuthContextType {
   user: User | null;
   loading: boolean;
@@ -40,16 +46,36 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const signUp = async (email: string, password: string, fullName: string) => {
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          full_name: fullName,
+    console.log('Starting sign up process...', { email, fullName });
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            full_name: fullName,
+          },
+          emailRedirectTo: `${getSiteUrl()}/auth/callback`,
+          // Add this to skip email confirmation
+          gotrue_meta_security: {
+            captcha_token: null
+          }
         },
-      },
-    });
-    return { error };
+      });
+      
+      if (error) throw error;
+      
+      // If signup successful, immediately sign in
+      if (data.user) {
+        const { error: signInError } = await signIn(email, password);
+        if (signInError) throw signInError;
+      }
+      
+      return { error: null };
+    } catch (err) {
+      console.error('Sign up error:', err);
+      return { error: err as AuthError };
+    }
   };
 
   const signIn = async (email: string, password: string) => {
@@ -61,30 +87,62 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const signInWithGoogle = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
-        queryParams: {
-          access_type: 'offline',
-          prompt: 'consent'
+    console.log('Starting Google OAuth sign-in...');
+    try {
+      const redirectTo = `${window.location.origin}/auth/callback`;
+      console.log('Redirect URL:', redirectTo);
+      
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent'
+          }
         }
+      });
+      
+      if (error) {
+        console.error('Google OAuth error:', error);
+        throw error;
       }
-    });
-    return { error };
+
+      if (data?.url) {
+        console.log('Redirecting to:', data.url);
+        window.location.href = data.url;
+      }
+      
+      return { error: null };
+    } catch (err) {
+      console.error('Google OAuth error:', err);
+      return { error: err as AuthError };
+    }
   };
 
   const signInWithFacebook = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'facebook',
-      options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
-        queryParams: {
-          display: 'popup'
+    console.log('Starting Facebook OAuth sign-in...');
+    try {
+      const redirectTo = `${getSiteUrl()}/auth/callback`;
+      console.log('Redirect URL:', redirectTo);
+      
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'facebook',
+        options: {
+          redirectTo,
+          queryParams: {
+            display: 'popup'
+          },
+          skipBrowserRedirect: false
         }
-      }
-    });
-    return { error };
+      });
+      
+      console.log('Facebook OAuth response:', { data, error });
+      return { error };
+    } catch (err) {
+      console.error('Facebook OAuth error:', err);
+      return { error: err as AuthError };
+    }
   };
 
   const signOut = async () => {
@@ -98,7 +156,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const resetPassword = async (email: string) => {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/auth/reset-password`,
+      redirectTo: `${getSiteUrl()}/auth/reset-password`,
     });
     return { error };
   };

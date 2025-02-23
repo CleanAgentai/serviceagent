@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Book, Video, Mail, ExternalLink, ArrowRight } from 'lucide-react';
+import { Search, Book, Video, Mail, ExternalLink, ArrowRight, Users } from 'lucide-react';
 import { openCalendly } from '@/app/shared/utils/calendly';
 
 interface HelpCategory {

@@ -12,50 +12,49 @@ export function AuthCallback() {
       try {
         console.log('Starting auth callback handling...');
         
-        // Check URL parameters for OAuth response
-        const params = new URLSearchParams(window.location.search);
-        const error = params.get('error');
-        const errorDescription = params.get('error_description');
-
-        if (error) {
-          console.error('OAuth error:', error, errorDescription);
-          throw new Error(errorDescription || 'Authentication failed');
-        }
-
-        // Get the current session
+        // Check if we have a session
         const { data: { session }, error: sessionError } = await supabase.auth.getSession();
         
         if (sessionError) {
-          console.error('Error getting session:', sessionError);
+          console.error('Session error:', sessionError);
           throw sessionError;
         }
 
-        // If we have a valid session, navigate to dashboard
-        if (session && !hasNavigated.current) {
-          console.log('Valid session found, navigating to dashboard');
-          hasNavigated.current = true;
-          navigate('/dashboard', { replace: true });
+        if (session) {
+          console.log('Session found, redirecting to dashboard...');
+          if (!hasNavigated.current) {
+            hasNavigated.current = true;
+            navigate('/dashboard', { replace: true });
+          }
           return;
         }
 
-        // If no session, set up auth state change listener
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+        // Set up auth state change listener
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
           console.log('Auth state changed:', event, !!session);
           
           if (session && !hasNavigated.current) {
-            console.log('Session established via auth state change, navigating to dashboard');
+            console.log('Session established, redirecting to dashboard...');
             hasNavigated.current = true;
             navigate('/dashboard', { replace: true });
           } else if (!session && !hasNavigated.current) {
-            console.log('No session after auth state change, navigating to login');
+            console.log('No session found, redirecting to login...');
             hasNavigated.current = true;
             navigate('/login', { replace: true });
           }
         });
 
-        // Clean up subscription when component unmounts
+        // If no session after 5 seconds, redirect to login
+        const timeout = setTimeout(() => {
+          if (!hasNavigated.current) {
+            console.log('Auth timeout, redirecting to login...');
+            hasNavigated.current = true;
+            navigate('/login', { replace: true });
+          }
+        }, 5000);
+
         return () => {
-          console.log('Cleaning up auth state subscription');
+          clearTimeout(timeout);
           subscription.unsubscribe();
         };
       } catch (err) {

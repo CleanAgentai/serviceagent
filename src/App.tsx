@@ -51,18 +51,25 @@ const PublicLayout = () => (
   </div>
 );
 
+// Layout wrapper for auth routes
+const AuthLayout = () => (
+  <Outlet />
+);
+
 function App() {
   return (
     <ErrorBoundary>
       <UserPreferencesProvider>
-        <AuthProvider>
-          <BrowserRouter>
+        <BrowserRouter>
+          <AuthProvider>
             <React.Suspense fallback={<LoadingState variant="full" message="Loading page..." />}>
               <Routes>
                 {/* Auth Routes - No Navigation/Footer */}
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/auth/callback" element={<AuthCallback />} />
+                <Route element={<AuthLayout />}>
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/signup" element={<Signup />} />
+                  <Route path="/auth/callback" element={<AuthCallback />} />
+                </Route>
 
                 {/* Public Routes with Navigation/Footer */}
                 <Route element={<PublicLayout />}>
@@ -76,7 +83,7 @@ function App() {
                   <Route path="/blog/:slug" element={<BlogPost />} />
                 </Route>
 
-                {/* Protected Dashboard Routes - No Footer */}
+                {/* Protected Dashboard Routes */}
                 <Route
                   path="/dashboard"
                   element={
@@ -100,10 +107,13 @@ function App() {
                   <Route path="help/articles/dashboard" element={<DashboardOverview />} />
                   <Route path="*" element={<NotFound />} />
                 </Route>
+
+                {/* 404 Route */}
+                <Route path="*" element={<NotFound />} />
               </Routes>
             </React.Suspense>
-          </BrowserRouter>
-        </AuthProvider>
+          </AuthProvider>
+        </BrowserRouter>
       </UserPreferencesProvider>
     </ErrorBoundary>
   );

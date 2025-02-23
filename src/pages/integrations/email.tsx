@@ -1,23 +1,26 @@
-const providers: EmailProvider[] = [
+import { Mail } from 'lucide-react';
+import { EmailProvider } from './types';
+
+export const emailProviders: EmailProvider[] = [
   {
     id: 'gmail',
     name: 'Gmail',
+    description: 'Connect your Gmail account to send and receive emails',
     logo: Mail,
-    description: 'Connect with Gmail',
     status: 'disconnected'
   },
   {
     id: 'outlook',
     name: 'Outlook',
+    description: 'Connect your Outlook account for email integration',
     logo: Mail,
-    description: 'Connect with Outlook',
     status: 'disconnected'
   },
   {
-    id: 'yahoo',
-    name: 'Yahoo Mail',
+    id: 'smtp',
+    name: 'Custom SMTP',
+    description: 'Connect your own SMTP server for email sending',
     logo: Mail,
-    description: 'Connect with Yahoo Mail',
     status: 'disconnected'
   }
 ]; 
