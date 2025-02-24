@@ -231,7 +231,7 @@ export function LandingPage() {
       </div>
 
       {/* Main Features Section */}
-      <div className="relative py-28 overflow-hidden bg-gray-50">
+      <div id="complete-ai-solution" className="relative py-28 overflow-hidden bg-gray-50">
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-5" />
           <div className="absolute top-0 right-0 w-[40rem] h-[40rem] bg-blue-100/50 rounded-full blur-3xl" />

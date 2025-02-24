@@ -127,12 +127,6 @@ export default function Testimonials() {
           <p className="text-sm text-gray-500 mb-4">
             Trusted by 500+ cleaning businesses across North America
           </p>
-          <div className="flex justify-center items-center space-x-8 opacity-60">
-            <div className="h-6 w-20 bg-gray-400 rounded" />
-            <div className="h-6 w-20 bg-gray-400 rounded" />
-            <div className="h-6 w-20 bg-gray-400 rounded" />
-            <div className="h-6 w-20 bg-gray-400 rounded" />
-          </div>
         </div>
       </div>
     </section>

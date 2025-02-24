@@ -53,7 +53,9 @@ const PublicLayout = () => (
 
 // Layout wrapper for auth routes
 const AuthLayout = () => (
-  <Outlet />
+  <div className="flex flex-col min-h-screen">
+    <Outlet />
+  </div>
 );
 
 function App() {

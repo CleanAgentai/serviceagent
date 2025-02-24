@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { openCalendly } from '@/app/shared/utils/calendly';
 
 export function Navigation() {
   const location = useLocation();
@@ -46,7 +47,7 @@ export function Navigation() {
           {/* Navigation Links */}
           <div className="hidden md:flex items-center space-x-8">
             <button
-              onClick={scrollToSection('features')}
+              onClick={scrollToSection('complete-ai-solution')}
               className="text-gray-600 hover:text-gray-900 transition-colors"
             >
               Features
@@ -79,12 +80,12 @@ export function Navigation() {
             >
               Sign In
             </Link>
-            <Link
-              to="/signup"
+            <button
+              onClick={openCalendly}
               className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-blue-600 to-teal-500 hover:opacity-90 transition-all duration-300"
             >
-              Get Started
-            </Link>
+              Book a Demo
+            </button>
           </div>
         </div>
       </div>

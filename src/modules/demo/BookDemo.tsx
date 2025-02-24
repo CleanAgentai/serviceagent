@@ -172,11 +172,6 @@ export function BookDemo() {
             {/* Trust Indicators */}
             <div className="text-center py-4">
               <p className="text-sm text-gray-500 mb-4">Trusted by 500+ cleaning businesses</p>
-              <div className="flex justify-center items-center space-x-4 sm:space-x-8">
-                <div className="h-6 sm:h-8 w-16 sm:w-24 bg-gray-200 rounded animate-pulse" />
-                <div className="h-6 sm:h-8 w-16 sm:w-24 bg-gray-200 rounded animate-pulse" />
-                <div className="h-6 sm:h-8 w-16 sm:w-24 bg-gray-200 rounded animate-pulse" />
-              </div>
             </div>
 
             {/* Fallback CTA */}

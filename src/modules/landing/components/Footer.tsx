@@ -1,11 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Facebook, Twitter, Linkedin, Mail } from 'lucide-react';
 import { openCalendly } from '@/app/shared/utils/calendly';
 
 const footerLinks = {
   product: [
-    { label: 'Features', href: '/#features' },
+    { label: 'Features', href: '/#complete-ai-solution' },
     { label: 'Book a Demo', onClick: openCalendly },
   ],
   company: [
@@ -39,7 +39,18 @@ const socialLinks = [
 ];
 
 export function Footer() {
-  const handleLinkClick = () => {
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
+
+  const handleLinkClick = (href?: string) => {
+    if (href?.startsWith('/#') && isHomePage) {
+      const sectionId = href.replace('/#', '');
+      const section = document.getElementById(sectionId);
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
+    }
     window.scrollTo(0, 0);
   };
 
@@ -68,10 +79,21 @@ export function Footer() {
       );
     }
 
+    if (link.href?.startsWith('/#') && isHomePage) {
+      return (
+        <button
+          onClick={() => handleLinkClick(link.href)}
+          className="text-gray-600 hover:text-gray-900 transition-colors text-sm"
+        >
+          {link.label}
+        </button>
+      );
+    }
+
     return (
       <Link
         to={link.href || '/'}
-        onClick={handleLinkClick}
+        onClick={() => handleLinkClick(link.href)}
         className="text-gray-600 hover:text-gray-900 transition-colors text-sm"
       >
         {link.label}
@@ -86,7 +108,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
           {/* Brand Section */}
           <div className="lg:col-span-2">
-            <Link to="/" className="flex items-center space-x-2 mb-4" onClick={handleLinkClick}>
+            <Link to="/" className="flex items-center space-x-2 mb-4" onClick={() => handleLinkClick()}>
               <img
                 src="/CleanAgent Logo.png"
                 alt="CleanAgent Logo"
