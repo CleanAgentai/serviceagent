@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, ArrowRight } from "lucide-react";
 import { useAuth } from "@/app/providers/AuthContext";
 import { Navigation } from "@/modules/landing/components/Navigation";
+import { supabase } from "@/app/lib/supabase";
 
 export function Login() {
   const navigate = useNavigate();
@@ -42,26 +43,23 @@ export function Login() {
     }
   };
 
-  const handleSocialLogin = async (provider: "google" | "facebook") => {
-    setError("");
+  const handleOAuthSignIn = async (provider: "google" | "facebook") => {
     setIsLoading(true);
-
     try {
-      console.log(`Attempting ${provider} login...`);
-      const { error: socialError } = await (provider === "google"
-        ? signInWithGoogle()
-        : signInWithFacebook());
-
-      if (socialError) {
-        console.error(`${provider} login error:`, socialError);
-        throw socialError;
-      }
-
-      // Navigation will be handled by the auth callback
-      console.log(`${provider} login initiated successfully`);
-    } catch (err: any) {
-      console.error(`${provider} login failed:`, err);
-      setError(err.message || `${provider} login failed. Please try again.`);
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider,
+        options: {
+          redirectTo: `${window.location.origin}/dashboard`,
+          queryParams: {
+            prompt: "select_account",
+          },
+        },
+      });
+      if (error) throw error;
+      //toast({ title: "Redirecting to OAuth...", variant: "default" });
+    } catch (error: any) {
+      setError("Google login failed. Please try again.");
+      console.error("Google login failed:", error);
     } finally {
       setIsLoading(false);
     }
@@ -199,7 +197,7 @@ export function Login() {
 
               <div className="mt-6 grid grid-cols-2 gap-3">
                 <button
-                  onClick={() => handleSocialLogin("google")}
+                  onClick={() => handleOAuthSignIn("google")}
                   disabled={isLoading}
                   className="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
@@ -211,7 +209,7 @@ export function Login() {
                   <span>Google</span>
                 </button>
                 <button
-                  onClick={() => handleSocialLogin("facebook")}
+                  onClick={() => handleOAuthSignIn("facebook")}
                   disabled={isLoading}
                   className="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
