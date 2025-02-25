@@ -1,57 +1,62 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, ArrowRight } from 'lucide-react';
-import { useAuth } from '@/app/providers/AuthContext';
-import { Navigation } from '@/modules/landing/components/Navigation';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Mail, Lock, ArrowRight } from "lucide-react";
+import { useAuth } from "@/app/providers/AuthContext";
+import { Navigation } from "@/modules/landing/components/Navigation";
 
 export function Login() {
   const navigate = useNavigate();
   const { signIn, signInWithGoogle, signInWithFacebook } = useAuth();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
 
   // Set meta title and description
   React.useEffect(() => {
-    document.title = 'Sign In - CleanAgent.AI';
+    document.title = "Sign In - CleanAgent.AI";
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', 'Sign in to your CleanAgent.AI account to access your dashboard and manage your cleaning business.');
+      metaDescription.setAttribute(
+        "content",
+        "Sign in to your CleanAgent.AI account to access your dashboard and manage your cleaning business."
+      );
     }
     window.scrollTo(0, 0);
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setIsLoading(true);
 
     try {
       const { error: signInError } = await signIn(email, password);
       if (signInError) throw signInError;
-      navigate('/dashboard');
+      navigate("/dashboard");
     } catch (err: any) {
-      setError(err.message || 'Invalid email or password. Please try again.');
+      setError(err.message || "Invalid email or password. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleSocialLogin = async (provider: 'google' | 'facebook') => {
-    setError('');
+  const handleSocialLogin = async (provider: "google" | "facebook") => {
+    setError("");
     setIsLoading(true);
 
     try {
       console.log(`Attempting ${provider} login...`);
-      const { error: socialError } = await (provider === 'google' ? signInWithGoogle() : signInWithFacebook());
-      
+      const { error: socialError } = await (provider === "google"
+        ? signInWithGoogle()
+        : signInWithFacebook());
+
       if (socialError) {
         console.error(`${provider} login error:`, socialError);
         throw socialError;
       }
-      
+
       // Navigation will be handled by the auth callback
       console.log(`${provider} login initiated successfully`);
     } catch (err: any) {
@@ -69,7 +74,9 @@ export function Login() {
         <div className="max-w-2xl mx-auto px-4 py-12">
           {/* Header */}
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome back!</h1>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              Welcome back!
+            </h1>
             <p className="text-gray-600">
               Sign in to access your CleanAgent dashboard
             </p>
@@ -83,9 +90,12 @@ export function Login() {
                   {error}
                 </div>
               )}
-              
+
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Email address
                 </label>
                 <div className="relative">
@@ -107,7 +117,10 @@ export function Login() {
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Password
                 </label>
                 <div className="relative">
@@ -138,7 +151,10 @@ export function Login() {
                     onChange={(e) => setRememberMe(e.target.checked)}
                     className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                   />
-                  <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
+                  <label
+                    htmlFor="remember-me"
+                    className="ml-2 block text-sm text-gray-700"
+                  >
                     Remember me
                   </label>
                 </div>
@@ -175,13 +191,15 @@ export function Login() {
                   <div className="w-full border-t border-gray-300" />
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-white text-gray-500">Or continue with</span>
+                  <span className="px-2 bg-white text-gray-500">
+                    Or continue with
+                  </span>
                 </div>
               </div>
 
               <div className="mt-6 grid grid-cols-2 gap-3">
                 <button
-                  onClick={() => handleSocialLogin('google')}
+                  onClick={() => handleSocialLogin("google")}
                   disabled={isLoading}
                   className="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
@@ -193,7 +211,7 @@ export function Login() {
                   <span>Google</span>
                 </button>
                 <button
-                  onClick={() => handleSocialLogin('facebook')}
+                  onClick={() => handleSocialLogin("facebook")}
                   disabled={isLoading}
                   className="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
@@ -210,7 +228,7 @@ export function Login() {
 
           {/* Sign up link */}
           <p className="mt-8 text-center text-sm text-gray-600">
-            Don't have an account?{' '}
+            Don't have an account?{" "}
             <Link
               to="/signup"
               className="font-medium text-blue-600 hover:text-blue-700"
@@ -222,4 +240,4 @@ export function Login() {
       </main>
     </div>
   );
-} 
+}
