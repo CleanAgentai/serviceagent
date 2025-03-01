@@ -1,0 +1,108 @@
+/* Mobile-specific optimizations */
+
+/* Improve tap targets */
+@media (max-width: 768px) {
+  a, button, input[type="button"], input[type="submit"], input[type="reset"], select {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Ensure proper spacing between touch elements */
+  .touch-friendly > * + * {
+    margin-top: 0.5rem !important;
+  }
+  
+  /* Reduce motion for better performance */
+  .animate-on-desktop {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+  
+  /* Optimize text for mobile reading */
+  p, li, span {
+    word-wrap: break-word;
+    hyphens: auto;
+  }
+  
+  /* Prevent large images from breaking layout */
+  img, svg, video, canvas, iframe {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+  
+  /* Improve spacing and readability in text blocks */
+  .prose {
+    font-size: 0.9375rem !important;
+    line-height: 1.6 !important;
+  }
+  
+  .prose h1, .prose h2, .prose h3 {
+    margin-top: 1.5em !important;
+    margin-bottom: 0.5em !important;
+  }
+  
+  /* Make forms more mobile-friendly */
+  input, select, textarea {
+    font-size: 16px !important; /* Prevents zoom on iOS */
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  
+  /* Reduce box shadows for better rendering performance */
+  .shadow-lg, .shadow-xl, .shadow-2xl {
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;
+  }
+  
+  /* Improve card component performances */
+  .mobile-card {
+    border-radius: 0.5rem !important;
+    margin-bottom: 1rem !important;
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+  }
+  
+  /* Stack columns on mobile */
+  .mobile-stack {
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+  
+  /* Reduce padding on sections */
+  section, .section {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+  
+  /* Center align headings */
+  h1, h2, h3 {
+    text-align: center;
+  }
+  
+  /* Make gradient text more legible */
+  .bg-clip-text {
+    -webkit-background-clip: text !important;
+    text-fill-color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+    text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Improve grid layouts */
+  .grid {
+    grid-gap: 1rem !important;
+  }
+  
+  /* Optimize navigation logo sizing */
+  nav .flex .h-6 {
+    max-height: 24px;
+    width: auto;
+    object-fit: contain;
+  }
+  
+  nav .text-base {
+    font-size: 0.875rem !important;
+  }
+} 
