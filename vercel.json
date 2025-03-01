@@ -4,6 +4,10 @@
   "framework": "vite",
   "rewrites": [
     {
+      "source": "/feedback/:type",
+      "destination": "/api/feedback?type=:type"
+    },
+    {
       "source": "/((?!api|_next/static|_next/image|favicon.ico).*)",
       "destination": "/index.html"
     }
@@ -40,17 +44,6 @@
           "value": "strict-origin-when-cross-origin"
         }
       ]
-    }
-  ],
-  "routes": [
-    {
-      "src": "/feedback/(?<type>[^/]+)",
-      "dest": "/api/feedback?type=$type"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html",
-      "continue": true
     }
   ]
 } 
