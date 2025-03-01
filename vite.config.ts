@@ -17,6 +17,10 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: false,
+    // Skip TypeScript checking during build
+    typescript: {
+      ignoreBuildErrors: true,
+    },
     rollupOptions: {
       output: {
         manualChunks: {

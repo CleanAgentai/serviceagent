@@ -31,8 +31,8 @@ const IntegrationModal: React.FC<IntegrationModalProps> = ({
       await integrationsService.connectIntegration(integration, credentials);
       onSuccess();
       onClose();
-    } catch (err) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'An unknown error occurred');
     } finally {
       setIsLoading(false);
     }

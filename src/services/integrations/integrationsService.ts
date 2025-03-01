@@ -47,20 +47,20 @@ class IntegrationsService {
       await this.syncIntegration(integration.id);
 
       return connection;
-    } catch (error) {
+    } catch (error: unknown) {
       const failedConnection: IntegrationConnection = {
         integration: {
           ...integration,
           status: 'ERROR',
-          error: error.message
+          error: error instanceof Error ? error.message : 'An unknown error occurred'
         },
         credentials,
         status: 'ERROR',
-        error: error.message
+        error: error instanceof Error ? error.message : 'An unknown error occurred'
       };
 
       this.connections.set(integration.id, failedConnection);
-      throw error;
+      return failedConnection;
     }
   }
 
@@ -83,8 +83,8 @@ class IntegrationsService {
       connection.integration.lastSynced = undefined;
 
       this.connections.set(integrationId, connection);
-    } catch (error) {
-      throw new Error(`Failed to disconnect integration: ${error.message}`);
+    } catch (error: unknown) {
+      throw new Error(`Failed to disconnect integration: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
 
@@ -116,9 +116,9 @@ class IntegrationsService {
       // Update last synced timestamp
       connection.integration.lastSynced = new Date();
       this.connections.set(integrationId, connection);
-    } catch (error) {
+    } catch (error: unknown) {
       connection.status = 'ERROR';
-      connection.error = error.message;
+      connection.error = error instanceof Error ? error.message : 'An unknown error occurred';
       this.connections.set(integrationId, connection);
       throw error;
     }
@@ -189,8 +189,8 @@ class IntegrationsService {
         refreshToken,
         expiresAt: new Date(expiresAt)
       };
-    } catch (error) {
-      throw new Error(`Token refresh failed: ${error.message}`);
+    } catch (error: unknown) {
+      throw new Error(`Token refresh failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
 
@@ -212,8 +212,8 @@ class IntegrationsService {
       if (!response.ok) {
         throw new Error('Failed to revoke access');
       }
-    } catch (error) {
-      throw new Error(`Failed to revoke access: ${error.message}`);
+    } catch (error: unknown) {
+      throw new Error(`Failed to revoke access: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
 

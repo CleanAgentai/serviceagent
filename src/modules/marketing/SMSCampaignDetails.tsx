@@ -206,7 +206,7 @@ const SMSCampaignDetails: React.FC<SMSCampaignDetailsProps> = ({ campaign, onClo
                     )}
                     <div>
                       <div className="text-xs text-gray-500">Segment</div>
-                      <div className="text-sm font-medium text-gray-900 mt-1">{campaign.segment}</div>
+                      <div className="text-sm font-medium text-gray-900 mt-1">{campaign.segmentId}</div>
                     </div>
                   </div>
                 </div>

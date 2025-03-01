@@ -17,6 +17,7 @@ interface OnboardingStep {
   description: string;
   content: React.ReactNode;
   isOptional?: boolean;
+  icon: string;
 }
 
 class DocumentationService {
@@ -95,27 +96,25 @@ class DocumentationService {
         id: 'welcome',
         title: 'Welcome to CleanAgent',
         content: 'Welcome to CleanAgent! Get started with our platform.',
-        completed: false
+        icon: 'wave'
       },
       {
         id: 'marketing',
         title: 'Marketing Setup',
         content: 'Set up your marketing campaigns and automation.',
-        isOptional: true,
-        completed: false
+        icon: 'megaphone'
       },
       {
         id: 'hiring',
         title: 'Hiring Setup',
         content: 'Configure your hiring process and AI interviews.',
-        isOptional: true,
-        completed: false
+        icon: 'users'
       },
       {
         id: 'complete',
         title: 'Setup Complete',
         content: 'Congratulations! Your setup is complete.',
-        completed: false
+        icon: 'check'
       }
     ]);
   }

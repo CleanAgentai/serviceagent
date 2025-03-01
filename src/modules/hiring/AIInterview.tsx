@@ -60,7 +60,7 @@ const AIInterview: React.FC<AIInterviewProps> = ({
       ...transcript,
       {
         timestamp: new Date().toISOString(),
-        speaker: 'CANDIDATE',
+        speaker: 'CANDIDATE' as const,
         message: currentMessage.trim()
       }
     ];

@@ -77,8 +77,10 @@ export const ChartContainer: React.FC<ChartContainerProps> = ({
       );
     }
     
-    return children;
+    return children as React.ReactElement;
   };
+
+  const content = renderContent();
 
   return (
     <div className={`bg-white rounded-lg shadow p-4 ${className}`}>
@@ -99,10 +101,10 @@ export const ChartContainer: React.FC<ChartContainerProps> = ({
       {/* Chart */}
       <div className="relative" style={{ height }}>
         {(loading || error || noData) ? (
-          renderContent()
+          content
         ) : (
           <ResponsiveContainer width={width} height="100%">
-            {renderContent()}
+            {content}
           </ResponsiveContainer>
         )}
       </div>

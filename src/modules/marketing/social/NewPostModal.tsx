@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Dialog } from '@headlessui/react';
 import { X, Image as ImageIcon, Hash, Clock, Wand2 } from 'lucide-react';
 import { Platform, SocialPost } from '@/types/social';
 import { generatePostSuggestions, generateHashtags } from '@/services/ai/socialAI';
+import moment from 'moment';
 
 interface NewPostModalProps {
   isOpen: boolean;

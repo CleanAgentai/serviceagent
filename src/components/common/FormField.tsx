@@ -1,5 +1,5 @@
 import React from 'react';
-import { ExclamationCircle } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 
 interface FormFieldProps {
   label: string;
@@ -141,7 +141,7 @@ const FormField: React.FC<FormFieldProps> = ({
         {renderInput()}
         {hasError && (
           <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-            <ExclamationCircle
+            <AlertCircle
               className="h-5 w-5 text-red-500"
               aria-hidden="true"
             />
