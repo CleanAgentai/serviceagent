@@ -86,8 +86,8 @@ const MarketingDashboard: React.FC = () => {
     {
       id: '4',
       name: 'Re-engagement Campaign',
-      message: 'We miss you! It's been a while since we connected. Reply CHAT to schedule a call with your account manager or STOP to opt out.',
-      segment: 'Dormant Leads (90+ days)',
+      message: "We miss you! It's been a while since we connected. Reply CHAT to schedule a call with your account manager or STOP to opt out.",
+      segment: "Dormant Leads (90+ days)",
       schedule: { sendNow: false, scheduledDate: '2023-07-20', scheduledTime: '10:00 AM' },
       status: 'Draft',
       createdAt: '2023-07-03T16:45:00Z',

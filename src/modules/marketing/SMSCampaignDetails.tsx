@@ -50,7 +50,7 @@ const SMSCampaignDetails: React.FC<SMSCampaignDetailsProps> = ({ campaign, onClo
       name: 'Jane Smith',
       phone: '+1987654321',
       status: 'Replied',
-      reply: 'Yes, I'm interested. Please send more information.',
+      reply: `Yes, I'm interested. Please send more information.`,
       replyTimestamp: '2023-06-15T14:30:00Z',
       needsFollowUp: true,
     },

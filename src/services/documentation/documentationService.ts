@@ -94,29 +94,29 @@ class DocumentationService {
       {
         id: 'welcome',
         title: 'Welcome to CleanAgent',
-        description: 'Let\'s get you started with the essential features.',
-        content: <WelcomeStep />,
+        content: 'Welcome to CleanAgent! Get started with our platform.',
+        completed: false
       },
       {
-        id: 'marketing-setup',
+        id: 'marketing',
         title: 'Marketing Setup',
-        description: 'Configure your marketing preferences and integrations.',
-        content: <MarketingSetupStep />,
+        content: 'Set up your marketing campaigns and automation.',
         isOptional: true,
+        completed: false
       },
       {
-        id: 'hiring-setup',
+        id: 'hiring',
         title: 'Hiring Setup',
-        description: 'Set up your hiring workflow and preferences.',
-        content: <HiringSetupStep />,
+        content: 'Configure your hiring process and AI interviews.',
         isOptional: true,
+        completed: false
       },
       {
         id: 'complete',
-        title: 'You\'re All Set!',
-        description: 'You\'ve completed the initial setup. Start exploring the platform.',
-        content: <CompleteStep />,
-      },
+        title: 'Setup Complete',
+        content: 'Congratulations! Your setup is complete.',
+        completed: false
+      }
     ]);
   }
 
