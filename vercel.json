@@ -25,10 +25,10 @@
       "has": [
         {
           "type": "host",
-          "value": "www.cleanagent.ai"
+          "value": "cleanagent.ai"
         }
       ],
-      "destination": "https://cleanagent.ai/:path*",
+      "destination": "https://www.cleanagent.ai/:path*",
       "permanent": true
     }
   ],
