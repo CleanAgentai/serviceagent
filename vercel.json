@@ -21,7 +21,13 @@
   ],
   "redirects": [
     {
-      "source": "https://www.cleanagent.ai/:path*",
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.cleanagent.ai"
+        }
+      ],
       "destination": "https://cleanagent.ai/:path*",
       "permanent": true
     }
