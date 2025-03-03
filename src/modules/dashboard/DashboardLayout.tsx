@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Link, Outlet, useLocation } from 'react-router-dom';
-import { useAuth } from '@/app/providers/AuthContext';
+import React, { useState } from "react";
+import { Link, Outlet, useLocation } from "react-router-dom";
+import { useAuth } from "@/app/providers/AuthContext";
 import {
   LayoutGrid,
   MessageSquare,
@@ -14,21 +14,21 @@ import {
   Boxes,
   Menu,
   X,
-  LogOut
-} from 'lucide-react';
-import { primaryGradientClass } from '@/app/shared/styles/theme';
+  LogOut,
+} from "lucide-react";
+import { primaryGradientClass } from "@/app/shared/styles/theme";
 
 const navItems = [
-  { path: '/dashboard', label: 'Launchpad', icon: LayoutGrid },
-  { path: '/dashboard/chat', label: 'Chat', icon: MessageSquare },
-  { path: '/dashboard/metrics', label: 'Metrics', icon: BarChart2 },
-  { path: '/dashboard/sales', label: 'Sales', icon: DollarSign },
-  { path: '/dashboard/marketing', label: 'Marketing', icon: Megaphone },
-  { path: '/dashboard/hiring', label: 'Hiring', icon: Users },
-  { path: '/dashboard/operations', label: 'Operations', icon: Cog },
-  { path: '/dashboard/settings', label: 'Settings', icon: SettingsIcon },
-  { path: '/dashboard/integrations', label: 'Integrations', icon: Boxes },
-  { path: '/dashboard/help', label: 'Help', icon: HelpCircle },
+  { path: "/dashboard", label: "Launchpad", icon: LayoutGrid },
+  { path: "/dashboard/chat", label: "Chat", icon: MessageSquare },
+  { path: "/dashboard/metrics", label: "Metrics", icon: BarChart2 },
+  { path: "/dashboard/sales", label: "Sales", icon: DollarSign },
+  { path: "/dashboard/marketing", label: "Marketing", icon: Megaphone },
+  { path: "/dashboard/hiring", label: "Hiring", icon: Users },
+  { path: "/dashboard/operations", label: "Operations", icon: Cog },
+  { path: "/dashboard/settings", label: "Settings", icon: SettingsIcon },
+  { path: "/dashboard/integrations", label: "Integrations", icon: Boxes },
+  { path: "/dashboard/help", label: "Help", icon: HelpCircle },
 ];
 
 export default function DashboardLayout() {
@@ -37,8 +37,8 @@ export default function DashboardLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const isActive = (path: string) => {
-    if (path === '/dashboard') {
-      return location.pathname === '/dashboard';
+    if (path === "/dashboard") {
+      return location.pathname === "/dashboard";
     }
     return location.pathname.startsWith(path);
   };
@@ -51,17 +51,17 @@ export default function DashboardLayout() {
     <div className="min-h-screen bg-gray-50 flex overflow-hidden">
       {/* Mobile sidebar overlay */}
       {sidebarOpen && (
-        <div 
+        <div
           className="fixed inset-0 z-20 bg-gray-600 bg-opacity-75 transition-opacity md:hidden"
           onClick={() => setSidebarOpen(false)}
         ></div>
       )}
 
       {/* Sidebar */}
-      <div 
+      <div
         className={`
           fixed inset-y-0 left-0 z-30 w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out md:translate-x-0 md:static md:h-screen
-          ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+          ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
         `}
       >
         <div className="h-full flex flex-col">
@@ -71,10 +71,16 @@ export default function DashboardLayout() {
               <div className="flex items-center">
                 <img
                   src="/robot-icon.png"
-                  alt=""
-                  className="h-8 w-auto"
+                  alt="Robot Icon"
+                  className="
+                  w-[clamp(24px,5vw,48px)]
+                  h-auto 
+                  max-w-[50px]               
+                  sm:max-w-[40px]            
+                  md:max-w-[48px]            
+                  object-contain"
                   loading="eager"
-                  width="32" 
+                  width="32"
                   height="32"
                 />
                 <span className="text-xl font-bold ml-2">
@@ -83,8 +89,8 @@ export default function DashboardLayout() {
                 </span>
               </div>
             </Link>
-            <button 
-              type="button" 
+            <button
+              type="button"
               className="md:hidden text-gray-500 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
               onClick={() => setSidebarOpen(false)}
               aria-label="Close sidebar"
@@ -103,8 +109,8 @@ export default function DashboardLayout() {
                   to={item.path}
                   className={`flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
                     active
-                      ? primaryGradientClass + ' text-white'
-                      : 'text-gray-600 hover:bg-gray-100'
+                      ? primaryGradientClass + " text-white"
+                      : "text-gray-600 hover:bg-gray-100"
                   }`}
                   onClick={() => {
                     if (window.innerWidth < 768) {
@@ -144,12 +150,12 @@ export default function DashboardLayout() {
           >
             <Menu className="h-6 w-6" />
           </button>
-          <div className="flex items-center">
+          <div className="hidden">
             <img
               src="/robot-icon.png"
               alt=""
               className="h-8 w-auto"
-              width="32" 
+              width="32"
               height="32"
             />
             <span className="text-xl font-bold ml-2">
@@ -169,4 +175,4 @@ export default function DashboardLayout() {
       </div>
     </div>
   );
-} 
+}
