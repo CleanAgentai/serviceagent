@@ -1,19 +1,28 @@
-import { createContext, useContext, useEffect, useState } from 'react';
-import { User, AuthError } from '@supabase/supabase-js';
-import { supabase } from '@/app/lib/supabase';
+import { createContext, useContext, useEffect, useState } from "react";
+import { User, AuthError } from "@supabase/supabase-js";
+import { supabase } from "@/app/lib/supabase";
 
 // Get the site URL from environment or window location
 const getSiteUrl = () => {
   const url = import.meta.env.VITE_SITE_URL || window.location.origin;
-  return url.replace(/\/$/, ''); // Remove trailing slash if present
+  return url.replace(/\/$/, ""); // Remove trailing slash if present
 };
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
   isAuthenticated: boolean;
-  signUp: (email: string, password: string, fullName: string) => Promise<{ error: AuthError | null }>;
-  signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>;
+  signUp: (
+    email: string,
+    password: string,
+    firstName: string,
+    lastName: string,
+    companyName: string
+  ) => Promise<{ error: AuthError | null }>;
+  signIn: (
+    email: string,
+    password: string
+  ) => Promise<{ error: AuthError | null }>;
   signInWithGoogle: () => Promise<{ error: AuthError | null }>;
   signInWithFacebook: () => Promise<{ error: AuthError | null }>;
   signOut: () => Promise<{ error: AuthError | null }>;
@@ -36,7 +45,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
 
     // Listen for changes on auth state (signed in, signed out, etc.)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
       setIsAuthenticated(!!session?.user);
       setLoading(false);
@@ -45,31 +56,44 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
-  const signUp = async (email: string, password: string, fullName: string) => {
-    console.log('Starting sign up process...', { email, fullName });
+  const signUp = async (
+    email: string,
+    password: string,
+    firstName: string,
+    lastName: string,
+    companyName: string
+  ) => {
+    console.log("Starting sign up process...", {
+      email,
+      firstName,
+      lastName,
+      companyName,
+    });
     try {
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
           data: {
-            full_name: fullName,
+            first_name: firstName,
+            last_name: lastName,
+            company_name: companyName,
           },
-          emailRedirectTo: `${getSiteUrl()}/auth/callback`
+          emailRedirectTo: `${getSiteUrl()}/auth/callback`,
         },
       });
-      
+
       if (error) throw error;
-      
+
       // If signup successful, immediately sign in
       if (data.user) {
         const { error: signInError } = await signIn(email, password);
         if (signInError) throw signInError;
       }
-      
+
       return { error: null };
     } catch (err) {
-      console.error('Sign up error:', err);
+      console.error("Sign up error:", err);
       return { error: err as AuthError };
     }
   };
@@ -83,60 +107,60 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const signInWithGoogle = async () => {
-    console.log('Starting Google OAuth sign-in...');
+    console.log("Starting Google OAuth sign-in...");
     try {
       const redirectTo = `${window.location.origin}/auth/callback`;
-      console.log('Redirect URL:', redirectTo);
-      
+      console.log("Redirect URL:", redirectTo);
+
       const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
+        provider: "google",
         options: {
           redirectTo,
           queryParams: {
-            access_type: 'offline',
-            prompt: 'consent'
-          }
-        }
+            access_type: "offline",
+            prompt: "consent",
+          },
+        },
       });
-      
+
       if (error) {
-        console.error('Google OAuth error:', error);
+        console.error("Google OAuth error:", error);
         throw error;
       }
 
       if (data?.url) {
-        console.log('Redirecting to:', data.url);
+        console.log("Redirecting to:", data.url);
         window.location.href = data.url;
       }
-      
+
       return { error: null };
     } catch (err) {
-      console.error('Google OAuth error:', err);
+      console.error("Google OAuth error:", err);
       return { error: err as AuthError };
     }
   };
 
   const signInWithFacebook = async () => {
-    console.log('Starting Facebook OAuth sign-in...');
+    console.log("Starting Facebook OAuth sign-in...");
     try {
       const redirectTo = `${getSiteUrl()}/auth/callback`;
-      console.log('Redirect URL:', redirectTo);
-      
+      console.log("Redirect URL:", redirectTo);
+
       const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'facebook',
+        provider: "facebook",
         options: {
           redirectTo,
           queryParams: {
-            display: 'popup'
+            display: "popup",
           },
-          skipBrowserRedirect: false
-        }
+          skipBrowserRedirect: false,
+        },
       });
-      
-      console.log('Facebook OAuth response:', { data, error });
+
+      console.log("Facebook OAuth response:", { data, error });
       return { error };
     } catch (err) {
-      console.error('Facebook OAuth error:', err);
+      console.error("Facebook OAuth error:", err);
       return { error: err as AuthError };
     }
   };
@@ -179,7 +203,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
-} 
+}
