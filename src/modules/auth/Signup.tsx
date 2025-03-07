@@ -59,13 +59,15 @@ export function Signup() {
       !password ||
       !confirmPassword
     ) {
-      setError("모든 필드를 입력해주세요.");
+      alert("Please fill in all fields");
+      setError("Please fill in all fields");
       setIsLoading(false);
       return;
     }
 
     if (password !== confirmPassword) {
-      setError("비밀번호가 일치하지 않습니다.");
+      alert("Passwords do not match");
+      setError("Passwords do not match");
       setIsLoading(false);
       return;
     }
@@ -79,10 +81,16 @@ export function Signup() {
         companyName
       );
 
-      if (signUpError) throw signUpError;
-
-      // 회원가입 성공 시 대시보드로 이동
-      navigate("/dashboard");
+      if (signUpError) {
+        if (signUpError.message.toLowerCase().includes("already registered")) {
+          alert("This email is already registered. Please log in.");
+        } else {
+          throw signUpError;
+        }
+      } else {
+        // Navigate to dashboard upon successful signup
+        navigate("/dashboard");
+      }
     } catch (err: any) {
       setError(err.message || "회원가입 중 오류가 발생했습니다.");
     } finally {
