@@ -58,8 +58,12 @@ export function Login() {
       if (error) throw error;
       //toast({ title: "Redirecting to OAuth...", variant: "default" });
     } catch (error: any) {
-      setError("Google login failed. Please try again.");
-      console.error("Google login failed:", error);
+      console.error(`${provider} login failed:`, error);
+      setError(
+        `${
+          provider.charAt(0).toUpperCase() + provider.slice(1)
+        } login failed: ${error.message || "Please try again."}`
+      );
     } finally {
       setIsLoading(false);
     }
