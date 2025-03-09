@@ -6,6 +6,7 @@ import { RiRefreshLine, RiMessage2Line, RiVideoAddLine, RiEditLine } from 'react
 import { FaBriefcase, FaUserPlus, FaCalendarCheck, FaUsers } from 'react-icons/fa';
 import { BsArrowUpRight } from 'react-icons/bs';
 import CandidateDetailModal from './hiring/CandidateDetailModal';
+import { Candidate, CandidateStatus } from '@/types/hiring';
 
 interface Job {
   id: number;
@@ -19,6 +20,22 @@ interface Job {
   description: string;
   requirements: string[];
   candidates: { name: string; experience: string; appliedDaysAgo: number }[];
+  benefits: string[];
+  compensation?: {
+    salary: {
+      min: number;
+      max: number;
+      currency: string;
+      period: string;
+    };
+    benefits: Array<{
+      id: string;
+      name: string;
+      description: string;
+      category: string;
+    }>;
+    additionalPerks: string[];
+  };
 }
 
 interface MetricCardProps {
@@ -26,19 +43,25 @@ interface MetricCardProps {
   value: string;
   change: string;
   trend: 'up' | 'down';
-  icon: React.ReactNode;
+  icon: React.ReactElement;
 }
 
 const MetricCard: React.FC<MetricCardProps> = ({ title, value, change, trend, icon }) => (
   <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300">
     <div className="flex items-center justify-between mb-4">
       <div className={`p-3 rounded-xl ${trend === 'up' ? 'bg-green-50' : 'bg-red-50'}`}>
-        {icon}
+        {React.cloneElement(icon, {
+          className: `h-6 w-6 ${trend === 'up' ? 'text-green-600' : 'text-red-600'}`
+        })}
       </div>
       <span className={`flex items-center text-sm font-medium ${
         trend === 'up' ? 'text-green-600' : 'text-red-600'
       }`}>
-        {trend === 'up' ? <TrendingUp className="h-4 w-4 mr-1" /> : <TrendingDown className="h-4 w-4 mr-1" />}
+        {trend === 'up' ? (
+          <TrendingUp className="h-4 w-4 mr-1" />
+        ) : (
+          <TrendingDown className="h-4 w-4 mr-1" />
+        )}
         {change}
       </span>
     </div>
@@ -78,6 +101,7 @@ export default function Hiring() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showNewJobModal, setShowNewJobModal] = useState(false);
   const [jobs, setJobs] = useState<Job[]>([]);
+  const [candidates, setCandidates] = useState<Candidate[]>([]);
   const [activeJobId, setActiveJobId] = useState<string | null>(null);
   const [metrics, setMetrics] = useState({
     openPositions: 12,
@@ -87,7 +111,7 @@ export default function Hiring() {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [isVideoChatOpen, setIsVideoChatOpen] = useState(false);
-  const [selectedCandidate, setSelectedCandidate] = useState({ name: '', jobTitle: '' });
+  const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(null);
   const [formData, setFormData] = useState({
     title: '',
     department: '',
@@ -105,6 +129,7 @@ export default function Hiring() {
       additionalPerks: []
     }
   });
+  const [error, setError] = useState<string | null>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -217,7 +242,18 @@ export default function Hiring() {
       applicants: [],
       createdAt: new Date().toISOString(),
       requirements: [],
-      candidates: []
+      candidates: [],
+      benefits: [],
+      compensation: {
+        salary: {
+          min: 0,
+          max: 0,
+          currency: 'USD',
+          period: 'YEARLY'
+        },
+        benefits: [],
+        additionalPerks: []
+      }
     };
     setJobs(prev => [newJob, ...prev]);
     
@@ -257,17 +293,118 @@ export default function Hiring() {
     }
   };
 
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchCandidates = async () => {
+      if (!isMounted) return;
+      
+      setIsLoading(true);
+      setError(null);
+      
+      try {
+        // Simulated API call with initial data
+        await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API delay
+        
+        const initialCandidates: Candidate[] = [
+          {
+            id: '1',
+            name: 'John Smith',
+            email: 'john.smith@example.com',
+            location: 'New York, NY',
+            resumeUrl: '/resumes/john-smith.pdf',
+            appliedFor: 'Senior Cleaning Manager',
+            currentStatus: 'INTERVIEWED' as CandidateStatus,
+            interviews: [],
+            aiScore: 8.5,
+            tags: ['experienced', 'management'],
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            notes: [{
+              id: '1',
+              author: 'AI',
+              content: 'Excellent communication skills, great experience in team management.',
+              timestamp: new Date().toISOString()
+            }]
+          },
+          {
+            id: '2',
+            name: 'Sarah Johnson',
+            email: 'sarah.johnson@example.com',
+            location: 'Los Angeles, CA',
+            resumeUrl: '/resumes/sarah-johnson.pdf',
+            appliedFor: 'Cleaning Specialist',
+            currentStatus: 'SCREENING' as CandidateStatus,
+            interviews: [],
+            aiScore: 7.8,
+            tags: ['detail-oriented', 'hospitality'],
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            notes: [{
+              id: '2',
+              author: 'AI',
+              content: 'Strong attention to detail, previous experience in hospitality.',
+              timestamp: new Date(Date.now() - 86400000).toISOString()
+            }]
+          }
+        ];
+
+        if (isMounted) {
+          setCandidates(initialCandidates);
+        }
+      } catch (error) {
+        console.error('Error fetching candidates:', error);
+        if (isMounted) {
+          setError('Failed to fetch candidates');
+          setCandidates([]);
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    fetchCandidates();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   const handleTalkToAgent = () => {
     navigate('/dashboard/chat?context=hiring');
   };
 
   const handleStartVideoInterview = (candidateName: string, jobTitle: string) => {
-    setSelectedCandidate({ name: candidateName, jobTitle });
-    setIsVideoChatOpen(true);
+    if (selectedCandidate) {
+      setIsVideoChatOpen(true);
+    }
   };
 
   const handlePostNewJob = () => {
-    setShowNewJobId(true);
+    setShowNewJobModal(true);
+  };
+
+  const handleEditJob = (job: Job) => {
+    setFormData({
+      title: job.title,
+      department: job.department,
+      location: job.location,
+      type: job.type,
+      description: job.description,
+      compensation: {
+        salary: {
+          min: 0,
+          max: 0,
+          currency: 'USD',
+          period: 'YEARLY'
+        },
+        benefits: [],
+        additionalPerks: []
+      }
+    });
+    setShowNewJobModal(true);
   };
 
   return (
@@ -307,21 +444,21 @@ export default function Hiring() {
             value="8"
             change="+3 this month"
             trend="up"
-            icon={<Building2 className="h-6 w-6 text-green-600" />}
+            icon={<Building2 size={24} />}
           />
           <MetricCard
             title="Time to Hire"
             value="18 days"
             change="-5 days vs last month"
             trend="up"
-            icon={<Clock className="h-6 w-6 text-green-600" />}
+            icon={<Clock size={24} />}
           />
           <MetricCard
             title="Offer Accept Rate"
             value="85%"
             change="-2% vs last month"
             trend="down"
-            icon={<TrendingUp className="h-6 w-6 text-red-600" />}
+            icon={<TrendingUp size={24} />}
           />
           </div>
 
@@ -471,7 +608,19 @@ export default function Hiring() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {candidates.length === 0 ? (
+                {isLoading ? (
+                  <tr>
+                    <td colSpan={6} className="px-6 py-4 text-center text-gray-500">
+                      Loading candidates...
+                    </td>
+                  </tr>
+                ) : error ? (
+                  <tr>
+                    <td colSpan={6} className="px-6 py-4 text-center text-red-500">
+                      {error}
+                    </td>
+                  </tr>
+                ) : !candidates || candidates.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="px-6 py-4 text-center text-gray-500">
                       No candidates found
@@ -497,9 +646,12 @@ export default function Hiring() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                          candidate.currentStatus === 'SHORTLISTED' ? 'bg-green-100 text-green-800' :
+                          candidate.currentStatus === 'ACCEPTED' ? 'bg-green-100 text-green-800' :
                           candidate.currentStatus === 'REJECTED' ? 'bg-red-100 text-red-800' :
-                          'bg-yellow-100 text-yellow-800'
+                          candidate.currentStatus === 'OFFERED' ? 'bg-purple-100 text-purple-800' :
+                          candidate.currentStatus === 'INTERVIEWED' ? 'bg-blue-100 text-blue-800' :
+                          candidate.currentStatus === 'SCREENING' ? 'bg-yellow-100 text-yellow-800' :
+                          'bg-gray-100 text-gray-800'
                         }`}>
                           {candidate.currentStatus}
                         </span>
@@ -530,10 +682,10 @@ export default function Hiring() {
                           <div>
                             <span className="text-xs font-medium text-gray-500">Last Activity:</span>
                             <span className="text-sm text-gray-900 ml-2">
-                              {new Date(candidate.updatedAt).toLocaleDateString()}
+                              {new Date(candidate.updatedAt || Date.now()).toLocaleDateString()}
                             </span>
                           </div>
-                          {candidate.notes.length > 0 && (
+                          {candidate.notes && candidate.notes.length > 0 && (
                             <div>
                               <span className="text-xs font-medium text-gray-500">Latest Note:</span>
                               <p className="text-sm text-gray-900 mt-1">
@@ -847,7 +999,7 @@ export default function Hiring() {
                     }}
                     className="flex items-center gap-1 px-3 py-1.5 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
                   >
-                    <RiMessage2Line className="text-white" />
+                    {React.createElement(RiMessage2Line, { className: "text-white" })}
                     <span>Chat</span>
                   </button>
                   <button
@@ -857,7 +1009,7 @@ export default function Hiring() {
                     }}
                     className="flex items-center gap-1 px-3 py-1.5 text-sm border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
                   >
-                    <RiEditLine className="text-gray-600" />
+                    {React.createElement(RiEditLine, { className: "text-gray-600" })}
                     <span>Edit</span>
                   </button>
                 </div>

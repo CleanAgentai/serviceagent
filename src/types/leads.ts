@@ -1,35 +1,37 @@
 export type LeadStatus = 'New' | 'Contacted' | 'Qualified' | 'Lost' | 'Converted';
-
-export type LeadSource = 'Website' | 'Referral' | 'Social Media' | 'Email Campaign' | 'Event' | 'Other';
+export type LeadSource = 'Website' | 'LinkedIn' | 'Referral' | 'Trade Show' | 'Webinar' | 'Other';
+export type LeadPriority = 'Low' | 'Medium' | 'High';
 
 export interface Lead {
   id: string;
   name: string;
   email: string;
   phone?: string;
-  company?: string;
-  source?: string;
-  status: 'New' | 'Contacted' | 'Qualified' | 'Lost' | 'Converted';
-  score: number;
-  createdAt: string;
+  company: string;
+  source: LeadSource;
+  status: LeadStatus;
+  priority?: LeadPriority;
+  tags: string[];
   notes?: string;
-  tags?: string[];
-  assignedTo?: string; // ID of the sales rep assigned to this lead
+  createdAt: string;
+  updatedAt: string;
+  lastContactedAt?: string;
+  score?: number;
   scoreBreakdown?: ScoreBreakdown[];
   budget?: number;
-  lastInteraction?: string;
-  interactionCount?: number;
-  aiAdjusted?: boolean;
+  timeline?: string;
+  requirements?: string[];
+  assignedTo?: string;
 }
 
 export interface LeadFormData {
   name: string;
   email: string;
   phone?: string;
-  company?: string;
-  source: LeadSource;
+  company: string;
+  source: string;
   notes?: string;
-  tags?: string[];
+  tags: string[];
 }
 
 export interface CSVMappingField {
@@ -69,10 +71,9 @@ export interface ScoreRule {
 }
 
 export interface ScoreBreakdown {
-  ruleId: string;
-  ruleName: string;
-  points: number;
-  appliedAt: string;
+  category: string;
+  score: number;
+  reason: string;
 }
 
 export interface ScoringSettings {
@@ -80,4 +81,43 @@ export interface ScoringSettings {
   minScore: number;
   maxScore: number;
   aiAssist: boolean;
+}
+
+export interface ScoringRule {
+  id: string;
+  name: string;
+  category: string;
+  condition: {
+    field: string;
+    operator: 'equals' | 'contains' | 'greaterThan' | 'lessThan';
+    value: string | number | boolean;
+  };
+  points: number;
+  active: boolean;
+}
+
+export interface LeadActivity {
+  id: string;
+  leadId: string;
+  type: 'email' | 'call' | 'meeting' | 'note';
+  description: string;
+  timestamp: string;
+  outcome?: string;
+  nextAction?: string;
+  nextActionDate?: string;
+}
+
+export interface LeadFilter {
+  status?: LeadStatus[];
+  source?: LeadSource[];
+  priority?: LeadPriority[];
+  tags?: string[];
+  score?: {
+    min?: number;
+    max?: number;
+  };
+  dateRange?: {
+    start: string;
+    end: string;
+  };
 } 

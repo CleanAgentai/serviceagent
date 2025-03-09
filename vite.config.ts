@@ -18,7 +18,7 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: true,
-    // Skip TypeScript checking during build
+    // Skip TypeScript checking during build for now
     typescript: {
       ignoreBuildErrors: true,
     },
@@ -33,6 +33,15 @@ export default defineConfig({
     chunkSizeWarningLimit: 1000,
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom'],
+    include: [
+      'react', 
+      'react-dom', 
+      'react-router-dom',
+      '@supabase/supabase-js',
+      '@supabase/postgrest-js'
+    ],
+    esbuildOptions: {
+      target: 'esnext'
+    }
   },
 }) 

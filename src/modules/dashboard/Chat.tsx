@@ -19,7 +19,7 @@ interface ChatMessage {
 interface Agent {
   id: string;
   title: string;
-  icon: React.ReactNode;
+  iconComponent: React.ReactElement;
   color: string;
   description: string;
 }
@@ -28,28 +28,28 @@ const agents: Agent[] = [
   {
     id: 'marketing',
     title: 'Marketing Agent',
-    icon: <Megaphone className="h-8 w-8" />,
+    iconComponent: <Megaphone className="h-8 w-8" />,
     color: 'bg-purple-100 text-purple-600',
     description: 'Expert in digital marketing, SEO, and content strategy'
   },
   {
     id: 'sales',
     title: 'Sales Agent',
-    icon: <DollarSign className="h-8 w-8" />,
+    iconComponent: <DollarSign className="h-8 w-8" />,
     color: 'bg-blue-100 text-blue-600',
     description: 'Specializes in lead conversion and sales optimization'
   },
   {
     id: 'hiring',
     title: 'Hiring Agent',
-    icon: <Users className="h-8 w-8" />,
+    iconComponent: <Users className="h-8 w-8" />,
     color: 'bg-green-100 text-green-600',
     description: 'Assists with recruitment and HR processes'
   },
   {
     id: 'operations',
     title: 'Operations Agent',
-    icon: <Cog className="h-8 w-8" />,
+    iconComponent: <Cog className="h-8 w-8" />,
     color: 'bg-orange-100 text-orange-600',
     description: 'Helps optimize business operations and workflows'
   }
@@ -416,7 +416,7 @@ export default function Chat() {
               className="w-full flex items-center p-3 rounded-lg hover:bg-gray-50 cursor-pointer mb-2 text-left"
             >
               <div className={`p-2 rounded-lg ${chat.agent.color} mr-3`}>
-                {chat.agent.icon}
+                {chat.agent.iconComponent}
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-gray-900 truncate">{chat.title}</p>
@@ -436,7 +436,7 @@ export default function Chat() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   <div className={`p-2 rounded-lg ${selectedAgent.color}`}>
-                    {selectedAgent.icon}
+                    {selectedAgent.iconComponent}
                   </div>
                   <div>
                     <h2 className="text-lg font-medium text-gray-900">{selectedAgent.title}</h2>
@@ -467,7 +467,7 @@ export default function Chat() {
                 >
                   {message.role === 'assistant' && (
                     <div className={`p-2 rounded-lg ${selectedAgent?.color} mr-2`}>
-                      {selectedAgent?.icon}
+                      {selectedAgent?.iconComponent}
                     </div>
                   )}
                   <div
@@ -533,7 +533,7 @@ export default function Chat() {
                   className="flex flex-col items-center p-8 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow text-center"
                 >
                   <div className={`p-4 rounded-full mb-4 ${agent.color}`}>
-                    {agent.icon}
+                    {agent.iconComponent}
                   </div>
                   <h3 className="text-lg font-medium text-gray-900 mb-2">{agent.title}</h3>
                   <p className="text-gray-600 text-sm">{agent.description}</p>

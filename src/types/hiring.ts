@@ -75,6 +75,15 @@ export interface InterviewScenario {
   roleplayPrompt?: string;
 }
 
+export interface InterviewQuestion {
+  id: string;
+  text: string;
+  type: 'TECHNICAL' | 'BEHAVIORAL' | 'EXPERIENCE';
+  expectedAnswer?: string;
+  score?: number;
+  feedback?: string;
+}
+
 export interface InterviewSession {
   id: string;
   candidateId: string;
@@ -91,6 +100,7 @@ export interface InterviewSession {
   evaluation: InterviewEvaluation;
   recordingUrl?: string;
   status: 'SCHEDULED' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED';
+  questions?: InterviewQuestion[];
 }
 
 export interface InterviewEvaluation {
@@ -144,6 +154,16 @@ export interface OnboardingDocument {
   };
 }
 
+export interface NotificationLog {
+  id: string;
+  type: NotificationType;
+  message: string;
+  timestamp: string;
+  read: boolean;
+}
+
+export type NotificationType = 'INFO' | 'WARNING' | 'ERROR' | 'SUCCESS';
+
 export interface HiringMetrics {
   timeRange: {
     start: string;
@@ -178,6 +198,34 @@ export interface HiringMetrics {
     offers: number;
     acceptances: number;
   }[];
+  overview: {
+    totalApplications: number;
+    previousTotalApplications: number;
+    avgTimeToHire: number;
+    previousAvgTimeToHire: number;
+    offerAcceptanceRate: number;
+    previousOfferAcceptanceRate: number;
+    costPerHire: number;
+    previousCostPerHire: number;
+  };
+  quality: {
+    highQuality: number;
+    mediumQuality: number;
+    lowQuality: number;
+  };
+  timeSeries: {
+    date: string;
+    applications: number;
+    interviews: number;
+    hires: number;
+  }[];
+  funnel: {
+    applications: number;
+    screenings: number;
+    interviews: number;
+    offers: number;
+    rejections: number;
+  };
 }
 
 export interface Candidate {
@@ -212,6 +260,13 @@ export interface Candidate {
     progress: number;
     startDate?: string;
     completedAt?: string;
+  };
+  notifications?: NotificationLog[];
+  aiAnalysis?: {
+    summary: string;
+    strengths: string[];
+    areasForDiscussion: string[];
+    score: number;
   };
 }
 

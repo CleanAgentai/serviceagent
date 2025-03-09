@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, Clock, LayoutDashboard, ChartBar, Users, Calendar } from 'lucide-react';
+import { ArrowLeft, Clock, LayoutDashboard, BarChart, Users, Calendar } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function DashboardOverview() {
@@ -69,7 +69,7 @@ export default function DashboardOverview() {
           <section>
             <div className="flex items-center mb-6">
               <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center mr-4">
-                <ChartBar className="h-6 w-6 text-blue-600" />
+                <BarChart className="h-6 w-6 text-blue-600" />
               </div>
               <h2 className="text-2xl font-semibold text-gray-900">Analytics & Reports</h2>
             </div>

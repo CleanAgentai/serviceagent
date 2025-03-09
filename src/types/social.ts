@@ -1,4 +1,6 @@
-export type Platform = 'instagram' | 'twitter' | 'facebook' | 'linkedin';
+import { LucideIcon } from 'lucide-react';
+
+export type Platform = 'FACEBOOK' | 'TWITTER' | 'LINKEDIN' | 'INSTAGRAM';
 
 export interface SocialPost {
   id: string;
@@ -7,17 +9,39 @@ export interface SocialPost {
   scheduledTime: Date;
   hashtags: string[];
   images: string[];
-  metrics?: {
+  status: 'draft' | 'scheduled' | 'published' | 'failed';
+  analytics?: {
     likes: number;
-    comments: number;
     shares: number;
-    clicks: number;
+    comments: number;
     reach: number;
     engagement: number;
   };
-  status: 'draft' | 'scheduled' | 'published' | 'failed';
-  publishedUrl?: string;
   error?: string;
+}
+
+export interface PlatformConfig {
+  platform: Platform;
+  connected: boolean;
+  lastSynced?: Date;
+  error?: string;
+}
+
+export const platformIcons: Record<Platform, LucideIcon> = {
+  FACEBOOK: () => null,
+  TWITTER: () => null,
+  LINKEDIN: () => null,
+  INSTAGRAM: () => null,
+};
+
+export interface ContentSuggestion {
+  id: string;
+  content: string;
+  platforms: Platform[];
+  hashtags: string[];
+  type: 'text' | 'image' | 'video';
+  score: number;
+  reasoning: string;
 }
 
 export interface PostMetrics {
@@ -40,18 +64,6 @@ export interface PostingTimeRecommendation {
   confidence: number;
   audienceActivity: number;
   competitorActivity: number;
-}
-
-export interface ContentSuggestion {
-  content: string;
-  hashtags: string[];
-  platforms: Platform[];
-  estimatedEngagement: number;
-  targetAudience: string[];
-  mediaRecommendations?: {
-    type: 'image' | 'video' | 'carousel';
-    description: string;
-  }[];
 }
 
 export interface SocialMediaStats {
