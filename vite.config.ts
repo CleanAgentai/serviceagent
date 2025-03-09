@@ -10,13 +10,14 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  base: '/',
   server: {
     port: 5173,
     host: true,
   },
   build: {
     outDir: 'dist',
-    sourcemap: false,
+    sourcemap: true,
     // Skip TypeScript checking during build
     typescript: {
       ignoreBuildErrors: true,
@@ -25,7 +26,7 @@ export default defineConfig({
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'ui-vendor': ['@heroicons/react', 'lucide-react', 'recharts'],
+          'ui-vendor': ['@radix-ui/react-slot', 'class-variance-authority']
         },
       },
     },

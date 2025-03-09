@@ -522,7 +522,12 @@ export default function Operations() {
 
           {/* Workflows Section */}
           {activeTab === 'workflows' && (
-            // ... existing workflows content ...
+            <div className="space-y-6">
+              <div className="bg-white rounded-lg shadow-sm p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Active Workflows</h3>
+                {/* Workflow content here */}
+              </div>
+            </div>
           )}
 
           {/* Referral Program Section */}
