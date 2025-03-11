@@ -11,6 +11,8 @@ export function CompleteProfile() {
     firstName: "",
     lastName: "",
     companyName: "",
+    email: "",
+    acceptTerms: false,
   });
 
   useEffect(() => {
@@ -24,7 +26,7 @@ export function CompleteProfile() {
       if (sessionData?.user) {
         setFormData((prev) => ({
           ...prev,
-          email: sessionData.user.email,
+          email: sessionData.user.email, // ✅ 이메일 저장
           firstName:
             sessionData.user.user_metadata?.full_name?.split(" ")[0] || "",
           lastName:
@@ -37,18 +39,28 @@ export function CompleteProfile() {
   }, []);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.firstName || !formData.lastName || !formData.companyName) {
+    if (
+      !formData.firstName ||
+      !formData.lastName ||
+      !formData.companyName ||
+      !formData.email
+    ) {
       alert("All fields are required!");
+      return;
+    }
+
+    if (!formData.acceptTerms) {
+      alert("You must agree to the Terms of Service and Privacy Policy.");
       return;
     }
 
@@ -67,6 +79,7 @@ export function CompleteProfile() {
         first_name: formData.firstName,
         last_name: formData.lastName,
         company_name: formData.companyName,
+        email: formData.email, // ✅ 이메일 저장
       })
       .eq("id", userId);
 
@@ -74,7 +87,7 @@ export function CompleteProfile() {
       alert("Error updating profile. Please try again.");
       console.error(error);
     } else {
-      navigate("/dashboard"); // ✅ 정보 입력 후 대시보드로 이동
+      navigate("/dashboard");
     }
   };
 
@@ -94,6 +107,25 @@ export function CompleteProfile() {
 
           <div className="bg-white rounded-xl shadow-sm p-8">
             <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Email (Read-Only) */}
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Email
+                </label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  disabled
+                  className="block w-full border border-gray-300 bg-gray-100 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              {/* Name Fields */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label
@@ -134,6 +166,7 @@ export function CompleteProfile() {
                 </div>
               </div>
 
+              {/* Company Name */}
               <div>
                 <label
                   htmlFor="companyName"
@@ -153,6 +186,39 @@ export function CompleteProfile() {
                 />
               </div>
 
+              {/* Terms and Conditions Checkbox */}
+              <div className="flex items-start">
+                <input
+                  id="acceptTerms"
+                  name="acceptTerms"
+                  type="checkbox"
+                  checked={formData.acceptTerms}
+                  onChange={handleChange}
+                  required
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                />
+                <div className="ml-3 text-sm">
+                  <label htmlFor="acceptTerms" className="text-gray-600">
+                    I agree to the{" "}
+                    <Link
+                      to="/terms-of-service"
+                      className="text-blue-600 hover:text-blue-700"
+                    >
+                      Terms of Service
+                    </Link>{" "}
+                    and{" "}
+                    <Link
+                      to="/privacy-policy"
+                      className="text-blue-600 hover:text-blue-700"
+                    >
+                      Privacy Policy
+                    </Link>
+                    .
+                  </label>
+                </div>
+              </div>
+
+              {/* Submit Button */}
               <button
                 type="submit"
                 className="w-full flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:opacity-90"
