@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { User, Mail, Lock, Building2, ArrowRight } from "lucide-react";
 import { useAuth } from "@/app/providers/AuthContext";
 import { Navigation } from "@/modules/landing/components/Navigation";
+import { supabase } from "@/app/lib/supabase";
 
 export function Signup() {
   const navigate = useNavigate();
@@ -101,7 +102,27 @@ export function Signup() {
   };
 
   const handleSocialSignup = async () => {
-    // Handle social signup
+    setIsLoading(true);
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/dashboard`,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent'
+          }
+        }
+      });
+      
+      if (error) throw error;
+      
+      // The redirect will happen automatically
+    } catch (err: any) {
+      setError("Google signup failed. Please try again.");
+      console.error("Google signup error:", err);
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -112,10 +133,17 @@ export function Signup() {
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              Get Started with CleanAgent
+              Get Started with ServiceAgent
             </h1>
+            <div className="flex items-center justify-center mb-4">
+              <img
+                src="/ServiceAgent Logo.png"
+                alt="ServiceAgent Logo"
+                className="h-8 w-auto"
+              />
+            </div>
             <p className="text-gray-600">
-              Create your account and start automating your cleaning business
+              Create your account and start automating your service business
             </p>
           </div>
 
@@ -327,7 +355,7 @@ export function Signup() {
                 </div>
               </div>
 
-              <div className="mt-6 grid grid-cols-2 gap-3">
+              <div className="mt-6">
                 <button
                   onClick={() => handleSocialSignup()}
                   className="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
@@ -338,17 +366,6 @@ export function Signup() {
                     alt="Google logo"
                   />
                   <span>Google</span>
-                </button>
-                <button
-                  onClick={() => handleSocialSignup()}
-                  className="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
-                >
-                  <img
-                    className="h-5 w-5 mr-2"
-                    src="https://www.svgrepo.com/show/475647/facebook-color.svg"
-                    alt="Facebook logo"
-                  />
-                  <span>Facebook</span>
                 </button>
               </div>
             </div>

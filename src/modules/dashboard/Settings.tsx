@@ -7,7 +7,6 @@ import {
   Shield,
   User,
   Building,
-  LogOut,
   ChevronRight,
   Plus,
   X,
@@ -205,17 +204,6 @@ export default function Settings() {
             onClick={() => setActiveSection('security')}
           />
         </div>
-
-        <div className="mt-auto pt-6 border-t border-gray-200 mt-6">
-          <button
-            onClick={handleLogout}
-            disabled={isLoading}
-            className="w-full flex items-center px-4 py-3 text-sm font-medium rounded-xl text-red-600 hover:bg-red-50 transition-colors"
-          >
-            <LogOut className="h-5 w-5" />
-            <span className="ml-3">Sign Out</span>
-          </button>
-        </div>
       </div>
 
       {/* Content Area */}
@@ -402,23 +390,23 @@ export default function Settings() {
                   <h3 className="text-sm font-medium text-gray-900 mb-4">Your subscription includes:</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-3">
-                      <h4 className="text-sm font-medium text-gray-900">AI Features</h4>
+                      <h4 className="text-sm font-medium text-gray-900">Core Features</h4>
                       <ul className="space-y-2">
                         <li className="flex items-center text-sm text-gray-600">
                           <Check className="h-4 w-4 text-green-500 mr-2" />
-                          AI Operations Agent
+                          Unlimited Job Postings
                         </li>
                         <li className="flex items-center text-sm text-gray-600">
                           <Check className="h-4 w-4 text-green-500 mr-2" />
-                          AI Sales Agent
+                          Video Interviews
                         </li>
                         <li className="flex items-center text-sm text-gray-600">
                           <Check className="h-4 w-4 text-green-500 mr-2" />
-                          AI Marketing Agent
+                          Candidate Tracking
                         </li>
                         <li className="flex items-center text-sm text-gray-600">
                           <Check className="h-4 w-4 text-green-500 mr-2" />
-                          Custom AI Training
+                          Interview Analytics
                         </li>
                       </ul>
                     </div>

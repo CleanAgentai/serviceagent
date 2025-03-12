@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { openCalendly } from '@/app/shared/utils/calendly';
 
 export function Navigation() {
   const location = useLocation();
@@ -40,18 +39,6 @@ export function Navigation() {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
-  const scrollToSection = (sectionId: string) => (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (!isHomePage) {
-      window.location.href = `/#${sectionId}`;
-      return;
-    }
-    const section = document.getElementById(sectionId);
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   const navClasses = `sticky top-0 z-50 transition-all duration-200 transform ${
     hidden ? '-translate-y-full' : 'translate-y-0'
   } ${scrolled ? 'bg-white/95 backdrop-blur-sm shadow-sm' : 'bg-white'} border-b border-gray-200`;
@@ -65,64 +52,32 @@ export function Navigation() {
             to="/" 
             className="flex items-center"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            aria-label="CleanAgent Home"
+            aria-label="ServiceAgent Home"
           >
             <img
-              src="/robot-icon.png"
-              alt=""
-              className="h-6 w-auto sm:h-7 md:h-8"
-              loading="eager"
-              width="24" 
-              height="24"
+              src="/serviceagent logo.png"
+              alt="ServiceAgent Logo"
+              className="h-6 sm:h-7 md:h-8 w-auto"
             />
-            <span className="text-base sm:text-lg md:text-xl font-bold ml-1 sm:ml-1.5">
-              <span className="text-blue-600">Clean</span>
-              <span className="text-blue-600">Agent</span>
+            <span className="text-base sm:text-lg md:text-xl font-bold ml-2">
+              <span className="text-blue-600">ServiceAgent</span>
             </span>
           </Link>
 
-          {/* Navigation Links */}
-          <div className="hidden md:flex items-center space-x-8">
-            <button
-              onClick={scrollToSection('complete-ai-solution')}
-              className="text-gray-600 hover:text-gray-900 transition-colors text-sm whitespace-nowrap"
-            >
-              Features
-            </button>
-            <button
-              onClick={scrollToSection('pricing')}
-              className="text-gray-600 hover:text-gray-900 transition-colors text-sm whitespace-nowrap"
-            >
-              Pricing
-            </button>
-            <Link
-              to="/about-us"
-              className="text-gray-600 hover:text-gray-900 transition-colors text-sm whitespace-nowrap"
-            >
-              About Us
-            </Link>
-            <Link
-              to="/blog"
-              className="text-gray-600 hover:text-gray-900 transition-colors text-sm whitespace-nowrap"
-            >
-              Blog
-            </Link>
-          </div>
-
           {/* CTA Buttons */}
-          <div className="flex items-center">
+          <div className="flex items-center space-x-4">
             <Link
               to="/login"
-              className="text-gray-600 hover:text-gray-900 transition-colors text-sm mr-2 sm:mr-4 whitespace-nowrap"
+              className="text-gray-600 hover:text-gray-900 transition-colors text-sm whitespace-nowrap"
             >
               Sign In
             </Link>
-            <button
-              onClick={openCalendly}
-              className="inline-flex items-center px-2 py-1 sm:px-3 sm:py-1.5 md:px-4 md:py-2 border border-transparent text-xs sm:text-sm font-medium rounded-lg text-white bg-gradient-to-r from-blue-600 to-teal-500 hover:opacity-90 transition-all duration-300 whitespace-nowrap"
+            <Link
+              to="/signup"
+              className="px-4 py-2 bg-gradient-to-r from-blue-600 to-teal-500 text-white rounded-lg hover:opacity-90 transition-opacity text-sm whitespace-nowrap"
             >
-              Book a Demo
-            </button>
+              Sign up
+            </Link>
           </div>
         </div>
       </div>

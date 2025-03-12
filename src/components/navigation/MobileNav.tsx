@@ -23,7 +23,7 @@ const MobileNav: React.FC<MobileNavProps> = ({ isTransparent = false }) => {
             <Link to="/" className="flex items-center space-x-2">
               <Bot className="w-8 h-8 text-blue-500" />
               <span className={`text-xl font-semibold ${isTransparent ? 'text-white' : 'text-gray-900'}`}>
-                CleanAgent
+                ServiceAgent
               </span>
             </Link>
 
@@ -52,46 +52,12 @@ const MobileNav: React.FC<MobileNavProps> = ({ isTransparent = false }) => {
                   className="p-2 text-gray-600"
                   aria-label="Close menu"
                 >
-                  <X className="w-6 h-6" />
+                  <X className="w-6 w-6" />
                 </button>
               </div>
 
-              {/* Navigation Links */}
-              <div className="flex-1 overflow-y-auto">
-                <div className="py-2">
-                  <Link
-                    to="/features"
-                    className="block px-4 py-3 text-gray-800 hover:bg-gray-50"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Features
-                  </Link>
-                  <Link
-                    to="/pricing"
-                    className="block px-4 py-3 text-gray-800 hover:bg-gray-50"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Pricing
-                  </Link>
-                  <Link
-                    to="/about"
-                    className="block px-4 py-3 text-gray-800 hover:bg-gray-50"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    About
-                  </Link>
-                  <Link
-                    to="/contact"
-                    className="block px-4 py-3 text-gray-800 hover:bg-gray-50"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Contact
-                  </Link>
-                </div>
-              </div>
-
               {/* Action Buttons */}
-              <div className="p-4 border-t">
+              <div className="p-4 border-t mt-auto">
                 <Link
                   to="/signin"
                   className="block w-full px-4 py-3 text-center text-gray-800 bg-gray-50 rounded-lg mb-2"
@@ -100,11 +66,11 @@ const MobileNav: React.FC<MobileNavProps> = ({ isTransparent = false }) => {
                   Sign In
                 </Link>
                 <Link
-                  to="/demo"
+                  to="/signup"
                   className="block w-full px-4 py-3 text-center text-white bg-blue-500 rounded-lg"
                   onClick={() => setIsOpen(false)}
                 >
-                  Book a Demo
+                  Sign up
                 </Link>
               </div>
             </div>

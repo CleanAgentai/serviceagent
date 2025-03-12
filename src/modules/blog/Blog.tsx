@@ -118,17 +118,17 @@ export function Blog() {
   return (
     <>
       <Helmet>
-        <title>CleanAgent Blog - Insights for Modern Cleaning Businesses</title>
-        <meta name="description" content="Expert insights, industry trends, and practical tips for modern cleaning businesses. Learn about AI automation, hiring strategies, and business growth." />
-        <meta property="og:title" content="CleanAgent Blog - Insights for Modern Cleaning Businesses" />
-        <meta property="og:description" content="Expert insights, industry trends, and practical tips for modern cleaning businesses. Learn about AI automation, hiring strategies, and business growth." />
+        <title>ServiceAgent Blog - Insights for Modern Service Businesses</title>
+        <meta name="description" content="Expert insights, industry trends, and practical tips for modern service businesses. Learn about AI automation, hiring strategies, and business growth." />
+        <meta property="og:title" content="ServiceAgent Blog - Insights for Modern Service Businesses" />
+        <meta property="og:description" content="Expert insights, industry trends, and practical tips for modern service businesses. Learn about AI automation, hiring strategies, and business growth." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://cleanagent.ai/blog" />
-        <meta property="og:image" content="https://cleanagent.ai/og-image.jpg" />
+        <meta property="og:url" content="https://serviceagent.ai/blog" />
+        <meta property="og:image" content="https://serviceagent.ai/og-image.jpg" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="CleanAgent Blog - Insights for Modern Cleaning Businesses" />
-        <meta name="twitter:description" content="Expert insights, industry trends, and practical tips for modern cleaning businesses. Learn about AI automation, hiring strategies, and business growth." />
-        <meta name="twitter:image" content="https://cleanagent.ai/og-image.jpg" />
+        <meta name="twitter:title" content="ServiceAgent Blog - Insights for Modern Service Businesses" />
+        <meta name="twitter:description" content="Expert insights, industry trends, and practical tips for modern service businesses. Learn about AI automation, hiring strategies, and business growth." />
+        <meta name="twitter:image" content="https://serviceagent.ai/og-image.jpg" />
       </Helmet>
 
       <div className="min-h-screen bg-gray-50">
@@ -136,10 +136,10 @@ export function Blog() {
         <header className="bg-white border-b border-gray-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <h1 className="text-4xl font-bold text-gray-900 text-center mb-4">
-              CleanAgent Blog
+              ServiceAgent Blog
             </h1>
             <p className="text-xl text-gray-600 text-center max-w-2xl mx-auto">
-              Expert insights, industry trends, and practical tips for modern cleaning businesses.
+              Expert insights, industry trends, and practical tips for modern service businesses.
             </p>
           </div>
         </header>

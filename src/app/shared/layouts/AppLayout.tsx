@@ -55,7 +55,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
           <div className="relative flex flex-col w-full max-w-xs h-full bg-white shadow-xl">
             <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200">
               <span className="text-xl font-bold">
-                <span className="text-blue-600">Clean</span>
+                <span className="text-blue-600">Service</span>
                 <span className="text-blue-600">Agent</span>
               </span>
               <button

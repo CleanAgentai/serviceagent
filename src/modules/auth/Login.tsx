@@ -7,7 +7,7 @@ import { supabase } from "@/app/lib/supabase";
 
 export function Login() {
   const navigate = useNavigate();
-  const { signIn, signInWithGoogle, signInWithFacebook } = useAuth();
+  const { signIn, signInWithGoogle } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -43,7 +43,7 @@ export function Login() {
     }
   };
 
-  const handleOAuthSignIn = async (provider: "google" | "facebook") => {
+  const handleOAuthSignIn = async (provider: "google") => {
     setIsLoading(true);
     try {
       const { data, error } = await supabase.auth.signInWithOAuth({
@@ -56,7 +56,6 @@ export function Login() {
         },
       });
       if (error) throw error;
-      //toast({ title: "Redirecting to OAuth...", variant: "default" });
     } catch (error: any) {
       setError("Google login failed. Please try again.");
       console.error("Google login failed:", error);
@@ -75,8 +74,16 @@ export function Login() {
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
               Welcome back!
             </h1>
-            <p className="text-gray-600">
-              Sign in to access your CleanAgent dashboard
+            <Link to="/" className="text-xl font-bold flex items-center justify-center">
+              <img
+                src="/ServiceAgent Logo.png"
+                alt="ServiceAgent Logo"
+                className="h-8 w-auto mr-2"
+              />
+              <span className="text-blue-600">ServiceAgent</span>
+            </Link>
+            <p className="text-gray-600 mt-2">
+              Sign in to access your ServiceAgent dashboard
             </p>
           </div>
 
@@ -195,7 +202,7 @@ export function Login() {
                 </div>
               </div>
 
-              <div className="mt-6 grid grid-cols-2 gap-3">
+              <div className="mt-6">
                 <button
                   onClick={() => handleOAuthSignIn("google")}
                   disabled={isLoading}
@@ -207,18 +214,6 @@ export function Login() {
                     alt="Google logo"
                   />
                   <span>Google</span>
-                </button>
-                <button
-                  onClick={() => handleOAuthSignIn("facebook")}
-                  disabled={isLoading}
-                  className="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <img
-                    className="h-5 w-5 mr-2"
-                    src="https://www.svgrepo.com/show/475647/facebook-color.svg"
-                    alt="Facebook logo"
-                  />
-                  <span>Facebook</span>
                 </button>
               </div>
             </div>

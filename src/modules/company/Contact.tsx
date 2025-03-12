@@ -33,10 +33,10 @@ export function Contact() {
   // Scroll to top on mount
   useEffect(() => {
     window.scrollTo(0, 0);
-    document.title = 'Contact Us - CleanAgent.AI';
+    document.title = 'Contact Us - ServiceAgent.AI';
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', 'Get in touch with CleanAgent.AI. We\'re here to help you automate and grow your cleaning business.');
+      metaDescription.setAttribute('content', 'Get in touch with ServiceAgent.AI. We\'re here to help you automate and grow your cleaning business.');
     }
   }, []);
 
@@ -91,8 +91,8 @@ export function Contact() {
   return (
     <>
       <Helmet>
-        <title>Contact Us - CleanAgent.AI</title>
-        <meta name="description" content="Get in touch with CleanAgent.AI. We're here to help with your questions about AI-powered automation for cleaning businesses." />
+        <title>Contact Us - ServiceAgent.AI</title>
+        <meta name="description" content="Get in touch with ServiceAgent.AI. We're here to help with your questions about AI-powered automation for service businesses." />
         <meta name="robots" content="index, follow" />
       </Helmet>
 
@@ -103,7 +103,7 @@ export function Contact() {
             <div className="text-center mb-12">
               <h1 className="text-3xl font-bold text-gray-900 mb-4">Get in Touch</h1>
               <p className="text-lg text-gray-600">
-                Have questions about CleanAgent.AI? We're here to help.
+                Have questions about ServiceAgent.AI? We're here to help.
               </p>
             </div>
 

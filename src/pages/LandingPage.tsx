@@ -15,8 +15,7 @@ const LandingPage: React.FC = () => {
       <nav className="hidden md:block fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-sm border-b border-gray-200 z-50">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
           <Link to="/" className="flex items-center space-x-3">
-            <img src="/logo.svg" alt="CleanAgent" className="w-8 h-8" />
-            <span className="text-xl font-semibold text-gray-900">CleanAgent</span>
+            <span className="text-xl font-semibold text-gray-900">ServiceAgent</span>
           </Link>
           <div className="flex items-center space-x-8">
             <Link to="/features" className="text-gray-600 hover:text-gray-900">Features</Link>

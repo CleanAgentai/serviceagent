@@ -5,10 +5,10 @@ import { ArrowLeft } from 'lucide-react';
 export function CookiePolicy() {
   // Set meta title and description
   React.useEffect(() => {
-    document.title = 'Cookie Policy - CleanAgent.AI';
+    document.title = 'Cookie Policy - ServiceAgent.AI';
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', 'CleanAgent.AI Cookie Policy - Learn about how we use cookies and similar technologies.');
+      metaDescription.setAttribute('content', 'ServiceAgent.AI Cookie Policy - Learn about how we use cookies and similar tracking technologies on our website.');
     }
   }, []);
 

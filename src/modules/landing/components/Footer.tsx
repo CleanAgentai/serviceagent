@@ -110,13 +110,13 @@ export function Footer() {
           <div className="lg:col-span-2">
             <Link to="/" className="flex items-center space-x-2 mb-4" onClick={() => handleLinkClick()}>
               <img
-                src="/CleanAgent Logo.png"
-                alt="CleanAgent Logo"
+                src="/ServiceAgent Logo.png"
+                alt="ServiceAgent Logo"
                 className="h-10 w-auto"
               />
             </Link>
             <p className="text-gray-600 mb-6 max-w-sm">
-              AI-powered automation for cleaning businesses. Save time, reduce costs, and grow your business with CleanAgent.
+              AI-powered automation for service businesses. Save time, reduce costs, and grow your business with ServiceAgent.
             </p>
             {/* Social Links */}
             <div className="flex space-x-4">
