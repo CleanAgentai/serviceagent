@@ -85,11 +85,32 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       if (error) throw error;
 
+      const user = data.user;
+      if (!user) throw new Error("User creation failed.");
+
+      const userId = user.id; // `auth.users.id`
+
+      console.log("Updating profiles table for user:", userId);
+
+      // 2️⃣ `profiles` 테이블 업데이트 (UPDATE)
+      const { error: profileError } = await supabase
+        .from("profiles")
+        .update({
+          first_name: firstName,
+          last_name: lastName,
+          company_name: companyName,
+          email: email, // ✅ 이메일 저장 (필요 시)
+        })
+        .eq("id", userId); // `auth.users.id`와 동일한 row 업데이트
+
+      if (profileError) throw profileError;
+
+      console.log("Profile updated successfully!");
+
       // If signup successful, immediately sign in
-      if (data.user) {
-        const { error: signInError } = await signIn(email, password);
-        if (signInError) throw signInError;
-      }
+
+      const { error: signInError } = await signIn(email, password);
+      if (signInError) throw signInError;
 
       return { error: null };
     } catch (err) {

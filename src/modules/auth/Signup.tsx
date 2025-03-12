@@ -315,7 +315,7 @@ export function Signup() {
               </button>
             </form>
 
-            <div className="mt-6">
+            {/* <div className="mt-6">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-gray-300" />
@@ -351,7 +351,7 @@ export function Signup() {
                   <span>Facebook</span>
                 </button>
               </div>
-            </div>
+            </div> */}
           </div>
 
           {/* Sign in link */}
