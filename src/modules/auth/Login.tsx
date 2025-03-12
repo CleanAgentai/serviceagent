@@ -46,10 +46,12 @@ export function Login() {
   const handleOAuthSignIn = async (provider: "google" | "facebook") => {
     setIsLoading(true);
     try {
+      const redirectUri = `${window.location.origin}/oauth-callback`;
+      console.log("Redirecting to:", redirectUri);
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${window.location.origin}/oauth-callback`,
+          redirectTo: redirectUri,
           //skipBrowserRedirect: true,
           queryParams: {
             prompt: "select_account",
