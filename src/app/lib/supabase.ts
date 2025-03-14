@@ -24,7 +24,22 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     autoRefreshToken: true,
     persistSession: true,
     detectSessionInUrl: true,
-    flowType: 'pkce',
-    redirectTo: window.location.origin + '/auth/callback'
+    flowType: 'pkce'
   }
-}); 
+});
+
+// Export auth-related functions
+export const signOut = async () => {
+  const { error } = await supabase.auth.signOut();
+  return { error };
+};
+
+export const getSession = async () => {
+  const { data: { session }, error } = await supabase.auth.getSession();
+  return { session, error };
+};
+
+export const getUser = async () => {
+  const { data: { user }, error } = await supabase.auth.getUser();
+  return { user, error };
+}; 

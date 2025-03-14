@@ -52,7 +52,7 @@ const MobileNav: React.FC<MobileNavProps> = ({ isTransparent = false }) => {
                   className="p-2 text-gray-600"
                   aria-label="Close menu"
                 >
-                  <X className="w-6 w-6" />
+                  <X className="w-6 h-6" />
                 </button>
               </div>
 

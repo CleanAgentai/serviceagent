@@ -1,6 +1,9 @@
+import { Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
 import { LucideIcon } from 'lucide-react';
 
-export type Platform = 'FACEBOOK' | 'TWITTER' | 'LINKEDIN' | 'INSTAGRAM';
+export type Platform = 'Twitter' | 'LinkedIn' | 'Facebook' | 'Instagram';
+
+export type MediaType = 'video' | 'image' | 'carousel';
 
 export interface SocialPost {
   id: string;
@@ -10,14 +13,13 @@ export interface SocialPost {
   hashtags: string[];
   images: string[];
   status: 'draft' | 'scheduled' | 'published' | 'failed';
-  analytics?: {
+  engagement?: {
     likes: number;
-    shares: number;
     comments: number;
-    reach: number;
-    engagement: number;
+    shares: number;
+    clicks: number;
   };
-  error?: string;
+  metadata?: Record<string, any>;
 }
 
 export interface PlatformConfig {
@@ -27,19 +29,27 @@ export interface PlatformConfig {
   error?: string;
 }
 
-export const platformIcons: Record<Platform, LucideIcon> = {
-  FACEBOOK: () => null,
-  TWITTER: () => null,
-  LINKEDIN: () => null,
-  INSTAGRAM: () => null,
+export const platformIcons: Record<Platform, any> = {
+  Twitter: 'twitter',
+  LinkedIn: 'linkedin',
+  Facebook: 'facebook',
+  Instagram: 'instagram'
 };
+
+export interface MediaRecommendation {
+  type: MediaType;
+  description: string;
+}
 
 export interface ContentSuggestion {
   id: string;
+  type: 'post';
   content: string;
-  platforms: Platform[];
   hashtags: string[];
-  type: 'text' | 'image' | 'video';
+  platforms: Platform[];
+  estimatedEngagement: number;
+  targetAudience: string[];
+  mediaRecommendations: MediaRecommendation[];
   score: number;
   reasoning: string;
 }
@@ -58,12 +68,9 @@ export interface PostMetrics {
 
 export interface PostingTimeRecommendation {
   platform: Platform;
-  dayOfWeek: number;
-  hour: number;
-  expectedEngagement: number;
-  confidence: number;
-  audienceActivity: number;
-  competitorActivity: number;
+  bestTimes: string[];
+  timezone: string;
+  reasoning: string;
 }
 
 export interface SocialMediaStats {
@@ -85,11 +92,9 @@ export interface SocialMediaStats {
 }
 
 export interface HashtagAnalytics {
-  tag: string;
-  volume: number;
-  engagement: number;
-  relevance: number;
+  hashtag: string;
+  popularity: number;
+  reachPotential: number;
+  relevanceScore: number;
   trending: boolean;
-  relatedTags: string[];
-  competitorUsage: number;
 } 

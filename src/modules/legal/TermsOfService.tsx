@@ -5,10 +5,10 @@ import { ArrowLeft } from 'lucide-react';
 export function TermsOfService() {
   // Set meta title and description
   React.useEffect(() => {
-    document.title = 'Terms of Service - CleanAgent.AI';
+    document.title = 'Terms of Service - ServiceAgent AI';
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', 'CleanAgent.AI Terms of Service - Read about our terms and conditions for using our services.');
+      metaDescription.setAttribute('content', 'ServiceAgent AI Terms of Service - Read about our terms and conditions for using our services.');
     }
   }, []);
 
@@ -24,7 +24,7 @@ export function TermsOfService() {
           </div>
 
           <p className="lead">
-            Welcome to CleanAgent.AI, a service provided by CLEANAGENT, LLC ("Company," "we," "us," or "our"). By accessing or using our website (https://www.cleanagent.ai) and services (collectively, the "Services"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree, please do not use our Services.
+            Welcome to ServiceAgent AI, a service provided by ServiceAgent, LLC ("Company," "we," "us," or "our"). By accessing or using our website (https://www.serviceagent.ai) and services (collectively, the "Services"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree, please do not use our Services.
           </p>
 
           <h2>1. Acceptance of Terms</h2>
@@ -63,7 +63,7 @@ export function TermsOfService() {
 
           <h2>4. Intellectual Property</h2>
           <p>
-            All content, logos, and trademarks on our Services are owned by CLEANAGENT, LLC or its licensors.
+            All content, logos, and trademarks on our Services are owned by ServiceAgent, LLC or its licensors.
             You may not copy, reproduce, or distribute any content from our Services without our prior written consent.
           </p>
 
@@ -82,13 +82,13 @@ export function TermsOfService() {
           <h2>7. Limitation of Liability</h2>
           <p>To the fullest extent permitted by law:</p>
           <ul>
-            <li>CLEANAGENT, LLC shall not be liable for any indirect, incidental, or consequential damages arising from your use of our Services.</li>
+            <li>ServiceAgent, LLC shall not be liable for any indirect, incidental, or consequential damages arising from your use of our Services.</li>
             <li>Our total liability in any claim related to the Services shall not exceed the amount you paid us in the past 12 months.</li>
           </ul>
 
           <h2>8. Indemnification</h2>
           <p>
-            You agree to indemnify and hold CLEANAGENT, LLC harmless from any claims, liabilities, damages, or expenses arising from your use of our Services or violation of these Terms.
+            You agree to indemnify and hold ServiceAgent, LLC harmless from any claims, liabilities, damages, or expenses arising from your use of our Services or violation of these Terms.
           </p>
 
           <h2>9. Governing Law & Dispute Resolution</h2>
@@ -105,10 +105,10 @@ export function TermsOfService() {
           <div className="bg-gray-50 p-6 rounded-lg mt-8">
             <p className="font-medium mb-4">If you have any questions about these Terms, please contact us at:</p>
             <address className="not-italic">
-              <p className="font-bold">CLEANAGENT, LLC</p>
+              <p className="font-bold">ServiceAgent, LLC</p>
               <p>209 Turner Street</p>
               <p>Clearwater, Florida 33756</p>
-              <p>Email: <a href="mailto:support@cleanagent.ai">support@cleanagent.ai</a></p>
+              <p>Email: <a href="mailto:support@serviceagent.ai">support@serviceagent.ai</a></p>
               <p>Phone: <a href="tel:+18137505308">813-750-5308</a></p>
             </address>
           </div>

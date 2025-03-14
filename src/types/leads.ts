@@ -1,5 +1,5 @@
-export type LeadStatus = 'New' | 'Contacted' | 'Qualified' | 'Lost' | 'Converted';
-export type LeadSource = 'Website' | 'LinkedIn' | 'Referral' | 'Trade Show' | 'Webinar' | 'Other';
+export type LeadStatus = 'New' | 'Contacted' | 'Qualified' | 'Proposal' | 'Negotiation' | 'Converted' | 'Lost';
+export type LeadSource = 'Website' | 'LinkedIn' | 'Referral' | 'Trade Show' | 'Webinar' | 'Social Media' | 'Email Campaign' | 'Event';
 export type LeadPriority = 'Low' | 'Medium' | 'High';
 
 export interface Lead {
@@ -7,21 +7,18 @@ export interface Lead {
   name: string;
   email: string;
   phone?: string;
-  company: string;
+  company?: string;
   source: LeadSource;
   status: LeadStatus;
-  priority?: LeadPriority;
-  tags: string[];
-  notes?: string;
-  createdAt: string;
-  updatedAt: string;
-  lastContactedAt?: string;
+  value: number;
+  probability: number;
   score?: number;
   scoreBreakdown?: ScoreBreakdown[];
-  budget?: number;
-  timeline?: string;
-  requirements?: string[];
-  assignedTo?: string;
+  budget?: number | string;
+  notes?: string[];
+  tags?: string[];
+  createdAt: string;
+  lastInteraction?: string;
 }
 
 export interface LeadFormData {
@@ -71,9 +68,10 @@ export interface ScoreRule {
 }
 
 export interface ScoreBreakdown {
-  category: string;
-  score: number;
+  rule: string;
+  points: number;
   reason: string;
+  appliedAt: string;
 }
 
 export interface ScoringSettings {
@@ -120,4 +118,18 @@ export interface LeadFilter {
     start: string;
     end: string;
   };
+}
+
+export interface PipelineStage {
+  id: string;
+  name: string;
+  order: number;
+  color: string;
+  leads: Lead[];
+}
+
+export interface SalesAnalyticsProps {
+  leads: Lead[];
+  marketingSpend: Record<LeadSource, number>;
+  pipelineStages: PipelineStage[];
 } 

@@ -94,26 +94,30 @@ class DocumentationService {
     this.setOnboardingSteps([
       {
         id: 'welcome',
-        title: 'Welcome to CleanAgent',
-        content: 'Welcome to CleanAgent! Get started with our platform.',
+        title: 'Welcome to ServiceAgent.ai',
+        description: 'Get started with your AI-powered business assistant',
+        content: 'Welcome to ServiceAgent.ai! This quick tour will help you get familiar with the key features.',
         icon: 'wave'
       },
       {
         id: 'marketing',
-        title: 'Marketing Setup',
-        content: 'Set up your marketing campaigns and automation.',
+        title: 'Marketing Automation',
+        description: 'Learn about our AI-powered marketing tools',
+        content: 'Discover how our AI can help automate your marketing campaigns and improve engagement.',
         icon: 'megaphone'
       },
       {
         id: 'hiring',
-        title: 'Hiring Setup',
-        content: 'Configure your hiring process and AI interviews.',
+        title: 'Hiring & Recruitment',
+        description: 'Streamline your hiring process with AI',
+        content: 'See how our AI can help you find and evaluate the best candidates faster.',
         icon: 'users'
       },
       {
         id: 'complete',
-        title: 'Setup Complete',
-        content: 'Congratulations! Your setup is complete.',
+        title: "You're All Set!",
+        description: "You've completed the onboarding tour",
+        content: "Congratulations! You're now ready to start using ServiceAgent.ai to its full potential.",
         icon: 'check'
       }
     ]);

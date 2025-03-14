@@ -5,10 +5,10 @@ import { ArrowLeft } from 'lucide-react';
 export function PrivacyPolicy() {
   // Set meta title and description
   React.useEffect(() => {
-    document.title = 'Privacy Policy - CleanAgent.AI';
+    document.title = 'Privacy Policy - ServiceAgent AI';
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', 'CleanAgent.AI Privacy Policy - Learn about how we protect and handle your data.');
+      metaDescription.setAttribute('content', 'ServiceAgent AI Privacy Policy - Learn about how we protect and handle your data.');
     }
   }, []);
 
@@ -24,10 +24,10 @@ export function PrivacyPolicy() {
           </div>
 
           <p className="lead">
-            Welcome to CleanAgent.AI, a service provided by CLEANAGENT, LLC ("Company," "we," "us," or "our"). We respect your privacy and are committed to protecting it through this Privacy Policy.
+            Welcome to ServiceAgent AI, a service provided by ServiceAgent, LLC ("Company," "we," "us," or "our"). We respect your privacy and are committed to protecting it through this Privacy Policy.
           </p>
           <p>
-            This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website (https://www.cleanagent.ai) (the "Website") and use our services (collectively, the "Services"). Please read this policy carefully to understand our views and practices regarding your personal data and how we will treat it.
+            This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website (https://www.serviceagent.ai) (the "Website") and use our services (collectively, the "Services"). Please read this policy carefully to understand our views and practices regarding your personal data and how we will treat it.
           </p>
 
           <h2>1. Information We Collect</h2>
@@ -79,7 +79,7 @@ export function PrivacyPolicy() {
             <li><strong>Opt-Out:</strong> You can opt out of marketing emails by following the unsubscribe link.</li>
             <li><strong>Cookies:</strong> You can manage cookie preferences through your browser settings.</li>
           </ul>
-          <p>To exercise these rights, please contact us at support@cleanagent.ai.</p>
+          <p>To exercise these rights, please contact us at support@serviceagent.ai.</p>
 
           <h2>6. Retention of Information</h2>
           <p>We retain personal data only as long as necessary for the purposes outlined in this Privacy Policy unless a longer retention period is required by law.</p>
@@ -100,10 +100,10 @@ export function PrivacyPolicy() {
           <div className="bg-gray-50 p-6 rounded-lg mt-8">
             <p className="font-medium mb-4">If you have any questions about this Privacy Policy or our data practices, please contact us at:</p>
             <address className="not-italic">
-              <p className="font-bold">CLEANAGENT, LLC</p>
+              <p className="font-bold">ServiceAgent, LLC</p>
               <p>209 Turner Street</p>
               <p>Clearwater, Florida 33756</p>
-              <p>Email: <a href="mailto:support@cleanagent.ai">support@cleanagent.ai</a></p>
+              <p>Email: <a href="mailto:support@serviceagent.ai">support@serviceagent.ai</a></p>
               <p>Phone: <a href="tel:+18137505308">813-750-5308</a></p>
             </address>
           </div>

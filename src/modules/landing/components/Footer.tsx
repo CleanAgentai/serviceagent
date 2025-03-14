@@ -108,9 +108,9 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
           {/* Brand Section */}
           <div className="lg:col-span-2">
-            <Link to="/" className="flex items-center space-x-2 mb-4" onClick={() => handleLinkClick()}>
+            <Link to="/" className="inline-block mb-4" onClick={() => handleLinkClick()}>
               <img
-                src="/ServiceAgent Logo.png"
+                src="/Serviceagent logo.svg"
                 alt="ServiceAgent Logo"
                 className="h-10 w-auto"
               />

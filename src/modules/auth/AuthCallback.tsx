@@ -24,10 +24,10 @@ export function AuthCallback() {
         }
 
         if (session) {
-          console.log("Session found, redirecting to hiring...");
+          console.log("Session found, redirecting to dashboard...");
           if (!hasNavigated.current) {
             hasNavigated.current = true;
-            navigate("/dashboard/hiring", { replace: true });
+            navigate("/dashboard", { replace: true });
           }
           return;
         }
@@ -39,9 +39,9 @@ export function AuthCallback() {
           console.log("Auth state changed:", event, !!session);
 
           if (session && !hasNavigated.current) {
-            console.log("Session established, redirecting to hiring...");
+            console.log("Session established, redirecting to dashboard...");
             hasNavigated.current = true;
-            navigate("/dashboard/hiring", { replace: true });
+            navigate("/dashboard", { replace: true });
           } else if (!session && !hasNavigated.current) {
             console.log("No session found, redirecting to login...");
             hasNavigated.current = true;

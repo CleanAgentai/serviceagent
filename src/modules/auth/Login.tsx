@@ -16,12 +16,12 @@ export function Login() {
 
   // Set meta title and description
   React.useEffect(() => {
-    document.title = "Sign In - CleanAgent.AI";
+    document.title = "Sign In - ServiceAgent AI";
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute(
         "content",
-        "Sign in to your CleanAgent.AI account to access your dashboard and manage your cleaning business."
+        "Sign in to your ServiceAgent AI account to access your dashboard and manage your business."
       );
     }
     window.scrollTo(0, 0);
@@ -49,17 +49,21 @@ export function Login() {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${window.location.origin}/dashboard`,
+          redirectTo: `${window.location.origin}/auth/callback`,
           queryParams: {
             prompt: "select_account",
           },
+          skipBrowserRedirect: false
         },
       });
+      
       if (error) throw error;
+      
+      // The redirect will happen automatically, so we don't need to handle the response here
+      
     } catch (error: any) {
       setError("Google login failed. Please try again.");
       console.error("Google login failed:", error);
-    } finally {
       setIsLoading(false);
     }
   };
@@ -71,18 +75,17 @@ export function Login() {
         <div className="max-w-2xl mx-auto px-4 py-12">
           {/* Header */}
           <div className="text-center mb-8">
+            <Link to="/" className="inline-block mb-4">
+              <img 
+                src="/Serviceagent logo.svg" 
+                alt="ServiceAgent Logo" 
+                className="h-12 w-auto mx-auto"
+              />
+            </Link>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
               Welcome back!
             </h1>
-            <Link to="/" className="text-xl font-bold flex items-center justify-center">
-              <img
-                src="/ServiceAgent Logo.png"
-                alt="ServiceAgent Logo"
-                className="h-8 w-auto mr-2"
-              />
-              <span className="text-blue-600">ServiceAgent</span>
-            </Link>
-            <p className="text-gray-600 mt-2">
+            <p className="text-gray-600">
               Sign in to access your ServiceAgent dashboard
             </p>
           </div>

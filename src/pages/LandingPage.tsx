@@ -111,11 +111,11 @@ const LandingPage: React.FC = () => {
             {/* Company */}
             <div className="col-span-2 md:col-span-1">
               <div className="flex items-center space-x-2 mb-4">
-                <img src="/logo.svg" alt="CleanAgent" className="w-6 h-6" />
-                <span className="text-lg font-semibold text-gray-900">CleanAgent</span>
+                <img src="/Serviceagent logo.svg" alt="ServiceAgent" className="w-6 h-6" />
+                <span className="text-lg font-semibold text-gray-900">ServiceAgent</span>
               </div>
               <p className="text-sm text-gray-600 mb-4">
-                AI-powered solutions for modern cleaning businesses.
+                AI-powered solutions for modern service businesses.
               </p>
               <div className="flex space-x-4">
                 <a href="#" className="text-gray-400 hover:text-gray-600">
@@ -169,7 +169,7 @@ const LandingPage: React.FC = () => {
           {/* Bottom Bar */}
           <div className="pt-8 border-t border-gray-200">
             <p className="text-sm text-center text-gray-600">
-              © {new Date().getFullYear()} CleanAgent. All rights reserved.
+              © {new Date().getFullYear()} ServiceAgent. All rights reserved.
             </p>
           </div>
         </div>

@@ -55,13 +55,10 @@ export function Navigation() {
             aria-label="ServiceAgent Home"
           >
             <img
-              src="/serviceagent logo.png"
+              src="/Serviceagent logo.svg"
               alt="ServiceAgent Logo"
-              className="h-6 sm:h-7 md:h-8 w-auto"
+              className="h-8 sm:h-9 md:h-10 w-auto"
             />
-            <span className="text-base sm:text-lg md:text-xl font-bold ml-2">
-              <span className="text-blue-600">ServiceAgent</span>
-            </span>
           </Link>
 
           {/* CTA Buttons */}

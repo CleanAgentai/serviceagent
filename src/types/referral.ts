@@ -1,4 +1,4 @@
-export type ReferralStatus = 'pending' | 'contacted' | 'qualified' | 'converted' | 'lost';
+export type ReferralStatus = 'pending' | 'contacted' | 'qualified' | 'converted' | 'rejected';
 
 export interface Referral {
   id: string;
@@ -12,7 +12,19 @@ export interface Referral {
   status: ReferralStatus;
   notes?: string;
   createdAt: Date;
-  lastUpdated: Date;
+  updatedAt: Date;
+  convertedAt?: Date;
+  reward?: {
+    type: 'cash' | 'points' | 'gift';
+    amount: number;
+    status: 'pending' | 'approved' | 'paid';
+    paidAt?: Date;
+  };
+  metadata?: {
+    source?: string;
+    campaign?: string;
+    [key: string]: any;
+  };
   rewardAmount?: number;
   rewardStatus?: 'pending' | 'paid' | 'cancelled';
   conversionValue?: number;
@@ -55,25 +67,48 @@ export interface ReminderSchedule {
   targetAudience: 'all' | 'active' | 'inactive' | 'high_value';
 }
 
+export interface ReferralProgram {
+  id: string;
+  name: string;
+  description: string;
+  status: 'active' | 'inactive';
+  rewards: Array<{
+    type: 'cash' | 'points' | 'gift';
+    amount: number;
+    conditions?: {
+      minPurchaseAmount?: number;
+      validDays?: number;
+      maxRewards?: number;
+    };
+  }>;
+  rules: {
+    maxReferrals?: number;
+    validDays?: number;
+    restrictions?: string[];
+  };
+  startDate: Date;
+  endDate?: Date;
+}
+
 export interface ReferralStats {
   totalReferrals: number;
-  activeReferrers: number;
+  activeReferrals: number;
   conversionRate: number;
   totalRewards: number;
-  averageReward: number;
-  topReferrers: {
-    referrerId: string;
-    name: string;
-    referralCount: number;
-    conversionRate: number;
-    totalRewards: number;
-  }[];
-  monthlyStats: {
-    month: string;
+  averageRewardValue: number;
+  timeSeries: Array<{
+    date: Date;
     referrals: number;
     conversions: number;
     rewards: number;
-  }[];
+  }>;
+  topReferrers: Array<{
+    id: string;
+    name: string;
+    referrals: number;
+    conversions: number;
+    totalRewards: number;
+  }>;
 }
 
 export interface ReferralLink {

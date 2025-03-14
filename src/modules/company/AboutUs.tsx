@@ -22,10 +22,10 @@ export function AboutUs() {
   // Set meta title and description and scroll to top
   React.useEffect(() => {
     window.scrollTo(0, 0);
-    document.title = 'About Us - ServiceAgent.AI';
+    document.title = 'About Us - ServiceAgent AI';
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', 'Learn about ServiceAgent.AI, our mission to revolutionize the service industry with AI-powered automation, and meet our team.');
+      metaDescription.setAttribute('content', 'Learn about ServiceAgent AI, our mission to revolutionize service businesses with AI-powered automation.');
     }
   }, []);
 
@@ -35,13 +35,13 @@ export function AboutUs() {
       <div className="bg-gradient-to-b from-gray-50 to-white py-16 sm:py-24">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl font-bold text-gray-900 mb-6">
-            Revolutionizing the Service Industry with{' '}
+            Revolutionizing the Cleaning Industry with{' '}
             <span className="bg-gradient-to-r from-blue-600 to-teal-500 bg-clip-text text-transparent">
               AI-Powered Automation
             </span>
           </h1>
           <p className="text-xl text-gray-600">
-            We're on a mission to help service businesses eliminate tedious tasks and scale effortlessly.
+            We're on a mission to help cleaning businesses eliminate tedious tasks and scale effortlessly.
           </p>
         </div>
       </div>
@@ -52,7 +52,7 @@ export function AboutUs() {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Story</h2>
             <p className="text-lg text-gray-600">
-              ServiceAgent.AI was founded by Porter Stanley, a serial entrepreneur with a background in AI and software development. After selling his first software company, he started a cleaning business as a fun side project. What started as a simple venture quickly turned into an eye-opening experience—highlighting inefficiencies in hiring, operations, and marketing within the cleaning industry.
+              ServiceAgent AI was founded by Porter Stanley, a serial entrepreneur with a background in AI and software development. After selling his first software company, he started a service business as a fun side project. What started as a simple venture quickly turned into an eye-opening experience—highlighting inefficiencies in hiring, operations, and marketing within the service industry.
             </p>
           </div>
 
@@ -60,13 +60,13 @@ export function AboutUs() {
             <div className="bg-gray-50 rounded-xl p-8">
               <h3 className="text-xl font-semibold text-gray-900 mb-4">The Problem</h3>
               <p className="text-gray-600">
-                Hiring was the biggest headache. At one point, Porter had to interview 44 candidates to hire just one cleaner. The process was time-consuming, frustrating, and inefficient. He knew there had to be a better way.
+                Hiring was the biggest headache. At one point, Porter had to interview 44 candidates to hire just one employee. The process was time-consuming, frustrating, and inefficient. He knew there had to be a better way.
               </p>
             </div>
             <div className="bg-blue-50 rounded-xl p-8">
               <h3 className="text-xl font-semibold text-gray-900 mb-4">The Solution</h3>
               <p className="text-gray-600">
-                Leveraging his expertise in AI and automation, Porter built tools to streamline the hiring process. What started as an internal solution quickly evolved into a full-scale platform—ServiceAgent.AI—designed to automate hiring, optimize job postings, manage onboarding, and streamline marketing and sales for cleaning businesses.
+                Leveraging his expertise in AI and automation, Porter built tools to streamline the hiring process. What started as an internal solution quickly evolved into a full-scale platform—ServiceAgent AI—designed to automate hiring, optimize job postings, manage onboarding, and streamline marketing and sales for service businesses.
               </p>
             </div>
           </div>
@@ -78,7 +78,7 @@ export function AboutUs() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Mission</h2>
           <p className="text-xl text-gray-600">
-            We believe AI is the future of business automation. Our mission is simple: to revolutionize the cleaning industry with AI-powered automation. We help business owners eliminate tedious administrative tasks and optimize operations, so they can focus on what matters—growing their business.
+            We believe AI is the future of business automation. Our mission is simple: to revolutionize service businesses with AI-powered automation. We help business owners eliminate tedious administrative tasks and optimize operations, so they can focus on what matters—growing their business.
           </p>
         </div>
       </section>
@@ -143,7 +143,7 @@ export function AboutUs() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-gray-900 mb-6">Join Us</h2>
           <p className="text-xl text-gray-600 mb-8">
-            We're just getting started, and we'd love for you to be a part of this journey. Whether you're a cleaning business owner looking to scale or an entrepreneur seeking AI-driven solutions, ServiceAgent.AI is here to help.
+            We're just getting started, and we'd love for you to be a part of this journey. Whether you're a service business owner looking to scale or an entrepreneur seeking AI-driven solutions, ServiceAgent AI is here to help.
           </p>
           <div className="space-y-4">
             <Link
@@ -154,7 +154,7 @@ export function AboutUs() {
               <ExternalLink className="h-5 w-5 ml-2" />
             </Link>
             <p className="text-sm text-gray-500">
-              Got questions? Want to see ServiceAgent.AI in action?
+              Got questions? Want to see ServiceAgent AI in action?
             </p>
           </div>
         </div>

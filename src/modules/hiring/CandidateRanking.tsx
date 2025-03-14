@@ -119,6 +119,114 @@ const CandidateRanking: React.FC<CandidateRankingProps> = ({
     );
   };
 
+  const mockCandidates: Candidate[] = [
+    {
+      id: '1',
+      name: 'John Doe',
+      email: 'john.doe@example.com',
+      phone: '+1 (555) 123-4567',
+      location: 'San Francisco, CA',
+      resumeUrl: '/resumes/john-doe.pdf',
+      appliedFor: 'Software Engineer',
+      currentStatus: 'APPLIED',
+      experience: [
+        {
+          company: 'Tech Corp',
+          title: 'Senior Developer',
+          startDate: '2019-01',
+          endDate: '2024-02',
+          description: '5 years of full-stack development experience'
+        }
+      ],
+      skills: ['React', 'TypeScript', 'Node.js'],
+      education: [
+        {
+          institution: 'University of California',
+          degree: 'Bachelor of Science',
+          field: 'Computer Science',
+          graduationYear: 2019
+        }
+      ],
+      interviews: [
+        {
+          id: 'int1',
+          type: 'technical',
+          scheduledAt: new Date('2024-03-05'),
+          interviewerId: 'interviewer1',
+          status: 'completed',
+          feedback: {
+            rating: 8.5,
+            strengths: ['Technical knowledge', 'Problem-solving'],
+            weaknesses: ['Could improve communication'],
+            notes: 'Strong candidate overall'
+          },
+          questions: [
+            {
+              id: 'q1',
+              question: 'Describe your experience with React',
+              answer: 'I have 3 years of experience building React applications...',
+              rating: 9
+            }
+          ]
+        }
+      ],
+      aiScore: 85,
+      tags: ['frontend', 'senior'],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      notes: [
+        {
+          id: 'note1',
+          content: 'Strong technical background',
+          createdAt: new Date().toISOString(),
+          createdBy: 'recruiter1'
+        }
+      ]
+    }
+  ];
+
+  const renderReferenceSection = (reference: any) => (
+    <div key={reference.id} className="mb-4 p-4 bg-white rounded-lg shadow">
+      <div className="flex justify-between items-start">
+        <div>
+          <div className="font-medium text-gray-900">{reference.name}</div>
+          <div className="text-gray-500">{reference.position} at {reference.company}</div>
+          <div className="text-gray-500">{reference.phone} | {reference.email}</div>
+        </div>
+      </div>
+      {reference.feedback && (
+        <div className="mt-2">
+          <div className="text-sm text-gray-600">{reference.feedback}</div>
+        </div>
+      )}
+    </div>
+  );
+
+  const renderInterviewSection = (interview: any) => (
+    <div key={interview.id} className="mb-4 p-4 bg-white rounded-lg shadow">
+      <div className="flex justify-between items-start">
+        <div>
+          <div className="font-medium text-gray-900">
+            {interview.type.charAt(0).toUpperCase() + interview.type.slice(1)} Interview
+          </div>
+          <div className="text-gray-500">
+            {new Date(interview.scheduledAt).toLocaleDateString()}
+          </div>
+          <div className="text-gray-500">
+            Status: {interview.status.charAt(0).toUpperCase() + interview.status.slice(1)}
+          </div>
+        </div>
+      </div>
+      {interview.feedback && (
+        <div className="mt-2">
+          <div className="text-sm font-medium text-gray-900">Feedback</div>
+          <div className="text-sm text-gray-600">Rating: {interview.feedback.rating}/10</div>
+          <div className="text-sm text-gray-600">Notes: {interview.feedback.notes}</div>
+        </div>
+      )}
+    </div>
+  );
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -316,7 +424,7 @@ const CandidateRanking: React.FC<CandidateRankingProps> = ({
                         <li key={index} className="text-sm">
                           <div className="font-medium text-gray-900">{ref.name}</div>
                           <div className="text-gray-500">{ref.relationship}</div>
-                          <div className="text-gray-500">{ref.contact}</div>
+                          <div className="text-gray-500">{ref.phone} | {ref.email}</div>
                           {ref.notes && <div className="text-gray-700 mt-1">{ref.notes}</div>}
                         </li>
                       ))}
@@ -332,7 +440,7 @@ const CandidateRanking: React.FC<CandidateRankingProps> = ({
                   <div className="space-y-6">
                     {selectedCandidate.interviews.map((interview, index) => (
                       <div key={index} className="bg-gray-50 rounded-lg p-4">
-                        {renderEvaluationBreakdown(interview.evaluation)}
+                        {renderInterviewSection(interview)}
                       </div>
                     ))}
                   </div>

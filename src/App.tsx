@@ -17,7 +17,6 @@ import { NotFound } from '@/modules/error/NotFound';
 // Dashboard Components
 import DashboardLayout from '@/modules/dashboard/DashboardLayout';
 import Dashboard from '@/modules/dashboard/Dashboard';
-import Hiring from '@/modules/dashboard/Hiring';
 import CreateInterview from '@/modules/dashboard/CreateInterview';
 import AIAnalysis from '@/modules/dashboard/AIAnalysis';
 import ViewInterviews from '@/modules/dashboard/ViewInterviews';
@@ -35,6 +34,12 @@ const InitialSetup = React.lazy(() => import('@/modules/dashboard/help/articles/
 const DashboardOverview = React.lazy(() => import('@/modules/dashboard/help/articles/DashboardOverview'));
 
 const App = () => {
+  // Set the document title with the domain
+  React.useEffect(() => {
+    const domain = import.meta.env.VITE_APP_DOMAIN || 'dashboard.fsagent.com';
+    document.title = `ServiceAgent - ${domain}`;
+  }, []);
+  
   return (
     <ErrorBoundary>
       <UserPreferencesProvider>
@@ -42,8 +47,9 @@ const App = () => {
           <AuthProvider>
             <React.Suspense fallback={<LoadingState variant="full" message="Loading page..." />}>
               <Routes>
-                {/* Public Routes */}
+                {/* Public Routes with AppLayout */}
                 <Route element={<AppLayout showNavigation={false} showFooter={false} />}>
+                  <Route path="/login" element={<Navigate to="/" replace />} />
                   <Route path="/" element={<Login />} />
                   <Route path="/signup" element={<Signup />} />
                   <Route path="/auth/callback" element={<AuthCallback />} />
@@ -52,7 +58,7 @@ const App = () => {
                   <Route path="/cookie-policy" element={<CookiePolicy />} />
                 </Route>
 
-                {/* Protected Dashboard Routes */}
+                {/* Protected Dashboard Routes - No AppLayout */}
                 <Route
                   path="/dashboard"
                   element={
@@ -62,15 +68,11 @@ const App = () => {
                   }
                 >
                   <Route index element={<Dashboard />} />
-                  <Route path="hiring" element={<Hiring />} />
                   <Route path="create-interview" element={<CreateInterview />} />
                   <Route path="ai-analysis" element={<AIAnalysis />} />
                   <Route path="view-interviews" element={<ViewInterviews />} />
                   <Route path="settings" element={<Settings />} />
                 </Route>
-
-                {/* Redirect /login to / since login is now the landing page */}
-                <Route path="/login" element={<Navigate to="/" replace />} />
 
                 {/* 404 Route */}
                 <Route path="*" element={<NotFound />} />

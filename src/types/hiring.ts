@@ -2,8 +2,8 @@ import { ReactNode } from 'react';
 
 export type JobType = 'FULL_TIME' | 'PART_TIME' | 'CONTRACT';
 export type JobPlatform = 'INDEED' | 'FACEBOOK' | 'CRAIGSLIST' | 'LINKEDIN';
-export type InterviewType = 'CHAT' | 'VIDEO';
-export type CandidateStatus = 'APPLIED' | 'SCREENING' | 'INTERVIEWED' | 'OFFERED' | 'REJECTED' | 'ACCEPTED';
+export type InterviewType = 'VIDEO';
+export type CandidateStatus = 'APPLIED' | 'SCREENING' | 'INTERVIEWED' | 'OFFERED' | 'ACCEPTED' | 'REJECTED' | 'HIRED';
 export type PostingStatus = 'DRAFT' | 'ACTIVE' | 'PAUSED' | 'EXPIRED' | 'FILLED';
 export type BackgroundCheckStatus = 'NOT_STARTED' | 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'FAILED';
 export type DocumentStatus = 'SIGNED' | 'VIEWED' | 'SENT' | 'EXPIRED';
@@ -118,40 +118,30 @@ export interface InterviewEvaluation {
 }
 
 export interface BackgroundCheck {
-  id: string;
-  candidateId: string;
   status: BackgroundCheckStatus;
-  provider: string;
-  initiatedAt: string;
+  documents: {
+    id: string;
+    name: string;
+    status: DocumentStatus;
+    url?: string;
+  }[];
+  initiatedAt?: string;
   estimatedCompletionDate?: string;
-  completedAt?: string;
   results?: {
     passed: boolean;
     summary: string;
     flags: string[];
     reportUrl: string;
   };
-  error?: string;
 }
 
 export interface OnboardingDocument {
   id: string;
-  candidateId: string;
-  type: 'CONTRACT' | 'W4' | 'I9' | 'DIRECT_DEPOSIT' | 'NDA' | 'BENEFITS' | 'CUSTOM';
-  title: string;
-  description: string;
-  status: DocumentStatus;
-  docusignId?: string;
-  documentUrl: string;
-  sentAt?: string;
-  viewedAt?: string;
-  signedAt?: string;
-  expiresAt?: string;
-  reminder?: {
-    lastSent: string;
-    nextScheduled: string;
-    count: number;
-  };
+  name: string;
+  status: 'pending' | 'completed';
+  url?: string;
+  type?: string;
+  description?: string;
 }
 
 export interface NotificationLog {
@@ -165,38 +155,21 @@ export interface NotificationLog {
 export type NotificationType = 'INFO' | 'WARNING' | 'ERROR' | 'SUCCESS';
 
 export interface HiringMetrics {
-  timeRange: {
-    start: string;
-    end: string;
-  };
+  openPositions: number;
+  activeApplications: number;
+  interviewsScheduled: number;
+  hiringRate: number;
+  insights: string[];
   funnel: {
     stage: CandidateStatus;
     count: number;
     dropOffRate: number;
     averageDuration: number;
-  }[];
-  platformMetrics: {
-    platform: JobPlatform;
-    metrics: {
-      applicants: number;
-      qualified: number;
-      hired: number;
-      averageScore: number;
-      costPerHire: number;
-    };
-  }[];
-  insights: {
-    type: 'SUCCESS' | 'WARNING' | 'IMPROVEMENT';
-    message: string;
-    metric: string;
-    recommendation: string;
-  }[];
-  trends: {
-    date: string;
-    applications: number;
-    interviews: number;
-    offers: number;
-    acceptances: number;
+    applications?: number;
+    screenings?: number;
+    interviews?: number;
+    offers?: number;
+    rejections?: number;
   }[];
   overview: {
     totalApplications: number;
@@ -213,61 +186,107 @@ export interface HiringMetrics {
     mediumQuality: number;
     lowQuality: number;
   };
-  timeSeries: {
+  timeSeries: Array<{
     date: string;
     applications: number;
     interviews: number;
-    hires: number;
-  }[];
-  funnel: {
-    applications: number;
-    screenings: number;
-    interviews: number;
     offers: number;
-    rejections: number;
-  };
+    hires: number;
+  }>;
+  aiInsights?: Array<{
+    title: string;
+    description: string;
+    recommendation?: string;
+  }>;
 }
 
 export interface Candidate {
   id: string;
   name: string;
   email: string;
-  phone?: string;
-  location: string;
-  resumeUrl: string;
+  phone: string;
+  resumeUrl?: string;
   appliedFor: string;
   currentStatus: CandidateStatus;
-  interviews: InterviewSession[];
+  location?: string;
+  tags?: string[];
   aiScore?: number;
-  tags: string[];
-  notes: {
-    id: string;
-    author: string;
-    content: string;
-    timestamp: string;
-  }[];
-  references?: {
-    name: string;
-    relationship: string;
-    contact: string;
-    notes?: string;
-  }[];
-  createdAt: string;
-  updatedAt: string;
-  backgroundCheck?: BackgroundCheck;
-  onboarding?: {
-    documents: OnboardingDocument[];
-    progress: number;
-    startDate?: string;
-    completedAt?: string;
-  };
-  notifications?: NotificationLog[];
-  aiAnalysis?: {
-    summary: string;
+  experience: Array<{
+    company: string;
+    title: string;
+    startDate: string;
+    endDate?: string;
+    description: string;
+  }>;
+  skills: string[];
+  education: Array<{
+    institution: string;
+    degree: string;
+    field: string;
+    graduationYear: number;
+  }>;
+  evaluation?: {
+    technicalScore: number;
+    culturalScore: number;
+    overallScore: number;
     strengths: string[];
-    areasForDiscussion: string[];
-    score: number;
+    weaknesses: string[];
+    notes: string;
   };
+  interviews: Array<{
+    id: string;
+    type: 'screening' | 'technical' | 'cultural' | 'final';
+    scheduledAt: Date;
+    interviewerId: string;
+    status: 'completed' | 'scheduled' | 'cancelled';
+    feedback?: {
+      rating: number;
+      strengths: string[];
+      weaknesses: string[];
+      notes: string;
+    };
+    questions?: Array<{
+      id: string;
+      question: string;
+      answer?: string;
+      rating?: number;
+      notes?: string;
+    }>;
+  }>;
+  references?: Array<{
+    name: string;
+    position: string;
+    company: string;
+    phone: string;
+    email: string;
+    relationship: string;
+    feedback?: string;
+    notes?: string;
+  }>;
+  notes?: Array<{
+    id: string;
+    content: string;
+    createdAt: string;
+    createdBy: string;
+  }>;
+  onboarding?: {
+    progress: number;
+    documents: Array<{
+      id: string;
+      name: string;
+      status: 'pending' | 'completed';
+      url?: string;
+    }>;
+  };
+  notifications?: Array<{
+    id: string;
+    type: 'offer' | 'rejection' | 'interview' | 'document';
+    message: string;
+    createdAt: string;
+    read: boolean;
+  }>;
+  createdAt: string;
+  updatedAt?: string;
 }
 
 export interface JobPostFormData {
@@ -283,4 +302,18 @@ export interface JobPostFormData {
   department: string;
   hiringManager: string;
   expiresAt?: string;
+}
+
+export interface CandidateDetailModalProps {
+  isOpen: boolean;
+  candidate: Candidate;
+  onClose: () => void;
+}
+
+export interface VideoChatProps {
+  isOpen: boolean;
+  candidateName: string;
+  jobTitle: string;
+  interviewerName: string;
+  onClose: () => void;
 } 

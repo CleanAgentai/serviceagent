@@ -24,6 +24,7 @@ interface AuthContextType {
     password: string
   ) => Promise<{ error: AuthError | null }>;
   signInWithGoogle: () => Promise<{ error: AuthError | null }>;
+  signInWithFacebook: () => Promise<{ error: AuthError | null }>;
   signOut: () => Promise<{ error: AuthError | null }>;
   resetPassword: (email: string) => Promise<{ error: AuthError | null }>;
 }
@@ -139,6 +140,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const signInWithFacebook = async () => {
+    console.log("Starting Facebook OAuth sign-in...");
+    try {
+      const redirectTo = `${getSiteUrl()}/auth/callback`;
+      console.log("Redirect URL:", redirectTo);
+
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: "facebook",
+        options: {
+          redirectTo,
+          queryParams: {
+            display: "popup",
+          },
+          skipBrowserRedirect: false,
+        },
+      });
+
+      console.log("Facebook OAuth response:", { data, error });
+      return { error };
+    } catch (err) {
+      console.error("Facebook OAuth error:", err);
+      return { error: err as AuthError };
+    }
+  };
+
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();
     if (!error) {
@@ -162,6 +188,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     signUp,
     signIn,
     signInWithGoogle,
+    signInWithFacebook,
     signOut,
     resetPassword,
   };

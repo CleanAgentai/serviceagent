@@ -5,10 +5,10 @@ import { ArrowLeft } from 'lucide-react';
 export function CookiePolicy() {
   // Set meta title and description
   React.useEffect(() => {
-    document.title = 'Cookie Policy - ServiceAgent.AI';
+    document.title = 'Cookie Policy - ServiceAgent AI';
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', 'ServiceAgent.AI Cookie Policy - Learn about how we use cookies and similar tracking technologies on our website.');
+      metaDescription.setAttribute('content', 'ServiceAgent AI Cookie Policy - Learn about how we use cookies and similar technologies.');
     }
   }, []);
 
@@ -24,7 +24,7 @@ export function CookiePolicy() {
           </div>
 
           <p className="lead">
-            This Cookie Policy explains how CLEANAGENT, LLC ("Company," "we," "us," or "our") uses cookies and similar tracking technologies when you visit our website (https://www.cleanagent.ai) (the "Website"). This policy should be read in conjunction with our Privacy Policy.
+            This Cookie Policy explains how ServiceAgent, LLC ("Company," "we," "us," or "our") uses cookies and similar tracking technologies when you visit our website (https://www.serviceagent.ai) (the "Website"). This policy should be read in conjunction with our Privacy Policy.
           </p>
 
           <h2>1. What Are Cookies?</h2>
@@ -78,10 +78,10 @@ export function CookiePolicy() {
           <div className="bg-gray-50 p-6 rounded-lg mt-8">
             <p className="font-medium mb-4">If you have any questions about this Cookie Policy, please contact us at:</p>
             <address className="not-italic">
-              <p className="font-bold">CLEANAGENT, LLC</p>
+              <p className="font-bold">ServiceAgent, LLC</p>
               <p>209 Turner Street</p>
               <p>Clearwater, Florida 33756</p>
-              <p>Email: <a href="mailto:support@cleanagent.ai">support@cleanagent.ai</a></p>
+              <p>Email: <a href="mailto:support@serviceagent.ai">support@serviceagent.ai</a></p>
               <p>Phone: <a href="tel:+18137505308">813-750-5308</a></p>
             </address>
           </div>

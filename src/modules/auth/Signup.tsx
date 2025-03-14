@@ -22,12 +22,12 @@ export function Signup() {
   const [isLoading, setIsLoading] = useState(false);
   // Set meta title and description
   React.useEffect(() => {
-    document.title = "Sign Up - CleanAgent.AI";
+    document.title = "Sign Up - ServiceAgent AI";
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute(
         "content",
-        "Create your CleanAgent.AI account to start automating and growing your cleaning business."
+        "Create your ServiceAgent AI account to start automating and growing your business."
       );
     }
     window.scrollTo(0, 0);
@@ -107,20 +107,21 @@ export function Signup() {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/dashboard`,
+          redirectTo: `${window.location.origin}/auth/callback`,
           queryParams: {
-            access_type: 'offline',
-            prompt: 'consent'
-          }
-        }
+            prompt: 'select_account',
+          },
+          skipBrowserRedirect: false
+        },
       });
       
       if (error) throw error;
       
-      // The redirect will happen automatically
-    } catch (err: any) {
-      setError("Google signup failed. Please try again.");
-      console.error("Google signup error:", err);
+      // The redirect will happen automatically, so we don't need to handle the response here
+      
+    } catch (error: any) {
+      setError('Google signup failed. Please try again.');
+      console.error('Google signup failed:', error);
       setIsLoading(false);
     }
   };
@@ -132,16 +133,16 @@ export function Signup() {
         <div className="max-w-2xl mx-auto px-4 py-12">
           {/* Header */}
           <div className="text-center mb-8">
+            <Link to="/" className="inline-block mb-4">
+              <img
+                src="/Serviceagent logo.svg"
+                alt="ServiceAgent Logo"
+                className="h-12 w-auto mx-auto"
+              />
+            </Link>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
               Get Started with ServiceAgent
             </h1>
-            <div className="flex items-center justify-center mb-4">
-              <img
-                src="/ServiceAgent Logo.png"
-                alt="ServiceAgent Logo"
-                className="h-8 w-auto"
-              />
-            </div>
             <p className="text-gray-600">
               Create your account and start automating your service business
             </p>
