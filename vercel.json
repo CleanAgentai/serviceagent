@@ -16,6 +16,5 @@
       "src": "/(.*)",
       "dest": "/index.html"
     }
-  ],
-  "domains": ["dashboard.fsagent.com"]
+  ]
 } 
