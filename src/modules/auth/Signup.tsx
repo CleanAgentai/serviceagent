@@ -135,7 +135,7 @@ export function Signup() {
           <div className="text-center mb-8">
             <Link to="/" className="inline-block mb-4">
               <img
-                src="/Serviceagent logo.svg"
+                src="/serviceagent-logo.svg"
                 alt="ServiceAgent Logo"
                 className="h-12 w-auto mx-auto"
               />

@@ -110,7 +110,7 @@ export function Footer() {
           <div className="lg:col-span-2">
             <Link to="/" className="inline-block mb-4" onClick={() => handleLinkClick()}>
               <img
-                src="/Serviceagent logo.svg"
+                src="/serviceagent-logo.svg"
                 alt="ServiceAgent Logo"
                 className="h-10 w-auto"
               />

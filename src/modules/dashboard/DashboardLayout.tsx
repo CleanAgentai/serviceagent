@@ -77,7 +77,7 @@ const DashboardLayout: React.FC = () => {
           {open && (
             <div className="flex items-center gap-2">
               <img
-                src="/Serviceagent logo.svg"
+                src="/serviceagent-logo.svg"
                 alt="ServiceAgent Logo"
                 className="h-8 w-auto"
               />

@@ -111,7 +111,7 @@ const LandingPage: React.FC = () => {
             {/* Company */}
             <div className="col-span-2 md:col-span-1">
               <div className="flex items-center space-x-2 mb-4">
-                <img src="/Serviceagent logo.svg" alt="ServiceAgent" className="w-6 h-6" />
+                <img src="/serviceagent-logo.svg" alt="ServiceAgent" className="w-6 h-6" />
                 <span className="text-lg font-semibold text-gray-900">ServiceAgent</span>
               </div>
               <p className="text-sm text-gray-600 mb-4">
