@@ -105,23 +105,22 @@ export function Signup() {
     setIsLoading(true);
     try {
       const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
+        provider: "google",
         options: {
           redirectTo: `${window.location.origin}/auth/callback`,
           queryParams: {
-            prompt: 'select_account',
+            prompt: "select_account",
           },
-          skipBrowserRedirect: false
+          skipBrowserRedirect: false,
         },
       });
-      
+
       if (error) throw error;
-      
+
       // The redirect will happen automatically, so we don't need to handle the response here
-      
     } catch (error: any) {
-      setError('Google signup failed. Please try again.');
-      console.error('Google signup failed:', error);
+      setError("Google signup failed. Please try again.");
+      console.error("Google signup failed:", error);
       setIsLoading(false);
     }
   };
@@ -344,7 +343,7 @@ export function Signup() {
               </button>
             </form>
 
-            <div className="mt-6">
+            {/* <div className="mt-6">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-gray-300" />
@@ -369,7 +368,7 @@ export function Signup() {
                   <span>Google</span>
                 </button>
               </div>
-            </div>
+            </div> */}
           </div>
 
           {/* Sign in link */}

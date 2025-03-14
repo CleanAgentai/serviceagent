@@ -49,18 +49,16 @@ export function Login() {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: `${window.location.origin}/oauth-callback`,
           queryParams: {
             prompt: "select_account",
           },
-          skipBrowserRedirect: false
         },
       });
-      
+
       if (error) throw error;
-      
+
       // The redirect will happen automatically, so we don't need to handle the response here
-      
     } catch (error: any) {
       setError("Google login failed. Please try again.");
       console.error("Google login failed:", error);
@@ -76,9 +74,9 @@ export function Login() {
           {/* Header */}
           <div className="text-center mb-8">
             <Link to="/" className="inline-block mb-4">
-              <img 
-                src="/serviceagent-logo.svg" 
-                alt="ServiceAgent Logo" 
+              <img
+                src="/serviceagent-logo.svg"
+                alt="ServiceAgent Logo"
                 className="h-12 w-auto mx-auto"
               />
             </Link>
