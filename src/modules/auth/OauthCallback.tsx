@@ -20,7 +20,7 @@ export function OAuthCallback() {
 
         // 2️⃣ `profiles` 테이블에서 사용자 정보 확인 (company_name 체크)
         const { data: existingProfile, error: profileError } = await supabase
-          .from("users")
+          .from("profiles")
           .select("company_name")
           .eq("id", user.id)
           .single();

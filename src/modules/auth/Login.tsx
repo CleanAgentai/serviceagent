@@ -46,10 +46,13 @@ export function Login() {
   const handleOAuthSignIn = async (provider: "google") => {
     setIsLoading(true);
     try {
+      const redirectUri = `${window.location.origin}/oauth-callback`;
+      console.log("Redirecting to:", redirectUri);
+
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${window.location.origin}/oauth-callback`,
+          redirectTo: redirectUri,
           queryParams: {
             prompt: "select_account",
           },
@@ -62,6 +65,7 @@ export function Login() {
     } catch (error: any) {
       setError("Google login failed. Please try again.");
       console.error("Google login failed:", error);
+    } finally {
       setIsLoading(false);
     }
   };
