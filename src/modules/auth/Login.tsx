@@ -46,10 +46,12 @@ export function Login() {
   const handleOAuthSignIn = async (provider: "google") => {
     setIsLoading(true);
     try {
+      const redirectUri = `${window.location.origin}/oauth-callback`;
+      console.log("Redirecting to:", redirectUri);
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: redirectUri,
           queryParams: {
             prompt: "select_account",
           },
@@ -58,12 +60,12 @@ export function Login() {
       });
       
       if (error) throw error;
-      
-      // The redirect will happen automatically, so we don't need to handle the response here
-      
+
+      //toast({ title: "Redirecting to OAuth...", variant: "default" });
     } catch (error: any) {
-      setError("Google login failed. Please try again.");
-      console.error("Google login failed:", error);
+      setError("OAuth login failed. Please try again.");
+      console.error("OAuth login failed:", error);
+    } finally {
       setIsLoading(false);
     }
   };

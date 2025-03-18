@@ -117,6 +117,7 @@ const App = () => {
                   <Route path="create" element={<CreateInterview />} />
                   <Route path="responses" element={<ViewResponses />} />
                   <Route path="responses/:responseId" element={<ResponseDetails />} />
+                  <Route path=":interviewId" element={<ViewResponses />} />
                 </Route>
 
                 {/* 404 Route */}
