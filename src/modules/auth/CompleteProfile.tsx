@@ -79,7 +79,7 @@ export function CompleteProfile() {
         first_name: formData.firstName,
         last_name: formData.lastName,
         company_name: formData.companyName,
-        email: formData.email, // ✅ 이메일 저장
+        email: formData.email,
       })
       .eq("id", userId);
 

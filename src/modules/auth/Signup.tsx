@@ -105,23 +105,22 @@ export function Signup() {
     setIsLoading(true);
     try {
       const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
+        provider: "google",
         options: {
           redirectTo: `${window.location.origin}/auth/callback`,
           queryParams: {
-            prompt: 'select_account',
+            prompt: "select_account",
           },
-          skipBrowserRedirect: false
+          skipBrowserRedirect: false,
         },
       });
-      
+
       if (error) throw error;
-      
+
       // The redirect will happen automatically, so we don't need to handle the response here
-      
     } catch (error: any) {
-      setError('Google signup failed. Please try again.');
-      console.error('Google signup failed:', error);
+      setError("Google signup failed. Please try again.");
+      console.error("Google signup failed:", error);
       setIsLoading(false);
     }
   };

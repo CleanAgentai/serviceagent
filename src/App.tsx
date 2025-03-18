@@ -9,19 +9,20 @@ import { AppLayout } from '@/app/shared/layouts/AppLayout';
 import { Login } from '@/modules/auth/Login';
 import { Signup } from '@/modules/auth/Signup';
 import { AuthCallback } from '@/modules/auth/AuthCallback';
-import { PostSignupSetup } from '@/modules/auth/PostSignupSetup';
+import { OAuthCallback } from "./modules/auth/OauthCallback";
+import { CompleteProfile } from "./modules/auth/CompleteProfile";
 import { PrivacyPolicy } from '@/modules/legal/PrivacyPolicy';
 import { TermsOfService } from '@/modules/legal/TermsOfService';
 import { CookiePolicy } from '@/modules/legal/CookiePolicy';
 import { NotFound } from '@/modules/error/NotFound';
 import setupDatabase from '@/utils/setupDatabase';
 import { Toaster } from 'sonner';
-import { routes } from './lib/constants';
 
 // Dashboard Components
 import DashboardLayout from '@/modules/dashboard/DashboardLayout';
 import Dashboard from '@/modules/dashboard/Dashboard';
 import Settings from '@/modules/dashboard/Settings';
+import AIAnalysis from "@/modules/dashboard/AIAnalysis";
 
 // Interview Components
 import { CreateInterview } from '@/modules/interviews/CreateInterview';
@@ -30,23 +31,27 @@ import { ViewResponses } from '@/modules/interviews/ViewResponses';
 import { ResponseDetails } from '@/modules/interviews/ResponseDetails';
 
 // Public Pages
-import { LandingPage } from '@/modules/landing/LandingPage';
+import { LandingPage } from "@/modules/landing/LandingPage";
 
 // Sales Routes
-const SalesRoutes = React.lazy(() => import('@/pages/sales/setup'));
+const SalesRoutes = React.lazy(() => import("@/pages/sales/setup"));
 
 // Help Articles
-const QuickStartGuide = React.lazy(() => import('@/modules/dashboard/help/articles/QuickStartGuide'));
-const InitialSetup = React.lazy(() => import('@/modules/dashboard/help/articles/InitialSetup'));
-const DashboardOverview = React.lazy(() => import('@/modules/dashboard/help/articles/DashboardOverview'));
+const QuickStartGuide = React.lazy(
+  () => import("@/modules/dashboard/help/articles/QuickStartGuide")
+);
+const InitialSetup = React.lazy(
+  () => import("@/modules/dashboard/help/articles/InitialSetup")
+);
+const DashboardOverview = React.lazy(
+  () => import("@/modules/dashboard/help/articles/DashboardOverview")
+);
 
 const App = () => {
   useEffect(() => {
     // Set document title based on domain
-    const domain = window.location.hostname;
-    document.title = domain.includes('fsagent.com') 
-      ? 'Willo AI Dashboard' 
-      : 'ServiceAgent Dashboard';
+    const domain = import.meta.env.VITE_APP_DOMAIN || "dashboard.fsagent.com";
+    document.title = `ServiceAgent - ${domain}`;
     
     // Initialize database
     const initDatabase = async () => {
@@ -65,31 +70,37 @@ const App = () => {
       <AuthProvider>
         <BrowserRouter>
           <Toaster position="top-right" />
-          <React.Suspense fallback={<LoadingState />}>
+          <React.Suspense
+            fallback={
+              <LoadingState variant="full" message="Loading page..." />
+            }
+          >
             <ErrorBoundary>
               <Routes>
                 {/* Auth Callback Route - Must be outside AppLayout */}
                 <Route path="/auth/callback" element={<AuthCallback />} />
 
                 {/* Public Routes with AppLayout */}
-                <Route element={<AppLayout showNavigation={false} showFooter={false} />}>
+                <Route
+                  element={
+                    <AppLayout showNavigation={false} showFooter={false} />
+                  }
+                >
                   <Route path="/login" element={<Navigate to="/" replace />} />
                   <Route path="/" element={<Login />} />
                   <Route path="/signup" element={<Signup />} />
+                  <Route path="/oauth-callback" element={<OAuthCallback />} />
+                  <Route
+                    path="/complete-profile"
+                    element={<CompleteProfile />}
+                  />
                   <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                  <Route path="/terms-of-service" element={<TermsOfService />} />
+                  <Route
+                    path="/terms-of-service"
+                    element={<TermsOfService />}
+                  />
                   <Route path="/cookie-policy" element={<CookiePolicy />} />
                 </Route>
-
-                {/* Post-Signup Setup Route */}
-                <Route 
-                  path="/setup" 
-                  element={
-                    <ProtectedRoute>
-                      <PostSignupSetup />
-                    </ProtectedRoute>
-                  } 
-                />
 
                 {/* Protected Dashboard Routes */}
                 <Route
@@ -101,6 +112,7 @@ const App = () => {
                   }
                 >
                   <Route index element={<Dashboard />} />
+                  <Route path="ai-analysis" element={<AIAnalysis />} />
                   <Route path="settings" element={<Settings />} />
                 </Route>
 
