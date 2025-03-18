@@ -148,7 +148,7 @@ export function ViewInterviews() {
             Created Date
             <ArrowUpDown className="w-4 h-4" />
           </button>
-          <div>Duration</div>
+          <div>Link</div>
           <div>Actions</div>
         </div>
 
@@ -164,8 +164,14 @@ export function ViewInterviews() {
                 {interview.createdAt}
               </div>
               <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-gray-400" />
-                {interview.duration}
+                <Button
+                  variant="ghost"
+                  onClick={() => window.open(`/interviews/${interview.id}`, '_blank')}
+                  className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  Open Interview
+                </Button>
               </div>
               <div className="flex items-center gap-2">
                 <Button

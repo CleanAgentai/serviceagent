@@ -268,7 +268,7 @@ const CandidateRanking: React.FC<CandidateRankingProps> = ({
                 Position
               </div>
               <div className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Status
+                Interview Title/Position
               </div>
               <div
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
@@ -304,15 +304,12 @@ const CandidateRanking: React.FC<CandidateRankingProps> = ({
                   <div className="text-sm text-gray-900">{candidate.appliedFor}</div>
                 </div>
                 <div className="px-6 py-4 whitespace-nowrap">
-                  <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full
-                    ${candidate.currentStatus === 'ACCEPTED' ? 'bg-green-100 text-green-800' :
-                    candidate.currentStatus === 'REJECTED' ? 'bg-red-100 text-red-800' :
-                    candidate.currentStatus === 'OFFERED' ? 'bg-purple-100 text-purple-800' :
-                    candidate.currentStatus === 'INTERVIEWED' ? 'bg-blue-100 text-blue-800' :
-                    candidate.currentStatus === 'SCREENING' ? 'bg-yellow-100 text-yellow-800' :
-                    'bg-gray-100 text-gray-800'}`}>
-                    {candidate.currentStatus.charAt(0) + candidate.currentStatus.slice(1).toLowerCase()}
-                  </span>
+                  <div className="text-sm text-gray-900">
+                    {candidate.interviews && candidate.interviews.length > 0 
+                      ? candidate.interviews[candidate.interviews.length - 1].type.charAt(0).toUpperCase() + 
+                        candidate.interviews[candidate.interviews.length - 1].type.slice(1) + ' Interview'
+                      : candidate.appliedFor}
+                  </div>
                 </div>
                 <div className="px-6 py-4 whitespace-nowrap">
                   {candidate.aiScore ? (
