@@ -11,7 +11,8 @@ import {
   Bell,
   Search,
   User,
-  ChevronDown
+  ChevronDown,
+  MessageSquare
 } from 'lucide-react';
 import { supabase } from '@/app/lib/supabase';
 
@@ -45,9 +46,9 @@ const DashboardLayout: React.FC = () => {
 
   const menuItems = [
     { text: 'Dashboard', icon: <LayoutDashboard size={20} />, path: '/dashboard' },
-    { text: 'Create Interview', icon: <PlusCircle size={20} />, path: '/dashboard/create-interview' },
-    { text: 'View Interviews', icon: <ListVideo size={20} />, path: '/dashboard/view-interviews' },
-    { text: 'AI Analysis', icon: <BarChart2 size={20} />, path: '/dashboard/ai-analysis' },
+    { text: 'Create Interview', icon: <PlusCircle size={20} />, path: '/interviews/create' },
+    { text: 'View Interviews', icon: <ListVideo size={20} />, path: '/interviews' },
+    { text: 'View Responses', icon: <MessageSquare size={20} />, path: '/interviews/responses' },
     { text: 'Settings', icon: <SettingsIcon size={20} />, path: '/dashboard/settings' },
   ];
 

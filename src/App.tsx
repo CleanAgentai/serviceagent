@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { UserPreferencesProvider } from '@/app/providers/UserPreferencesContext';
 import { AuthProvider } from '@/app/providers/AuthContext';
@@ -9,18 +9,25 @@ import { AppLayout } from '@/app/shared/layouts/AppLayout';
 import { Login } from '@/modules/auth/Login';
 import { Signup } from '@/modules/auth/Signup';
 import { AuthCallback } from '@/modules/auth/AuthCallback';
+import { PostSignupSetup } from '@/modules/auth/PostSignupSetup';
 import { PrivacyPolicy } from '@/modules/legal/PrivacyPolicy';
 import { TermsOfService } from '@/modules/legal/TermsOfService';
 import { CookiePolicy } from '@/modules/legal/CookiePolicy';
 import { NotFound } from '@/modules/error/NotFound';
+import setupDatabase from '@/utils/setupDatabase';
+import { Toaster } from 'sonner';
+import { routes } from './lib/constants';
 
 // Dashboard Components
 import DashboardLayout from '@/modules/dashboard/DashboardLayout';
 import Dashboard from '@/modules/dashboard/Dashboard';
-import CreateInterview from '@/modules/dashboard/CreateInterview';
-import AIAnalysis from '@/modules/dashboard/AIAnalysis';
-import ViewInterviews from '@/modules/dashboard/ViewInterviews';
 import Settings from '@/modules/dashboard/Settings';
+
+// Interview Components
+import { CreateInterview } from '@/modules/interviews/CreateInterview';
+import { ViewInterviews } from '@/modules/interviews/ViewInterviews';
+import { ViewResponses } from '@/modules/interviews/ViewResponses';
+import { ResponseDetails } from '@/modules/interviews/ResponseDetails';
 
 // Public Pages
 import { LandingPage } from '@/modules/landing/LandingPage';
@@ -34,31 +41,57 @@ const InitialSetup = React.lazy(() => import('@/modules/dashboard/help/articles/
 const DashboardOverview = React.lazy(() => import('@/modules/dashboard/help/articles/DashboardOverview'));
 
 const App = () => {
-  // Set the document title with the domain
-  React.useEffect(() => {
-    const domain = import.meta.env.VITE_APP_DOMAIN || 'dashboard.fsagent.com';
-    document.title = `ServiceAgent - ${domain}`;
+  useEffect(() => {
+    // Set document title based on domain
+    const domain = window.location.hostname;
+    document.title = domain.includes('fsagent.com') 
+      ? 'Willo AI Dashboard' 
+      : 'ServiceAgent Dashboard';
+    
+    // Initialize database
+    const initDatabase = async () => {
+      try {
+        await setupDatabase();
+      } catch (error) {
+        console.error('Failed to initialize database:', error);
+      }
+    };
+    
+    initDatabase();
   }, []);
-  
+
   return (
-    <ErrorBoundary>
-      <UserPreferencesProvider>
+    <UserPreferencesProvider>
+      <AuthProvider>
         <BrowserRouter>
-          <AuthProvider>
-            <React.Suspense fallback={<LoadingState variant="full" message="Loading page..." />}>
+          <Toaster position="top-right" />
+          <React.Suspense fallback={<LoadingState />}>
+            <ErrorBoundary>
               <Routes>
+                {/* Auth Callback Route - Must be outside AppLayout */}
+                <Route path="/auth/callback" element={<AuthCallback />} />
+
                 {/* Public Routes with AppLayout */}
                 <Route element={<AppLayout showNavigation={false} showFooter={false} />}>
                   <Route path="/login" element={<Navigate to="/" replace />} />
                   <Route path="/" element={<Login />} />
                   <Route path="/signup" element={<Signup />} />
-                  <Route path="/auth/callback" element={<AuthCallback />} />
                   <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                   <Route path="/terms-of-service" element={<TermsOfService />} />
                   <Route path="/cookie-policy" element={<CookiePolicy />} />
                 </Route>
 
-                {/* Protected Dashboard Routes - No AppLayout */}
+                {/* Post-Signup Setup Route */}
+                <Route 
+                  path="/setup" 
+                  element={
+                    <ProtectedRoute>
+                      <PostSignupSetup />
+                    </ProtectedRoute>
+                  } 
+                />
+
+                {/* Protected Dashboard Routes */}
                 <Route
                   path="/dashboard"
                   element={
@@ -68,20 +101,32 @@ const App = () => {
                   }
                 >
                   <Route index element={<Dashboard />} />
-                  <Route path="create-interview" element={<CreateInterview />} />
-                  <Route path="ai-analysis" element={<AIAnalysis />} />
-                  <Route path="view-interviews" element={<ViewInterviews />} />
                   <Route path="settings" element={<Settings />} />
+                </Route>
+
+                {/* Interview Routes */}
+                <Route
+                  path="/interviews"
+                  element={
+                    <ProtectedRoute>
+                      <DashboardLayout />
+                    </ProtectedRoute>
+                  }
+                >
+                  <Route index element={<ViewInterviews />} />
+                  <Route path="create" element={<CreateInterview />} />
+                  <Route path="responses" element={<ViewResponses />} />
+                  <Route path="responses/:responseId" element={<ResponseDetails />} />
                 </Route>
 
                 {/* 404 Route */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
-            </React.Suspense>
-          </AuthProvider>
+            </ErrorBoundary>
+          </React.Suspense>
         </BrowserRouter>
-      </UserPreferencesProvider>
-    </ErrorBoundary>
+      </AuthProvider>
+    </UserPreferencesProvider>
   );
 };
 

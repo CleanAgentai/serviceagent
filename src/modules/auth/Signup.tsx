@@ -89,8 +89,8 @@ export function Signup() {
           throw signUpError;
         }
       } else {
-        // Navigate to dashboard upon successful signup
-        navigate("/dashboard");
+        // Navigate to setup page upon successful signup
+        navigate("/setup");
       }
     } catch (err: any) {
       setError(err.message || "회원가입 중 오류가 발생했습니다.");
