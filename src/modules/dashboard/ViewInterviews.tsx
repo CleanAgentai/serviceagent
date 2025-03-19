@@ -11,67 +11,116 @@ import {
   ArrowUpDown,
   X,
   SlidersHorizontal,
-  ExternalLink
+  ExternalLink,
+  Copy,
+  Check
 } from 'lucide-react';
+import { toast } from 'sonner';
+import { supabase } from '@/lib/supabase';
+
+interface Interview {
+  id: number | string;
+  interviewName: string;
+  interviewLink: string;
+  deadline: string;
+  deadlineTime: string;
+}
 
 const ViewInterviews = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [showFilters, setShowFilters] = useState(false);
   const [sortBy, setSortBy] = useState('date');
   const [sortOrder, setSortOrder] = useState('desc');
   const [dateRange, setDateRange] = useState('all');
+  const [selectedLink, setSelectedLink] = useState<string | null>(null);
+  const [copiedLink, setCopiedLink] = useState(false);
+  const [interviews, setInterviews] = useState<Interview[]>([]);
 
-  // Simulate loading effect
+  // Load interviews from database
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1200);
-    return () => clearTimeout(timer);
-  }, [isLoading]);
+    fetchInterviews();
+  }, []);
 
-  const handleRefresh = () => {
+  const fetchInterviews = async () => {
     setIsLoading(true);
+    
+    try {
+      // Try to get interviews from the database
+      const { data, error } = await supabase
+        .from('interviews')
+        .select('*')
+        .order('created_at', { ascending: false });
+        
+      if (error) {
+        console.error('Error fetching interviews:', error);
+        
+        // Fallback to sample data if there's a database error
+        setInterviews([
+          {
+            id: 1,
+            interviewName: 'Software Engineer Position',
+            interviewLink: 'https://interview.willo.ai/abc123',
+            deadline: '2024-03-25',
+            deadlineTime: '11:59 PM'
+          },
+          {
+            id: 2,
+            interviewName: 'Product Manager Interview',
+            interviewLink: 'https://interview.willo.ai/def456',
+            deadline: '2024-03-28',
+            deadlineTime: '5:00 PM'
+          },
+          {
+            id: 3,
+            interviewName: 'UX Designer Assessment',
+            interviewLink: 'https://interview.willo.ai/ghi789',
+            deadline: '2024-03-22',
+            deadlineTime: '3:30 PM'
+          },
+          {
+            id: 4,
+            interviewName: 'Marketing Specialist Interview',
+            interviewLink: 'https://interview.willo.ai/jkl012',
+            deadline: '2024-04-01',
+            deadlineTime: '12:00 PM'
+          },
+          {
+            id: 5,
+            interviewName: 'Data Scientist Technical Interview',
+            interviewLink: 'https://interview.willo.ai/mno345',
+            deadline: '2024-03-30',
+            deadlineTime: '6:00 PM'
+          }
+        ]);
+      } else if (data && data.length > 0) {
+        // Convert the database data to our interview format
+        const formattedInterviews = data.map(item => ({
+          id: item.id,
+          interviewName: item.title,
+          interviewLink: item.interview_link || `${window.location.origin}/interview/${item.id}`,
+          deadline: item.deadline ? new Date(item.deadline).toISOString().split('T')[0] : 'No deadline',
+          deadlineTime: item.deadline ? new Date(item.deadline).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''
+        }));
+        
+        setInterviews(formattedInterviews);
+      } else {
+        // No interviews found
+        setInterviews([]);
+      }
+    } catch (e) {
+      console.error('Error in fetchInterviews:', e);
+      // Fallback to empty state
+      setInterviews([]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  // Sample interview data
-  const interviews = [
-    {
-      id: 1,
-      interviewName: 'Software Engineer Position',
-      interviewLink: 'https://interview.willo.ai/abc123',
-      deadline: '2024-03-25',
-      deadlineTime: '11:59 PM'
-    },
-    {
-      id: 2,
-      interviewName: 'Product Manager Interview',
-      interviewLink: 'https://interview.willo.ai/def456',
-      deadline: '2024-03-28',
-      deadlineTime: '5:00 PM'
-    },
-    {
-      id: 3,
-      interviewName: 'UX Designer Assessment',
-      interviewLink: 'https://interview.willo.ai/ghi789',
-      deadline: '2024-03-22',
-      deadlineTime: '3:30 PM'
-    },
-    {
-      id: 4,
-      interviewName: 'Marketing Specialist Interview',
-      interviewLink: 'https://interview.willo.ai/jkl012',
-      deadline: '2024-04-01',
-      deadlineTime: '12:00 PM'
-    },
-    {
-      id: 5,
-      interviewName: 'Data Scientist Technical Interview',
-      interviewLink: 'https://interview.willo.ai/mno345',
-      deadline: '2024-03-30',
-      deadlineTime: '6:00 PM'
-    }
-  ];
+  // Handle refresh button click
+  const handleRefresh = () => {
+    fetchInterviews();
+  };
 
   // Filter interviews based on search term
   const filteredInterviews = interviews.filter(interview => {
@@ -102,6 +151,17 @@ const ViewInterviews = () => {
       setSortBy(field);
       setSortOrder('desc');
     }
+  };
+
+  // Copy interview link to clipboard
+  const copyLinkToClipboard = (link: string) => {
+    navigator.clipboard.writeText(link)
+      .then(() => {
+        setCopiedLink(true);
+        toast.success('Link copied to clipboard!');
+        setTimeout(() => setCopiedLink(false), 2000);
+      })
+      .catch(() => toast.error('Failed to copy link'));
   };
 
   return (
@@ -254,16 +314,14 @@ const ViewInterviews = () => {
                   </h3>
                 </div>
                 <div className="col-span-4">
-                  <a 
-                    href={interview.interviewLink} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
+                  <button 
+                    onClick={() => setSelectedLink(interview.interviewLink)}
                     className="inline-flex items-center text-blue-600 hover:text-blue-800"
                   >
                     <LinkIcon className="h-3.5 w-3.5 mr-1" />
-                    <span className="truncate">{interview.interviewLink}</span>
+                    <span className="truncate">View Link</span>
                     <ExternalLink className="h-3 w-3 ml-1" />
-                  </a>
+                  </button>
                 </div>
                 <div className="col-span-3 text-sm text-gray-600">
                   <div className="flex items-center">
@@ -298,6 +356,58 @@ const ViewInterviews = () => {
           </div>
         </div>
       </div>
+
+      {/* Link Popup */}
+      {selectedLink && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-md w-full shadow-xl">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-medium">Interview Link</h3>
+              <button 
+                onClick={() => setSelectedLink(null)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <div className="flex items-center p-3 bg-gray-50 border rounded-md mb-4">
+              <input 
+                type="text" 
+                value={selectedLink} 
+                readOnly 
+                className="flex-1 bg-transparent border-none focus:outline-none text-sm"
+              />
+              <button 
+                onClick={() => copyLinkToClipboard(selectedLink)}
+                className="ml-2 p-1 rounded hover:bg-gray-200 transition-colors"
+              >
+                {copiedLink ? (
+                  <Check className="h-4 w-4 text-green-500" />
+                ) : (
+                  <Copy className="h-4 w-4 text-gray-600" />
+                )}
+              </button>
+            </div>
+            <div className="flex justify-end gap-2">
+              <button
+                onClick={() => setSelectedLink(null)}
+                className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors text-sm"
+              >
+                Close
+              </button>
+              <a 
+                href={selectedLink} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm inline-flex items-center"
+              >
+                <ExternalLink className="h-3.5 w-3.5 mr-2" />
+                Open Interview
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

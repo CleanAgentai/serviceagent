@@ -21,18 +21,17 @@ interface Question {
   id: string;
   text: string;
   order: number;
-  answerType: 'video' | 'text' | 'multiple_choice' | 'checkboxes';
+  answerType: 'video' | 'text';
   maxDuration?: number;
   maxRetakes?: number;
   maxCharacters?: number;
   thinkingTime?: number;
-  options?: string[]; // For multiple choice and checkboxes
 }
 
 interface InterviewFormData {
   title: string;
   language: string;
-  salary: string;
+  hourlyRate: string;
   description: string;
   questions: Question[];
   showHints: boolean;
@@ -63,7 +62,7 @@ export function CreateInterview() {
   const [formData, setFormData] = useState<InterviewFormData>({
     title: '',
     language: 'English',
-    salary: '',
+    hourlyRate: '',
     description: '',
     questions: [
       {
@@ -134,59 +133,6 @@ export function CreateInterview() {
     });
   };
   
-  // Add option to multiple choice or checkboxes question
-  const addOption = (questionId: string) => {
-    setFormData(prev => ({
-      ...prev,
-      questions: prev.questions.map(q => {
-        if (q.id === questionId) {
-          const currentOptions = q.options || [];
-          return {
-            ...q,
-            options: [...currentOptions, '']
-          };
-        }
-        return q;
-      })
-    }));
-  };
-  
-  // Update option for multiple choice or checkboxes question
-  const updateOption = (questionId: string, optionIndex: number, value: string) => {
-    setFormData(prev => ({
-      ...prev,
-      questions: prev.questions.map(q => {
-        if (q.id === questionId && q.options) {
-          const updatedOptions = [...q.options];
-          updatedOptions[optionIndex] = value;
-          return {
-            ...q,
-            options: updatedOptions
-          };
-        }
-        return q;
-      })
-    }));
-  };
-  
-  // Remove option from multiple choice or checkboxes question
-  const removeOption = (questionId: string, optionIndex: number) => {
-    setFormData(prev => ({
-      ...prev,
-      questions: prev.questions.map(q => {
-        if (q.id === questionId && q.options && q.options.length > 1) {
-          const updatedOptions = [...q.options];
-          updatedOptions.splice(optionIndex, 1);
-          return {
-            ...q,
-            options: updatedOptions
-          };
-        }
-        return q;
-      })
-    }));
-  };
-  
   // Navigate to next tab
   const nextTab = () => {
     if (activeTab === 'basic-details') {
@@ -205,17 +151,6 @@ export function CreateInterview() {
       const invalidQuestions = formData.questions.filter(q => !q.text.trim());
       if (invalidQuestions.length > 0) {
         toast.error('All questions must have text');
-        return;
-      }
-      
-      // Validate options for multiple choice and checkboxes
-      const invalidOptions = formData.questions.filter(q => 
-        (q.answerType === 'multiple_choice' || q.answerType === 'checkboxes') && 
-        (!q.options || q.options.length < 2 || q.options.some(opt => !opt.trim()))
-      );
-      
-      if (invalidOptions.length > 0) {
-        toast.error('Multiple choice and checkbox questions must have at least 2 non-empty options');
         return;
       }
       
@@ -250,27 +185,47 @@ export function CreateInterview() {
       const interviewId = uuidv4();
       const generatedLink = `${window.location.origin}/interview/${interviewId}`;
       
-      // Save interview to database
+      // Prepare the interview data
+      const interviewData = {
+        id: interviewId,
+        user_id: user.id,
+        title: formData.title,
+        language: formData.language,
+        description: formData.description,
+        questions: formData.questions,
+        hourly_rate: formData.hourlyRate,
+        show_hints: formData.showHints,
+        show_availability: formData.showAvailability,
+        deadline: formData.deadline ? formData.deadline.toISOString() : null,
+        created_at: new Date().toISOString(),
+        interview_link: generatedLink
+      };
+      
+      console.log('Sending interview data:', interviewData);
+      
+      // Directly insert data into the interviews table
       const { error: saveError } = await supabase
         .from('interviews')
-        .insert({
-          id: interviewId,
-          user_id: user.id,
-          title: formData.title,
-          language: formData.language,
-          salary: formData.salary,
-          description: formData.description,
-          questions: formData.questions,
-          show_hints: formData.showHints,
-          show_availability: formData.showAvailability,
-          deadline: formData.deadline ? formData.deadline.toISOString() : null,
-          created_at: new Date().toISOString(),
-          interview_link: generatedLink
-        });
+        .insert(interviewData);
       
       if (saveError) {
         console.error('Error saving interview:', saveError);
-        toast.error('Failed to create interview. Please try again.');
+        
+        if (saveError.message) {
+          if (saveError.message.includes('does not exist')) {
+            // Table likely doesn't exist - show clear message
+            toast.error('The interviews table does not exist. Please contact your administrator to set up the database.');
+          } else if (saveError.message.includes('column')) {
+            // Column mismatch issue
+            toast.error('Database structure issue. Some fields may not match the current database structure.');
+          } else {
+            // Other database error
+            toast.error(`Database error: ${saveError.message}`);
+          }
+        } else {
+          toast.error('Failed to create interview. Please try again.');
+        }
+        
         setLoading(false);
         return;
       }
@@ -280,7 +235,12 @@ export function CreateInterview() {
       toast.success('Interview created successfully!');
     } catch (error) {
       console.error('Error in handleSubmit:', error);
-      toast.error('An unexpected error occurred');
+      
+      if (error instanceof Error) {
+        toast.error(`An error occurred: ${error.message}`);
+      } else {
+        toast.error('An unexpected error occurred');
+      }
     } finally {
       setLoading(false);
     }
@@ -337,7 +297,7 @@ export function CreateInterview() {
               setFormData({
                 title: '',
                 language: 'English',
-                salary: '',
+                hourlyRate: '',
                 description: '',
                 questions: [
                   {
@@ -396,12 +356,12 @@ export function CreateInterview() {
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="salary">Salary (Optional)</Label>
+                <Label htmlFor="hourlyRate">Hourly Rate (Optional)</Label>
                 <Input
-                  id="salary"
-                  value={formData.salary}
-                  onChange={(e) => handleBasicDetailsChange('salary', e.target.value)}
-                  placeholder="e.g. $80,000 - $100,000"
+                  id="hourlyRate"
+                  value={formData.hourlyRate}
+                  onChange={(e) => handleBasicDetailsChange('hourlyRate', e.target.value)}
+                  placeholder="e.g. $25 - $35"
                 />
               </div>
             </div>
@@ -465,10 +425,6 @@ export function CreateInterview() {
                         value={question.answerType} 
                         onValueChange={(value) => {
                           const answerType = value as Question['answerType'];
-                          if ((answerType === 'multiple_choice' || answerType === 'checkboxes') && 
-                              (!question.options || question.options.length === 0)) {
-                            handleQuestionChange(question.id, 'options', ['', '']);
-                          }
                           handleQuestionChange(question.id, 'answerType', answerType);
                         }}
                       >
@@ -478,8 +434,6 @@ export function CreateInterview() {
                         <SelectContent>
                           <SelectItem value="video">Video</SelectItem>
                           <SelectItem value="text">Text</SelectItem>
-                          <SelectItem value="multiple_choice">Multiple Choice</SelectItem>
-                          <SelectItem value="checkboxes">Checkboxes</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -540,42 +494,6 @@ export function CreateInterview() {
                           />
                         </div>
                       )}
-                    </div>
-                  )}
-                  
-                  {(question.answerType === 'multiple_choice' || question.answerType === 'checkboxes') && (
-                    <div className="space-y-3">
-                      <Label className="required">Options</Label>
-                      {question.options?.map((option, optIndex) => (
-                        <div key={optIndex} className="flex items-center gap-2">
-                          <Input
-                            value={option}
-                            onChange={(e) => updateOption(question.id, optIndex, e.target.value)}
-                            placeholder={`Option ${optIndex + 1}`}
-                            required
-                          />
-                          {question.options && question.options.length > 2 && (
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => removeOption(question.id, optIndex)}
-                              className="h-8 w-8 p-0"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                              <span className="sr-only">Remove option</span>
-                            </Button>
-                          )}
-                        </div>
-                      ))}
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => addOption(question.id)}
-                        className="mt-2"
-                      >
-                        <Plus className="h-4 w-4 mr-1" />
-                        Add Option
-                      </Button>
                     </div>
                   )}
                 </CardContent>

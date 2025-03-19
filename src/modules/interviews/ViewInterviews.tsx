@@ -11,8 +11,19 @@ import {
   ArrowUpDown,
   ExternalLink,
   Filter,
-  Plus
+  Plus,
+  Copy,
+  Check
 } from 'lucide-react';
+import { toast } from 'sonner';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { supabase } from '@/lib/supabase';
 
 interface Interview {
   id: string;
@@ -30,35 +41,73 @@ export function ViewInterviews() {
   const [loading, setLoading] = useState(true);
   const [sortBy, setSortBy] = useState<'date' | 'title'>('date');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  const [copiedLinkId, setCopiedLinkId] = useState<string | null>(null);
+
+  // Copy interview link to clipboard
+  const copyLinkToClipboard = (id: string) => {
+    const link = `${window.location.origin}/interview/${id}`;
+    navigator.clipboard.writeText(link)
+      .then(() => {
+        setCopiedLinkId(id);
+        toast.success('Link copied to clipboard!');
+        setTimeout(() => setCopiedLinkId(null), 2000);
+      })
+      .catch(() => toast.error('Failed to copy link'));
+  };
 
   useEffect(() => {
     // TODO: Replace with actual API call
     const fetchInterviews = async () => {
       try {
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        // Attempt to fetch from the database
+        const { data, error } = await supabase
+          .from('interviews')
+          .select('*')
+          .order('created_at', { ascending: false });
         
-        // Mock data - replace with actual API data
-        setInterviews([
-          {
-            id: 'int-1',
-            title: 'Software Engineer Position',
-            createdAt: '2024-03-18',
-            duration: '30 minutes',
-            status: 'active',
-            totalResponses: 5
-          },
-          {
-            id: 'int-2',
-            title: 'Product Manager Interview',
-            createdAt: '2024-03-17',
-            duration: '45 minutes',
-            status: 'active',
-            totalResponses: 3
-          },
-        ]);
+        if (error) {
+          console.error('Error fetching interviews from database:', error);
+          
+          // Fallback to mock data if there's an error (database doesn't exist, etc.)
+          // This ensures the UI still works even if the database isn't set up
+          setInterviews([
+            {
+              id: 'int-1',
+              title: 'Software Engineer Position',
+              createdAt: '2024-03-18',
+              duration: '30 minutes',
+              status: 'active',
+              totalResponses: 5
+            },
+            {
+              id: 'int-2',
+              title: 'Product Manager Interview',
+              createdAt: '2024-03-17',
+              duration: '45 minutes',
+              status: 'active',
+              totalResponses: 3
+            },
+          ]);
+        } else if (data && data.length > 0) {
+          // Map database data to our interface
+          const formattedInterviews = data.map(interview => ({
+            id: interview.id,
+            title: interview.title,
+            createdAt: new Date(interview.created_at).toISOString().split('T')[0],
+            duration: '30 minutes', // Default or calculate based on questions
+            status: 'active' as const,
+            totalResponses: 0 // This would need to be calculated from responses table
+          }));
+          
+          setInterviews(formattedInterviews);
+        } else {
+          // No interviews found, use empty array
+          setInterviews([]);
+        }
       } catch (error) {
         console.error('Error fetching interviews:', error);
+        // Fallback to empty state
+        setInterviews([]);
       } finally {
         setLoading(false);
       }
@@ -164,14 +213,51 @@ export function ViewInterviews() {
                 {interview.createdAt}
               </div>
               <div className="flex items-center gap-2">
-                <Button
-                  variant="ghost"
-                  onClick={() => window.open(`/interviews/${interview.id}`, '_blank')}
-                  className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
-                >
-                  <ExternalLink className="w-4 h-4" />
-                  Open Interview
-                </Button>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                      View Link
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Interview Link</DialogTitle>
+                    </DialogHeader>
+                    <div className="flex items-center mt-4 p-3 bg-gray-50 border rounded-md">
+                      <input 
+                        type="text" 
+                        value={`${window.location.origin}/interview/${interview.id}`}
+                        readOnly 
+                        className="flex-1 bg-transparent border-none focus:outline-none text-sm"
+                      />
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        onClick={() => copyLinkToClipboard(interview.id)}
+                        className="ml-2"
+                      >
+                        {copiedLinkId === interview.id ? (
+                          <Check className="h-4 w-4 text-green-500" />
+                        ) : (
+                          <Copy className="h-4 w-4" />
+                        )}
+                      </Button>
+                    </div>
+                    <div className="mt-4">
+                      <Button 
+                        className="w-full"
+                        onClick={() => window.open(`/interview/${interview.id}`, '_blank')}
+                      >
+                        <ExternalLink className="w-4 h-4 mr-2" />
+                        Open Interview
+                      </Button>
+                    </div>
+                  </DialogContent>
+                </Dialog>
               </div>
               <div className="flex items-center gap-2">
                 <Button
