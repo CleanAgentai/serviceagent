@@ -6,18 +6,20 @@ import { Input } from '@/components/ui/input';
 import {
   Search,
   Calendar,
-  Clock,
   User,
   ArrowUpDown,
   ExternalLink,
   Filter,
+  X,
 } from 'lucide-react';
 
 interface Response {
   id: string;
   candidateName: string;
   submissionDate: string;
-  duration: string;
+  email: string;
+  phone: string;
+  position: string;
   status: 'completed' | 'in_progress' | 'pending';
 }
 
@@ -28,6 +30,7 @@ export function ViewResponses() {
   const [loading, setLoading] = useState(true);
   const [sortBy, setSortBy] = useState<'date' | 'name'>('date');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  const [selectedResponse, setSelectedResponse] = useState<Response | null>(null);
 
   useEffect(() => {
     // TODO: Replace with actual API call
@@ -42,17 +45,20 @@ export function ViewResponses() {
             id: 'demo-1',
             candidateName: 'John Doe',
             submissionDate: '2024-03-18',
-            duration: '15 minutes',
+            email: 'john.doe@example.com',
+            phone: '+1 (555) 123-4567',
+            position: 'Senior Software Engineer',
             status: 'completed'
           },
           {
             id: 'demo-2',
             candidateName: 'Jane Smith',
             submissionDate: '2024-03-17',
-            duration: '12 minutes',
+            email: 'jane.smith@example.com',
+            phone: '+1 (555) 987-6543',
+            position: 'Product Manager',
             status: 'completed'
           },
-          // Add more mock responses as needed
         ]);
       } catch (error) {
         console.error('Error fetching responses:', error);
@@ -136,7 +142,7 @@ export function ViewResponses() {
             Submission Date
             <ArrowUpDown className="w-4 h-4" />
           </button>
-          <div>Duration</div>
+          <div>Contact Info</div>
           <div>Actions</div>
         </div>
 
@@ -151,14 +157,14 @@ export function ViewResponses() {
                 <Calendar className="w-4 h-4 text-gray-400" />
                 {response.submissionDate}
               </div>
-              <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-gray-400" />
-                {response.duration}
+              <div className="text-sm text-gray-600">
+                <div>{response.email}</div>
+                <div>{response.phone}</div>
               </div>
               <div className="flex items-center gap-2">
                 <Button
                   variant="outline"
-                  onClick={() => navigate(`/interviews/responses/${response.id}`)}
+                  onClick={() => setSelectedResponse(response)}
                   className="flex items-center gap-2"
                 >
                   <ExternalLink className="w-4 h-4" />
@@ -173,6 +179,57 @@ export function ViewResponses() {
       {filteredResponses.length === 0 && (
         <div className="text-center py-8 text-gray-500">
           No responses found matching your search criteria.
+        </div>
+      )}
+
+      {/* Candidate Details Modal */}
+      {selectedResponse && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-2xl">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold">Candidate Details</h2>
+              <button
+                onClick={() => setSelectedResponse(null)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+            
+            <div className="space-y-4">
+              <div>
+                <h3 className="text-lg font-semibold mb-2">Personal Information</h3>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm text-gray-600">Name</p>
+                    <p className="font-medium">{selectedResponse.candidateName}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Position / Interview Title</p>
+                    <p className="font-medium">{selectedResponse.position}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Email</p>
+                    <p className="font-medium">{selectedResponse.email}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Phone Number</p>
+                    <p className="font-medium">{selectedResponse.phone}</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="pt-4">
+                <Button
+                  variant="outline"
+                  onClick={() => setSelectedResponse(null)}
+                  className="w-full"
+                >
+                  Close
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>
