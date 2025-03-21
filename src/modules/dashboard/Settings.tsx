@@ -10,19 +10,20 @@ import { CompanyProfileForm } from './CompanyProfileForm';
 
 export default function Settings() {
   const navigate = useNavigate();
-  const { signOut } = useAuth();
+  const { logout } = useAuth();
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleLogout = async () => {
+    setLoading(true);
     try {
-      setIsLoading(true);
-      await signOut();
-      navigate('/login');
+      const { error } = await logout();
+      if (error) throw error;
+      navigate('/');
     } catch (error) {
-      console.error('Error signing out:', error);
+      console.error('Error logging out:', error);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 

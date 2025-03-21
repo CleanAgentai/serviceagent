@@ -25,7 +25,7 @@ import Settings from '@/modules/dashboard/Settings';
 import AIAnalysis from "@/modules/dashboard/AIAnalysis";
 
 // Interview Components
-import { CreateInterview } from '@/modules/interviews/CreateInterview';
+import CreateInterview from '@/modules/interviews/CreateInterview';
 import { ViewInterviews } from '@/modules/interviews/ViewInterviews';
 import { ViewResponses } from '@/modules/interviews/ViewResponses';
 import { ResponseDetails } from '@/modules/interviews/ResponseDetails';

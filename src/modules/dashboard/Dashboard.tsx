@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   BarChart3, 
@@ -13,13 +13,61 @@ import {
   AlertCircle,
   ChevronRight,
   UserCheck,
-  UserPlus
+  UserPlus,
+  MapPin
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { supabase } from '@/app/lib/supabase';
+
+interface Interview {
+  id: string;
+  title: string;
+  location: string;
+  deadline: string;
+  createdAt: string;
+}
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const [recentInterviews, setRecentInterviews] = useState<Interview[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchRecentInterviews = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('interviews')
+          .select('id, title, created_at, deadline, language')
+          .order('created_at', { ascending: false })
+          .limit(3);
+          
+        if (error) {
+          console.error('Error fetching interviews:', error);
+          setRecentInterviews([]);
+        } else if (data && data.length > 0) {
+          const formattedInterviews = data.map(interview => ({
+            id: interview.id,
+            title: interview.title,
+            location: interview.language || 'Remote',
+            deadline: interview.deadline ? new Date(interview.deadline).toLocaleDateString() : 'No deadline',
+            createdAt: new Date(interview.created_at).toISOString().split('T')[0]
+          }));
+          
+          setRecentInterviews(formattedInterviews);
+        } else {
+          setRecentInterviews([]);
+        }
+      } catch (error) {
+        console.error('Error fetching interviews:', error);
+        setRecentInterviews([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchRecentInterviews();
+  }, []);
 
   const metrics = [
     {
@@ -83,59 +131,6 @@ const Dashboard = () => {
       color: 'bg-gradient-to-br from-violet-50 to-violet-100 hover:from-violet-100 hover:to-violet-200'
     }
   ];
-
-  const recentInterviews = [
-    {
-      candidateName: 'John Smith',
-      position: 'Software Engineer',
-      date: '2024-03-15',
-      time: '10:00 AM',
-      status: 'completed',
-      score: 85
-    },
-    {
-      candidateName: 'Sarah Johnson',
-      position: 'Product Manager',
-      date: '2024-03-16',
-      time: '2:30 PM',
-      status: 'scheduled',
-      score: null
-    },
-    {
-      candidateName: 'Michael Brown',
-      position: 'UX Designer',
-      date: '2024-03-14',
-      time: '11:15 AM',
-      status: 'analyzing',
-      score: null
-    }
-  ];
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'completed':
-        return 'bg-green-50 text-green-700 border border-green-200';
-      case 'scheduled':
-        return 'bg-blue-50 text-blue-700 border border-blue-200';
-      case 'analyzing':
-        return 'bg-orange-50 text-orange-700 border border-orange-200';
-      default:
-        return 'bg-gray-50 text-gray-700 border border-gray-200';
-    }
-  };
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'completed':
-        return <CheckCircle2 className="h-3 w-3 mr-1" />;
-      case 'scheduled':
-        return <Calendar className="h-3 w-3 mr-1" />;
-      case 'analyzing':
-        return <AlertCircle className="h-3 w-3 mr-1" />;
-      default:
-        return null;
-    }
-  };
 
   return (
     <div className="container mx-auto p-6">
@@ -215,7 +210,7 @@ const Dashboard = () => {
           <div className="p-6 border-b border-gray-200 flex justify-between items-center">
             <div>
               <h2 className="text-lg font-semibold text-gray-900">Recent Interviews</h2>
-              <p className="text-sm text-gray-600 mt-1">Your latest interview sessions</p>
+              <p className="text-sm text-gray-600 mt-1">Your latest interviews</p>
             </div>
             <button 
               onClick={() => navigate('/interviews')}
@@ -225,64 +220,58 @@ const Dashboard = () => {
               <ChevronRight className="h-4 w-4 ml-1" />
             </button>
           </div>
-          <div className="divide-y divide-gray-100">
-            {recentInterviews.map((interview, index) => (
-              <div key={index} className="p-4 hover:bg-gray-50 transition-colors">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 mr-3">
-                      {interview.candidateName.charAt(0)}
-                    </div>
-                    <div>
-                      <h3 className="text-sm font-medium text-gray-900">{interview.candidateName}</h3>
-                      <p className="text-xs text-gray-500">{interview.position}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center">
-                    <div className="flex flex-col items-end mr-4">
-                      <div className="flex items-center text-xs text-gray-500">
-                        <Calendar className="h-3 w-3 mr-1" />
-                        {interview.date}
-                      </div>
-                      <div className="flex items-center text-xs text-gray-500 mt-1">
-                        <Clock className="h-3 w-3 mr-1" />
-                        {interview.time}
-                      </div>
-                    </div>
-                    <div className="flex items-center">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium inline-flex items-center ${getStatusColor(interview.status)}`}>
-                        {getStatusIcon(interview.status)}
-                        {interview.status.charAt(0).toUpperCase() + interview.status.slice(1)}
-                      </span>
-                      {interview.score !== null && (
-                        <span className={`ml-2 px-2 py-1 rounded-full text-xs font-medium ${
-                          interview.score >= 80 ? 'bg-green-50 text-green-700 border border-green-200' : 
-                          interview.score >= 60 ? 'bg-yellow-50 text-yellow-700 border border-yellow-200' : 
-                          'bg-red-50 text-red-700 border border-red-200'
-                        }`}>
-                          {interview.score}%
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-          {recentInterviews.length === 0 && (
+          
+          {isLoading ? (
+            <div className="p-8 text-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto"></div>
+              <p className="mt-4 text-gray-600">Loading interviews...</p>
+            </div>
+          ) : recentInterviews.length === 0 ? (
             <div className="p-8 text-center">
               <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
                 <Calendar className="h-8 w-8 text-gray-400" />
               </div>
               <h3 className="text-lg font-medium text-gray-900 mb-1">No interviews yet</h3>
-              <p className="text-gray-600 mb-4">Schedule your first interview to get started</p>
+              <p className="text-gray-600 mb-4">Create your first interview to get started</p>
               <button
                 onClick={() => navigate('/interviews/create')}
                 className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700"
               >
                 <Plus className="h-4 w-4 mr-2" />
-                Schedule Interview
+                Create Interview
               </button>
+            </div>
+          ) : (
+            <div className="divide-y divide-gray-100">
+              {recentInterviews.map((interview, index) => (
+                <div 
+                  key={index} 
+                  className="p-4 hover:bg-gray-50 transition-colors cursor-pointer"
+                  onClick={() => navigate(`/interviews/${interview.id}`)}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 mr-3">
+                        {interview.title.charAt(0)}
+                      </div>
+                      <div>
+                        <h3 className="text-sm font-medium text-gray-900">{interview.title}</h3>
+                        <p className="text-xs text-gray-500">Created on {interview.createdAt}</p>
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-end">
+                      <div className="flex items-center text-xs text-gray-500">
+                        <MapPin className="h-3 w-3 mr-1" />
+                        {interview.location}
+                      </div>
+                      <div className="flex items-center text-xs text-gray-500 mt-1">
+                        <Calendar className="h-3 w-3 mr-1" />
+                        {interview.deadline}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           )}
         </div>

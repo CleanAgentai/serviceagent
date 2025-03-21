@@ -1,13 +1,13 @@
-import { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/app/lib/supabase';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
@@ -15,6 +15,7 @@ import { Trash2, Plus, ArrowRight, ArrowLeft, Copy, Calendar } from 'lucide-reac
 import { format } from 'date-fns';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar as CalendarComponent } from '@/components/ui/calendar';
+import { useAuth } from '@/app/providers/AuthContext';
 
 // Define types for our form
 interface Question {
@@ -52,8 +53,9 @@ const languages = [
   'Hindi'
 ];
 
-export function CreateInterview() {
+export default function CreateInterview() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('basic-details');
   const [loading, setLoading] = useState(false);
   const [interviewLink, setInterviewLink] = useState<string | null>(null);
@@ -95,7 +97,7 @@ export function CreateInterview() {
   };
   
   // Add a new question
-  const addQuestion = () => {
+  const addQuestion = useCallback(() => {
     const newOrder = formData.questions.length + 1;
     setFormData(prev => ({
       ...prev,
@@ -109,10 +111,10 @@ export function CreateInterview() {
         }
       ]
     }));
-  };
+  }, [formData.questions]);
   
   // Remove a question
-  const removeQuestion = (id: string) => {
+  const removeQuestion = useCallback((id: string) => {
     if (formData.questions.length <= 1) {
       toast.error('You must have at least one question');
       return;
@@ -131,7 +133,7 @@ export function CreateInterview() {
         questions: reorderedQuestions
       };
     });
-  };
+  }, [formData.questions]);
   
   // Navigate to next tab
   const nextTab = () => {
@@ -168,17 +170,41 @@ export function CreateInterview() {
   };
   
   // Handle form submission
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!user) {
+      toast.error('You must be logged in to create an interview');
+      return;
+    }
+    
     setLoading(true);
     
     try {
-      // Get current user
-      const { data: { user }, error: userError } = await supabase.auth.getUser();
+      // Filter out empty questions
+      const validQuestions = formData.questions.filter(q => q.text.trim().length > 0);
       
-      if (userError || !user) {
-        toast.error('You must be logged in to create an interview');
-        setLoading(false);
-        return;
+      // Create the interview record
+      const { data: interview, error } = await supabase
+        .from('interviews')
+        .insert({
+          id: uuidv4(),
+          user_id: user.id,
+          title: formData.title,
+          location: formData.language,
+          description: formData.description,
+          questions: validQuestions.map(q => q.text),
+          hourly_rate: formData.hourlyRate,
+          show_hints: formData.showHints,
+          show_availability: formData.showAvailability,
+          deadline: formData.deadline ? formData.deadline.toISOString() : null,
+          created_at: new Date().toISOString()
+        })
+        .select()
+        .single();
+      
+      if (error) {
+        throw error;
       }
       
       // Generate a unique interview ID and link
@@ -190,9 +216,9 @@ export function CreateInterview() {
         id: interviewId,
         user_id: user.id,
         title: formData.title,
-        language: formData.language,
+        location: formData.language,
         description: formData.description,
-        questions: formData.questions,
+        questions: validQuestions,
         hourly_rate: formData.hourlyRate,
         show_hints: formData.showHints,
         show_availability: formData.showAvailability,
@@ -233,14 +259,12 @@ export function CreateInterview() {
       // Set the interview link to display to the user
       setInterviewLink(generatedLink);
       toast.success('Interview created successfully!');
-    } catch (error) {
-      console.error('Error in handleSubmit:', error);
       
-      if (error instanceof Error) {
-        toast.error(`An error occurred: ${error.message}`);
-      } else {
-        toast.error('An unexpected error occurred');
-      }
+      // Navigate to view interviews
+      navigate('/interviews');
+    } catch (error) {
+      console.error('Error creating interview:', error);
+      toast.error('Failed to create interview. Please try again.');
     } finally {
       setLoading(false);
     }
