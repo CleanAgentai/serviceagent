@@ -88,10 +88,27 @@ export function Signup() {
         } else {
           throw signUpError;
         }
-      } else {
-        // Navigate to setup page upon successful signup
-        navigate("/setup");
       }
+
+      const response = await fetch("http://localhost:5000/api/departments", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ companyName }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("❌ Willow Department creation failed:", errorData);
+        alert("Department creation failed. Please contact support.");
+        setIsLoading(false);
+        return;
+      }
+
+      // Navigate to setup page upon successful signup
+
+      navigate("/setup");
     } catch (err: any) {
       setError(err.message || "회원가입 중 오류가 발생했습니다.");
     } finally {
