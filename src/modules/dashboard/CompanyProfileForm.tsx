@@ -37,19 +37,23 @@ export function CompanyProfileForm({ onComplete }: CompanyProfileFormProps) {
         // Get profile data
         const { data: profile } = await supabase
           .from('profiles')
-          .select('company_name, company_location, company_website, company_primary_colour, company_secondary_colour, company_logo_url')
+          .select('company_name')
           .eq('id', user.id)
           .single();
         
+        // Load company data from user metadata
+        const metadata = user.user_metadata || {};
+        
         if (profile && isMounted) {
-          // Only set values if they exist in the profile
           if (profile.company_name) setCompanyName(profile.company_name);
-          if (profile.company_location) setCompanyLocation(profile.company_location);
-          if (profile.company_website) setCompanyWebsite(profile.company_website);
-          if (profile.company_primary_colour) setCompanyPrimaryColour(profile.company_primary_colour);
-          if (profile.company_secondary_colour) setCompanySecondaryColour(profile.company_secondary_colour);
-          if (profile.company_logo_url) setLogoPreview(profile.company_logo_url);
         }
+        
+        // Load additional fields from metadata
+        if (metadata.company_location) setCompanyLocation(metadata.company_location);
+        if (metadata.company_website) setCompanyWebsite(metadata.company_website);
+        if (metadata.company_primary_colour) setCompanyPrimaryColour(metadata.company_primary_colour);
+        if (metadata.company_secondary_colour) setCompanySecondaryColour(metadata.company_secondary_colour);
+        if (metadata.company_logo_url) setLogoPreview(metadata.company_logo_url);
       } catch (error) {
         console.error('Error in loadProfile:', error);
       }
@@ -108,6 +112,7 @@ export function CompanyProfileForm({ onComplete }: CompanyProfileFormProps) {
       // Upload logo if provided
       let logoUrl = logoPreview;
       
+      /* Temporarily disabled
       if (companyLogo) {
         try {
           const bucketName = 'company-assets';
@@ -132,18 +137,12 @@ export function CompanyProfileForm({ onComplete }: CompanyProfileFormProps) {
           console.error('Error handling logo upload:', logoError);
         }
       }
+      */
       
-      // Update profile in a single operation
+      // Update profile with just company name
       const profileData = {
         id: user.id,
-        company_name: companyName,
-        company_location: companyLocation,
-        company_website: companyWebsite,
-        company_primary_colour: companyPrimaryColour,
-        company_secondary_colour: companySecondaryColour,
-        company_logo_url: logoUrl,
-        company_profile_completed: true,
-        updated_at: new Date().toISOString()
+        company_name: companyName
       };
       
       const { error: upsertError } = await supabase
@@ -151,16 +150,21 @@ export function CompanyProfileForm({ onComplete }: CompanyProfileFormProps) {
         .upsert(profileData, { onConflict: 'id' });
       
       if (upsertError) {
-        console.error('Error updating profile:', upsertError);
-        throw new Error('Failed to update company profile');
+        console.error('Error updating profile - Full error:', upsertError);
+        console.error('Profile data being sent:', profileData);
+        throw new Error(`Failed to update company profile: ${upsertError.message}`);
       }
-      
-      // Update user metadata (minimal data)
+
+      // Store additional fields in user metadata
       await supabase.auth.updateUser({
         data: {
           company_name: companyName,
           company_location: companyLocation,
-          company_profile_completed: true
+          company_website: companyWebsite,
+          company_primary_colour: companyPrimaryColour,
+          company_secondary_colour: companySecondaryColour,
+          company_logo_url: logoUrl,
+          profile_completed: true
         }
       });
       

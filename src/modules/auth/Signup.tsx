@@ -90,7 +90,7 @@ export function Signup() {
         }
       } else {
         // Navigate to setup page upon successful signup
-        navigate("/setup");
+        navigate("/post-signup");
       }
     } catch (err: any) {
       setError(err.message || "회원가입 중 오류가 발생했습니다.");

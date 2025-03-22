@@ -1,6 +1,22 @@
 import { supabase } from '@/app/lib/supabase';
 import setupInterviewsDatabase from './setupInterviewsDatabase';
 
+const EXPECTED_PROFILE_COLUMNS = [
+  'id',
+  'updated_at',
+  'username',
+  'full_name',
+  'avatar_url',
+  'company_name',
+  'company_industry',
+  'company_location',
+  'company_website',
+  'company_primary_colour',
+  'company_secondary_colour',
+  'company_logo_url',
+  'company_profile_completed'
+];
+
 /**
  * Sets up the database by ensuring the profiles table exists
  * This function should be called once when the application starts
@@ -9,17 +25,21 @@ export async function setupDatabase() {
   try {
     console.log('Setting up database...');
     
-    // Check if profiles table exists
-    const { error: checkError } = await supabase
-      .from('profiles')
-      .select('id')
-      .limit(1);
+    // Check if profiles table exists and verify its structure
+    const { data: columns, error: describeError } = await supabase
+      .rpc('describe_table', { table_name: 'profiles' });
     
-    if (checkError) {
-      console.error('Error checking profiles table:', checkError);
+    if (describeError) {
+      console.error('Error checking profiles table structure:', describeError);
       console.log('The profiles table needs to be created by an administrator');
-    } else {
-      console.log('Profiles table exists');
+    } else if (columns) {
+      console.log('Profiles table exists with columns:', columns);
+      const missingColumns = EXPECTED_PROFILE_COLUMNS.filter(
+        col => !columns.some((c: any) => c.column_name === col)
+      );
+      if (missingColumns.length > 0) {
+        console.error('Missing columns in profiles table:', missingColumns);
+      }
     }
     
     // Check if storage bucket exists, but don't try to create it

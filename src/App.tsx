@@ -11,6 +11,7 @@ import { Signup } from '@/modules/auth/Signup';
 import { AuthCallback } from '@/modules/auth/AuthCallback';
 import { OAuthCallback } from "./modules/auth/OauthCallback";
 import { CompleteProfile } from "./modules/auth/CompleteProfile";
+import { PostSignupSetup } from '@/modules/auth/PostSignupSetup';
 import { PrivacyPolicy } from '@/modules/legal/PrivacyPolicy';
 import { TermsOfService } from '@/modules/legal/TermsOfService';
 import { CookiePolicy } from '@/modules/legal/CookiePolicy';
@@ -90,6 +91,7 @@ const App = () => {
                   <Route path="/" element={<Login />} />
                   <Route path="/signup" element={<Signup />} />
                   <Route path="/oauth-callback" element={<OAuthCallback />} />
+                  <Route path="/post-signup" element={<PostSignupSetup />} />
                   <Route
                     path="/complete-profile"
                     element={<CompleteProfile />}
