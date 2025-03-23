@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/app/lib/supabase';
 
 /**
  * Sets up the database tables required for the interview system

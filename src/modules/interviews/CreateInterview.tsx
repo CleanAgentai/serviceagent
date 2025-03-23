@@ -1,7 +1,7 @@
-import { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/app/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,7 +13,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardFooter,
+} from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
@@ -32,6 +39,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
+import { useAuth } from "@/app/providers/AuthContext";
 
 // Define types for our form
 interface Question {
@@ -69,9 +77,12 @@ const languages = [
   "Hindi",
 ];
 
-export function CreateInterview() {
+export default function CreateInterview() {
   const navigate = useNavigate();
+
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("basic-details");
+
   const [loading, setLoading] = useState(false);
   const [interviewLink, setInterviewLink] = useState<string | null>(null);
 
@@ -119,7 +130,7 @@ export function CreateInterview() {
   };
 
   // Add a new question
-  const addQuestion = () => {
+  const addQuestion = useCallback(() => {
     const newOrder = formData.questions.length + 1;
     setFormData((prev) => ({
       ...prev,
@@ -133,29 +144,32 @@ export function CreateInterview() {
         },
       ],
     }));
-  };
+  }, [formData.questions]);
 
   // Remove a question
-  const removeQuestion = (id: string) => {
-    if (formData.questions.length <= 1) {
-      toast.error("You must have at least one question");
-      return;
-    }
+  const removeQuestion = useCallback(
+    (id: string) => {
+      if (formData.questions.length <= 1) {
+        toast.error("You must have at least one question");
+        return;
+      }
 
-    setFormData((prev) => {
-      const filteredQuestions = prev.questions.filter((q) => q.id !== id);
-      // Reorder questions
-      const reorderedQuestions = filteredQuestions.map((q, index) => ({
-        ...q,
-        order: index + 1,
-      }));
+      setFormData((prev) => {
+        const filteredQuestions = prev.questions.filter((q) => q.id !== id);
+        // Reorder questions
+        const reorderedQuestions = filteredQuestions.map((q, index) => ({
+          ...q,
+          order: index + 1,
+        }));
 
-      return {
-        ...prev,
-        questions: reorderedQuestions,
-      };
-    });
-  };
+        return {
+          ...prev,
+          questions: reorderedQuestions,
+        };
+      });
+    },
+    [formData.questions]
+  );
 
   // Navigate to next tab
   const nextTab = () => {
@@ -192,7 +206,14 @@ export function CreateInterview() {
   };
 
   // Handle form submission
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!user) {
+      toast.error("You must be logged in to create an interview");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -293,7 +314,9 @@ export function CreateInterview() {
       console.log("Willow response:", result);
       // Set the interview link to display to the user
       setInterviewLink(generatedLink);
+
       toast.success("Interview created successfully!");
+      navigate("/interviews");
     } catch (error) {
       console.error("Error in handleSubmit:", error);
 
