@@ -177,19 +177,6 @@ export function CompanyProfileForm({ onComplete }: CompanyProfileFormProps) {
         );
       }
 
-      // Store additional fields in user metadata
-      // await supabase.auth.updateUser({
-      //   data: {
-      //     company_name: companyName,
-      //     company_location: companyLocation,
-      //     company_website: companyWebsite,
-      //     company_primary_colour: companyPrimaryColour,
-      //     company_secondary_colour: companySecondaryColour,
-      //     company_logo_url: logoUrl,
-      //     profile_completed: true
-      //   }
-      // });
-
       //  Willow BackendAPI Call
       const departmentRes = await fetch(
         "http://localhost:5000/api/departments",

@@ -228,6 +228,20 @@ export default function CreateInterview() {
         setLoading(false);
         return;
       }
+      //bring willo_company_key from company_profiles
+      const { data: companyProfile, error: profileError } = await supabase
+        .from("company_profiles")
+        .select("willo_company_key")
+        .eq("created_by_user_id", user.id)
+        .single();
+
+      if (profileError || !companyProfile?.willo_company_key) {
+        toast.error("Could not find your company profile or Willow key.");
+        setLoading(false);
+        return;
+      }
+
+      const departmentKey = companyProfile.willo_company_key;
 
       // Generate a unique interview ID and link
       const interviewId = uuidv4();
@@ -249,7 +263,7 @@ export default function CreateInterview() {
         user_id: user.id,
         title: formData.title,
         default_language: formData.language,
-        department: "f451bd9ef1c94fd3a7e3b1a583cc3fa0", //hardcoding
+        department: departmentKey, //hardcoding
         description: formData.description,
         message_templates: {
           invitation_email: null,
@@ -265,7 +279,7 @@ export default function CreateInterview() {
           show_availability_calendar: formData.showAvailability,
           deadline: formData.deadline ? formData.deadline.toISOString() : null,
         },
-        // deadline: formData.deadline ? formData.deadline.toISOString() : null,
+
         // created_at: new Date().toISOString(),
         // interview_link: generatedLink,
       };
