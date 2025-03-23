@@ -326,6 +326,23 @@ export default function CreateInterview() {
 
       const result = await response.json();
       console.log("Willow response:", result);
+      const { key: willo_interview_key } = result;
+
+      const { error: insertError } = await supabase.from("interviews").insert({
+        user_id: user.id,
+        willo_interview_key,
+        title: formData.title,
+        description: formData.description,
+        department: departmentKey,
+        deadline: formData.deadline ? formData.deadline.toISOString() : null,
+        language: formData.language,
+      });
+
+      if (insertError) {
+        console.error("❌ Supabase insert error:", insertError);
+        throw new Error(insertError.message);
+      }
+
       // Set the interview link to display to the user
       setInterviewLink(generatedLink);
 
