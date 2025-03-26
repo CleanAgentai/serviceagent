@@ -177,17 +177,15 @@ export function CompanyProfileForm({ onComplete }: CompanyProfileFormProps) {
         );
       }
 
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
       //  Willow BackendAPI Call
-      const departmentRes = await fetch(
-        "http://localhost:5000/api/departments",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ companyName }),
-        }
-      );
+      const departmentRes = await fetch(`${apiBaseUrl}/api/departments`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ companyName }),
+      });
 
       const departmentData = await departmentRes.json();
       if (!departmentRes.ok) {

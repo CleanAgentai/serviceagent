@@ -107,8 +107,9 @@ const CreateInterview = () => {
         questions,
         createdAt: new Date().toISOString(),
       };
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
-      const response = await fetch("http://localhost:5000/api/interviews", {
+      const response = await fetch(`${apiBaseUrl}/api/interviews`, {
         method: "Post",
         headers: {
           "Content-Type": "application/json",

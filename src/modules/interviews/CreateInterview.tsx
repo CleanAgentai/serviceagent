@@ -312,7 +312,9 @@ export default function CreateInterview() {
       //   setLoading(false);
       //   return;
       // }
-      const response = await fetch("http://localhost:5000/api/interviews", {
+
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+      const response = await fetch(`${apiBaseUrl}/api/interviews`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -326,7 +328,8 @@ export default function CreateInterview() {
 
       const result = await response.json();
       console.log("Willow response:", result);
-      const { key: willo_interview_key } = result;
+      const { key: willo_interview_key, invite_link: interview_link } = result;
+      console.log("invite_link", interview_link);
 
       const { error: insertError } = await supabase.from("interviews").insert({
         user_id: user.id,
@@ -336,6 +339,7 @@ export default function CreateInterview() {
         department: departmentKey,
         deadline: formData.deadline ? formData.deadline.toISOString() : null,
         language: formData.language,
+        interview_link,
       });
 
       if (insertError) {
