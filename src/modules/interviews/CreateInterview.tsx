@@ -347,6 +347,28 @@ export default function CreateInterview() {
         throw new Error(insertError.message);
       }
 
+      // Insert questions into Supabase
+      const { error: questionInsertError } = await supabase
+        .from("questions")
+        .insert(
+          formData.questions.map((q, index) => ({
+            interview_id: willo_interview_key,
+            question_text: q.text,
+            question_type: q.answerType,
+            question_order: index + 1,
+            max_duration: q.maxDuration || null,
+            max_retakes: q.maxRetakes || null,
+            max_characters: q.maxCharacters || null,
+            thinking_time: q.thinkingTime || null,
+            created_at: new Date().toISOString(),
+          }))
+        );
+
+      if (questionInsertError) {
+        console.error("❌ Failed to insert questions:", questionInsertError);
+        throw new Error("Question insert failed");
+      }
+
       // Set the interview link to display to the user
       setInterviewLink(generatedLink);
 
