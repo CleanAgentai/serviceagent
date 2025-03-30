@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { ArrowLeft, Video, X, Star, MessageCircle } from 'lucide-react';
+import React, { useEffect, useState } from "react";
+import { supabase } from "@/app/lib/supabase";
+import { useParams, useNavigate } from "react-router-dom";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft, Video, X, Star, MessageCircle } from "lucide-react";
+import { useLocation } from "react-router-dom";
 import {
   Dialog,
   DialogContent,
@@ -45,7 +47,7 @@ interface Response {
     id: string;
     question: string;
     answer: string;
-    videoUrl?: string;
+    //videoUrl?: string;
   }>;
 }
 
@@ -54,127 +56,163 @@ export function ResponseDetails() {
   const navigate = useNavigate();
   const [response, setResponse] = useState<Response | null>(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'questions' | 'reviews'>('questions');
+  const [activeTab, setActiveTab] = useState<"questions" | "reviews">(
+    "questions"
+  );
   const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);
   const [selectedMetric, setSelectedMetric] = useState<string | null>(null);
+  const location = useLocation();
+  const { candidateName: passedName, interviewTitle: passedTitle } =
+    location.state || {};
 
   useEffect(() => {
     // TODO: Replace with actual API call
     const fetchResponse = async () => {
       try {
         // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
+        const { data: questionData, error: questionError } = await supabase
+          .from("responses")
+          .select(
+            `
+          id,
+          responses_text,
+          question_id,
+          questions ( question_text )
+        `
+          )
+          .eq("interview_attempt_id", responseId);
+
+        if (questionError) {
+          console.error("Error fetching questions:", questionError);
+        }
+
+        const mappedQuestions = (questionData || []).map((item) => ({
+          id: item.id,
+          question: item.questions?.question_text || "Unknown question",
+          answer: item.responses_text || "",
+        }));
+
         // Mock data - replace with actual API data
         setResponse({
-          id: responseId || '',
-          candidateName: 'John Smith',
-          appliedPosition: 'Software Engineer – Technical Round 1',
+          id: responseId || "",
+          candidateName: passedName || "John Smith",
+          appliedPosition: "Software Engineer – Technical Round 1",
           overallRating: 8.5,
           metrics: {
             communication: 8.5,
             experience: 7.5,
             professionalism: 9,
             reliability: 8,
-            problemSolving: 7
+            problemSolving: 7,
           },
           metricEvaluations: {
             communication: {
               title: "Communication Evaluation",
-              analysis: "John demonstrated strong verbal communication skills, effectively conveying his ideas with clarity and confidence. He maintained a professional and engaging tone, adapting well to the interviewer's prompts. However, his responses occasionally included unnecessary details, making them slightly longer than needed. Refining his answers to be more structured and concise would improve overall effectiveness.",
+              analysis:
+                "John demonstrated strong verbal communication skills, effectively conveying his ideas with clarity and confidence. He maintained a professional and engaging tone, adapting well to the interviewer's prompts. However, his responses occasionally included unnecessary details, making them slightly longer than needed. Refining his answers to be more structured and concise would improve overall effectiveness.",
               strengths: [
                 "Articulates ideas clearly and confidently",
                 "Engages well in conversation and adapts tone appropriately",
-                "Demonstrates active listening skills"
+                "Demonstrates active listening skills",
               ],
               weaknesses: [
                 "Could streamline responses to be more concise",
-                "Needs to focus on delivering key points efficiently without over-explaining"
-              ]
+                "Needs to focus on delivering key points efficiently without over-explaining",
+              ],
             },
             experience: {
               title: "Experience Evaluation",
-              analysis: "The candidate shows solid foundational experience in software development with practical knowledge of key technologies. Their project work demonstrates hands-on experience, though some areas could benefit from deeper technical exposure.",
+              analysis:
+                "The candidate shows solid foundational experience in software development with practical knowledge of key technologies. Their project work demonstrates hands-on experience, though some areas could benefit from deeper technical exposure.",
               strengths: [
                 "Strong practical coding experience",
                 "Good understanding of software development lifecycle",
-                "Proven track record of project delivery"
+                "Proven track record of project delivery",
               ],
               weaknesses: [
                 "Limited experience with enterprise-scale applications",
-                "Could benefit from more exposure to modern frameworks"
-              ]
+                "Could benefit from more exposure to modern frameworks",
+              ],
             },
             professionalism: {
               title: "Professionalism Evaluation",
-              analysis: "Candidate exhibited excellent professional conduct throughout the interview. Their demeanor, preparation, and approach to discussion demonstrated strong professional maturity.",
+              analysis:
+                "Candidate exhibited excellent professional conduct throughout the interview. Their demeanor, preparation, and approach to discussion demonstrated strong professional maturity.",
               strengths: [
                 "Well-prepared for technical discussions",
                 "Maintains professional composure",
-                "Shows respect and courtesy in communication"
+                "Shows respect and courtesy in communication",
               ],
               weaknesses: [
                 "Could improve time management in responses",
-                "May benefit from more structured presentation of ideas"
-              ]
+                "May benefit from more structured presentation of ideas",
+              ],
             },
             reliability: {
               title: "Reliability Evaluation",
-              analysis: "The candidate demonstrated good reliability through consistent responses and clear commitment to project delivery. Their examples showed dedication to meeting deadlines and handling responsibilities.",
+              analysis:
+                "The candidate demonstrated good reliability through consistent responses and clear commitment to project delivery. Their examples showed dedication to meeting deadlines and handling responsibilities.",
               strengths: [
                 "Strong track record of meeting deadlines",
                 "Consistent approach to problem-solving",
-                "Takes ownership of assigned tasks"
+                "Takes ownership of assigned tasks",
               ],
               weaknesses: [
                 "Could provide more specific examples of handling setbacks",
-                "Needs more emphasis on proactive communication"
-              ]
+                "Needs more emphasis on proactive communication",
+              ],
             },
             problemSolving: {
               title: "Problem Solving Evaluation",
-              analysis: "Shows good analytical capabilities and systematic approach to problem-solving. The candidate demonstrated ability to break down complex problems, though sometimes could be more efficient in solution development.",
+              analysis:
+                "Shows good analytical capabilities and systematic approach to problem-solving. The candidate demonstrated ability to break down complex problems, though sometimes could be more efficient in solution development.",
               strengths: [
                 "Methodical approach to problem analysis",
                 "Good understanding of algorithmic thinking",
-                "Ability to consider multiple solutions"
+                "Ability to consider multiple solutions",
               ],
               weaknesses: [
                 "Could improve efficiency in solution implementation",
-                "Needs to better prioritize optimization approaches"
-              ]
-            }
+                "Needs to better prioritize optimization approaches",
+              ],
+            },
           },
           aiAnalysis: {
-            keyObservations: 'The candidate demonstrates strong potential with notable experience in the field. Their communication skills and technical knowledge align well with the position requirements.',
+            keyObservations:
+              "The candidate demonstrates strong potential with notable experience in the field. Their communication skills and technical knowledge align well with the position requirements.",
             strengths: [
-              'Strong communication skills',
-              'Relevant industry experience',
-              'Problem-solving abilities'
+              "Strong communication skills",
+              "Relevant industry experience",
+              "Problem-solving abilities",
             ],
             weaknesses: [
-              'Previous project outcomes',
-              'Team collaboration style',
-              'Career growth expectations'
-            ]
+              "Previous project outcomes",
+              "Team collaboration style",
+              "Career growth expectations",
+            ],
           },
-          questions: [
-            {
-              id: '1',
-              question: 'Tell us about your experience in software development',
-              answer: 'I have 5 years of experience in software development...',
-              videoUrl: 'https://example.com/video1'
-            },
-            {
-              id: '2',
-              question: 'How do you handle technical challenges in your projects?',
-              answer: 'My approach to handling technical challenges involves...',
-              videoUrl: 'https://example.com/video2'
-            }
-          ]
+          questions: mappedQuestions,
+          // [
+          //   {
+          //     id: "1",
+          //     question: "Tell us about your experience in software development",
+          //     answer: "I have 5 years of experience in software development...",
+          //     //videoUrl: "https://example.com/video1",
+          //   },
+          //   {
+          //     id: "2",
+          //     question:
+          //       "How do you handle technical challenges in your projects?",
+          //     answer:
+          //       "My approach to handling technical challenges involves...",
+          //     //videoUrl: "https://example.com/video2",
+          //   },
+          // ],
         });
       } catch (error) {
-        console.error('Error fetching response:', error);
+        console.error("Error fetching response:", error);
       } finally {
         setLoading(false);
       }
@@ -192,9 +230,7 @@ export function ResponseDetails() {
           <Star key={i} className="w-6 h-6 text-yellow-400 fill-current" />
         );
       } else {
-        stars.push(
-          <Star key={i} className="w-6 h-6 text-gray-300" />
-        );
+        stars.push(<Star key={i} className="w-6 h-6 text-gray-300" />);
       }
     }
     return stars;
@@ -202,11 +238,17 @@ export function ResponseDetails() {
 
   const MetricEvaluationDialog = () => {
     if (!selectedMetric || !response) return null;
-    
-    const evaluation = response.metricEvaluations[selectedMetric as keyof typeof response.metricEvaluations];
-    
+
+    const evaluation =
+      response.metricEvaluations[
+        selectedMetric as keyof typeof response.metricEvaluations
+      ];
+
     return (
-      <Dialog open={!!selectedMetric} onOpenChange={() => setSelectedMetric(null)}>
+      <Dialog
+        open={!!selectedMetric}
+        onOpenChange={() => setSelectedMetric(null)}
+      >
         <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-2xl font-semibold flex items-center gap-2">
@@ -218,7 +260,9 @@ export function ResponseDetails() {
                 <span className="font-medium">{response.candidateName}</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-gray-600">Position/Interview Applied:</span>
+                <span className="text-gray-600">
+                  Position/Interview Applied:
+                </span>
                 <span className="font-medium">{response.appliedPosition}</span>
               </div>
               <div className="flex items-center gap-2">
@@ -241,7 +285,10 @@ export function ResponseDetails() {
                 <h3 className="font-medium text-green-900 mb-3">Strengths</h3>
                 <ul className="space-y-2">
                   {evaluation.strengths.map((strength, index) => (
-                    <li key={index} className="flex items-center text-green-800">
+                    <li
+                      key={index}
+                      className="flex items-center text-green-800"
+                    >
                       <span className="w-2 h-2 bg-green-600 rounded-full mr-2"></span>
                       {strength}
                     </li>
@@ -279,7 +326,7 @@ export function ResponseDetails() {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
         <h2 className="text-2xl font-semibold mb-4">Response Not Found</h2>
-        <Button onClick={() => navigate('/interviews/responses')}>
+        <Button onClick={() => navigate("/interviews/responses")}>
           Back to Responses
         </Button>
       </div>
@@ -287,7 +334,7 @@ export function ResponseDetails() {
   }
 
   const renderContent = () => {
-    if (activeTab === 'questions') {
+    if (activeTab === "questions") {
       return (
         <div className="grid grid-cols-2 gap-6">
           <Card className="p-6">
@@ -298,12 +345,14 @@ export function ResponseDetails() {
                   key={q.id}
                   className={`w-full text-left p-4 rounded-lg border ${
                     selectedQuestion === q.id
-                      ? 'border-blue-600 bg-blue-50'
-                      : 'border-gray-200 hover:border-blue-400'
+                      ? "border-blue-600 bg-blue-50"
+                      : "border-gray-200 hover:border-blue-400"
                   }`}
                   onClick={() => setSelectedQuestion(q.id)}
                 >
-                  <p className="text-sm font-medium text-gray-900">{q.question}</p>
+                  <p className="text-sm font-medium text-gray-900">
+                    {q.question}
+                  </p>
                 </button>
               ))}
             </div>
@@ -313,8 +362,8 @@ export function ResponseDetails() {
             <h2 className="text-lg font-semibold mb-4">Transcript</h2>
             {selectedQuestion ? (
               <div className="text-gray-600">
-                {response.questions.find(q => q.id === selectedQuestion)?.answer || 
-                  'Select a question to view its transcript'}
+                {response.questions.find((q) => q.id === selectedQuestion)
+                  ?.answer || "Select a question to view its transcript"}
               </div>
             ) : (
               <div className="text-center text-gray-500 py-8">
@@ -331,7 +380,9 @@ export function ResponseDetails() {
         <Card className="p-6">
           <h2 className="text-xl font-semibold mb-4">Overall Rating</h2>
           <div className="flex items-center gap-4">
-            <span className="text-4xl font-bold text-blue-600">{response.overallRating}/10</span>
+            <span className="text-4xl font-bold text-blue-600">
+              {response.overallRating}/10
+            </span>
             <div className="flex">{renderStars(response.overallRating)}</div>
           </div>
         </Card>
@@ -342,20 +393,28 @@ export function ResponseDetails() {
             <table className="w-full">
               <thead>
                 <tr className="border-b">
-                  <th className="text-left py-2 px-4 font-semibold text-gray-700">Metric</th>
-                  <th className="text-left py-2 px-4 font-semibold text-gray-700">Rating</th>
-                  <th className="text-left py-2 px-4 font-semibold text-gray-700">Evaluation and Feedback</th>
+                  <th className="text-left py-2 px-4 font-semibold text-gray-700">
+                    Metric
+                  </th>
+                  <th className="text-left py-2 px-4 font-semibold text-gray-700">
+                    Rating
+                  </th>
+                  <th className="text-left py-2 px-4 font-semibold text-gray-700">
+                    Evaluation and Feedback
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 <tr className="border-b">
                   <td className="py-2 px-4">Communication</td>
-                  <td className="py-2 px-4">{response.metrics.communication}/10</td>
                   <td className="py-2 px-4">
-                    <Button 
-                      variant="link" 
+                    {response.metrics.communication}/10
+                  </td>
+                  <td className="py-2 px-4">
+                    <Button
+                      variant="link"
                       className="text-blue-600 p-0"
-                      onClick={() => setSelectedMetric('communication')}
+                      onClick={() => setSelectedMetric("communication")}
                     >
                       View Communication Assessment
                     </Button>
@@ -363,12 +422,14 @@ export function ResponseDetails() {
                 </tr>
                 <tr className="border-b">
                   <td className="py-2 px-4">Experience</td>
-                  <td className="py-2 px-4">{response.metrics.experience}/10</td>
                   <td className="py-2 px-4">
-                    <Button 
-                      variant="link" 
+                    {response.metrics.experience}/10
+                  </td>
+                  <td className="py-2 px-4">
+                    <Button
+                      variant="link"
                       className="text-blue-600 p-0"
-                      onClick={() => setSelectedMetric('experience')}
+                      onClick={() => setSelectedMetric("experience")}
                     >
                       View Technical Background
                     </Button>
@@ -376,12 +437,14 @@ export function ResponseDetails() {
                 </tr>
                 <tr className="border-b">
                   <td className="py-2 px-4">Professionalism</td>
-                  <td className="py-2 px-4">{response.metrics.professionalism}/10</td>
                   <td className="py-2 px-4">
-                    <Button 
-                      variant="link" 
+                    {response.metrics.professionalism}/10
+                  </td>
+                  <td className="py-2 px-4">
+                    <Button
+                      variant="link"
                       className="text-blue-600 p-0"
-                      onClick={() => setSelectedMetric('professionalism')}
+                      onClick={() => setSelectedMetric("professionalism")}
                     >
                       View Professional Conduct
                     </Button>
@@ -389,12 +452,14 @@ export function ResponseDetails() {
                 </tr>
                 <tr className="border-b">
                   <td className="py-2 px-4">Reliability</td>
-                  <td className="py-2 px-4">{response.metrics.reliability}/10</td>
                   <td className="py-2 px-4">
-                    <Button 
-                      variant="link" 
+                    {response.metrics.reliability}/10
+                  </td>
+                  <td className="py-2 px-4">
+                    <Button
+                      variant="link"
                       className="text-blue-600 p-0"
-                      onClick={() => setSelectedMetric('reliability')}
+                      onClick={() => setSelectedMetric("reliability")}
                     >
                       View Dependability Report
                     </Button>
@@ -402,12 +467,14 @@ export function ResponseDetails() {
                 </tr>
                 <tr>
                   <td className="py-2 px-4">Problem Solving</td>
-                  <td className="py-2 px-4">{response.metrics.problemSolving}/10</td>
                   <td className="py-2 px-4">
-                    <Button 
-                      variant="link" 
+                    {response.metrics.problemSolving}/10
+                  </td>
+                  <td className="py-2 px-4">
+                    <Button
+                      variant="link"
                       className="text-blue-600 p-0"
-                      onClick={() => setSelectedMetric('problemSolving')}
+                      onClick={() => setSelectedMetric("problemSolving")}
                     >
                       View Analytical Skills
                     </Button>
@@ -424,8 +491,12 @@ export function ResponseDetails() {
             <div className="flex items-start gap-3">
               <MessageCircle className="w-5 h-5 text-blue-600 mt-1" />
               <div>
-                <h3 className="font-medium text-blue-900 mb-2">Key Observations</h3>
-                <p className="text-blue-800">{response.aiAnalysis.keyObservations}</p>
+                <h3 className="font-medium text-blue-900 mb-2">
+                  Key Observations
+                </h3>
+                <p className="text-blue-800">
+                  {response.aiAnalysis.keyObservations}
+                </p>
               </div>
             </div>
           </Card>
@@ -473,8 +544,13 @@ export function ResponseDetails() {
             <ArrowLeft className="h-4 w-4" />
           </Button>
           <div>
-            <h1 className="text-2xl font-semibold">{response.candidateName}</h1>
-            <p className="text-gray-600">Applied for {response.appliedPosition}</p>
+            <h1 className="text-2xl font-semibold">
+              {passedName || "Candidate"}
+            </h1>
+            <p className="text-gray-600">
+              Applied for{" "}
+              {passedTitle || response?.appliedPosition || "Interview"}
+            </p>
           </div>
         </div>
         <Button
@@ -490,22 +566,22 @@ export function ResponseDetails() {
       <div className="flex gap-4 border-b mb-6">
         <button
           className={`px-4 py-2 font-medium ${
-            activeTab === 'questions'
-              ? 'text-blue-600 border-b-2 border-blue-600'
-              : 'text-gray-600 hover:text-gray-900'
+            activeTab === "questions"
+              ? "text-blue-600 border-b-2 border-blue-600"
+              : "text-gray-600 hover:text-gray-900"
           }`}
-          onClick={() => setActiveTab('questions')}
+          onClick={() => setActiveTab("questions")}
         >
           <Video className="w-4 h-4 inline-block mr-2" />
           Video & Transcripts
         </button>
         <button
           className={`px-4 py-2 font-medium ${
-            activeTab === 'reviews'
-              ? 'text-blue-600 border-b-2 border-blue-600'
-              : 'text-gray-600 hover:text-gray-900'
+            activeTab === "reviews"
+              ? "text-blue-600 border-b-2 border-blue-600"
+              : "text-gray-600 hover:text-gray-900"
           }`}
-          onClick={() => setActiveTab('reviews')}
+          onClick={() => setActiveTab("reviews")}
         >
           <Star className="w-4 h-4 inline-block mr-2" />
           Reviews & Ratings
@@ -516,4 +592,4 @@ export function ResponseDetails() {
       <MetricEvaluationDialog />
     </div>
   );
-} 
+}

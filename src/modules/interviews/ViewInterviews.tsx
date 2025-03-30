@@ -28,49 +28,42 @@ const mockInterviewData: Interview[] = [
     title: "Senior Software Engineer Position",
     createdAt: "2024-03-20",
     deadline: "15/04/2024",
-    location: "Remote",
   },
   {
     id: "int-002",
     title: "Product Manager Interview",
     createdAt: "2024-03-18",
     deadline: "10/04/2024",
-    location: "San Francisco, CA",
   },
   {
     id: "int-003",
     title: "UX Designer Assessment",
     createdAt: "2024-03-15",
     deadline: "05/04/2024",
-    location: "Remote",
   },
   {
     id: "int-004",
     title: "Marketing Specialist Position",
     createdAt: "2024-03-12",
     deadline: "30/03/2024",
-    location: "New York, NY",
   },
   {
     id: "int-005",
     title: "Data Scientist Interview",
     createdAt: "2024-03-10",
     deadline: "25/03/2024",
-    location: "Boston, MA",
   },
   {
     id: "int-006",
     title: "Customer Success Manager Role",
     createdAt: "2024-03-08",
     deadline: "22/03/2024",
-    location: "Remote",
   },
   {
     id: "int-007",
     title: "DevOps Engineer Technical Assessment",
     createdAt: "2024-03-05",
     deadline: "19/03/2024",
-    location: "Seattle, WA",
   },
 ];
 
@@ -112,7 +105,7 @@ export function ViewInterviews() {
             deadline: interview.deadline
               ? new Date(interview.deadline).toLocaleDateString("en-GB")
               : "No deadline",
-            location: interview.location || "Remote",
+
             interviewLink: interview.interview_link || "",
           }));
 
@@ -251,11 +244,6 @@ export function ViewInterviews() {
                   <div className="text-sm font-medium text-gray-900">
                     {interview.title}
                   </div>
-                  {interview.location && (
-                    <div className="text-xs text-gray-500">
-                      {interview.location}
-                    </div>
-                  )}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm text-gray-500">
