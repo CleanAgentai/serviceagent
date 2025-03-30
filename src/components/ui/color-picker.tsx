@@ -61,9 +61,8 @@ export function ColorPicker({
                 className="w-full h-8 cursor-pointer"
               />
               <div className="grid grid-cols-8 gap-1">
-                {['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4',
-                  '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722',
-                  '#795548', '#9e9e9e', '#607d8b', '#000000', '#ffffff'].map((color) => (
+                {['#ff6900', '#fcb900', '#7bdcb5', '#00d084', '#8ed1fc', '#0693e3', '#abb8c3',
+                  '#eb144c', '#f78da7', '#9900ef'].map((color) => (
                   <Button
                     key={color}
                     variant="outline"
