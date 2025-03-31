@@ -27,7 +27,8 @@ export function CompanyProfileForm({ onComplete }: CompanyProfileFormProps) {
   const [companyLocation, setCompanyLocation] = useState("");
   const [companyWebsite, setCompanyWebsite] = useState("");
   const [companyPrimaryColour, setCompanyPrimaryColour] = useState("#0693e3");
-  const [companySecondaryColour, setCompanySecondaryColour] = useState("#8ed1fc");
+  const [companySecondaryColour, setCompanySecondaryColour] =
+    useState("#8ed1fc");
   const [companyLogo, setCompanyLogo] = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
 
@@ -38,7 +39,9 @@ export function CompanyProfileForm({ onComplete }: CompanyProfileFormProps) {
     async function loadProfile() {
       setLoading(true); // Indicate loading
       try {
-        const { data: { user } } = await supabase.auth.getUser();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
         if (!user || !isMounted) return;
 
         // Fetch data from company_profiles table
@@ -47,10 +50,10 @@ export function CompanyProfileForm({ onComplete }: CompanyProfileFormProps) {
           .select("*") // Select all columns
           .eq("created_by_user_id", user.id)
           .single();
-          
+
         // Also fetch company_name from profiles table (might be redundant if also in company_profiles)
         // Consider consolidating if possible in the future
-         const { data: basicProfile, error: basicProfileError } = await supabase
+        const { data: basicProfile, error: basicProfileError } = await supabase
           .from("profiles")
           .select("company_name")
           .eq("id", user.id)
@@ -58,34 +61,41 @@ export function CompanyProfileForm({ onComplete }: CompanyProfileFormProps) {
 
         if (!isMounted) return; // Check again after async calls
 
-        if (profileError && profileError.code !== 'PGRST116') { // Ignore 'PGRST116' (single row not found)
-            console.error("Error loading company profile:", profileError);
-            setError("Failed to load company profile.");
+        if (profileError && profileError.code !== "PGRST116") {
+          // Ignore 'PGRST116' (single row not found)
+          console.error("Error loading company profile:", profileError);
+          setError("Failed to load company profile.");
         } else if (companyProfile) {
-            // Set state from company_profiles data
-            setCompanyLocation(companyProfile.company_location || "");
-            setCompanyWebsite(companyProfile.company_website || "");
-            setCompanyPrimaryColour(companyProfile.company_primary_colour || "#0693e3");
-            setCompanySecondaryColour(companyProfile.company_secondary_colour || "#8ed1fc");
-            setLogoPreview(companyProfile.company_logo_url || null);
+          // Set state from company_profiles data
+          setCompanyLocation(companyProfile.company_location || "");
+          setCompanyWebsite(companyProfile.company_website || "");
+          setCompanyPrimaryColour(
+            companyProfile.company_primary_colour || "#0693e3"
+          );
+          setCompanySecondaryColour(
+            companyProfile.company_secondary_colour || "#8ed1fc"
+          );
+          setLogoPreview(companyProfile.company_logo_url || null);
         }
-        
-        if (basicProfileError && basicProfileError.code !== 'PGRST116') {
-             console.error("Error loading basic profile:", basicProfileError);
+
+        if (basicProfileError && basicProfileError.code !== "PGRST116") {
+          console.error("Error loading basic profile:", basicProfileError);
         } else if (basicProfile) {
-            setCompanyName(basicProfile.company_name || "");
+          setCompanyName(basicProfile.company_name || "");
         }
-
-
       } catch (error) {
         console.error("Error in loadProfile:", error);
         if (isMounted) {
-          setError(error instanceof Error ? error.message : "An unexpected error occurred while loading profile.");
+          setError(
+            error instanceof Error
+              ? error.message
+              : "An unexpected error occurred while loading profile."
+          );
         }
       } finally {
-         if (isMounted) {
-            setLoading(false); // Finish loading
-         }
+        if (isMounted) {
+          setLoading(false); // Finish loading
+        }
       }
     }
 
@@ -214,11 +224,11 @@ export function CompanyProfileForm({ onComplete }: CompanyProfileFormProps) {
         throw new Error(departmentData?.error || "Failed to create department");
       }
 
-      // ✅ 6. company_profiles 업데이트 (이미 row 있음)
+      // ✅ 6. company_profiles update(already the row is existing)
       const { error: companyProfileError } = await supabase
         .from("company_profiles")
         .update({
-          willo_company_key: departmentData.key,
+          willo_company_key: departmentData.data.key,
           company_location: companyLocation,
           company_website: companyWebsite,
           company_primary_colour: companyPrimaryColour,
@@ -229,7 +239,7 @@ export function CompanyProfileForm({ onComplete }: CompanyProfileFormProps) {
         .eq("created_by_user_id", user.id); // 트리거로 만든 row 타겟팅
 
       if (companyProfileError) {
-        console.error('Supabase update error details:', companyProfileError);
+        console.error("Supabase update error details:", companyProfileError);
         throw new Error("Failed to update company_profiles with Willow key");
       }
 
