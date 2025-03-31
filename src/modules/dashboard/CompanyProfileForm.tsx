@@ -26,9 +26,8 @@ export function CompanyProfileForm({ onComplete }: CompanyProfileFormProps) {
   const [companyName, setCompanyName] = useState("");
   const [companyLocation, setCompanyLocation] = useState("");
   const [companyWebsite, setCompanyWebsite] = useState("");
-  const [companyPrimaryColour, setCompanyPrimaryColour] = useState("#4f46e5");
-  const [companySecondaryColour, setCompanySecondaryColour] =
-    useState("#818cf8");
+  const [companyPrimaryColour, setCompanyPrimaryColour] = useState("#0693e3");
+  const [companySecondaryColour, setCompanySecondaryColour] = useState("#8ed1fc");
   const [companyLogo, setCompanyLogo] = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
 
@@ -37,40 +36,56 @@ export function CompanyProfileForm({ onComplete }: CompanyProfileFormProps) {
     let isMounted = true;
 
     async function loadProfile() {
+      setLoading(true); // Indicate loading
       try {
-        const {
-          data: { user },
-        } = await supabase.auth.getUser();
-
+        const { data: { user } } = await supabase.auth.getUser();
         if (!user || !isMounted) return;
 
-        // Get profile data
-        const { data: profile } = await supabase
+        // Fetch data from company_profiles table
+        const { data: companyProfile, error: profileError } = await supabase
+          .from("company_profiles")
+          .select("*") // Select all columns
+          .eq("created_by_user_id", user.id)
+          .single();
+          
+        // Also fetch company_name from profiles table (might be redundant if also in company_profiles)
+        // Consider consolidating if possible in the future
+         const { data: basicProfile, error: basicProfileError } = await supabase
           .from("profiles")
           .select("company_name")
           .eq("id", user.id)
           .single();
 
-        // Load company data from user metadata
-        const metadata = user.user_metadata || {};
+        if (!isMounted) return; // Check again after async calls
 
-        if (profile && isMounted) {
-          if (profile.company_name) setCompanyName(profile.company_name);
+        if (profileError && profileError.code !== 'PGRST116') { // Ignore 'PGRST116' (single row not found)
+            console.error("Error loading company profile:", profileError);
+            setError("Failed to load company profile.");
+        } else if (companyProfile) {
+            // Set state from company_profiles data
+            setCompanyLocation(companyProfile.company_location || "");
+            setCompanyWebsite(companyProfile.company_website || "");
+            setCompanyPrimaryColour(companyProfile.company_primary_colour || "#0693e3");
+            setCompanySecondaryColour(companyProfile.company_secondary_colour || "#8ed1fc");
+            setLogoPreview(companyProfile.company_logo_url || null);
+        }
+        
+        if (basicProfileError && basicProfileError.code !== 'PGRST116') {
+             console.error("Error loading basic profile:", basicProfileError);
+        } else if (basicProfile) {
+            setCompanyName(basicProfile.company_name || "");
         }
 
-        // Load additional fields from metadata
-        if (metadata.company_location)
-          setCompanyLocation(metadata.company_location);
-        if (metadata.company_website)
-          setCompanyWebsite(metadata.company_website);
-        if (metadata.company_primary_colour)
-          setCompanyPrimaryColour(metadata.company_primary_colour);
-        if (metadata.company_secondary_colour)
-          setCompanySecondaryColour(metadata.company_secondary_colour);
-        if (metadata.company_logo_url)
-          setLogoPreview(metadata.company_logo_url);
+
       } catch (error) {
         console.error("Error in loadProfile:", error);
+        if (isMounted) {
+          setError(error instanceof Error ? error.message : "An unexpected error occurred while loading profile.");
+        }
+      } finally {
+         if (isMounted) {
+            setLoading(false); // Finish loading
+         }
       }
     }
 
@@ -184,7 +199,14 @@ export function CompanyProfileForm({ onComplete }: CompanyProfileFormProps) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ companyName }),
+        body: JSON.stringify({
+          companyName,
+          companyLocation,
+          companyWebsite,
+          companyPrimaryColour,
+          companySecondaryColour,
+          companyLogoUrl: logoUrl,
+        }),
       });
 
       const departmentData = await departmentRes.json();
@@ -207,6 +229,7 @@ export function CompanyProfileForm({ onComplete }: CompanyProfileFormProps) {
         .eq("created_by_user_id", user.id); // 트리거로 만든 row 타겟팅
 
       if (companyProfileError) {
+        console.error('Supabase update error details:', companyProfileError);
         throw new Error("Failed to update company_profiles with Willow key");
       }
 

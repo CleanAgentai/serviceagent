@@ -73,7 +73,7 @@ export default defineConfig(({ mode }) => {
       logOverride: { 'this-is-undefined-in-esm': 'silent' }
     },
     preview: {
-      port: 3000,
+      port: 5001,
       host: true,
     },
   }

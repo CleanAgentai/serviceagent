@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/app/providers/AuthContext';
 import {
@@ -7,12 +7,43 @@ import {
   X,
 } from 'lucide-react';
 import { CompanyProfileForm } from './CompanyProfileForm';
+import { supabase } from '@/app/lib/supabase';
 
 export default function Settings() {
   const navigate = useNavigate();
   const { logout } = useAuth();
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [companyColors, setCompanyColors] = useState({
+    primary: '#0693e3',
+    secondary: '#8ed1fc'
+  });
+
+  useEffect(() => {
+    async function loadCompanyColors() {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+
+        const { data: companyProfile } = await supabase
+          .from('company_profiles')
+          .select('company_primary_colour, company_secondary_colour')
+          .eq('created_by_user_id', user.id)
+          .single();
+
+        if (companyProfile) {
+          setCompanyColors({
+            primary: companyProfile.company_primary_colour || '#0693e3',
+            secondary: companyProfile.company_secondary_colour || '#8ed1fc'
+          });
+        }
+      } catch (error) {
+        console.error('Error loading company colors:', error);
+      }
+    }
+
+    loadCompanyColors();
+  }, []);
 
   const handleLogout = async () => {
     setLoading(true);
@@ -40,7 +71,7 @@ export default function Settings() {
                 </div>
                 <button
                   onClick={() => setShowChangePasswordModal(true)}
-                  className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                  className="inline-flex items-center px-4 py-2 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors"
                 >
                   Change Password
                 </button>
@@ -72,7 +103,11 @@ export default function Settings() {
                 </label>
                 <input
                   type="password"
-                  className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-transparent"
+                  style={{
+                    '--tw-ring-color': companyColors.primary,
+                    '--tw-ring-offset-color': companyColors.primary,
+                  } as React.CSSProperties}
                 />
               </div>
               <div>
@@ -81,7 +116,11 @@ export default function Settings() {
                 </label>
                 <input
                   type="password"
-                  className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-transparent"
+                  style={{
+                    '--tw-ring-color': companyColors.primary,
+                    '--tw-ring-offset-color': companyColors.primary,
+                  } as React.CSSProperties}
                 />
               </div>
               <div>
@@ -90,10 +129,19 @@ export default function Settings() {
                 </label>
                 <input
                   type="password"
-                  className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-transparent"
+                  style={{
+                    '--tw-ring-color': companyColors.primary,
+                    '--tw-ring-offset-color': companyColors.primary,
+                  } as React.CSSProperties}
                 />
               </div>
-              <button className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">
+              <button 
+                className="w-full text-white py-2 px-4 rounded-lg transition-colors"
+                style={{
+                  backgroundColor: companyColors.primary,
+                }}
+              >
                 Update Password
               </button>
             </div>
