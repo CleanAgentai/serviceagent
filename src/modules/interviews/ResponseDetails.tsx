@@ -51,6 +51,12 @@ interface Response {
   }>;
 }
 
+interface QuestionData {
+  id: string;
+  responses_text: string;
+  questions: { question_text: string }[];
+}
+
 export function ResponseDetails() {
   const { responseId } = useParams();
   const navigate = useNavigate();
@@ -72,7 +78,7 @@ export function ResponseDetails() {
         // Simulate API call
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
-        const { data: questionData, error: questionError } = await supabase
+        const { data: rawQuestionData, error: questionError } = await supabase
           .from("responses")
           .select(
             `
@@ -87,10 +93,11 @@ export function ResponseDetails() {
         if (questionError) {
           console.error("Error fetching questions:", questionError);
         }
+        const questionData = rawQuestionData as QuestionData[];
 
         const mappedQuestions = (questionData || []).map((item) => ({
           id: item.id,
-          question: item.questions?.question_text || "Unknown question",
+          question: item.questions?.[0]?.question_text || "Unknown question",
           answer: item.responses_text || "",
         }));
 
