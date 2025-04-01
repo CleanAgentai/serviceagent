@@ -37,6 +37,36 @@ export function ViewResponses() {
   useEffect(() => {
     const fetchAttempts = async () => {
       setLoading(true);
+
+      // 1.auth.user.id
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+
+      if (!user) {
+        console.error("User not logged in", userError);
+        setAttempts([]);
+        setLoading(false);
+        return;
+      }
+
+      // 2. company_willo_key
+      const { data: profile, error: profileError } = await supabase
+        .from("company_profiles")
+        .select("willo_company_key")
+        .eq("created_by_user_id", user.id)
+        .single();
+
+      if (!profile || profileError) {
+        console.error("Company profile not found", profileError);
+        setAttempts([]);
+        setLoading(false);
+        return;
+      }
+
+      const companyKey = profile.willo_company_key;
+
       const { data, error } = await supabase
         .from("interview_attempts")
         .select(
@@ -49,6 +79,7 @@ export function ViewResponses() {
           interviews(title)
         `
         )
+        .eq("department_key", companyKey)
         .order("created_at", { ascending: false });
 
       if (error) {
