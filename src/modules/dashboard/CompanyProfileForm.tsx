@@ -157,32 +157,34 @@ export function CompanyProfileForm({ onComplete }: CompanyProfileFormProps) {
       // Upload logo if provided
       let logoUrl = logoPreview;
 
-      /* Temporarily disabled
       if (companyLogo) {
         try {
-          const bucketName = 'company-assets';
-          const fileExt = companyLogo.name.split('.').pop();
+          const bucketName = "company-assets";
+          const fileExt = companyLogo.name.split(".").pop();
           const fileName = `${user.id}-logo-${Date.now()}.${fileExt}`;
-          
-          const { data: uploadData, error: uploadError } = await supabase.storage
-            .from(bucketName)
-            .upload(fileName, companyLogo, {
-              cacheControl: '3600',
-              upsert: true
-            });
-          
-          if (!uploadError && uploadData) {
-            const { data: publicUrlData } = supabase.storage
+
+          const { data: uploadData, error: uploadError } =
+            await supabase.storage
               .from(bucketName)
-              .getPublicUrl(fileName);
-            
-            logoUrl = publicUrlData.publicUrl;
+              .upload(fileName, companyLogo, {
+                cacheControl: "3600",
+                upsert: true,
+              });
+
+          if (uploadError) {
+            throw uploadError;
           }
+
+          const { data: publicUrlData } = supabase.storage
+            .from(bucketName)
+            .getPublicUrl(fileName);
+
+          logoUrl = publicUrlData.publicUrl;
         } catch (logoError) {
-          console.error('Error handling logo upload:', logoError);
+          console.error("Error handling logo upload:", logoError);
+          toast.error("Failed to upload logo.");
         }
       }
-      */
 
       // Update profile with just company name
       const profileData = {
