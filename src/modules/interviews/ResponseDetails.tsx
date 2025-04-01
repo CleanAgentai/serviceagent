@@ -54,7 +54,7 @@ interface Response {
 interface QuestionData {
   id: string;
   responses_text: string;
-  questions: { question_text: string }[];
+  questions: { question_text: string } | null;
 }
 
 export function ResponseDetails() {
@@ -93,11 +93,12 @@ export function ResponseDetails() {
         if (questionError) {
           console.error("Error fetching questions:", questionError);
         }
-        const questionData = rawQuestionData as QuestionData[];
+        console.log("supabase data type:", rawQuestionData);
+        const questionData = rawQuestionData as unknown as QuestionData[];
 
         const mappedQuestions = (questionData || []).map((item) => ({
           id: item.id,
-          question: item.questions?.[0]?.question_text || "Unknown question",
+          question: item.questions?.question_text || "Unknown question",
           answer: item.responses_text || "",
         }));
 
