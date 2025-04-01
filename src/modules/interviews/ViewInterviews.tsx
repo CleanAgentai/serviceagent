@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Copy, Check } from "lucide-react";
+import { toast } from "sonner";
+
 import {
   Search,
   Calendar,
@@ -76,6 +79,7 @@ export function ViewInterviews() {
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [error, setError] = useState<string | null>(null);
   const [usingMockData, setUsingMockData] = useState(true);
+  const [copiedLinkId, setCopiedLinkId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchInterviews = async () => {
@@ -138,6 +142,18 @@ export function ViewInterviews() {
       setSortOrder("asc");
     }
   };
+  const copyToClipboard = (link: string, id: string) => {
+    navigator.clipboard
+      .writeText(link)
+      .then(() => {
+        setCopiedLinkId(id);
+        toast.success("Link copied!");
+        setTimeout(() => setCopiedLinkId(null), 2000);
+      })
+      .catch(() => {
+        toast.error("Failed to copy");
+      });
+  };
 
   const filteredInterviews = interviews
     .filter((interview) =>
@@ -199,41 +215,32 @@ export function ViewInterviews() {
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 <button
-                  className="flex items-center gap-2"
                   onClick={() => handleSort("title")}
+                  className="flex items-center gap-2"
                 >
                   Title
                   <ArrowUpDown className="w-4 h-4" />
                 </button>
               </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 <button
-                  className="flex items-center gap-2"
                   onClick={() => handleSort("date")}
+                  className="flex items-center gap-2"
                 >
                   Created Date
                   <ArrowUpDown className="w-4 h-4" />
                 </button>
               </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Deadline
               </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Link
+              </th>
+              <th className="px-2 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider w-10">
+                {/* intentionally empty header for copy button */}
               </th>
             </tr>
           </thead>
@@ -245,30 +252,43 @@ export function ViewInterviews() {
                     {interview.title}
                   </div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-500">
-                    {interview.createdAt}
-                  </div>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {interview.createdAt}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-500">
-                    {interview.deadline}
-                  </div>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {interview.deadline}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-600">
+                  {interview.interviewLink ? (
+                    <a
+                      href={interview.interviewLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:underline flex items-center gap-1"
+                    >
+                      <LinkIcon className="w-4 h-4" />
+                      Open
+                    </a>
+                  ) : (
+                    <span className="text-gray-300">No link</span>
+                  )}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right">
                   {interview.interviewLink ? (
                     <button
                       onClick={() =>
-                        window.open(interview.interviewLink, "_blank")
+                        copyToClipboard(interview.interviewLink!, interview.id)
                       }
                       className="text-gray-400 hover:text-gray-600"
                     >
-                      <LinkIcon className="w-5 h-5" />
+                      {copiedLinkId === interview.id ? (
+                        <Check className="w-5 h-5 text-green-500" />
+                      ) : (
+                        <Copy className="w-5 h-5" />
+                      )}
                     </button>
                   ) : (
-                    <span className="text-gray-300 cursor-not-allowed">
-                      <LinkIcon className="w-5 h-5" />
-                    </span>
+                    <Copy className="w-5 h-5 text-gray-300 cursor-not-allowed" />
                   )}
                 </td>
               </tr>
