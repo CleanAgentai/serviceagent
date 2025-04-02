@@ -344,7 +344,13 @@ export default function CreateInterview() {
 
       const result = await response.json();
       console.log("Willow response:", result);
-      const { key: willo_interview_key, invite_link: interview_link } = result;
+      const {
+        key: willo_interview_key,
+        invite_link: interview_link,
+        settings,
+      } = result;
+      const show_hints_and_tips = settings?.show_hints_and_tips;
+      const show_availability_calendar = settings?.show_availability_calendar;
       console.log("invite_link", interview_link);
 
       const { error: insertError } = await supabase.from("interviews").insert({
@@ -356,6 +362,8 @@ export default function CreateInterview() {
         deadline: formData.deadline ? formData.deadline.toISOString() : null,
         language: formData.language,
         interview_link,
+        show_hints_and_tips,
+        show_availability_calendar,
       });
 
       if (insertError) {
