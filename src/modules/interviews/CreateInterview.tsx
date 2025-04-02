@@ -247,15 +247,31 @@ export default function CreateInterview() {
       const interviewId = uuidv4();
       const generatedLink = `${window.location.origin}/interview/${interviewId}`;
 
-      const transformedQuestions = formData.questions.map((q, index) => ({
-        text: q.text,
-        order: index + 1,
-        answer_type: q.answerType,
-        max_duration: q.maxDuration || null,
-        max_retakes: q.maxRetakes || null,
-        max_characters: q.maxCharacters || null,
-        thinking_time: q.thinkingTime || null,
-      }));
+      const transformedQuestions = formData.questions.map((q, index) => {
+        const base = {
+          text: q.text,
+          order: index + 1,
+          answer_type: q.answerType,
+          max_retakes: q.maxRetakes ?? 0,
+        };
+
+        if (q.answerType === "video") {
+          return {
+            ...base,
+            max_duration: q.maxDuration ?? 60, // 반드시 있어야 함
+            thinking_time: q.thinkingTime ?? 3, // 반드시 있어야 함
+          };
+        }
+
+        if (q.answerType === "text") {
+          return {
+            ...base,
+            max_characters: q.maxCharacters ?? 500, // 반드시 있어야 함
+          };
+        }
+
+        return base;
+      });
 
       // Prepare the interview data
       const interviewData = {
