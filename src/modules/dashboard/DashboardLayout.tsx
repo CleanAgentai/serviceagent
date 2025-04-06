@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Menu, X, Home, Settings, User, Users, Clipboard, LogOut } from 'lucide-react';
-import { ModeToggle } from '@/components/ui/mode-toggle';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -52,9 +51,9 @@ export default function DashboardLayout() {
       {/* Desktop Sidebar */}
       <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 border-r">
         <div className="flex flex-col flex-grow pt-5 overflow-y-auto">
-          <div className="px-4 pb-4 flex items-center border-b mb-6">
+          <div className="pl-1 pr-4 flex items-center border-b">
             <div className="flex-1">
-              <h2 className="text-xl font-semibold text-foreground">ServiceAgent.ai</h2>
+              <img src="/Untitled design-6.svg" alt="ServiceAgent Logo" className="h-48 w-64" />
             </div>
           </div>
           <div className="flex-1 px-3">
@@ -71,7 +70,11 @@ export default function DashboardLayout() {
             </nav>
           </div>
           <div className="p-4 border-t">
-            <Button variant="outline" className="w-full justify-start" onClick={handleLogout}>
+            <Button 
+              variant="outline" 
+              className="w-full justify-start" 
+              onClick={handleLogout}
+            >
               <LogOut className="mr-2 h-4 w-4" />
               <span>Log out</span>
             </Button>
@@ -83,8 +86,8 @@ export default function DashboardLayout() {
       <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
         <SheetContent side="left" className="p-0 w-64 sm:max-w-sm">
           <ScrollArea className="h-full p-4">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold text-foreground">ServiceAgent.ai</h2>
+            <div className="flex items-center justify-between">
+              <img src="/Untitled design-6.svg" alt="ServiceAgent Logo" className="h-48 w-64" />
               <Button variant="ghost" size="icon" onClick={() => setIsSidebarOpen(false)}>
                 <X size={20} />
               </Button>
@@ -101,7 +104,11 @@ export default function DashboardLayout() {
               ))}
             </nav>
             <div className="mt-6 pt-6 border-t">
-              <Button variant="outline" className="w-full justify-start" onClick={handleLogout}>
+              <Button 
+                variant="outline" 
+                className="w-full justify-start" 
+                onClick={handleLogout}
+              >
                 <LogOut className="mr-2 h-4 w-4" />
                 <span>Log out</span>
               </Button>
@@ -137,22 +144,7 @@ export default function DashboardLayout() {
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>Your profile</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            
-            <ModeToggle />
-            
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Avatar className="h-8 w-8 cursor-pointer" onClick={() => navigate('/dashboard/settings')}>
-                    <AvatarFallback>{getInitials()}</AvatarFallback>
-                  </Avatar>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Account settings</p>
+                  <p>Company settings</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>

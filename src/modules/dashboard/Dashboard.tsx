@@ -72,8 +72,8 @@ const Dashboard = () => {
   const metrics = [
     {
       title: 'Candidates Hired',
-      value: '12',
-      change: '+20%',
+      value: '0',
+      change: '',
       icon: UserCheck,
       description: 'Successfully hired candidates',
       color: 'text-green-500',
@@ -81,8 +81,8 @@ const Dashboard = () => {
     },
     {
       title: 'Candidates Applied',
-      value: '45',
-      change: '+15%',
+      value: '0',
+      change: '',
       icon: UserPlus,
       description: 'Total applications received',
       color: 'text-blue-500',
@@ -90,8 +90,8 @@ const Dashboard = () => {
     },
     {
       title: 'Qualified Candidates',
-      value: '28',
-      change: '+8%',
+      value: '0',
+      change: '',
       icon: Users,
       description: 'Candidates meeting requirements',
       color: 'text-purple-500',
@@ -99,8 +99,8 @@ const Dashboard = () => {
     },
     {
       title: 'Average Time to Hire',
-      value: '14d',
-      change: '-2d',
+      value: '0',
+      change: '',
       icon: Clock,
       description: 'Average days to complete hire',
       color: 'text-orange-500',
@@ -214,7 +214,7 @@ const Dashboard = () => {
             </div>
             <button 
               onClick={() => navigate('/interviews')}
-              className="text-sm text-blue-600 font-medium flex items-center hover:text-blue-800 transition-colors"
+              className="text-sm text-[#1E529D] font-medium flex items-center hover:text-[#1E529D]/90 transition-colors"
             >
               View All
               <ChevronRight className="h-4 w-4 ml-1" />
@@ -235,7 +235,7 @@ const Dashboard = () => {
               <p className="text-gray-600 mb-4">Create your first interview to get started</p>
               <button
                 onClick={() => navigate('/interviews/create')}
-                className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700"
+                className="inline-flex items-center px-4 py-2 bg-[#1E529D] text-white text-sm font-medium rounded-lg hover:bg-[#1E529D]/90"
               >
                 <Plus className="h-4 w-4 mr-2" />
                 Create Interview

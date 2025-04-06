@@ -18,7 +18,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const isActive = location.pathname === path || location.pathname.startsWith(`${path}/`);
+  const isActive = location.pathname === path;
   
   const handleClick = () => {
     navigate(path);
@@ -31,8 +31,8 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
       className={cn(
         "w-full justify-start text-sm font-medium",
         isActive 
-          ? "bg-secondary text-secondary-foreground" 
-          : "text-muted-foreground hover:text-foreground hover:bg-muted"
+          ? "bg-secondary text-secondary-foreground"
+          : "text-[#1E529D] hover:text-[#1E529D] hover:bg-muted"
       )}
       onClick={handleClick}
     >

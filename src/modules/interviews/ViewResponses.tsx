@@ -14,6 +14,13 @@ import {
   FileText,
   Calendar,
 } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface InterviewAttempt {
   id: string;
@@ -22,6 +29,7 @@ interface InterviewAttempt {
   phone: string;
   createdAt: string;
   interviewTitle: string;
+  status: string;
 }
 
 export function ViewResponses() {
@@ -75,6 +83,7 @@ export function ViewResponses() {
           interview_id,
           candidate_id,
           created_at,
+          status,
           candidates(email,name,phone),
           interviews(title)
         `
@@ -93,6 +102,7 @@ export function ViewResponses() {
           phone: item.candidates?.phone || "N/A",
           createdAt: new Date(item.created_at).toLocaleDateString(),
           interviewTitle: item.interviews?.title || "Untitled Interview",
+          status: item.status || "Pending",
         }));
         setAttempts(formatted);
       }
@@ -110,6 +120,14 @@ export function ViewResponses() {
       setSortBy(field);
       setSortOrder("asc");
     }
+  };
+
+  const handleLocalStatusChange = (attemptId: string, newStatus: string) => {
+    setAttempts(prevAttempts =>
+      prevAttempts.map(attempt =>
+        attempt.id === attemptId ? { ...attempt, status: newStatus } : attempt
+      )
+    );
   };
 
   const filtered = attempts
@@ -158,7 +176,7 @@ export function ViewResponses() {
       </Card>
 
       <div className="space-y-4">
-        <div className="grid grid-cols-5 gap-4 px-4 py-2 bg-gray-100 rounded-lg font-semibold">
+        <div className="grid grid-cols-6 gap-4 px-4 py-2 bg-gray-100 rounded-lg font-semibold">
           <button
             onClick={() => handleSort("name")}
             className="flex items-center gap-2"
@@ -175,12 +193,13 @@ export function ViewResponses() {
             <ArrowUpDown className="w-4 h-4" />
           </button>
           <div>Contact Info</div>
+          <div>Status</div>
           <div>Actions</div>
         </div>
 
         {filtered.map((attempt) => (
           <Card key={attempt.id} className="p-4">
-            <div className="grid grid-cols-5 gap-4 items-center">
+            <div className="grid grid-cols-6 gap-4 items-center">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500">
                   {attempt.candidateName.charAt(0)}
@@ -200,11 +219,41 @@ export function ViewResponses() {
                 <div>{attempt.phone}</div>
               </div>
               <div>
+                <Select
+                  value={attempt.status}
+                  onValueChange={(value) => handleLocalStatusChange(attempt.id, value)}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {["Pending", "Rejected", "Hired"].map(option => (
+                      <SelectItem key={option} value={option}>
+                        {option}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
                 <Button
                   variant="outline"
                   onClick={() => setSelectedAttempt(attempt)}
                 >
                   View AI Analysis
+                </Button>
+              </div>
+              <div>
+                <Button
+                  variant="outline"
+                  onClick={() => navigate(`/interviews/responses/${attempt.id}`, {
+                    state: {
+                      candidateName: attempt.candidateName,
+                      interviewTitle: attempt.interviewTitle
+                    }
+                  })}
+                >
+                  View Details
                 </Button>
               </div>
             </div>

@@ -24,65 +24,20 @@ interface Interview {
   interviewLink?: string;
 }
 
-// Mock data for interviews
-const mockInterviewData: Interview[] = [
-  {
-    id: "int-001",
-    title: "Senior Software Engineer Position",
-    createdAt: "2024-03-20",
-    deadline: "15/04/2024",
-  },
-  {
-    id: "int-002",
-    title: "Product Manager Interview",
-    createdAt: "2024-03-18",
-    deadline: "10/04/2024",
-  },
-  {
-    id: "int-003",
-    title: "UX Designer Assessment",
-    createdAt: "2024-03-15",
-    deadline: "05/04/2024",
-  },
-  {
-    id: "int-004",
-    title: "Marketing Specialist Position",
-    createdAt: "2024-03-12",
-    deadline: "30/03/2024",
-  },
-  {
-    id: "int-005",
-    title: "Data Scientist Interview",
-    createdAt: "2024-03-10",
-    deadline: "25/03/2024",
-  },
-  {
-    id: "int-006",
-    title: "Customer Success Manager Role",
-    createdAt: "2024-03-08",
-    deadline: "22/03/2024",
-  },
-  {
-    id: "int-007",
-    title: "DevOps Engineer Technical Assessment",
-    createdAt: "2024-03-05",
-    deadline: "19/03/2024",
-  },
-];
-
 export function ViewInterviews() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
-  const [interviews, setInterviews] = useState<Interview[]>(mockInterviewData); // Start with mock data
+  const [interviews, setInterviews] = useState<Interview[]>([]); // Initialize with empty array
   const [loading, setLoading] = useState(true);
   const [sortBy, setSortBy] = useState<"date" | "title">("date");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [error, setError] = useState<string | null>(null);
-  const [usingMockData, setUsingMockData] = useState(true);
   const [copiedLinkId, setCopiedLinkId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchInterviews = async () => {
+      setLoading(true); // Start loading
+      setError(null); // Reset error
       try {
         console.log("Fetching interviews...");
         const { data, error } = await supabase
@@ -95,9 +50,7 @@ export function ViewInterviews() {
         if (error) {
           console.error("Error fetching interviews:", error);
           setError(error.message);
-          console.log("Using mock data due to error");
-          setUsingMockData(true);
-          // Keep using the mock data we initialized with
+          setInterviews([]); // Set to empty array on error
         } else if (data && data.length > 0) {
           console.log("Successfully fetched interviews:", data);
           const formattedInterviews = data.map((interview) => ({
@@ -112,20 +65,15 @@ export function ViewInterviews() {
 
             interviewLink: interview.interview_link || "",
           }));
-
           setInterviews(formattedInterviews);
-          setUsingMockData(false);
         } else {
-          console.log("No interviews found in database, using mock data");
-          // Keep using the mock data we initialized with
-          setUsingMockData(true);
+          console.log("No interviews found in database.");
+          setInterviews([]); // Set to empty array if no data found
         }
-      } catch (error) {
-        console.error("Error fetching interviews:", error);
-        setError(error instanceof Error ? error.message : "Unknown error");
-        console.log("Using mock data due to error");
-        // Keep using the mock data we initialized with
-        setUsingMockData(true);
+      } catch (err) {
+        console.error("Error fetching interviews catch block:", err);
+        setError(err instanceof Error ? err.message : "Unknown error");
+        setInterviews([]); // Set to empty array on catch
       } finally {
         setLoading(false);
       }
@@ -191,12 +139,6 @@ export function ViewInterviews() {
           Create Interview
         </Button>
       </div>
-
-      {usingMockData && (
-        <div className="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded mb-6">
-          <p>Using example interview data for demonstration purposes.</p>
-        </div>
-      )}
 
       <Card className="p-4 mb-6">
         <div className="relative">
