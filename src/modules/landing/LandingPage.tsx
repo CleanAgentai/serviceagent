@@ -1,36 +1,37 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import * as Icons from 'lucide-react';
-import Timeline from './components/Timeline';
-import Testimonials from './components/Testimonials';
-import FAQ from './components/FAQ';
-import Pricing from './components/Pricing';
-import { openCalendly } from '@/app/shared/utils/calendly';
+import React from "react";
+import { Link } from "react-router-dom";
+import * as Icons from "lucide-react";
+import Timeline from "./components/Timeline";
+import Testimonials from "./components/Testimonials";
+import FAQ from "./components/FAQ";
+import Pricing from "./components/Pricing";
+import { openCalendly } from "@/app/shared/utils/calendly";
+import { Navigation } from "./components/Navigation";
 
 // Stats
 const stats = [
   {
-    value: '95%',
-    label: 'Faster Hiring',
-    description: 'Reduce hiring time with AI',
+    value: "95%",
+    label: "Faster Hiring",
+    description: "Reduce hiring time with AI",
     icon: Icons.Clock,
   },
   {
-    value: '20h+',
-    label: 'Weekly Time Saved',
-    description: 'With automated scheduling',
+    value: "20h+",
+    label: "Weekly Time Saved",
+    description: "With automated scheduling",
     icon: Icons.Calendar,
   },
   {
-    value: '40%',
-    label: 'Higher Conversion',
-    description: 'With AI-powered follow-ups',
+    value: "40%",
+    label: "Higher Conversion",
+    description: "With AI-powered follow-ups",
     icon: Icons.TrendingUp,
   },
   {
-    value: '30%',
-    label: 'Better Retention',
-    description: 'After implementing AI',
+    value: "30%",
+    label: "Better Retention",
+    description: "After implementing AI",
     icon: Icons.PiggyBank,
   },
 ];
@@ -39,82 +40,91 @@ const stats = [
 const heroFeatures = [
   {
     icon: Icons.Users,
-    title: 'Instant Hiring',
-    description: 'AI posts jobs, screens candidates, and hires top cleaners—fast'
+    title: "Instant Hiring",
+    description:
+      "AI posts jobs, screens candidates, and hires top cleaners—fast",
   },
   {
     icon: Icons.Calendar,
-    title: 'More Bookings, Less Chasing',
-    description: 'AI follows up, books jobs, and fills your schedule 24/7'
+    title: "More Bookings, Less Chasing",
+    description: "AI follows up, books jobs, and fills your schedule 24/7",
   },
   {
     icon: Icons.ClipboardCheck,
-    title: 'Zero Admin Work',
-    description: 'AI handles scheduling, reminders, and client updates on autopilot'
-  }
+    title: "Zero Admin Work",
+    description:
+      "AI handles scheduling, reminders, and client updates on autopilot",
+  },
 ];
 
 // Main features
 const mainFeatures = [
   {
-    title: 'AI-Powered Hiring',
-    description: 'Automates job postings, interviews, and onboarding. Posts to multiple job boards, conducts AI video interviews, and handles paperwork.',
+    title: "AI-Powered Hiring",
+    description:
+      "Automates job postings, interviews, and onboarding. Posts to multiple job boards, conducts AI video interviews, and handles paperwork.",
     icon: Icons.Users,
-    gradient: 'from-blue-600 to-teal-500',
+    gradient: "from-blue-600 to-teal-500",
     features: [
-      'Multi-platform job posting',
-      'AI video interviews',
-      'Automated background checks',
-      'Digital onboarding'
-    ]
+      "Multi-platform job posting",
+      "AI video interviews",
+      "Automated background checks",
+      "Digital onboarding",
+    ],
   },
   {
-    title: 'AI-Driven Sales',
-    description: 'Captures, qualifies, and follows up with leads 24/7. Provides instant response, books appointments, and nurtures prospects to close.',
+    title: "AI-Driven Sales",
+    description:
+      "Captures, qualifies, and follows up with leads 24/7. Provides instant response, books appointments, and nurtures prospects to close.",
     icon: Icons.Target,
-    gradient: 'from-blue-600 to-teal-500',
+    gradient: "from-blue-600 to-teal-500",
     features: [
-      'Instant lead response',
-      'Smart lead qualification',
-      'Automated follow-ups',
-      'Meeting scheduling'
-    ]
+      "Instant lead response",
+      "Smart lead qualification",
+      "Automated follow-ups",
+      "Meeting scheduling",
+    ],
   },
   {
-    title: 'AI Marketing',
-    description: 'Creates and manages multi-channel marketing campaigns. Generates content, optimizes ads, and tracks performance.',
+    title: "AI Marketing",
+    description:
+      "Creates and manages multi-channel marketing campaigns. Generates content, optimizes ads, and tracks performance.",
     icon: Icons.Megaphone,
-    gradient: 'from-blue-600 to-teal-500',
+    gradient: "from-blue-600 to-teal-500",
     features: [
-      'Multi-channel campaigns',
-      'AI content creation',
-      'Automated scheduling',
-      'Performance analytics'
-    ]
+      "Multi-channel campaigns",
+      "AI content creation",
+      "Automated scheduling",
+      "Performance analytics",
+    ],
   },
   {
-    title: 'AI Operations',
-    description: 'Manages scheduling, dispatch, and quality control. Optimizes routes, tracks performance, and ensures customer satisfaction.',
+    title: "AI Operations",
+    description:
+      "Manages scheduling, dispatch, and quality control. Optimizes routes, tracks performance, and ensures customer satisfaction.",
     icon: Icons.Calendar,
-    gradient: 'from-blue-600 to-teal-500',
+    gradient: "from-blue-600 to-teal-500",
     features: [
-      'Smart scheduling',
-      'Route optimization',
-      'Quality monitoring',
-      'Customer feedback'
-    ]
-  }
+      "Smart scheduling",
+      "Route optimization",
+      "Quality monitoring",
+      "Customer feedback",
+    ],
+  },
 ];
 
 const highlights = [
-  'No credit card required',
-  '7-day free trial',
-  'Cancel anytime'
+  "No credit card required",
+  "7-day free trial",
+  "Cancel anytime",
 ];
 
 export function LandingPage() {
   return (
     <div className="min-h-screen bg-white overflow-hidden">
+      {/* Navigation */}
+      <Navigation />
+
       {/* Hero Section */}
       <div className="relative min-h-[80vh] sm:min-h-[90vh] flex items-center overflow-hidden bg-gradient-to-b from-white via-blue-50/30 to-white">
         {/* Background Decorations */}
@@ -149,7 +159,8 @@ export function LandingPage() {
 
             {/* Subheading */}
             <p className="mt-4 sm:mt-8 max-w-2xl mx-auto text-base sm:text-lg lg:text-xl text-gray-600">
-              Our AI handles hiring, marketing, sales, and operations—reducing costs by 90% and saving you 20+ hours per week.
+              Our AI handles hiring, marketing, sales, and operations—reducing
+              costs by 90% and saving you 20+ hours per week.
             </p>
 
             {/* CTA Buttons */}
@@ -173,7 +184,10 @@ export function LandingPage() {
             {/* Trial Features */}
             <div className="mt-4 sm:mt-6 flex flex-wrap justify-center gap-x-4 sm:gap-x-6 gap-y-1 sm:gap-y-2 text-sm sm:text-base">
               {highlights.map((highlight) => (
-                <div key={highlight} className="flex items-center text-gray-500">
+                <div
+                  key={highlight}
+                  className="flex items-center text-gray-500"
+                >
                   <Icons.Check className="h-3 w-3 sm:h-4 sm:w-4 text-blue-600 mr-1 sm:mr-2" />
                   <span>{highlight}</span>
                 </div>
@@ -183,7 +197,7 @@ export function LandingPage() {
             {/* Feature Cards */}
             <div className="mt-12 sm:mt-20 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8 max-w-4xl mx-auto">
               {heroFeatures.map((feature) => (
-                <div 
+                <div
                   key={feature.title}
                   className="group relative bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
                 >
@@ -211,7 +225,10 @@ export function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {stats.map((stat) => (
-              <div key={stat.value} className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+              <div
+                key={stat.value}
+                className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+              >
                 <div className="mb-4 bg-gradient-to-r from-blue-600/10 to-teal-500/10 p-3 rounded-lg w-14 h-14 flex items-center justify-center">
                   <stat.icon className="h-6 w-6 text-blue-600" />
                 </div>
@@ -221,9 +238,7 @@ export function LandingPage() {
                 <div className="text-lg font-semibold text-gray-900 mb-1">
                   {stat.label}
                 </div>
-                <div className="text-gray-600">
-                  {stat.description}
-                </div>
+                <div className="text-gray-600">{stat.description}</div>
               </div>
             ))}
           </div>
@@ -231,7 +246,10 @@ export function LandingPage() {
       </div>
 
       {/* Main Features Section */}
-      <div id="complete-ai-solution" className="relative py-16 sm:py-28 overflow-hidden bg-gray-50">
+      <div
+        id="complete-ai-solution"
+        className="relative py-16 sm:py-28 overflow-hidden bg-gray-50"
+      >
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-5" />
           <div className="absolute top-0 right-0 w-[40rem] h-[40rem] bg-blue-100/50 rounded-full blur-3xl" />
@@ -241,7 +259,7 @@ export function LandingPage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-20">
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 sm:mb-6">
-              Complete{' '}
+              Complete{" "}
               <span className="relative">
                 <span className="relative z-10 bg-gradient-to-r from-blue-600 to-teal-500 bg-clip-text text-transparent">
                   AI-Powered Solution
@@ -255,15 +273,17 @@ export function LandingPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-8 lg:gap-12">
             {mainFeatures.map((feature) => (
-              <div 
-                key={feature.title} 
+              <div
+                key={feature.title}
                 className="group relative bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-600/5 to-teal-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                
+
                 <div className="relative p-5 sm:p-8">
                   <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 mb-4 sm:mb-6">
-                    <div className={`flex-shrink-0 w-12 h-12 sm:w-16 sm:h-16 rounded-xl bg-gradient-to-r ${feature.gradient} p-2 sm:p-3`}>
+                    <div
+                      className={`flex-shrink-0 w-12 h-12 sm:w-16 sm:h-16 rounded-xl bg-gradient-to-r ${feature.gradient} p-2 sm:p-3`}
+                    >
                       <feature.icon className="h-full w-full text-white" />
                     </div>
                     <div>
@@ -279,7 +299,9 @@ export function LandingPage() {
                     {feature.features.map((item) => (
                       <div key={item} className="flex items-center">
                         <Icons.Check className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600 mr-1.5 sm:mr-2 flex-shrink-0" />
-                        <span className="text-gray-600 text-sm sm:text-base">{item}</span>
+                        <span className="text-gray-600 text-sm sm:text-base">
+                          {item}
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -309,8 +331,8 @@ export function LandingPage() {
             Ready to transform your cleaning business with AI?
           </h2>
           <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-            Join hundreds of cleaning companies saving 20+ hours per week with CleanAgent.
-            Start your free trial today.
+            Join hundreds of cleaning companies saving 20+ hours per week with
+            CleanAgent. Start your free trial today.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link
