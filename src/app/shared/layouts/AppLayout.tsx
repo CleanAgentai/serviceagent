@@ -80,11 +80,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
       {/* Main content */}
       <div className="flex flex-col flex-grow">
         {showNavigation && <Navigation />}
-        <main
-          className={`flex-grow ${
-            fullWidth ? "" : "mx-auto w-full px-4 sm:px-6 lg:px-8"
-          }`}
-        >
+        <main className={`flex-grow ${fullWidth ? "" : "mx-auto w-full"}`}>
           {children || <Outlet />}
         </main>
         {showFooter && <Footer />}
