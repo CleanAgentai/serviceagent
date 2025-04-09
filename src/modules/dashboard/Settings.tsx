@@ -4,6 +4,7 @@ import { useAuth } from "@/app/providers/AuthContext";
 import { Building, LogOut, X } from "lucide-react";
 import { CompanyProfileForm } from "./CompanyProfileForm";
 import { supabase } from "@/app/lib/supabase";
+import { toast } from "sonner";
 
 export default function Settings() {
   const navigate = useNavigate();
@@ -14,6 +15,9 @@ export default function Settings() {
     primary: "#0693e3",
     secondary: "#8ed1fc",
   });
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   useEffect(() => {
     async function loadCompanyColors() {
@@ -53,6 +57,51 @@ export default function Settings() {
       console.error("Error logging out:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handlePasswordChange = async () => {
+    try {
+      if (!currentPassword || !newPassword || !confirmPassword) {
+        toast.error("Please fill in all fields.");
+        return;
+      }
+      if (newPassword !== confirmPassword) {
+        toast.error("New passwords do not match.");
+        return;
+      }
+      if (currentPassword === newPassword) {
+        toast.error("New password must be different from the current one.");
+        return;
+      }
+
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: (await supabase.auth.getUser()).data.user?.email ?? "",
+        password: currentPassword,
+      });
+      if (signInError) {
+        toast.error("Current password is incorrect.");
+        return;
+      }
+
+      //update password
+      const { error: updateError } = await supabase.auth.updateUser({
+        password: newPassword,
+      });
+
+      if (updateError) {
+        toast.error("Failed to update password.");
+        return;
+      }
+
+      toast.success("Password has been changed successfully!");
+      setShowChangePasswordModal(false);
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+    } catch (err) {
+      toast.error("An error occurred. Please try again");
+      console.error(err);
     }
   };
 
@@ -107,6 +156,8 @@ export default function Settings() {
                 </label>
                 <input
                   type="password"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
                   className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-transparent"
                   style={
                     {
@@ -122,6 +173,8 @@ export default function Settings() {
                 </label>
                 <input
                   type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
                   className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-transparent"
                   style={
                     {
@@ -137,6 +190,8 @@ export default function Settings() {
                 </label>
                 <input
                   type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                   className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-transparent"
                   style={
                     {
@@ -151,6 +206,7 @@ export default function Settings() {
                 style={{
                   backgroundColor: companyColors.primary,
                 }}
+                onClick={handlePasswordChange}
               >
                 Update Password
               </button>
