@@ -17,10 +17,14 @@ import { toast } from "sonner";
 import { ColorPicker } from "@/components/ui/color-picker";
 
 interface CompanyProfileFormProps {
+  mode: "create" | "update";
   onComplete?: () => void;
 }
 
-export function CompanyProfileForm({ onComplete }: CompanyProfileFormProps) {
+export function CompanyProfileForm({
+  mode,
+  onComplete,
+}: CompanyProfileFormProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [companyName, setCompanyName] = useState("");
@@ -31,6 +35,7 @@ export function CompanyProfileForm({ onComplete }: CompanyProfileFormProps) {
     useState("#8ed1fc");
   const [companyLogo, setCompanyLogo] = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
+  const [willoKey, setWilloKey] = useState<string | null>(null);
 
   // Load existing profile data if available
   useEffect(() => {
@@ -76,6 +81,7 @@ export function CompanyProfileForm({ onComplete }: CompanyProfileFormProps) {
             companyProfile.company_secondary_colour || "#8ed1fc"
           );
           setLogoPreview(companyProfile.company_logo_url || null);
+          setWilloKey(companyProfile.willo_company_key || null);
         }
 
         if (basicProfileError && basicProfileError.code !== "PGRST116") {
@@ -205,9 +211,17 @@ export function CompanyProfileForm({ onComplete }: CompanyProfileFormProps) {
       }
 
       const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
+      const endpoint =
+        mode === "update" && willoKey
+          ? `${apiBaseUrl}/api/departments/${willoKey}`
+          : `${apiBaseUrl}/api/departments`;
+
+      const method = mode === "update" ? "PATCH" : "POST";
+
       //  Willow BackendAPI Call
-      const departmentRes = await fetch(`${apiBaseUrl}/api/departments`, {
-        method: "POST",
+      const departmentRes = await fetch(endpoint, {
+        method,
         headers: {
           "Content-Type": "application/json",
         },

@@ -1,13 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/app/providers/AuthContext';
-import {
-  Building,
-  LogOut,
-  X,
-} from 'lucide-react';
-import { CompanyProfileForm } from './CompanyProfileForm';
-import { supabase } from '@/app/lib/supabase';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/app/providers/AuthContext";
+import { Building, LogOut, X } from "lucide-react";
+import { CompanyProfileForm } from "./CompanyProfileForm";
+import { supabase } from "@/app/lib/supabase";
 
 export default function Settings() {
   const navigate = useNavigate();
@@ -15,30 +11,32 @@ export default function Settings() {
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [companyColors, setCompanyColors] = useState({
-    primary: '#0693e3',
-    secondary: '#8ed1fc'
+    primary: "#0693e3",
+    secondary: "#8ed1fc",
   });
 
   useEffect(() => {
     async function loadCompanyColors() {
       try {
-        const { data: { user } } = await supabase.auth.getUser();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
         if (!user) return;
 
         const { data: companyProfile } = await supabase
-          .from('company_profiles')
-          .select('company_primary_colour, company_secondary_colour')
-          .eq('created_by_user_id', user.id)
+          .from("company_profiles")
+          .select("company_primary_colour, company_secondary_colour")
+          .eq("created_by_user_id", user.id)
           .single();
 
         if (companyProfile) {
           setCompanyColors({
-            primary: companyProfile.company_primary_colour || '#0693e3',
-            secondary: companyProfile.company_secondary_colour || '#8ed1fc'
+            primary: companyProfile.company_primary_colour || "#0693e3",
+            secondary: companyProfile.company_secondary_colour || "#8ed1fc",
           });
         }
       } catch (error) {
-        console.error('Error loading company colors:', error);
+        console.error("Error loading company colors:", error);
       }
     }
 
@@ -50,9 +48,9 @@ export default function Settings() {
     try {
       const { error } = await logout();
       if (error) throw error;
-      navigate('/');
+      navigate("/");
     } catch (error) {
-      console.error('Error logging out:', error);
+      console.error("Error logging out:", error);
     } finally {
       setLoading(false);
     }
@@ -66,8 +64,12 @@ export default function Settings() {
             <div className="max-w-3xl mx-auto">
               <div className="flex items-center justify-between mb-8">
                 <div>
-                  <h1 className="text-2xl font-bold text-gray-900">Company Settings</h1>
-                  <p className="text-gray-600 mt-1">Manage your company information and branding</p>
+                  <h1 className="text-2xl font-bold text-gray-900">
+                    Company Settings
+                  </h1>
+                  <p className="text-gray-600 mt-1">
+                    Manage your company information and branding
+                  </p>
                 </div>
                 <button
                   onClick={() => setShowChangePasswordModal(true)}
@@ -77,7 +79,7 @@ export default function Settings() {
                 </button>
               </div>
 
-              <CompanyProfileForm />
+              <CompanyProfileForm mode="update" />
             </div>
           </div>
         </div>
@@ -88,7 +90,9 @@ export default function Settings() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Change Password</h3>
+              <h3 className="text-lg font-semibold text-gray-900">
+                Change Password
+              </h3>
               <button
                 onClick={() => setShowChangePasswordModal(false)}
                 className="text-gray-400 hover:text-gray-600"
@@ -104,10 +108,12 @@ export default function Settings() {
                 <input
                   type="password"
                   className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-transparent"
-                  style={{
-                    '--tw-ring-color': companyColors.primary,
-                    '--tw-ring-offset-color': companyColors.primary,
-                  } as React.CSSProperties}
+                  style={
+                    {
+                      "--tw-ring-color": companyColors.primary,
+                      "--tw-ring-offset-color": companyColors.primary,
+                    } as React.CSSProperties
+                  }
                 />
               </div>
               <div>
@@ -117,10 +123,12 @@ export default function Settings() {
                 <input
                   type="password"
                   className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-transparent"
-                  style={{
-                    '--tw-ring-color': companyColors.primary,
-                    '--tw-ring-offset-color': companyColors.primary,
-                  } as React.CSSProperties}
+                  style={
+                    {
+                      "--tw-ring-color": companyColors.primary,
+                      "--tw-ring-offset-color": companyColors.primary,
+                    } as React.CSSProperties
+                  }
                 />
               </div>
               <div>
@@ -130,13 +138,15 @@ export default function Settings() {
                 <input
                   type="password"
                   className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-transparent"
-                  style={{
-                    '--tw-ring-color': companyColors.primary,
-                    '--tw-ring-offset-color': companyColors.primary,
-                  } as React.CSSProperties}
+                  style={
+                    {
+                      "--tw-ring-color": companyColors.primary,
+                      "--tw-ring-offset-color": companyColors.primary,
+                    } as React.CSSProperties
+                  }
                 />
               </div>
-              <button 
+              <button
                 className="w-full text-white py-2 px-4 rounded-lg transition-colors"
                 style={{
                   backgroundColor: companyColors.primary,
@@ -150,4 +160,4 @@ export default function Settings() {
       )}
     </div>
   );
-} 
+}
