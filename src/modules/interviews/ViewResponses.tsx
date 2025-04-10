@@ -21,6 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 
 interface InterviewAttempt {
   id: string;
@@ -40,11 +41,13 @@ export function ViewResponses() {
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [selectedAttempt, setSelectedAttempt] =
     useState<InterviewAttempt | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAttempts = async () => {
       setLoading(true);
+      setError(null);
 
       // 1.auth.user.id
       const {
@@ -52,62 +55,103 @@ export function ViewResponses() {
         error: userError,
       } = await supabase.auth.getUser();
 
+      console.log("[ViewResponses] User Fetch:", { user, userError });
+
       if (!user) {
-        console.error("User not logged in", userError);
+        console.error("[ViewResponses] User not logged in", userError);
         setAttempts([]);
         setLoading(false);
         return;
       }
 
       // 2. company_willo_key
-      const { data: profile, error: profileError } = await supabase
-        .from("company_profiles")
-        .select("willo_company_key")
-        .eq("created_by_user_id", user.id)
-        .single();
+      let companyKey: string | null = null;
+      try {
+        const { data: profile, error: profileError } = await supabase
+          .from("company_profiles")
+          .select("willo_company_key")
+          .eq("created_by_user_id", user.id)
+          .single();
 
-      if (!profile || profileError) {
-        console.error("Company profile not found", profileError);
+        console.log("[ViewResponses] Profile Fetch:", { profile, profileError });
+
+        if (!profile || profileError) {
+          console.error("[ViewResponses] Company profile not found or error", profileError);
+          setError("Failed to load company profile to fetch attempts.");
+          setAttempts([]);
+          setLoading(false);
+          return;
+        }
+        companyKey = profile.willo_company_key;
+      } catch (profileCatchError) {
+        console.error("[ViewResponses] Error fetching company profile:", profileCatchError);
+        setError("Error loading company profile.");
         setAttempts([]);
         setLoading(false);
         return;
       }
 
-      const companyKey = profile.willo_company_key;
+      console.log("[ViewResponses] Using Company Key for Filter:", companyKey);
 
-      const { data, error } = await supabase
-        .from("interview_attempts")
-        .select(
-          `
-          id,
-          interview_id,
-          candidate_id,
-          created_at,
-          status,
-          candidates(email,name,phone),
-          interviews(title)
-        `
-        )
-        .eq("department_key", companyKey)
-        .order("created_at", { ascending: false });
-
-      if (error) {
-        console.error("Error fetching attempts:", error);
+      if (!companyKey) {
+        console.error("[ViewResponses] Company Key is null or empty, cannot fetch attempts.");
+        setError("Company key configuration missing.");
         setAttempts([]);
-      } else {
-        const formatted = data.map((item: any) => ({
-          id: item.id,
-          candidateName: item.candidates?.name || "Unknown",
-          email: item.candidates?.email || "N/A",
-          phone: item.candidates?.phone || "N/A",
-          createdAt: new Date(item.created_at).toLocaleDateString(),
-          interviewTitle: item.interviews?.title || "Untitled Interview",
-          status: item.status || "Pending",
-        }));
-        setAttempts(formatted);
+        setLoading(false);
+        return;
       }
 
-      setLoading(false);
+      try {
+        const { data, error } = await supabase
+          .from("interview_attempts")
+          .select(
+            `
+            id,
+            interview_id,
+            candidate_id,
+            created_at,
+            candidates(email,name,phone),
+            interviews(title)
+          `
+          )
+          .eq("department_key", companyKey)
+          .order("created_at", { ascending: false });
+
+        console.log("[ViewResponses] Attempts Fetch Result:", { data, error });
+
+        if (error) {
+          console.error("[ViewResponses] Error fetching attempts:", error);
+          setError(error.message);
+          setAttempts([]);
+        } else if (data && data.length > 0) {
+          try {
+            const formatted = data.map((item: any) => ({
+              id: item.id,
+              candidateName: item.candidates?.name || "Unknown",
+              email: item.candidates?.email || "N/A",
+              phone: item.candidates?.phone || "N/A",
+              createdAt: new Date(item.created_at).toLocaleDateString(),
+              interviewTitle: item.interviews?.title || "Untitled Interview",
+              status: "Pending",
+            }));
+            console.log("[ViewResponses] Formatted Attempts:", formatted);
+            setAttempts(formatted);
+          } catch (mapError) {
+            console.error("[ViewResponses] Error formatting attempts data:", mapError);
+            setError("Failed to process fetched attempts data.");
+            setAttempts([]);
+          }
+        } else {
+          console.log("[ViewResponses] No attempts data returned from Supabase (data was empty or null).");
+          setAttempts([]);
+        }
+      } catch (fetchCatchError) {
+          console.error("[ViewResponses] Error in fetch attempts block:", fetchCatchError);
+          setError("An unexpected error occurred while fetching attempts.");
+          setAttempts([]);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchAttempts();
@@ -176,7 +220,7 @@ export function ViewResponses() {
       </Card>
 
       <div className="space-y-4">
-        <div className="grid grid-cols-6 gap-4 px-4 py-2 bg-gray-100 rounded-lg font-semibold">
+        <div className="grid grid-cols-8 gap-2 px-4 py-2 bg-gray-100 rounded-lg font-semibold">
           <button
             onClick={() => handleSort("name")}
             className="flex items-center gap-2"
@@ -193,72 +237,84 @@ export function ViewResponses() {
             <ArrowUpDown className="w-4 h-4" />
           </button>
           <div>Contact Info</div>
+          <div className="text-center">Qualified</div>
+          <div className="text-center">Rating</div>
           <div>Status</div>
-          <div>Actions</div>
+          <div className="text-center">Actions</div>
         </div>
 
-        {filtered.map((attempt) => (
-          <Card key={attempt.id} className="p-4">
-            <div className="grid grid-cols-6 gap-4 items-center">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500">
-                  {attempt.candidateName.charAt(0)}
+        {filtered.map((attempt, index) => {
+          const lastChar = attempt.id.slice(-1);
+          const isQualifiedDemo = !isNaN(parseInt(lastChar, 16)) && parseInt(lastChar, 16) % 2 === 0;
+          const demoRating = index % 2 === 0 ? 7 : 8;
+          
+          return (
+            <Card key={attempt.id} className="p-4">
+              <div className="grid grid-cols-8 gap-2 items-center">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500">
+                    {attempt.candidateName.charAt(0)}
+                  </div>
+                  <span>{attempt.candidateName}</span>
                 </div>
-                <span>{attempt.candidateName}</span>
+                <div className="flex items-center gap-2">
+                  <FileText className="w-4 h-4 text-gray-400" />
+                  {attempt.interviewTitle}
+                </div>
+                <div className="flex items-center gap-2">
+                  <Calendar className="w-4 h-4 text-gray-400" />
+                  {attempt.createdAt}
+                </div>
+                <div className="text-sm text-gray-600">
+                  <div>{attempt.email}</div>
+                  <div>{attempt.phone}</div>
+                </div>
+                <div className="flex items-center justify-center">
+                  <Button
+                    variant="default"
+                    size="sm"
+                    className={cn(
+                      "pointer-events-none h-7 px-2",
+                      isQualifiedDemo 
+                        ? 'bg-green-600 text-white' 
+                        : 'bg-red-600 text-white'
+                    )}
+                  >
+                    {isQualifiedDemo ? 'Qualified' : 'Not Qualified'}
+                  </Button>
+                </div>
+                <div className="text-center font-bold">
+                  {demoRating} / 10
+                </div>
+                <div>
+                  <Select
+                    value={attempt.status}
+                    onValueChange={(value) => handleLocalStatusChange(attempt.id, value)}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {["Pending", "Rejected", "Hired"].map(option => (
+                        <SelectItem key={option} value={option}>
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Button
+                    variant="outline"
+                    onClick={() => setSelectedAttempt(attempt)}
+                  >
+                    View AI Analysis
+                  </Button>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <FileText className="w-4 h-4 text-gray-400" />
-                {attempt.interviewTitle}
-              </div>
-              <div className="flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-gray-400" />
-                {attempt.createdAt}
-              </div>
-              <div className="text-sm text-gray-600">
-                <div>{attempt.email}</div>
-                <div>{attempt.phone}</div>
-              </div>
-              <div>
-                <Select
-                  value={attempt.status}
-                  onValueChange={(value) => handleLocalStatusChange(attempt.id, value)}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {["Pending", "Rejected", "Hired"].map(option => (
-                      <SelectItem key={option} value={option}>
-                        {option}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Button
-                  variant="outline"
-                  onClick={() => setSelectedAttempt(attempt)}
-                >
-                  View AI Analysis
-                </Button>
-              </div>
-              <div>
-                <Button
-                  variant="outline"
-                  onClick={() => navigate(`/interviews/responses/${attempt.id}`, {
-                    state: {
-                      candidateName: attempt.candidateName,
-                      interviewTitle: attempt.interviewTitle
-                    }
-                  })}
-                >
-                  View Details
-                </Button>
-              </div>
-            </div>
-          </Card>
-        ))}
+            </Card>
+          );
+        })}
       </div>
 
       {filtered.length === 0 && (
