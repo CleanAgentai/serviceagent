@@ -30,9 +30,10 @@ interface Response {
     professionalism: number;
     reliability: number;
     problemSolving: number;
+    cognitiveAbility: number;
   };
   metricEvaluations: {
-    communication: MetricEvaluation;
+    communication: string;
     experience: MetricEvaluation;
     professionalism: MetricEvaluation;
     reliability: MetricEvaluation;
@@ -67,6 +68,7 @@ export function ResponseDetails() {
   );
   const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);
   const [selectedMetric, setSelectedMetric] = useState<string | null>(null);
+  const [evaluationData, setEvaluationData] = useState<any | null>(null);
   const location = useLocation();
   const { candidateName: passedName, interviewTitle: passedTitle } =
     location.state || {};
@@ -102,34 +104,32 @@ export function ResponseDetails() {
           answer: item.responses_text || "",
         }));
 
+        //fetch eval_results
+        const { data: evalData, error: evalError } = await supabase
+          .from("evaluation_results")
+          .select("*")
+          .eq("interview_attempt_id", responseId)
+          .single();
+
+        if (evalError || !evalData)
+          throw evalError || new Error("Evaluation data not found");
+
         // Mock data - replace with actual API data
         setResponse({
           id: responseId || "",
-          candidateName: passedName || "John Smith",
-          appliedPosition: "Software Engineer – Technical Round 1",
-          overallRating: 8.5,
+          candidateName: passedName || "Unknown",
+          appliedPosition: "Unknown Position",
+          overallRating: evalData.general_score ?? 0,
           metrics: {
-            communication: 8.5,
-            experience: 7.5,
-            professionalism: 9,
-            reliability: 8,
-            problemSolving: 7,
+            communication: evalData.communication_score ?? 0,
+            experience: evalData.experience_score ?? 0,
+            professionalism: evalData.professionalism_score ?? 0,
+            reliability: evalData.reliability_score ?? 0,
+            problemSolving: evalData.problem_solving_score ?? 0,
+            cognitiveAbility: evalData.cognitive_ability_score ?? 0,
           },
           metricEvaluations: {
-            communication: {
-              title: "Communication Evaluation",
-              analysis:
-                "John demonstrated strong verbal communication skills, effectively conveying his ideas with clarity and confidence. He maintained a professional and engaging tone, adapting well to the interviewer's prompts. However, his responses occasionally included unnecessary details, making them slightly longer than needed. Refining his answers to be more structured and concise would improve overall effectiveness.",
-              strengths: [
-                "Articulates ideas clearly and confidently",
-                "Engages well in conversation and adapts tone appropriately",
-                "Demonstrates active listening skills",
-              ],
-              weaknesses: [
-                "Could streamline responses to be more concise",
-                "Needs to focus on delivering key points efficiently without over-explaining",
-              ],
-            },
+            communication: evalData.communication_justification ?? "",
             experience: {
               title: "Experience Evaluation",
               analysis:
@@ -418,75 +418,35 @@ export function ResponseDetails() {
                   <td className="py-2 px-4">
                     {response.metrics.communication}/10
                   </td>
-                  <td className="py-2 px-4">
-                    <Button
-                      variant="link"
-                      className="text-blue-600 p-0"
-                      onClick={() => setSelectedMetric("communication")}
-                    >
-                      View Communication Assessment
-                    </Button>
-                  </td>
+                  <td className="py-2 px-4">content</td>
                 </tr>
                 <tr className="border-b">
                   <td className="py-2 px-4">Experience</td>
                   <td className="py-2 px-4">
                     {response.metrics.experience}/10
                   </td>
-                  <td className="py-2 px-4">
-                    <Button
-                      variant="link"
-                      className="text-blue-600 p-0"
-                      onClick={() => setSelectedMetric("experience")}
-                    >
-                      View Technical Background
-                    </Button>
-                  </td>
+                  <td className="py-2 px-4">View Technical Background</td>
                 </tr>
                 <tr className="border-b">
                   <td className="py-2 px-4">Professionalism</td>
                   <td className="py-2 px-4">
                     {response.metrics.professionalism}/10
                   </td>
-                  <td className="py-2 px-4">
-                    <Button
-                      variant="link"
-                      className="text-blue-600 p-0"
-                      onClick={() => setSelectedMetric("professionalism")}
-                    >
-                      View Professional Conduct
-                    </Button>
-                  </td>
+                  <td className="py-2 px-4">View Professional Conduct</td>
                 </tr>
                 <tr className="border-b">
                   <td className="py-2 px-4">Reliability</td>
                   <td className="py-2 px-4">
                     {response.metrics.reliability}/10
                   </td>
-                  <td className="py-2 px-4">
-                    <Button
-                      variant="link"
-                      className="text-blue-600 p-0"
-                      onClick={() => setSelectedMetric("reliability")}
-                    >
-                      View Dependability Report
-                    </Button>
-                  </td>
+                  <td className="py-2 px-4">View Dependability Report</td>
                 </tr>
                 <tr>
                   <td className="py-2 px-4">Problem Solving</td>
                   <td className="py-2 px-4">
                     {response.metrics.problemSolving}/10
                   </td>
-                  <td className="py-2 px-4">
-                    <Button
-                      variant="link"
-                      className="text-blue-600 p-0"
-                      onClick={() => setSelectedMetric("problemSolving")}
-                    >
-                      View Analytical Skills
-                    </Button>
-                  </td>
+                  <td className="py-2 px-4">View Analytical Skills</td>
                 </tr>
               </tbody>
             </table>
