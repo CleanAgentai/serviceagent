@@ -453,13 +453,18 @@ export function ViewResponses() {
                 </h3>
                 <Card className="p-4 bg-blue-50">
                   <div className="flex items-center gap-2">
-                    {[...Array(4)].map((_, i) => (
+                    {Array.from({ length: 5 }).map((_, i) => (
                       <Star
                         key={i}
-                        className="w-4 h-4 text-yellow-400 fill-current"
+                        className={cn(
+                          "w-4 h-4",
+                          selectedAttempt.generalScore !== null &&
+                            selectedAttempt.generalScore / 2 > i
+                            ? "text-yellow-400 fill-current"
+                            : "text-gray-300"
+                        )}
                       />
                     ))}
-                    <Star className="w-4 h-4 text-yellow-400 fill-current opacity-50" />
                     <span className="ml-2 text-sm text-gray-600">
                       {selectedAttempt.generalScore} / 10
                     </span>
