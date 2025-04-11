@@ -4,6 +4,7 @@ import { supabase } from "@/app/lib/supabase";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
 import {
   Search,
   ArrowUpDown,
@@ -31,6 +32,8 @@ interface InterviewAttempt {
   createdAt: string;
   interviewTitle: string;
   status: string;
+  qualified: boolean | null;
+  generalScore: number | null;
 }
 
 export function ViewResponses() {
@@ -73,10 +76,16 @@ export function ViewResponses() {
           .eq("created_by_user_id", user.id)
           .single();
 
-        console.log("[ViewResponses] Profile Fetch:", { profile, profileError });
+        console.log("[ViewResponses] Profile Fetch:", {
+          profile,
+          profileError,
+        });
 
         if (!profile || profileError) {
-          console.error("[ViewResponses] Company profile not found or error", profileError);
+          console.error(
+            "[ViewResponses] Company profile not found or error",
+            profileError
+          );
           setError("Failed to load company profile to fetch attempts.");
           setAttempts([]);
           setLoading(false);
@@ -84,7 +93,10 @@ export function ViewResponses() {
         }
         companyKey = profile.willo_company_key;
       } catch (profileCatchError) {
-        console.error("[ViewResponses] Error fetching company profile:", profileCatchError);
+        console.error(
+          "[ViewResponses] Error fetching company profile:",
+          profileCatchError
+        );
         setError("Error loading company profile.");
         setAttempts([]);
         setLoading(false);
@@ -94,7 +106,9 @@ export function ViewResponses() {
       console.log("[ViewResponses] Using Company Key for Filter:", companyKey);
 
       if (!companyKey) {
-        console.error("[ViewResponses] Company Key is null or empty, cannot fetch attempts.");
+        console.error(
+          "[ViewResponses] Company Key is null or empty, cannot fetch attempts."
+        );
         setError("Company key configuration missing.");
         setAttempts([]);
         setLoading(false);
@@ -110,8 +124,11 @@ export function ViewResponses() {
             interview_id,
             candidate_id,
             created_at,
+            status,
+            qualified,
             candidates(email,name,phone),
-            interviews(title)
+            interviews(title),
+            evaluation_results(general_score)
           `
           )
           .eq("department_key", companyKey)
@@ -132,23 +149,33 @@ export function ViewResponses() {
               phone: item.candidates?.phone || "N/A",
               createdAt: new Date(item.created_at).toLocaleDateString(),
               interviewTitle: item.interviews?.title || "Untitled Interview",
-              status: "Pending",
+              status: item.status || "Pending",
+              qualified: item.qualified ?? null,
+              generalScore: item.evaluation_results?.general_score ?? null,
             }));
             console.log("[ViewResponses] Formatted Attempts:", formatted);
             setAttempts(formatted);
           } catch (mapError) {
-            console.error("[ViewResponses] Error formatting attempts data:", mapError);
+            console.error(
+              "[ViewResponses] Error formatting attempts data:",
+              mapError
+            );
             setError("Failed to process fetched attempts data.");
             setAttempts([]);
           }
         } else {
-          console.log("[ViewResponses] No attempts data returned from Supabase (data was empty or null).");
+          console.log(
+            "[ViewResponses] No attempts data returned from Supabase (data was empty or null)."
+          );
           setAttempts([]);
         }
       } catch (fetchCatchError) {
-          console.error("[ViewResponses] Error in fetch attempts block:", fetchCatchError);
-          setError("An unexpected error occurred while fetching attempts.");
-          setAttempts([]);
+        console.error(
+          "[ViewResponses] Error in fetch attempts block:",
+          fetchCatchError
+        );
+        setError("An unexpected error occurred while fetching attempts.");
+        setAttempts([]);
       } finally {
         setLoading(false);
       }
@@ -166,12 +193,28 @@ export function ViewResponses() {
     }
   };
 
-  const handleLocalStatusChange = (attemptId: string, newStatus: string) => {
-    setAttempts(prevAttempts =>
-      prevAttempts.map(attempt =>
+  const handleLocalStatusChange = async (
+    attemptId: string,
+    newStatus: string
+  ) => {
+    setAttempts((prevAttempts) =>
+      prevAttempts.map((attempt) =>
         attempt.id === attemptId ? { ...attempt, status: newStatus } : attempt
       )
     );
+
+    const { error } = await supabase
+      .from("interview_attempts")
+      .update({ status: newStatus })
+      .eq("id", attemptId);
+
+    if (error) {
+      console.error("❌ Failed to update status in Supabase:", error.message);
+      toast.error("Status update failed.");
+    } else {
+      console.log("✅ Status updated successfully");
+      toast.success("Status updated.");
+    }
   };
 
   const filtered = attempts
@@ -245,9 +288,10 @@ export function ViewResponses() {
 
         {filtered.map((attempt, index) => {
           const lastChar = attempt.id.slice(-1);
-          const isQualifiedDemo = !isNaN(parseInt(lastChar, 16)) && parseInt(lastChar, 16) % 2 === 0;
+          const isQualifiedDemo =
+            !isNaN(parseInt(lastChar, 16)) && parseInt(lastChar, 16) % 2 === 0;
           const demoRating = index % 2 === 0 ? 7 : 8;
-          
+
           return (
             <Card key={attempt.id} className="p-4">
               <div className="grid grid-cols-8 gap-2 items-center">
@@ -275,27 +319,31 @@ export function ViewResponses() {
                     size="sm"
                     className={cn(
                       "pointer-events-none h-7 px-2",
-                      isQualifiedDemo 
-                        ? 'bg-green-600 text-white' 
-                        : 'bg-red-600 text-white'
+                      attempt.qualified
+                        ? "bg-green-600 text-white"
+                        : "bg-red-600 text-white"
                     )}
                   >
-                    {isQualifiedDemo ? 'Qualified' : 'Not Qualified'}
+                    {isQualifiedDemo ? "Qualified" : "Not Qualified"}
                   </Button>
                 </div>
                 <div className="text-center font-bold">
-                  {demoRating} / 10
+                  {attempt.generalScore
+                    ? `${attempt.generalScore} / 10`
+                    : "N/A"}
                 </div>
                 <div>
                   <Select
                     value={attempt.status}
-                    onValueChange={(value) => handleLocalStatusChange(attempt.id, value)}
+                    onValueChange={(value) =>
+                      handleLocalStatusChange(attempt.id, value)
+                    }
                   >
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="Select status" />
                     </SelectTrigger>
                     <SelectContent>
-                      {["Pending", "Rejected", "Hired"].map(option => (
+                      {["Pending", "Rejected", "Hired"].map((option) => (
                         <SelectItem key={option} value={option}>
                           {option}
                         </SelectItem>
