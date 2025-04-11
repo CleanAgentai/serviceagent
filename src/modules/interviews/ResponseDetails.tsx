@@ -12,12 +12,12 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-interface MetricEvaluation {
-  title: string;
-  analysis: string;
-  strengths: string[];
-  weaknesses: string[];
-}
+// interface MetricEvaluation {
+//   title: string;
+//   analysis: string;
+//   strengths: string[];
+//   weaknesses: string[];
+// }
 
 interface Response {
   id: string;
@@ -34,10 +34,11 @@ interface Response {
   };
   metricEvaluations: {
     communication: string;
-    experience: MetricEvaluation;
-    professionalism: MetricEvaluation;
-    reliability: MetricEvaluation;
-    problemSolving: MetricEvaluation;
+    experience: string;
+    professionalism: string;
+    reliability: string;
+    problemSolving: string;
+    cognitiveAbility: string;
   };
   aiAnalysis: {
     keyObservations: string;
@@ -130,76 +131,25 @@ export function ResponseDetails() {
           },
           metricEvaluations: {
             communication: evalData.communication_justification ?? "",
-            experience: {
-              title: "Experience Evaluation",
-              analysis:
-                "The candidate shows solid foundational experience in software development with practical knowledge of key technologies. Their project work demonstrates hands-on experience, though some areas could benefit from deeper technical exposure.",
-              strengths: [
-                "Strong practical coding experience",
-                "Good understanding of software development lifecycle",
-                "Proven track record of project delivery",
-              ],
-              weaknesses: [
-                "Limited experience with enterprise-scale applications",
-                "Could benefit from more exposure to modern frameworks",
-              ],
-            },
-            professionalism: {
-              title: "Professionalism Evaluation",
-              analysis:
-                "Candidate exhibited excellent professional conduct throughout the interview. Their demeanor, preparation, and approach to discussion demonstrated strong professional maturity.",
-              strengths: [
-                "Well-prepared for technical discussions",
-                "Maintains professional composure",
-                "Shows respect and courtesy in communication",
-              ],
-              weaknesses: [
-                "Could improve time management in responses",
-                "May benefit from more structured presentation of ideas",
-              ],
-            },
-            reliability: {
-              title: "Reliability Evaluation",
-              analysis:
-                "The candidate demonstrated good reliability through consistent responses and clear commitment to project delivery. Their examples showed dedication to meeting deadlines and handling responsibilities.",
-              strengths: [
-                "Strong track record of meeting deadlines",
-                "Consistent approach to problem-solving",
-                "Takes ownership of assigned tasks",
-              ],
-              weaknesses: [
-                "Could provide more specific examples of handling setbacks",
-                "Needs more emphasis on proactive communication",
-              ],
-            },
-            problemSolving: {
-              title: "Problem Solving Evaluation",
-              analysis:
-                "Shows good analytical capabilities and systematic approach to problem-solving. The candidate demonstrated ability to break down complex problems, though sometimes could be more efficient in solution development.",
-              strengths: [
-                "Methodical approach to problem analysis",
-                "Good understanding of algorithmic thinking",
-                "Ability to consider multiple solutions",
-              ],
-              weaknesses: [
-                "Could improve efficiency in solution implementation",
-                "Needs to better prioritize optimization approaches",
-              ],
-            },
+            experience: evalData.experience_justification ?? "",
+            professionalism: evalData.professionalism_justification ?? "",
+            reliability: evalData.reliability_justification ?? "",
+            problemSolving: evalData.problem_solving_justification ?? "",
+
+            cognitiveAbility: evalData.cognitive_ability_score ?? "",
           },
           aiAnalysis: {
-            keyObservations:
-              "The candidate demonstrates strong potential with notable experience in the field. Their communication skills and technical knowledge align well with the position requirements.",
-            strengths: [
-              "Strong communication skills",
-              "Relevant industry experience",
-              "Problem-solving abilities",
-            ],
-            weaknesses: [
-              "Previous project outcomes",
-              "Team collaboration style",
-              "Career growth expectations",
-            ],
+            keyObservations: evalData.general_summary ?? "",
+            strengths: Array.isArray(evalData.general_strengths)
+              ? evalData.general_strengths
+              : typeof evalData.general_strengths === "string"
+              ? evalData.general_strengths.split("\n")
+              : [],
+            weaknesses: Array.isArray(evalData.general_weaknesses)
+              ? evalData.general_weaknesses
+              : typeof evalData.general_weaknesses === "string"
+              ? evalData.general_weaknesses.split("\n")
+              : [],
           },
           questions: mappedQuestions,
           // [
@@ -244,83 +194,84 @@ export function ResponseDetails() {
     return stars;
   };
 
-  const MetricEvaluationDialog = () => {
-    if (!selectedMetric || !response) return null;
+  // const MetricEvaluationDialog = () => {
+  //   if (!selectedMetric || !response) return null;
 
-    const evaluation =
-      response.metricEvaluations[
-        selectedMetric as keyof typeof response.metricEvaluations
-      ];
+  //   const evaluation =
+  //     response.metricEvaluations[
+  //       selectedMetric as keyof typeof response.metricEvaluations
+  //     ];
 
-    return (
-      <Dialog
-        open={!!selectedMetric}
-        onOpenChange={() => setSelectedMetric(null)}
-      >
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-semibold flex items-center gap-2">
-              <span>Candidate Evaluation – {evaluation.title}</span>
-            </DialogTitle>
-            <div className="flex flex-col gap-2 pt-4">
-              <div className="flex items-center gap-2">
-                <span className="text-gray-600">Name:</span>
-                <span className="font-medium">{response.candidateName}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-gray-600">
-                  Position/Interview Applied:
-                </span>
-                <span className="font-medium">{response.appliedPosition}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-gray-600">Metric:</span>
-                <span className="font-medium">{selectedMetric}</span>
-              </div>
-            </div>
-          </DialogHeader>
+  //   return (
+  //     <Dialog
+  //       open={!!selectedMetric}
+  //       onOpenChange={() => setSelectedMetric(null)}
+  //     >
+  //       <DialogContent className="max-w-2xl">
+  //         <DialogHeader>
+  //           <DialogTitle className="text-2xl font-semibold flex items-center gap-2">
+  //             {/* <span>Candidate Evaluation – {evaluation.title}</span> */}
+  //             <span>Candidate Evaluation – {evaluation.title}</span>
+  //           </DialogTitle>
+  //           <div className="flex flex-col gap-2 pt-4">
+  //             <div className="flex items-center gap-2">
+  //               <span className="text-gray-600">Name:</span>
+  //               <span className="font-medium">{response.candidateName}</span>
+  //             </div>
+  //             <div className="flex items-center gap-2">
+  //               <span className="text-gray-600">
+  //                 Position/Interview Applied:
+  //               </span>
+  //               <span className="font-medium">{response.appliedPosition}</span>
+  //             </div>
+  //             <div className="flex items-center gap-2">
+  //               <span className="text-gray-600">Metric:</span>
+  //               <span className="font-medium">{selectedMetric}</span>
+  //             </div>
+  //           </div>
+  //         </DialogHeader>
 
-          <div className="space-y-6 mt-6">
-            <div>
-              <h3 className="text-xl font-semibold mb-4">AI Analysis</h3>
-              <Card className="p-6 bg-blue-50">
-                <p className="text-blue-800">{evaluation.analysis}</p>
-              </Card>
-            </div>
+  //         <div className="space-y-6 mt-6">
+  //           <div>
+  //             <h3 className="text-xl font-semibold mb-4">AI Analysis</h3>
+  //             <Card className="p-6 bg-blue-50">
+  //               <p className="text-blue-800">{evaluation.analysis}</p>
+  //             </Card>
+  //           </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <Card className="p-6 bg-green-50">
-                <h3 className="font-medium text-green-900 mb-3">Strengths</h3>
-                <ul className="space-y-2">
-                  {evaluation.strengths.map((strength, index) => (
-                    <li
-                      key={index}
-                      className="flex items-center text-green-800"
-                    >
-                      <span className="w-2 h-2 bg-green-600 rounded-full mr-2"></span>
-                      {strength}
-                    </li>
-                  ))}
-                </ul>
-              </Card>
+  //           <div className="grid grid-cols-2 gap-4">
+  //             <Card className="p-6 bg-green-50">
+  //               <h3 className="font-medium text-green-900 mb-3">Strengths</h3>
+  //               <ul className="space-y-2">
+  //                 {evaluation.strengths.map((strength, index) => (
+  //                   <li
+  //                     key={index}
+  //                     className="flex items-center text-green-800"
+  //                   >
+  //                     <span className="w-2 h-2 bg-green-600 rounded-full mr-2"></span>
+  //                     {strength}
+  //                   </li>
+  //                 ))}
+  //               </ul>
+  //             </Card>
 
-              <Card className="p-6 bg-red-50">
-                <h3 className="font-medium text-red-900 mb-3">Weaknesses</h3>
-                <ul className="space-y-2">
-                  {evaluation.weaknesses.map((weakness, index) => (
-                    <li key={index} className="flex items-center text-red-800">
-                      <span className="w-2 h-2 bg-red-600 rounded-full mr-2"></span>
-                      {weakness}
-                    </li>
-                  ))}
-                </ul>
-              </Card>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-    );
-  };
+  //             <Card className="p-6 bg-red-50">
+  //               <h3 className="font-medium text-red-900 mb-3">Weaknesses</h3>
+  //               <ul className="space-y-2">
+  //                 {evaluation.weaknesses.map((weakness, index) => (
+  //                   <li key={index} className="flex items-center text-red-800">
+  //                     <span className="w-2 h-2 bg-red-600 rounded-full mr-2"></span>
+  //                     {weakness}
+  //                   </li>
+  //                 ))}
+  //               </ul>
+  //             </Card>
+  //           </div>
+  //         </div>
+  //       </DialogContent>
+  //     </Dialog>
+  //   );
+  // };
 
   if (loading) {
     return (
@@ -418,35 +369,45 @@ export function ResponseDetails() {
                   <td className="py-2 px-4">
                     {response.metrics.communication}/10
                   </td>
-                  <td className="py-2 px-4">content</td>
+                  <td className="py-2 px-4">
+                    {response.metricEvaluations.communication}
+                  </td>
                 </tr>
                 <tr className="border-b">
                   <td className="py-2 px-4">Experience</td>
                   <td className="py-2 px-4">
                     {response.metrics.experience}/10
                   </td>
-                  <td className="py-2 px-4">View Technical Background</td>
+                  <td className="py-2 px-4">
+                    {response.metricEvaluations.experience}
+                  </td>
                 </tr>
                 <tr className="border-b">
                   <td className="py-2 px-4">Professionalism</td>
                   <td className="py-2 px-4">
                     {response.metrics.professionalism}/10
                   </td>
-                  <td className="py-2 px-4">View Professional Conduct</td>
+                  <td className="py-2 px-4">
+                    {response.metricEvaluations.professionalism}
+                  </td>
                 </tr>
                 <tr className="border-b">
                   <td className="py-2 px-4">Reliability</td>
                   <td className="py-2 px-4">
                     {response.metrics.reliability}/10
                   </td>
-                  <td className="py-2 px-4">View Dependability Report</td>
+                  <td className="py-2 px-4">
+                    {response.metricEvaluations.reliability}
+                  </td>
                 </tr>
                 <tr>
                   <td className="py-2 px-4">Problem Solving</td>
                   <td className="py-2 px-4">
                     {response.metrics.problemSolving}/10
                   </td>
-                  <td className="py-2 px-4">View Analytical Skills</td>
+                  <td className="py-2 px-4">
+                    {response.metricEvaluations.problemSolving}
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -476,7 +437,7 @@ export function ResponseDetails() {
                 {response.aiAnalysis.strengths.map((strength, index) => (
                   <li key={index} className="flex items-center text-green-800">
                     <span className="w-2 h-2 bg-green-600 rounded-full mr-2"></span>
-                    {strength}
+                    {strength.replace(/^[-•]\s*/, "")}
                   </li>
                 ))}
               </ul>
@@ -488,7 +449,7 @@ export function ResponseDetails() {
                 {response.aiAnalysis.weaknesses.map((weakness, index) => (
                   <li key={index} className="flex items-center text-red-800">
                     <span className="w-2 h-2 bg-red-600 rounded-full mr-2"></span>
-                    {weakness}
+                    {weakness.replace(/^[-•]\s*/, "")}
                   </li>
                 ))}
               </ul>
@@ -557,7 +518,7 @@ export function ResponseDetails() {
       </div>
 
       {renderContent()}
-      <MetricEvaluationDialog />
+      {/* <MetricEvaluationDialog /> */}
     </div>
   );
 }
