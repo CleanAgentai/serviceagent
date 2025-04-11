@@ -44,6 +44,15 @@ export function ViewResponses() {
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [selectedAttempt, setSelectedAttempt] =
     useState<InterviewAttempt | null>(null);
+  const [selectedAttemptId, setSelectedAttemptId] = useState<string | null>(
+    null
+  );
+  const [selectedEvaluation, setSelectedEvaluation] = useState<{
+    strengths: string[];
+    weaknesses: string[];
+    summary: string;
+  } | null>(null);
+
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
@@ -217,6 +226,31 @@ export function ViewResponses() {
     }
   };
 
+  const handleViewAnalysis = async (attempt: InterviewAttempt) => {
+    setSelectedAttempt(attempt);
+    setSelectedAttemptId(attempt.id);
+    try {
+      const { data, error } = await supabase
+        .from("evaluation_results")
+        .select("general_strengths, general_weaknesses, general_summary")
+        .eq("interview_attempt_id", attempt.id)
+        .single();
+
+      if (error || !data) {
+        toast.error("Fail to bring AI analysis data.");
+        return;
+      }
+
+      const strengths = data.general_strengths?.split("\n") ?? [];
+      const weaknesses = data.general_weaknesses?.split("\n") ?? [];
+      const summary = data.general_summary ?? "";
+
+      setSelectedEvaluation({ strengths, weaknesses, summary });
+    } catch (err) {
+      toast.error("An error occurred while fetching AI analysis data.");
+    }
+  };
+
   const filtered = attempts
     .filter(
       (a) =>
@@ -354,7 +388,7 @@ export function ViewResponses() {
                 <div>
                   <Button
                     variant="outline"
-                    onClick={() => setSelectedAttempt(attempt)}
+                    onClick={() => handleViewAnalysis(attempt)}
                   >
                     View AI Analysis
                   </Button>
@@ -415,7 +449,7 @@ export function ViewResponses() {
 
               <div>
                 <h3 className="text-lg font-semibold mb-2">
-                  Overall Performance Rating
+                  Performance Rating
                 </h3>
                 <Card className="p-4 bg-blue-50">
                   <div className="flex items-center gap-2">
@@ -426,38 +460,34 @@ export function ViewResponses() {
                       />
                     ))}
                     <Star className="w-4 h-4 text-yellow-400 fill-current opacity-50" />
-                    <span className="ml-2 text-sm text-gray-600">9.0 / 10</span>
+                    <span className="ml-2 text-sm text-gray-600">
+                      {selectedAttempt.generalScore} / 10
+                    </span>
                   </div>
-                  <p className="mt-2 text-sm text-blue-800">
-                    Strong candidate well-suited for the position.
-                  </p>
                 </Card>
               </div>
 
               <div>
                 <h3 className="text-lg font-semibold mb-2">AI Analysis</h3>
                 <div className="bg-blue-50 p-4 rounded-lg">
-                  <p className="text-blue-800 mb-4">
-                    Excellent product vision and leadership qualities. Good fit
-                    for the role.
-                  </p>
+                  {selectedEvaluation?.summary && (
+                    <p className="text-blue-800 mb-4">
+                      {selectedEvaluation.summary}
+                    </p>
+                  )}
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <h4 className="font-medium text-blue-900 mb-2">
                         Strengths
                       </h4>
                       <ul className="space-y-1">
-                        {[
-                          "Strong product strategy background",
-                          "Excellent stakeholder management",
-                          "Proven track record of successful product launches",
-                        ].map((item, i) => (
+                        {selectedEvaluation?.strengths?.map((item, i) => (
                           <li
                             key={i}
                             className="flex items-start gap-2 text-blue-800"
                           >
                             <Check className="h-4 w-4 text-green-500 mt-0.5" />
-                            <span>{item}</span>
+                            <span>{item.replace(/^-\s*/, "")}</span>
                           </li>
                         ))}
                       </ul>
@@ -467,16 +497,13 @@ export function ViewResponses() {
                         Weaknesses
                       </h4>
                       <ul className="space-y-1">
-                        {[
-                          "Could improve technical understanding",
-                          "Limited experience in our specific industry",
-                        ].map((item, i) => (
+                        {selectedEvaluation?.weaknesses?.map((item, i) => (
                           <li
                             key={i}
                             className="flex items-start gap-2 text-blue-800"
                           >
                             <AlertCircle className="h-4 w-4 text-amber-500 mt-0.5" />
-                            <span>{item}</span>
+                            <span>{item.replace(/^-\s*/, "")}</span>
                           </li>
                         ))}
                       </ul>
