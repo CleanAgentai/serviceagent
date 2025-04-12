@@ -358,7 +358,7 @@ export function ViewResponses() {
                         : "bg-red-600 text-white"
                     )}
                   >
-                    {isQualifiedDemo ? "Qualified" : "Not Qualified"}
+                    {attempt.qualified ? "Qualified" : "Not Qualified"}
                   </Button>
                 </div>
                 <div className="text-center font-bold">

@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Video, X, Star, MessageCircle } from "lucide-react";
 import { useLocation } from "react-router-dom";
+import { cn } from "@/lib/utils";
 import {
   Dialog,
   DialogContent,
@@ -179,99 +180,19 @@ export function ResponseDetails() {
     fetchResponse();
   }, [responseId]);
 
-  const renderStars = (rating: number) => {
-    const fullStars = Math.floor(rating / 2);
-    const stars = [];
-    for (let i = 0; i < 5; i++) {
-      if (i < fullStars) {
-        stars.push(
-          <Star key={i} className="w-6 h-6 text-yellow-400 fill-current" />
-        );
-      } else {
-        stars.push(<Star key={i} className="w-6 h-6 text-gray-300" />);
-      }
-    }
-    return stars;
+  const renderStars = (rating: number | null | undefined) => {
+    return Array.from({ length: 5 }).map((_, i) => (
+      <Star
+        key={i}
+        className={cn(
+          "w-6 h-6",
+          rating !== null && rating / 2 > i
+            ? "text-yellow-400 fill-current"
+            : "text-gray-300"
+        )}
+      />
+    ));
   };
-
-  // const MetricEvaluationDialog = () => {
-  //   if (!selectedMetric || !response) return null;
-
-  //   const evaluation =
-  //     response.metricEvaluations[
-  //       selectedMetric as keyof typeof response.metricEvaluations
-  //     ];
-
-  //   return (
-  //     <Dialog
-  //       open={!!selectedMetric}
-  //       onOpenChange={() => setSelectedMetric(null)}
-  //     >
-  //       <DialogContent className="max-w-2xl">
-  //         <DialogHeader>
-  //           <DialogTitle className="text-2xl font-semibold flex items-center gap-2">
-  //             {/* <span>Candidate Evaluation – {evaluation.title}</span> */}
-  //             <span>Candidate Evaluation – {evaluation.title}</span>
-  //           </DialogTitle>
-  //           <div className="flex flex-col gap-2 pt-4">
-  //             <div className="flex items-center gap-2">
-  //               <span className="text-gray-600">Name:</span>
-  //               <span className="font-medium">{response.candidateName}</span>
-  //             </div>
-  //             <div className="flex items-center gap-2">
-  //               <span className="text-gray-600">
-  //                 Position/Interview Applied:
-  //               </span>
-  //               <span className="font-medium">{response.appliedPosition}</span>
-  //             </div>
-  //             <div className="flex items-center gap-2">
-  //               <span className="text-gray-600">Metric:</span>
-  //               <span className="font-medium">{selectedMetric}</span>
-  //             </div>
-  //           </div>
-  //         </DialogHeader>
-
-  //         <div className="space-y-6 mt-6">
-  //           <div>
-  //             <h3 className="text-xl font-semibold mb-4">AI Analysis</h3>
-  //             <Card className="p-6 bg-blue-50">
-  //               <p className="text-blue-800">{evaluation.analysis}</p>
-  //             </Card>
-  //           </div>
-
-  //           <div className="grid grid-cols-2 gap-4">
-  //             <Card className="p-6 bg-green-50">
-  //               <h3 className="font-medium text-green-900 mb-3">Strengths</h3>
-  //               <ul className="space-y-2">
-  //                 {evaluation.strengths.map((strength, index) => (
-  //                   <li
-  //                     key={index}
-  //                     className="flex items-center text-green-800"
-  //                   >
-  //                     <span className="w-2 h-2 bg-green-600 rounded-full mr-2"></span>
-  //                     {strength}
-  //                   </li>
-  //                 ))}
-  //               </ul>
-  //             </Card>
-
-  //             <Card className="p-6 bg-red-50">
-  //               <h3 className="font-medium text-red-900 mb-3">Weaknesses</h3>
-  //               <ul className="space-y-2">
-  //                 {evaluation.weaknesses.map((weakness, index) => (
-  //                   <li key={index} className="flex items-center text-red-800">
-  //                     <span className="w-2 h-2 bg-red-600 rounded-full mr-2"></span>
-  //                     {weakness}
-  //                   </li>
-  //                 ))}
-  //               </ul>
-  //             </Card>
-  //           </div>
-  //         </div>
-  //       </DialogContent>
-  //     </Dialog>
-  //   );
-  // };
 
   if (loading) {
     return (
