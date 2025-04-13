@@ -1,24 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { 
-  BarChart3, 
-  Users, 
-  Calendar, 
-  Plus, 
-  ArrowRight, 
-  Activity, 
-  TrendingUp, 
-  Clock, 
-  CheckCircle2, 
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  BarChart3,
+  Users,
+  Calendar,
+  Plus,
+  ArrowRight,
+  Activity,
+  TrendingUp,
+  Clock,
+  CheckCircle2,
   AlertCircle,
   ChevronRight,
   UserCheck,
   UserPlus,
-  MapPin
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { supabase } from '@/app/lib/supabase';
+  MapPin,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { supabase } from "@/app/lib/supabase";
 
 interface Interview {
   id: string;
@@ -32,105 +32,185 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [recentInterviews, setRecentInterviews] = useState<Interview[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [appliedCount, setAppliedCount] = useState(0);
+  const [qualifiedCount, setQualifiedCount] = useState(0);
+  const [hiredCount, setHiredCount] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  const fetchRecentInterviews = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("interviews")
+        .select("id, title, created_at, deadline, language")
+        .order("created_at", { ascending: false })
+        .limit(3);
+
+      if (error) {
+        console.error("Error fetching interviews:", error);
+        setRecentInterviews([]);
+      } else if (data && data.length > 0) {
+        const formattedInterviews = data.map((interview) => ({
+          id: interview.id,
+          title: interview.title,
+          location: interview.language || "Remote",
+          deadline: interview.deadline
+            ? new Date(interview.deadline).toLocaleDateString()
+            : "No deadline",
+          createdAt: new Date(interview.created_at).toISOString().split("T")[0],
+        }));
+
+        setRecentInterviews(formattedInterviews);
+      } else {
+        setRecentInterviews([]);
+      }
+    } catch (error) {
+      console.error("Error fetching interviews:", error);
+      setRecentInterviews([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const fetchCandidatesApplied = async () => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) return;
+
+    const { data: profile, error: profileError } = await supabase
+      .from("company_profiles")
+      .select("willo_company_key")
+      .eq("created_by_user_id", user.id)
+      .single();
+
+    if (profileError || !profile) {
+      console.error("Error fetching company key:", profileError);
+      return;
+    }
+
+    const companyKey = profile.willo_company_key;
+    // 1. Fetch all attempts for the company
+    const { data: attempts, error: attemptsError } = await supabase
+      .from("interview_attempts")
+      .select("candidate_id, qualified, status")
+      .eq("department_key", companyKey)
+      .not("candidate_id", "is", null); // remove nulls
+
+    if (attemptsError || !attempts) {
+      console.error("Error fetching attempts:", attemptsError);
+      return;
+    }
+
+    // 2. Deduplicate by candidate_id
+    const uniqueCandidates = new Map(); // candidate_id -> { qualified, status }
+
+    for (const attempt of attempts) {
+      if (!uniqueCandidates.has(attempt.candidate_id)) {
+        uniqueCandidates.set(attempt.candidate_id, attempt);
+      }
+    }
+
+    const appliedCount = uniqueCandidates.size;
+    const qualifiedCount = [...uniqueCandidates.values()].filter(
+      (c) => c.qualified === true
+    ).length;
+    const hiredCount = [...uniqueCandidates.values()].filter(
+      (c) => c.status === "Hired"
+    ).length;
+
+    // 3. Set to state
+    setAppliedCount(appliedCount);
+    setQualifiedCount(qualifiedCount);
+    setHiredCount(hiredCount);
+  };
 
   useEffect(() => {
-    const fetchRecentInterviews = async () => {
+    const fetchAll = async () => {
       try {
-        const { data, error } = await supabase
-          .from('interviews')
-          .select('id, title, created_at, deadline, language')
-          .order('created_at', { ascending: false })
-          .limit(3);
-          
-        if (error) {
-          console.error('Error fetching interviews:', error);
-          setRecentInterviews([]);
-        } else if (data && data.length > 0) {
-          const formattedInterviews = data.map(interview => ({
-            id: interview.id,
-            title: interview.title,
-            location: interview.language || 'Remote',
-            deadline: interview.deadline ? new Date(interview.deadline).toLocaleDateString() : 'No deadline',
-            createdAt: new Date(interview.created_at).toISOString().split('T')[0]
-          }));
-          
-          setRecentInterviews(formattedInterviews);
-        } else {
-          setRecentInterviews([]);
-        }
-      } catch (error) {
-        console.error('Error fetching interviews:', error);
-        setRecentInterviews([]);
+        await Promise.all([fetchRecentInterviews(), fetchCandidatesApplied()]);
+      } catch (err) {
+        console.error("Dashboard fetch error:", err);
       } finally {
-        setIsLoading(false);
+        setLoading(false);
       }
     };
 
-    fetchRecentInterviews();
+    fetchAll();
   }, []);
 
   const metrics = [
     {
-      title: 'Candidates Hired',
-      value: '0',
-      change: '',
+      title: "Candidates Hired",
+      value: hiredCount.toString(),
+      change: "",
       icon: UserCheck,
-      description: 'Successfully hired candidates',
-      color: 'text-green-500',
-      bgColor: 'bg-green-50'
+      description: "Successfully hired candidates",
+      color: "text-green-500",
+      bgColor: "bg-green-50",
     },
     {
-      title: 'Candidates Applied',
-      value: '0',
-      change: '',
+      title: "Candidates Applied",
+      value: appliedCount.toString(),
+      change: "",
       icon: UserPlus,
-      description: 'Total applications received',
-      color: 'text-blue-500',
-      bgColor: 'bg-blue-50'
+      description: "Total applications received",
+      color: "text-blue-500",
+      bgColor: "bg-blue-50",
     },
     {
-      title: 'Qualified Candidates',
-      value: '0',
-      change: '',
+      title: "Qualified Candidates",
+      value: qualifiedCount.toString(),
+      change: "",
       icon: Users,
-      description: 'Candidates meeting requirements',
-      color: 'text-purple-500',
-      bgColor: 'bg-purple-50'
+      description: "Candidates meeting requirements",
+      color: "text-purple-500",
+      bgColor: "bg-purple-50",
     },
     {
-      title: 'Average Time to Hire',
-      value: '0',
-      change: '',
+      title: "Average Time to Hire",
+      value: "0",
+      change: "",
       icon: Clock,
-      description: 'Average days to complete hire',
-      color: 'text-orange-500',
-      bgColor: 'bg-orange-50'
-    }
+      description: "Average days to complete hire",
+      color: "text-orange-500",
+      bgColor: "bg-orange-50",
+    },
   ];
 
   const quickActions = [
     {
-      title: 'Create Interview',
-      description: 'Set up a new interview session',
+      title: "Create Interview",
+      description: "Set up a new interview session",
       icon: <Plus className="h-5 w-5 text-blue-600" />,
-      action: () => navigate('/interviews/create'),
-      color: 'bg-gradient-to-br from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200'
+      action: () => navigate("/interviews/create"),
+      color:
+        "bg-gradient-to-br from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200",
     },
     {
-      title: 'View Interviews',
-      description: 'Review past interview sessions',
+      title: "View Interviews",
+      description: "Review past interview sessions",
       icon: <Calendar className="h-5 w-5 text-green-600" />,
-      action: () => navigate('/interviews'),
-      color: 'bg-gradient-to-br from-green-50 to-green-100 hover:from-green-100 hover:to-green-200'
+      action: () => navigate("/interviews"),
+      color:
+        "bg-gradient-to-br from-green-50 to-green-100 hover:from-green-100 hover:to-green-200",
     },
     {
-      title: 'View Responses',
-      description: 'Review candidate responses',
+      title: "View Responses",
+      description: "Review candidate responses",
       icon: <Users className="h-5 w-5 text-violet-600" />,
-      action: () => navigate('/interviews/responses'),
-      color: 'bg-gradient-to-br from-violet-50 to-violet-100 hover:from-violet-100 hover:to-violet-200'
-    }
+      action: () => navigate("/interviews/responses"),
+      color:
+        "bg-gradient-to-br from-violet-50 to-violet-100 hover:from-violet-100 hover:to-violet-200",
+    },
   ];
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900" />
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto p-6">
@@ -152,14 +232,26 @@ const Dashboard = () => {
                     <Icon className={`h-6 w-6 ${metric.color}`} />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-600">{metric.title}</p>
+                    <p className="text-sm font-medium text-gray-600">
+                      {metric.title}
+                    </p>
                     <div className="flex items-baseline gap-2">
-                      <p className="text-2xl font-semibold text-gray-900">{metric.value}</p>
-                      <span className={metric.change.startsWith('+') ? 'text-green-600 text-sm' : 'text-red-600 text-sm'}>
+                      <p className="text-2xl font-semibold text-gray-900">
+                        {metric.value}
+                      </p>
+                      <span
+                        className={
+                          metric.change.startsWith("+")
+                            ? "text-green-600 text-sm"
+                            : "text-red-600 text-sm"
+                        }
+                      >
                         {metric.change}
                       </span>
                     </div>
-                    <p className="text-sm text-gray-500 mt-1">{metric.description}</p>
+                    <p className="text-sm text-gray-500 mt-1">
+                      {metric.description}
+                    </p>
                   </div>
                 </div>
               </Card>
@@ -172,9 +264,9 @@ const Dashboard = () => {
           <h2 className="text-lg font-semibold mb-4">Quick Actions</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Create Interview Card */}
-            <Card 
+            <Card
               className="p-6 cursor-pointer hover:bg-gray-50 transition-colors"
-              onClick={() => navigate('/interviews/create')}
+              onClick={() => navigate("/interviews/create")}
             >
               <div className="flex items-center gap-4">
                 <div className="bg-blue-50 p-3 rounded-lg">
@@ -182,15 +274,17 @@ const Dashboard = () => {
                 </div>
                 <div>
                   <h3 className="font-medium">Create Interview</h3>
-                  <p className="text-sm text-gray-500">Set up a new interview session</p>
+                  <p className="text-sm text-gray-500">
+                    Set up a new interview session
+                  </p>
                 </div>
               </div>
             </Card>
 
             {/* View Responses Card */}
-            <Card 
+            <Card
               className="p-6 cursor-pointer hover:bg-gray-50 transition-colors"
-              onClick={() => navigate('/interviews/responses')}
+              onClick={() => navigate("/interviews/responses")}
             >
               <div className="flex items-center gap-4">
                 <div className="bg-purple-50 p-3 rounded-lg">
@@ -198,7 +292,9 @@ const Dashboard = () => {
                 </div>
                 <div>
                   <h3 className="font-medium">View Responses</h3>
-                  <p className="text-sm text-gray-500">Review candidate responses</p>
+                  <p className="text-sm text-gray-500">
+                    Review candidate responses
+                  </p>
                 </div>
               </div>
             </Card>
@@ -209,18 +305,22 @@ const Dashboard = () => {
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="p-6 border-b border-gray-200 flex justify-between items-center">
             <div>
-              <h2 className="text-lg font-semibold text-gray-900">Recent Interviews</h2>
-              <p className="text-sm text-gray-600 mt-1">Your latest interviews</p>
+              <h2 className="text-lg font-semibold text-gray-900">
+                Recent Interviews
+              </h2>
+              <p className="text-sm text-gray-600 mt-1">
+                Your latest interviews
+              </p>
             </div>
-            <button 
-              onClick={() => navigate('/interviews')}
+            <button
+              onClick={() => navigate("/interviews")}
               className="text-sm text-[#1E529D] font-medium flex items-center hover:text-[#1E529D]/90 transition-colors"
             >
               View All
               <ChevronRight className="h-4 w-4 ml-1" />
             </button>
           </div>
-          
+
           {isLoading ? (
             <div className="p-8 text-center">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto"></div>
@@ -231,10 +331,14 @@ const Dashboard = () => {
               <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
                 <Calendar className="h-8 w-8 text-gray-400" />
               </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-1">No interviews yet</h3>
-              <p className="text-gray-600 mb-4">Create your first interview to get started</p>
+              <h3 className="text-lg font-medium text-gray-900 mb-1">
+                No interviews yet
+              </h3>
+              <p className="text-gray-600 mb-4">
+                Create your first interview to get started
+              </p>
               <button
-                onClick={() => navigate('/interviews/create')}
+                onClick={() => navigate("/interviews/create")}
                 className="inline-flex items-center px-4 py-2 bg-[#1E529D] text-white text-sm font-medium rounded-lg hover:bg-[#1E529D]/90"
               >
                 <Plus className="h-4 w-4 mr-2" />
@@ -244,8 +348,8 @@ const Dashboard = () => {
           ) : (
             <div className="divide-y divide-gray-100">
               {recentInterviews.map((interview, index) => (
-                <div 
-                  key={index} 
+                <div
+                  key={index}
                   className="p-4 hover:bg-gray-50 transition-colors cursor-pointer"
                   onClick={() => navigate(`/interviews/${interview.id}`)}
                 >
@@ -255,8 +359,12 @@ const Dashboard = () => {
                         {interview.title.charAt(0)}
                       </div>
                       <div>
-                        <h3 className="text-sm font-medium text-gray-900">{interview.title}</h3>
-                        <p className="text-xs text-gray-500">Created on {interview.createdAt}</p>
+                        <h3 className="text-sm font-medium text-gray-900">
+                          {interview.title}
+                        </h3>
+                        <p className="text-xs text-gray-500">
+                          Created on {interview.createdAt}
+                        </p>
                       </div>
                     </div>
                     <div className="flex flex-col items-end">
@@ -280,4 +388,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard; 
+export default Dashboard;
