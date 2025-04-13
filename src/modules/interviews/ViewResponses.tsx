@@ -214,7 +214,7 @@ export function ViewResponses() {
 
     const { error } = await supabase
       .from("interview_attempts")
-      .update({ status: newStatus })
+      .update({ status: newStatus, updated_at: new Date().toISOString() })
       .eq("id", attemptId);
 
     if (error) {
