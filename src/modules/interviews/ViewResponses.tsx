@@ -156,7 +156,7 @@ export function ViewResponses() {
               candidateName: item.candidates?.name || "Unknown",
               email: item.candidates?.email || "N/A",
               phone: item.candidates?.phone || "N/A",
-              createdAt: new Date(item.created_at).toLocaleDateString(),
+              createdAt: new Date(item.created_at).toLocaleDateString("en-US"),
               interviewTitle: item.interviews?.title || "Untitled Interview",
               status: item.status || "Pending",
               qualified: item.qualified ?? null,

@@ -136,8 +136,7 @@ export function ResponseDetails() {
             professionalism: evalData.professionalism_justification ?? "",
             reliability: evalData.reliability_justification ?? "",
             problemSolving: evalData.problem_solving_justification ?? "",
-
-            cognitiveAbility: evalData.cognitive_ability_score ?? "",
+            cognitiveAbility: evalData.cognitive_ability_justification ?? "",
           },
           aiAnalysis: {
             keyObservations: evalData.general_summary ?? "",
@@ -153,22 +152,6 @@ export function ResponseDetails() {
               : [],
           },
           questions: mappedQuestions,
-          // [
-          //   {
-          //     id: "1",
-          //     question: "Tell us about your experience in software development",
-          //     answer: "I have 5 years of experience in software development...",
-          //     //videoUrl: "https://example.com/video1",
-          //   },
-          //   {
-          //     id: "2",
-          //     question:
-          //       "How do you handle technical challenges in your projects?",
-          //     answer:
-          //       "My approach to handling technical challenges involves...",
-          //     //videoUrl: "https://example.com/video2",
-          //   },
-          // ],
         });
       } catch (error) {
         console.error("Error fetching response:", error);
@@ -328,6 +311,15 @@ export function ResponseDetails() {
                   </td>
                   <td className="py-2 px-4">
                     {response.metricEvaluations.problemSolving}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="py-2 px-4">Cognitive Ability</td>
+                  <td className="py-2 px-4">
+                    {response.metrics.cognitiveAbility}/10
+                  </td>
+                  <td className="py-2 px-4">
+                    {response.metricEvaluations.cognitiveAbility}
                   </td>
                 </tr>
               </tbody>

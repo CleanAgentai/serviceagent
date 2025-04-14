@@ -56,11 +56,13 @@ export function ViewInterviews() {
           const formattedInterviews = data.map((interview) => ({
             id: interview.id,
             title: interview.title,
-            createdAt: new Date(interview.created_at)
-              .toISOString()
-              .split("T")[0],
+            createdAt: new Date(interview.created_at).toLocaleDateString(
+              "en-US"
+            ),
+            //.toISOString()
+            //.split("T")[0],
             deadline: interview.deadline
-              ? new Date(interview.deadline).toLocaleDateString("en-GB")
+              ? new Date(interview.deadline).toLocaleDateString("en-US")
               : "No deadline",
 
             interviewLink: interview.interview_link || "",

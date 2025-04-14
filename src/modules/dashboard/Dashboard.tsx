@@ -35,6 +35,7 @@ const Dashboard = () => {
   const [appliedCount, setAppliedCount] = useState(0);
   const [qualifiedCount, setQualifiedCount] = useState(0);
   const [hiredCount, setHiredCount] = useState(0);
+  const [averageTimeToHire, setAverageTimeToHire] = useState(0);
   const [loading, setLoading] = useState(true);
 
   const fetchRecentInterviews = async () => {
@@ -54,9 +55,9 @@ const Dashboard = () => {
           title: interview.title,
           location: interview.language || "Remote",
           deadline: interview.deadline
-            ? new Date(interview.deadline).toLocaleDateString()
+            ? new Date(interview.deadline).toLocaleDateString("en-US")
             : "No deadline",
-          createdAt: new Date(interview.created_at).toISOString().split("T")[0],
+          createdAt: new Date(interview.created_at).toLocaleDateString("en-US"),
         }));
 
         setRecentInterviews(formattedInterviews);
@@ -118,10 +119,25 @@ const Dashboard = () => {
       (c) => c.status === "Hired"
     ).length;
 
+    const { data, error } = await supabase
+      .from("company_analytics")
+      .select("total_days_to_hire, total_hired_cases")
+      .eq("department_key", companyKey)
+      .single();
+    if (error || !data || data.total_hired_cases === 0) {
+      console.error("Error fetching average time to hire:", error);
+      setAverageTimeToHire(0);
+      return;
+    }
+
+    const avg =
+      Math.round((data.total_days_to_hire / data.total_hired_cases) * 10) / 10;
+
     // 3. Set to state
     setAppliedCount(appliedCount);
     setQualifiedCount(qualifiedCount);
     setHiredCount(hiredCount);
+    setAverageTimeToHire(avg);
   };
 
   useEffect(() => {
@@ -168,7 +184,7 @@ const Dashboard = () => {
     },
     {
       title: "Average Time to Hire",
-      value: "0",
+      value: averageTimeToHire.toString(),
       change: "",
       icon: Clock,
       description: "Average days to complete hire",
