@@ -15,6 +15,7 @@ import {
   UserCheck,
   UserPlus,
   MapPin,
+  Languages,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -178,7 +179,7 @@ const Dashboard = () => {
       value: qualifiedCount.toString(),
       change: "",
       icon: Users,
-      description: "Candidates meeting requirements",
+      description: "Candidates with a 7+ rating",
       color: "text-purple-500",
       bgColor: "bg-purple-50",
     },
@@ -385,7 +386,7 @@ const Dashboard = () => {
                     </div>
                     <div className="flex flex-col items-end">
                       <div className="flex items-center text-xs text-gray-500">
-                        <MapPin className="h-3 w-3 mr-1" />
+                        <Languages className="h-3 w-3 mr-1" />
                         {interview.location}
                       </div>
                       <div className="flex items-center text-xs text-gray-500 mt-1">

@@ -304,7 +304,7 @@ export function ResponseDetails() {
                     {response.metricEvaluations.reliability}
                   </td>
                 </tr>
-                <tr>
+                <tr className="border-b">
                   <td className="py-2 px-4">Problem Solving</td>
                   <td className="py-2 px-4">
                     {response.metrics.problemSolving}/10
