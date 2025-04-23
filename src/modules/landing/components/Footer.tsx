@@ -1,60 +1,65 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Facebook, Twitter, Linkedin, Mail } from 'lucide-react';
-import { openCalendly } from '@/app/shared/utils/calendly';
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Facebook, Twitter, Linkedin, Mail } from "lucide-react";
+import { openCalendly } from "@/app/shared/utils/calendly";
 
 const footerLinks = {
   product: [
-    { label: 'Features', href: '/#complete-ai-solution' },
-    { label: 'Book a Demo', onClick: openCalendly },
+    { label: "Features", href: "/#hiring-agent-features-grid" },
+    { label: "Start Free Trial", href: "/signup" },
+    { label: "Book a Demo", onClick: openCalendly },
   ],
   company: [
-    { label: 'About Us', href: '/about-us' },
-    { label: 'Blog', href: '/blog' },
-    { label: 'Contact', href: '/contact' },
+    { label: "About Us", href: "/about-us" },
+    // { label: "Blog", href: "/blog" },
+    { label: "Contact", href: "/contact" },
   ],
   legal: [
-    { label: 'Privacy Policy', href: '/privacy-policy' },
-    { label: 'Terms of Service', href: '/terms-of-service' },
-    { label: 'Cookie Policy', href: '/cookie-policy' },
+    { label: "Privacy Policy", href: "/privacy-policy" },
+    { label: "Terms of Service", href: "/terms-of-service" },
+    { label: "Cookie Policy", href: "/cookie-policy" },
   ],
 };
 
 const socialLinks = [
-  { 
-    icon: Linkedin, 
-    href: 'https://www.linkedin.com/company/cleanagent-ai/?viewAsMember=true', 
-    label: 'LinkedIn' 
+  {
+    icon: Linkedin,
+    href: "https://www.linkedin.com/company/cleanagent-ai/?viewAsMember=true",
+    label: "LinkedIn",
   },
-  { 
-    icon: Facebook, 
-    href: 'https://www.facebook.com/profile.php?id=61572125470196', 
-    label: 'Facebook' 
+  {
+    icon: Facebook,
+    href: "https://www.facebook.com/profile.php?id=61572125470196",
+    label: "Facebook",
   },
-  { 
-    icon: Twitter, 
-    href: 'https://x.com/cleanagentai', 
-    label: 'Twitter' 
+  {
+    icon: Twitter,
+    href: "https://x.com/cleanagentai",
+    label: "Twitter",
   },
 ];
 
 export function Footer() {
   const location = useLocation();
-  const isHomePage = location.pathname === '/';
+  const isHomePage = location.pathname === "/";
 
   const handleLinkClick = (href?: string) => {
-    if (href?.startsWith('/#') && isHomePage) {
-      const sectionId = href.replace('/#', '');
+    if (href?.startsWith("/#") && isHomePage) {
+      const sectionId = href.replace("/#", "");
       const section = document.getElementById(sectionId);
       if (section) {
-        section.scrollIntoView({ behavior: 'smooth' });
+        section.scrollIntoView({ behavior: "smooth" });
         return;
       }
     }
     window.scrollTo(0, 0);
   };
 
-  const renderLink = (link: { label: string; href?: string; onClick?: (e: React.MouseEvent) => void }) => {
+  const renderLink = (link: {
+    label: string;
+    href?: string;
+    onClick?: (e: React.MouseEvent) => void;
+  }) => {
     if (link.onClick) {
       return (
         <button
@@ -66,7 +71,7 @@ export function Footer() {
       );
     }
 
-    if (link.href?.startsWith('http')) {
+    if (link.href?.startsWith("http")) {
       return (
         <a
           href={link.href}
@@ -79,7 +84,7 @@ export function Footer() {
       );
     }
 
-    if (link.href?.startsWith('/#') && isHomePage) {
+    if (link.href?.startsWith("/#") && isHomePage) {
       return (
         <button
           onClick={() => handleLinkClick(link.href)}
@@ -92,7 +97,7 @@ export function Footer() {
 
     return (
       <Link
-        to={link.href || '/'}
+        to={link.href || "/"}
         onClick={() => handleLinkClick(link.href)}
         className="text-gray-600 hover:text-gray-900 transition-colors text-sm"
       >
@@ -108,15 +113,23 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
           {/* Brand Section */}
           <div className="lg:col-span-2">
-            <Link to="/" className="inline-block mb-4" onClick={() => handleLinkClick()}>
+            <Link
+              to="/"
+              className="inline-flex items-center space-x-2 mb-4"
+              onClick={() => handleLinkClick()}
+            >
               <img
-                src="/serviceagent-logo.svg"
+                src="/ServiceAgent__.png"
                 alt="ServiceAgent Logo"
-                className="h-10 w-auto"
+                className="h-6 w-auto"
               />
+              {/* <span className="text-xl font-semibold text-gray-900">
+                ServiceAgent
+              </span> */}
             </Link>
             <p className="text-gray-600 mb-6 max-w-sm">
-              AI-powered automation for service businesses. Save time, reduce costs, and grow your business with ServiceAgent.
+              AI-powered hiring automation for field service companies. Save
+              time, hire faster, and scale your team—without the headaches.
             </p>
             {/* Social Links */}
             <div className="flex space-x-4">
@@ -144,16 +157,21 @@ export function Footer() {
                 </h3>
                 <ul className="space-y-3">
                   {links.map((link) => (
-                    <li key={link.label}>
-                      {renderLink(link)}
-                    </li>
+                    <li key={link.label}>{renderLink(link)}</li>
                   ))}
                 </ul>
               </div>
             ))}
           </div>
         </div>
+        {/* Copyright Row */}
+        <div
+          id="footer-copyright"
+          className="border-t border-gray-200 pt-6 text-center text-sm text-gray-500"
+        >
+          © 2025 ServiceAgent. All rights reserved.
+        </div>
       </div>
     </footer>
   );
-} 
+}

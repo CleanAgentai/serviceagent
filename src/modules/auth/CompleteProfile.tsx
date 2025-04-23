@@ -87,7 +87,7 @@ export function CompleteProfile() {
       alert("Error updating profile. Please try again.");
       console.error(error);
     } else {
-      navigate("/dashboard");
+      navigate("/post-signup");
     }
   };
 

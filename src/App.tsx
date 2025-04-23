@@ -1,38 +1,41 @@
-import React, { useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { UserPreferencesProvider } from '@/app/providers/UserPreferencesContext';
-import { AuthProvider } from '@/app/providers/AuthContext';
-import { ProtectedRoute } from '@/app/shared/auth/ProtectedRoute';
-import { ErrorBoundary } from '@/app/shared/common/ErrorBoundary';
-import { LoadingState } from '@/app/shared/common/LoadingState';
-import { AppLayout } from '@/app/shared/layouts/AppLayout';
-import { Login } from '@/modules/auth/Login';
-import { Signup } from '@/modules/auth/Signup';
-import { AuthCallback } from '@/modules/auth/AuthCallback';
+import React, { useEffect } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { UserPreferencesProvider } from "@/app/providers/UserPreferencesContext";
+import { AuthProvider } from "@/app/providers/AuthContext";
+import { ProtectedRoute } from "@/app/shared/auth/ProtectedRoute";
+import { ErrorBoundary } from "@/app/shared/common/ErrorBoundary";
+import { LoadingState } from "@/app/shared/common/LoadingState";
+import { AppLayout } from "@/app/shared/layouts/AppLayout";
+import { Login } from "@/modules/auth/Login";
+import { Signup } from "@/modules/auth/Signup";
+import { AuthCallback } from "@/modules/auth/AuthCallback";
 import { OAuthCallback } from "./modules/auth/OauthCallback";
 import { CompleteProfile } from "./modules/auth/CompleteProfile";
-import { PostSignupSetup } from '@/modules/auth/PostSignupSetup';
-import { PrivacyPolicy } from '@/modules/legal/PrivacyPolicy';
-import { TermsOfService } from '@/modules/legal/TermsOfService';
-import { CookiePolicy } from '@/modules/legal/CookiePolicy';
-import { NotFound } from '@/modules/error/NotFound';
-import setupDatabase from '@/utils/setupDatabase';
-import { Toaster } from 'sonner';
+import { PostSignupSetup } from "@/modules/auth/PostSignupSetup";
+import { PrivacyPolicy } from "@/modules/legal/PrivacyPolicy";
+import { TermsOfService } from "@/modules/legal/TermsOfService";
+import { CookiePolicy } from "@/modules/legal/CookiePolicy";
+import { NotFound } from "@/modules/error/NotFound";
+import setupDatabase from "@/utils/setupDatabase";
+import { Toaster } from "sonner";
 
 // Dashboard Components
-import DashboardLayout from '@/modules/dashboard/DashboardLayout';
-import Dashboard from '@/modules/dashboard/Dashboard';
-import Settings from '@/modules/dashboard/Settings';
+import DashboardLayout from "@/modules/dashboard/DashboardLayout";
+import Dashboard from "@/modules/dashboard/Dashboard";
+import Settings from "@/modules/dashboard/Settings";
 import AIAnalysis from "@/modules/dashboard/AIAnalysis";
 
 // Interview Components
-import CreateInterview from '@/modules/interviews/CreateInterview';
-import { ViewInterviews } from '@/modules/interviews/ViewInterviews';
-import { ViewResponses } from '@/modules/interviews/ViewResponses';
-import { ResponseDetails } from '@/modules/interviews/ResponseDetails';
+import CreateInterview from "@/modules/interviews/CreateInterview";
+import { ViewInterviews } from "@/modules/interviews/ViewInterviews";
+import { ViewResponses } from "@/modules/interviews/ViewResponses";
+import { ResponseDetails } from "@/modules/interviews/ResponseDetails";
 
 // Public Pages
 import { LandingPage } from "@/modules/landing/LandingPage";
+import { AboutUs } from "./modules/company/AboutUs";
+import { Contact } from "./modules/company/Contact";
+import { Blog, BlogPost } from "./modules/blog";
 
 // Sales Routes
 const SalesRoutes = React.lazy(() => import("@/pages/sales/setup"));
@@ -53,16 +56,16 @@ const App = () => {
     // Set document title based on domain
     const domain = import.meta.env.VITE_APP_DOMAIN || "dashboard.fsagent.com";
     document.title = `ServiceAgent - ${domain}`;
-    
+
     // Initialize database
     const initDatabase = async () => {
       try {
         await setupDatabase();
       } catch (error) {
-        console.error('Failed to initialize database:', error);
+        console.error("Failed to initialize database:", error);
       }
     };
-    
+
     initDatabase();
   }, []);
 
@@ -72,9 +75,7 @@ const App = () => {
         <BrowserRouter>
           <Toaster position="top-right" />
           <React.Suspense
-            fallback={
-              <LoadingState variant="full" message="Loading page..." />
-            }
+            fallback={<LoadingState variant="full" message="Loading page..." />}
           >
             <ErrorBoundary>
               <Routes>
@@ -87,15 +88,33 @@ const App = () => {
                     <AppLayout showNavigation={false} showFooter={false} />
                   }
                 >
-                  <Route path="/login" element={<Navigate to="/" replace />} />
-                  <Route path="/" element={<Login />} />
+                  <Route
+                    path="/login"
+                    element={<Navigate to="/signin" replace />}
+                  />
+                  <Route path="/signin" element={<Login />} />
                   <Route path="/signup" element={<Signup />} />
+
                   <Route path="/oauth-callback" element={<OAuthCallback />} />
                   <Route path="/post-signup" element={<PostSignupSetup />} />
                   <Route
                     path="/complete-profile"
                     element={<CompleteProfile />}
                   />
+                </Route>
+                <Route
+                  element={
+                    <AppLayout showNavigation={true} showFooter={true} />
+                  }
+                >
+                  {/* Landing Page */}
+                  <Route path="/" element={<LandingPage />} />
+                  <Route path="/about-us" element={<AboutUs />} />
+                  <Route path="/contact" element={<Contact />} />
+                  {/* <Route path="/blog" element={<Blog />} /> */}
+                  <Route path="/blog" element={<Blog />} />
+                  <Route path="/blog/:slug" element={<BlogPost />} />
+
                   <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                   <Route
                     path="/terms-of-service"
@@ -130,7 +149,10 @@ const App = () => {
                   <Route index element={<ViewInterviews />} />
                   <Route path="create" element={<CreateInterview />} />
                   <Route path="responses" element={<ViewResponses />} />
-                  <Route path="responses/:responseId" element={<ResponseDetails />} />
+                  <Route
+                    path="responses/:responseId"
+                    element={<ResponseDetails />}
+                  />
                   <Route path=":interviewId" element={<ViewResponses />} />
                 </Route>
 
