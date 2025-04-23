@@ -25,21 +25,21 @@ export async function setupDatabase() {
   try {
     console.log('Setting up database...');
     
-    // Check if profiles table exists and verify its structure
-    const { data: columns, error: describeError } = await supabase
-      .rpc('describe_table', { table_name: 'profiles' });
-    
-    if (describeError) {
-      console.error('Error checking profiles table structure:', describeError);
+    // Check if 'profiles' table exists
+    try {
+      console.log("Checking profiles table structure...");
+      // Commented out the non-existent RPC call
+      // const { data, error } = await supabase
+      //  .rpc('describe_table', { table_name: 'profiles' });
+
+      // console.log("Table description fetched:", data);
+      // if (error) throw error;
+      // if (!data) throw new Error('Profiles table does not exist or is inaccessible.');
+      console.log("Skipping describe_table check as function may not exist."); // Added info log
+
+    } catch (error) {
+      console.error("Error checking profiles table structure:", error);
       console.log('The profiles table needs to be created by an administrator');
-    } else if (columns) {
-      console.log('Profiles table exists with columns:', columns);
-      const missingColumns = EXPECTED_PROFILE_COLUMNS.filter(
-        col => !columns.some((c: any) => c.column_name === col)
-      );
-      if (missingColumns.length > 0) {
-        console.error('Missing columns in profiles table:', missingColumns);
-      }
     }
     
     // Check if storage bucket exists, but don't try to create it
