@@ -92,14 +92,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       console.log("Updating profiles table for user:", userId);
 
-      // 2️⃣ `profiles` 테이블 업데이트 (UPDATE)
+      // 2️⃣ `profiles` 
       const { error: profileError } = await supabase
         .from("profiles")
         .update({
           first_name: firstName,
           last_name: lastName,
           company_name: companyName,
-          email: email, // ✅ 이메일 저장 (필요 시)
+          email: email, // 
         })
         .eq("id", userId); // `auth.users.id`와 동일한 row 업데이트
 

@@ -48,16 +48,16 @@ export default function DashboardLayout() {
   
   return (
     <div className="flex h-screen bg-background">
-      {/* Desktop Sidebar */}
+      {/* Desktop Sidebar - Added border-r back */}
       <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 border-r">
-        <div className="flex flex-col flex-grow pt-5 overflow-y-auto">
-          <div className="pl-1 pr-4 flex items-center border-b">
-            <div className="flex-1">
-              <img src="/Untitled design-6.svg" alt="ServiceAgent Logo" className="h-48 w-64" />
+        <div className="flex flex-col flex-grow overflow-y-auto">
+          <div className="px-4 flex items-center border-b h-16">
+            <div className="flex-1 flex justify-center">
+              <img src="/ServiceAgent__.png" alt="ServiceAgent Logo" className="h-10 w-auto" />
             </div>
           </div>
-          <div className="flex-1 px-3">
-            <nav className="space-y-1">
+          <div className="flex-1 mb-4">
+            <nav>
               {navItems.map((item) => (
                 <SidebarItem
                   key={item.path}
@@ -86,13 +86,13 @@ export default function DashboardLayout() {
       <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
         <SheetContent side="left" className="p-0 w-64 sm:max-w-sm">
           <ScrollArea className="h-full p-4">
-            <div className="flex items-center justify-between">
-              <img src="/Untitled design-6.svg" alt="ServiceAgent Logo" className="h-48 w-64" />
+            <div className="flex items-center justify-between mb-4">
+              <img src="/ServiceAgent__.png" alt="ServiceAgent Logo" className="h-10 w-auto" />
               <Button variant="ghost" size="icon" onClick={() => setIsSidebarOpen(false)}>
                 <X size={20} />
               </Button>
             </div>
-            <nav className="space-y-1">
+            <nav className="mb-4">
               {navItems.map((item) => (
                 <SidebarItem
                   key={item.path}
@@ -103,7 +103,7 @@ export default function DashboardLayout() {
                 />
               ))}
             </nav>
-            <div className="mt-6 pt-6 border-t">
+            <div className="pt-4 border-t">
               <Button 
                 variant="outline" 
                 className="w-full justify-start" 
@@ -119,7 +119,7 @@ export default function DashboardLayout() {
 
       {/* Main Content */}
       <div className="md:pl-64 flex flex-col flex-1">
-        {/* Top Navigation */}
+        {/* Top Navigation - Added border-b back */}
         <div className="sticky top-0 z-10 flex-shrink-0 h-16 bg-background/95 backdrop-blur-sm border-b flex">
           {/* Mobile menu button */}
           <Button 

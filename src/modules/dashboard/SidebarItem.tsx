@@ -32,7 +32,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
         "w-full justify-start text-sm font-medium",
         isActive 
           ? "bg-secondary text-secondary-foreground"
-          : "text-[#1E529D] hover:text-[#1E529D] hover:bg-muted"
+          : "text-[#004aad] hover:text-[#004aad] hover:bg-muted"
       )}
       onClick={handleClick}
     >

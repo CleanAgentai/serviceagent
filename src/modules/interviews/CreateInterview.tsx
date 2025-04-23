@@ -752,13 +752,14 @@ export default function CreateInterview() {
               Add Question
             </Button>
 
-            <div className="flex justify-between">
-              <Button type="button" variant="outline" onClick={prevTab}>
+            <div className="flex justify-between items-center mt-4">
+              <Button type="button" variant="outline" onClick={prevTab} className="relative -top-1">
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Previous
               </Button>
-              <Button type="button" onClick={handleSubmit} disabled={loading}>
-                {loading ? "Creating..." : "Create Interview"}
+              <Button type="button" onClick={nextTab}>
+                Next: Settings
+                <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </div>
           </div>
