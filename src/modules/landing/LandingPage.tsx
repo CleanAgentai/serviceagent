@@ -136,16 +136,16 @@ export function LandingPage() {
 
             {/* Main Heading */}
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-tight font-extrabold text-gray-900 mb-6 sm:mb-8">
-              <span className="block font-bold mb-2 sm:mb-4">
-                Your AI Recruiter—Built for Service Companies
-              </span>
+              {/* <span className="block font-bold mb-2 sm:mb-4">
+                Your AI Recruiter
+              </span> */}
               <span className="relative inline-block">
                 <span className="relative z-10 bg-gradient-to-r from-[#4FC3DC] to-[#1E529D] bg-clip-text text-transparent  block sm:inline">
-                  Hire Better Techs, Faster
+                  Your AI Recruiter
                 </span>
                 <br />
                 <span className="relative z-10 bg-gradient-to-r from-[#4FC3DC] to-[#1E529D] bg-clip-text text-transparent sm:inline">
-                  — Without Lifting a Finger
+                  —Built for Service Companies
                 </span>
               </span>
             </h1>
