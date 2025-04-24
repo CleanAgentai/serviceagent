@@ -14,25 +14,25 @@ const stats = [
   {
     value: "92%",
     label: "Faster Time-to-Hire",
-    description: "AI screens and ranks applicants instantly",
+    description: "AI screens instantly—no more delays or bottlenecks.",
     icon: Icons.Clock,
   },
   {
     value: "85%",
     label: "Less Time Spent on Hiring",
-    description: "Eliminate job posting, resume screening, and scheduling",
+    description: "Job posts, screening, and scheduling? Handled.",
     icon: Icons.Calendar,
   },
   {
     value: "5x",
     label: "Better Candidate Quality",
-    description: "Only interview the top 5% of applicants",
+    description: "Only interview the top 5%—no more guessing.",
     icon: Icons.TrendingUp,
   },
   {
     value: "24/7",
-    label: "AI Hiring Assistant",
-    description: "Working around the clock—even when you’re off the clock",
+    label: "Hiring Power",
+    description: "Your AI recruiter works when you’re asleep.",
     icon: Icons.Zap,
   },
 ];
@@ -43,34 +43,34 @@ const heroFeatures = [
     icon: Icons.Megaphone,
     title: "Hands-Free Job Posting",
     description:
-      " Automatically publish job listings on Indeed, Facebook, and LinkedIn with optimized descriptions for HVAC, plumbing, cleaning, and more. No manual setup needed",
+      "Instantly posts jobs to Indeed, Facebook, and LinkedIn with optimized descriptions for your specific roles. No setup, no hassle.",
   },
   {
     icon: Icons.Bot,
-    title: "24/7 Candidate Screening",
+    title: "24/7 AI Screening",
     description:
-      "Every applicant is interviewed instantly by AI via chat or video. Candidates are ranked by skills, experience, and fit—so you only talk to the best",
+      "Every applicant is interviewed on the spot by AI—via chat or video.",
   },
   {
     icon: Icons.ListChecks,
-    title: "Instant Shortlists, No Guesswork",
+    title: "Instant Shortlists, No Admin",
     description:
-      "The Hiring Agent filters and ranks applicants, sends automated rejections, and delivers your top picks with zero admin work",
+      "Only talk to qualified candidates. The AI scores and ranks applicants automatically—zero time wasted on unqualified people.",
   },
 ];
 
 // Main features
 const mainFeatures = [
   {
-    title: "Job Posting, Done For You",
+    title: "Job Posts Done for You",
     description:
-      "Your Hiring Agent writes and publishes job listings across platforms like Indeed, Facebook, and LinkedIn—customized for your industry and optimized for conversion.",
+      "We write and publish your job listings to Indeed, Facebook, and LinkedIn—optimized to convert, no manual setup required.",
     icon: Icons.Users,
     gradient: "from-[#7DD8F0] to-[#1E529D]",
     features: [
-      "Multi-platform job distribution",
-      "Role-specific job description templates",
-      "Auto-optimized for performance",
+      "Auto-written, role-specific job descriptions",
+      "Multi-platform distribution",
+      "Tuned for conversion from day one",
     ],
   },
 
@@ -78,27 +78,27 @@ const mainFeatures = [
   // from-[#7DD8F0] to-[#5A4FCF]
   //from-[#A4DEF2] to-[#2E6FB8]
   {
-    title: "24/7 Candidate Screening",
+    title: "24/7 Instant Interviews",
     description:
-      "Every applicant is automatically interviewed by AI using chat or video. Responses are scored in real time based on experience, availability, and fit—so you only see the best.",
+      "Every applicant gets auto-interviewed by AI—via chat or video. Scored instantly for reliability, experience, and fit.",
     icon: Icons.Target,
     gradient: "from-[#7DD8F0] to-[#1E529D]",
     features: [
-      "Chat and video interviews",
-      "Skill-based response scoring",
-      "Automatic filtering and red flag detection",
+      "AI interviews every candidate in real time",
+      "Red flags auto-filtered",
+      "Skill-based scoring & instant insights",
     ],
   },
   {
-    title: "Your Best Candidates, Delivered",
+    title: "Top Candidates, Zero Admin",
     description:
-      "Receive a ranked shortlist of top applicants, along with auto-generated offer letters, rejection emails, and onboarding packets. All without lifting a finger.",
+      "You get a ranked shortlist of only the best. Offer letters, rejections, and onboarding? We handle it.",
     icon: Icons.Megaphone,
     gradient: "from-[#7DD8F0] to-[#1E529D]",
     features: [
-      "Top candidates ranked instantly",
-      "Auto-sent rejection and offer emails",
-      "Digital onboarding materials",
+      "Top 5% delivered directly",
+      "Rejections and offers sent automatically",
+      "Onboarding packets ready-to-go",
     ],
   },
 ];
@@ -137,7 +137,7 @@ export function LandingPage() {
             {/* Main Heading */}
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-tight font-extrabold text-gray-900 mb-6 sm:mb-8">
               <span className="block font-bold mb-2 sm:mb-4">
-                24/7 AI Hiring Agent for Field Service Companies
+                Your AI Recruiter—Built for Service Companies
               </span>
               <span className="relative inline-block">
                 <span className="relative z-10 bg-gradient-to-r from-[#4FC3DC] to-[#1E529D] bg-clip-text text-transparent  block sm:inline">
@@ -154,9 +154,10 @@ export function LandingPage() {
 
             {/* Subheading */}
             <p className="mt-4 sm:mt-8 max-w-2xl mx-auto text-base sm:text-lg lg:text-xl text-gray-600">
-              Automate your hiring process with AI. ServiceAgent’s Hiring Agent
-              posts jobs, screens candidates, and sends you only the top 5%—so
-              you can scale your team without wasting hours reviewing bad fits.
+              Stop wasting time interviewing the wrong people. ServiceAgent
+              screens every applicant with AI, scores them on reliability and
+              experience, and sends you only the best—so you can hire faster and
+              get back to running your business.
             </p>
 
             {/* CTA Buttons */}
@@ -189,35 +190,56 @@ export function LandingPage() {
                 </div>
               ))}
             </div>
+            {/* Feature Cards 섹션 시작 */}
+            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-20">
+              <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-16">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">
+                  What the{" "}
+                  <span className="bg-gradient-to-r from-[#4FC3DC] to-[#1E529D] bg-clip-text text-transparent">
+                    AI Hiring Agent
+                  </span>{" "}
+                  Does
+                </h2>
+              </div>
 
-            {/* Feature Cards */}
-            <div className="mt-12 sm:mt-20 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8 max-w-4xl mx-auto">
-              {heroFeatures.map((feature) => (
-                <div
-                  key={feature.title}
-                  className="group relative bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#1E529D]/5 to-[#1E1E1E]/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="relative p-4 sm:p-6">
-                    <div className="mb-3 sm:mb-4 bg-gradient-to-r from-[#1E529D]/10 to-[#1E1E1E]/10 p-2 sm:p-3 rounded-lg w-12 h-12 sm:w-14 sm:h-14 mx-auto flex items-center justify-center">
-                      <feature.icon className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
+              {/* Feature Cards */}
+              <div className="mt-12 sm:mt-20 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8 max-w-4xl mx-auto">
+                {heroFeatures.map((feature) => (
+                  <div
+                    key={feature.title}
+                    className="group relative bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#1E529D]/5 to-[#1E1E1E]/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="relative p-4 sm:p-6">
+                      <div className="mb-3 sm:mb-4 bg-gradient-to-r from-[#1E529D]/10 to-[#1E1E1E]/10 p-2 sm:p-3 rounded-lg w-12 h-12 sm:w-14 sm:h-14 mx-auto flex items-center justify-center">
+                        <feature.icon className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
+                      </div>
+                      <h3 className="font-semibold text-gray-900 mb-1 sm:mb-2 text-base sm:text-lg">
+                        {feature.title}
+                      </h3>
+                      <p className="text-gray-600 text-sm sm:text-base">
+                        {feature.description}
+                      </p>
                     </div>
-                    <h3 className="font-semibold text-gray-900 mb-1 sm:mb-2 text-base sm:text-lg">
-                      {feature.title}
-                    </h3>
-                    <p className="text-gray-600 text-sm sm:text-base">
-                      {feature.description}
-                    </p>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </div>
 
+      {/* Section Heading */}
+      <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">
+          Why{" "}
+          <span className="bg-gradient-to-r from-[#4FC3DC] to-[#1E529D] bg-clip-text text-transparent">
+            Service Teams Use It
+          </span>
+        </h2>
+      </div>
       {/* Stats Section */}
-      <div id="hiring-agent-metrics" className="bg-white py-24">
+      <div id="hiring-agent-metrics" className="bg-white py-10 sm:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {stats.map((stat) => (
@@ -255,10 +277,10 @@ export function LandingPage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-20">
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 sm:mb-6">
-              Complete{" "}
+              Meet Your{" "}
               <span className="relative">
                 <span className="relative z-10 bg-gradient-to-r from-[#4FC3DC] to-[#1E529D] bg-clip-text text-transparent">
-                  AI-Powered Solution
+                  In-House AI Hiring Agent
                 </span>
               </span>
             </h2>

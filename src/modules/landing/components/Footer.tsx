@@ -6,7 +6,7 @@ import { openCalendly } from "@/app/shared/utils/calendly";
 const footerLinks = {
   product: [
     { label: "Features", href: "/#hiring-agent-features-grid" },
-    { label: "Start Free Trial", href: "/signup" },
+    { label: "Sign up now", href: "/signup" },
     { label: "Book a Demo", onClick: openCalendly },
   ],
   company: [

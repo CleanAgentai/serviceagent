@@ -15,38 +15,38 @@ interface Testimonial {
 const testimonials: Testimonial[] = [
   {
     quote:
-      "Before ServiceAgent, we were spending 10+ hours a week trying to hire. Now, the AI handles the whole process—we just review the top candidates and hire. Total game changer.",
+      "Before ServiceAgent, we spent 15+ hours/week just trying to hire. Now the AI handles everything—we just review and hire. Total game changer.",
     author: "Jason McBride",
     role: "Owner",
     company: "ProClean Solutions",
     metrics: [
-      { label: "Qualified Candidates", value: "4x more per week" },
-      { label: "Time Spent Hiring", value: "↓ 90%" },
-      { label: "Avg Time to Hire", value: "Under 2 days" },
+      { label: "more qualified candidates/week", value: "4x" },
+      { label: "time Spent Hiring", value: "↓ 90%" },
+      { label: "average tiem-to-hire", value: "< 2 days" },
     ],
   },
   {
     quote:
-      "I used to go through 50+ applications just to find one solid tech. The Hiring Agent filters out all the noise and delivers exactly who I want to talk to.",
+      "I used to dig through 50+ applications to find one tech. Now, the AI filters the noise and delivers exactly who I want to talk to.",
     author: "Tina Alvarez",
     role: "Office Manager",
     company: "Reliable HVAC",
     metrics: [
-      { label: "Qualified Techs Found", value: "10x faster" },
-      { label: "Applicant Volume", value: "+50% increase" },
-      { label: "Manual Reviews", value: "↓ Eliminated" },
+      { label: "faster at finding qualified techs", value: "10x" },
+      { label: "increase in applicant volume", value: "+50%" },
+      { label: "manual reviews needed", value: "0" },
     ],
   },
   {
     quote:
-      "We’ve hired 3 amazing team members in the last month without lifting a finger. No more manual job posts or ghosting candidates. This is how hiring should work.",
+      "We’ve hired 3 amazing team members this month—no job posting, no ghosting. Just results. This is how hiring should work.",
     author: "Eric Wallace",
     role: "Operations Lead",
     company: "Apex Plumbing Pros",
     metrics: [
-      { label: "Hires per Month", value: "3 New Techs" },
-      { label: "Job Post to Hire", value: "1.5 Days Avg" },
-      { label: "No-shows & Ghosting", value: "↓ 100%" },
+      { label: "per month", value: "3 hires" },
+      { label: "avg. post-to-hire", value: "1.5 days" },
+      { label: "no-shows & ghosting", value: "↓ 100%" },
     ],
   },
 ];
@@ -60,12 +60,12 @@ export default function Testimonials() {
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
             Trusted by Growing{" "}
             <span className="bg-gradient-to-r from-[#4FC3DC] to-[#1E529D] bg-clip-text text-transparent">
-              Field Service Businesses
+              Service Teams Nationwide
             </span>
           </h2>
           <p className="text-xl text-gray-600">
-            See how field service companies are scaling faster with
-            ServiceAgent's AI
+            See how companies are hiring faster, smarter, and without the
+            hassle—powered by ServiceAgent.
           </p>
         </div>
 
@@ -127,7 +127,7 @@ export default function Testimonials() {
         {/* Trust Indicators */}
         <div className="mt-16 text-center">
           <p className="text-sm text-gray-500 mb-4">
-            Trusted by 500+ field service businesses across North America
+            Trusted by service businesses across North America
           </p>
         </div>
       </div>

@@ -4,36 +4,36 @@ import { ArrowRight } from "lucide-react";
 
 const steps = [
   {
-    title: "Posts Jobs for You",
-    subtitle: "Job Listings Go Live Automatically",
+    title: "AI Posts Your Job Automatically",
+    subtitle: "Hands-Free Distribution to Top Platforms",
     description:
-      "The Hiring Agent instantly posts your open role to major platforms like Indeed, Facebook, and LinkedIn—with optimized descriptions for your industry and location.",
+      "Your AI Hiring Agent writes and publishes optimized job listings for your industry—across Indeed, Facebook, and LinkedIn.",
     features: [
-      "Multi-platform distribution",
       "Industry-specific job templates",
-      "SEO-optimized listings",
+      "Optimized for high visibility",
+      "Auto-published across job boards",
     ],
   },
   {
-    title: "Screens Every Applicant 24/7",
-    subtitle: "Candidates Are Screened Instantly",
+    title: "Screens Every Applicant, 24/7",
+    subtitle: "Instant AI Interviews. No Manual Screening.",
     description:
-      "Applicants are interviewed via AI chat or video in real time. Their answers are scored, red flags are detected, and top candidates are ranked for you.",
+      "Every applicant is interviewed instantly by AI—via chat or video. Responses are scored in real time for communication, experience, and red flags. Only the top candidates make it to you.",
 
     features: [
-      "Chat + video interviewing",
-      "AI-powered scoring and filtering",
-      "Availability and experience checks",
+      "Chat & video interviews",
+      "Real-time scoring + filtering",
+      "Red flag detection",
     ],
   },
   {
     title: "You Hire from a Curated Shortlist",
-    subtitle: " You Hire the Top 5% — Fast",
+    subtitle: "Top 5% of Candidates. Ready to Onboard.",
     description:
-      "You receive a ranked shortlist with automated offer letters, onboarding documents, and rejection emails already sent out to the rest.",
+      "You get a ranked shortlist of qualified applicants. The AI also auto-sends rejections, offer letters, and onboarding docs—so you hire faster, with zero admin.",
     features: [
-      "Ranked candidate shortlist",
-      "Offer/rejection email automation",
+      "Ranked shortlist of top performers",
+      "Offer + rejection email automation",
       "Digital onboarding workflow",
     ],
   },
@@ -55,8 +55,11 @@ export default function Timeline() {
             </span>
           </h2>
           <p className="text-xl text-gray-600">
-            Three simple steps to automate hiring for your field service
-            business — no recruiters, no spreadsheets, no headaches.
+            <span className="font-semibold">
+              3 Simple Steps to Automate Hiring for Service Teams
+            </span>
+            <br />
+            No recruiters. No spreadsheets. No wasted interviews.
           </p>
         </div>
 

@@ -14,9 +14,9 @@ const faqs: FAQItem[] = [
       <>
         <br />
         <p className="mb-4">
-          Our AI conducts real-time chat and video interviews, scoring
-          applicants based on skills, availability, experience, and reliability.
-          You only see the top-ranked candidates.
+          Our AI conducts real-time chat and video interviews, scoring each
+          applicant on skills, experience, reliability, and communication. You
+          only see the top-ranked, qualified candidates.
         </p>
       </>
     ),
@@ -27,8 +27,8 @@ const faqs: FAQItem[] = [
       <>
         <br />
         <p className="mb-4">
-          Yes. You can use our proven, high-converting templates or write your
-          own interview questions based on the role you’re hiring for.
+          Yes. You can use our proven templates or submit your own. We’ll tailor
+          the interview to match your role and company.
         </p>
       </>
     ),
@@ -39,9 +39,8 @@ const faqs: FAQItem[] = [
       <>
         <br />
         <p className="mb-4">
-          The AI automatically posts your listing on platforms like Indeed,
-          Facebook Jobs, and LinkedIn, with optimized descriptions tailored to
-          your industry.
+          We publish across major platforms like Indeed, Facebook, and
+          LinkedIn—optimized for your role, location, and industry.
         </p>
       </>
     ),
@@ -52,9 +51,8 @@ const faqs: FAQItem[] = [
       <>
         <br />
         <p className="mb-4">
-          Nope. ServiceAgent works out of the box with no setup required. You’ll
-          get candidate shortlists and hiring actions directly in your
-          dashboard.
+          No integrations needed. You’ll get a simple link and dashboard to view
+          and manage top candidates.
         </p>
       </>
     ),
@@ -65,8 +63,9 @@ const faqs: FAQItem[] = [
       <>
         <br />
         <p className="mb-4">
-          Our team is here to help you get live fast. We offer onboarding, live
-          chat, and 1-on-1 support to make sure your hiring process is seamless.
+          We offer full setup in under 20 minutes, and email support is always
+          available. You’ll also receive ongoing performance tips to improve
+          hiring outcomes.
         </p>
       </>
     ),
@@ -77,8 +76,9 @@ const faqs: FAQItem[] = [
       <>
         <br />
         <p className="mb-4">
-          Absolutely. ServiceAgent uses industry-standard encryption and data
-          privacy practices to protect both your data and your applicants’.
+          Yes. All data is encrypted and stored securely using enterprise-grade
+          security standards. We’re committed to protecting your business and
+          applicant information.
         </p>
       </>
     ),
@@ -101,7 +101,7 @@ export default function FAQComponent() {
           </h2>
           <p className="text-xl text-gray-600">
             Everything you need to know about the AI Hiring Agent from
-            ServiceAgent
+            ServiceAgent.
           </p>
         </div>
 
@@ -137,7 +137,7 @@ export default function FAQComponent() {
         </div>
 
         {/* CTA */}
-        <div className="text-center mt-16">
+        {/* <div className="text-center mt-16">
           <p className="text-gray-600 mb-4">
             Still have questions? We're here to help!
           </p>
@@ -148,7 +148,7 @@ export default function FAQComponent() {
           >
             Contact Support
           </Link>
-        </div>
+        </div> */}
       </div>
     </section>
   );
