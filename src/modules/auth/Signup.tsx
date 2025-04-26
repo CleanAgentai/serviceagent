@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { User, Mail, Lock, Building2, ArrowRight } from "lucide-react";
 import { useAuth } from "@/app/providers/AuthContext";
-import { Navigation } from "@/modules/landing/components/Navigation";
+
 import { supabase } from "@/app/lib/supabase";
 
 export function Signup() {
@@ -127,7 +127,6 @@ export function Signup() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-white">
-      <Navigation />
       <main className="flex-grow">
         <div className="max-w-2xl mx-auto px-4 py-12">
           {/* Header */}

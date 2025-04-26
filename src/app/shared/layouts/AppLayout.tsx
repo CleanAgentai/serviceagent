@@ -1,8 +1,8 @@
-import React, { ReactNode, useState } from 'react';
-import { Navigation } from '@/modules/landing/components/Navigation';
-import { Footer } from '@/modules/landing/components/Footer';
-import { Outlet } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import React, { ReactNode, useState } from "react";
+import { Navigation } from "@/modules/landing/components/Navigation";
+import { Footer } from "@/modules/landing/components/Footer";
+import { Outlet } from "react-router-dom";
+import { Menu, X } from "lucide-react";
 
 interface AppLayoutProps {
   children?: ReactNode;
@@ -21,12 +21,12 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
   showNavigation = true,
   showFooter = true,
   fullWidth = false,
-  className = '',
+  className = "",
 }) => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   const toggleMobileSidebar = () => {
-    setMobileSidebarOpen(prev => !prev);
+    setMobileSidebarOpen((prev) => !prev);
   };
 
   return (
@@ -49,7 +49,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
       {showNavigation && (
         <div
           className={`fixed inset-0 z-40 md:hidden transform ${
-            mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+            mobileSidebarOpen ? "translate-x-0" : "-translate-x-full"
           } transition-transform duration-300 ease-in-out`}
         >
           <div className="relative flex flex-col w-full max-w-xs h-full bg-white shadow-xl">
@@ -70,21 +70,25 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
               {/* Add mobile navigation links here */}
             </div>
           </div>
-          <div 
-            className="absolute inset-0 bg-gray-600 bg-opacity-75" 
+          <div
+            className="absolute inset-0 bg-gray-600 bg-opacity-75"
             onClick={() => setMobileSidebarOpen(false)}
           ></div>
         </div>
       )}
 
       {/* Main content */}
-      <div className="flex flex-col flex-grow">
+      <div className="flex flex-col flex-grow bg-white">
         {showNavigation && <Navigation />}
-        <main className={`flex-grow ${fullWidth ? '' : 'max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8'}`}>
+        <main
+          className={`flex-grow ${
+            fullWidth ? "" : "max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8"
+          }`}
+        >
           {children || <Outlet />}
         </main>
         {showFooter && <Footer />}
       </div>
     </div>
   );
-}; 
+};

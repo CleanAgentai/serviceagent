@@ -112,7 +112,7 @@ const highlights = [
 
 export function LandingPage() {
   return (
-    <div className="min-h-screen bg-white overflow-hidden">
+    <div className="w-full min-h-screen bg-white overflow-hidden">
       {/* Hero Section */}
 
       <div className="relative min-h-[80vh] sm:min-h-[90vh] flex items-center overflow-hidden bg-gradient-to-b from-white via-blue-50/30 to-white">
@@ -122,7 +122,7 @@ export function LandingPage() {
           <div className="absolute -bottom-1/2 -left-1/2 w-[100rem] h-[100rem] bg-gradient-to-t from-blue-50 via-teal-50/30 to-transparent rounded-full opacity-30 blur-3xl" />
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-20">
+        <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-20">
           <div className="text-center">
             {/* Announcement Banner */}
             {/* <div className="inline-flex items-center gap-1 sm:gap-2 bg-gradient-to-r from-blue-600/10 to-teal-500/10 backdrop-blur-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full mb-6 sm:mb-8 text-sm sm:text-base">
@@ -266,7 +266,7 @@ export function LandingPage() {
       {/* Main Features Section */}
       <div
         id="hiring-agent-features-grid"
-        className="relative py-16 sm:py-28 overflow-hidden bg-gray-50"
+        className="relative py-16 sm:py-28 overflow-hidden bg-white"
       >
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-5" />

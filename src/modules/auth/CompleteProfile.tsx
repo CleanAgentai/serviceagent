@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/app/lib/supabase";
 import { User, Building2, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { Navigation } from "@/modules/landing/components/Navigation";
 
 export function CompleteProfile() {
   const navigate = useNavigate();
@@ -93,7 +92,6 @@ export function CompleteProfile() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-white">
-      <Navigation />
       <main className="flex-grow">
         <div className="max-w-2xl mx-auto px-4 py-12">
           <div className="text-center mb-8">

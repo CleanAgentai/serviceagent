@@ -85,7 +85,7 @@ const App = () => {
                 {/* Public Routes with AppLayout */}
                 <Route
                   element={
-                    <AppLayout showNavigation={false} showFooter={false} />
+                    <AppLayout showNavigation={true} showFooter={false} />
                   }
                 >
                   <Route
