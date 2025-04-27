@@ -108,17 +108,6 @@ export function ForgotPassword() {
               </Link>
             </div>
           </div>
-
-          {/* Sign up link */}
-          {/* <p className="mt-8 text-center text-sm text-gray-600">
-            Don't have an account?{" "}
-            <Link
-              to="/signup"
-              className="font-medium text-blue-600 hover:text-blue-700"
-            >
-              Sign up for free
-            </Link>
-          </p> */}
         </div>
       </main>
     </div>
