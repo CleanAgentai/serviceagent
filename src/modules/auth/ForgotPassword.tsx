@@ -14,6 +14,7 @@ export function ForgotPassword() {
     setIsLoading(true);
     setMessage("");
     setError("");
+    //To fix the sender, change the configuration in supabse
 
     try {
       const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
