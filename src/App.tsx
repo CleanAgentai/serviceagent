@@ -38,6 +38,7 @@ import { Contact } from "./modules/company/Contact";
 import { Blog, BlogPost } from "./modules/blog";
 import { ForgotPassword } from "./modules/auth/ForgotPassword";
 import { ResetPassword } from "./modules/auth/ResetPassword";
+import { ResetPasswordConfirm } from "./modules/auth/ResetPasswordConfirm";
 
 // Sales Routes
 const SalesRoutes = React.lazy(() => import("@/pages/sales/setup"));
@@ -98,6 +99,10 @@ const App = () => {
                   <Route path="/signup" element={<Signup />} />
                   <Route path="/forgot-password" element={<ForgotPassword />} />
                   <Route path="/reset-password" element={<ResetPassword />} />
+                  <Route
+                    path="reset-password-confirm"
+                    element={<ResetPasswordConfirm />}
+                  />
                   <Route path="/oauth-callback" element={<OAuthCallback />} />
                   <Route path="/post-signup" element={<PostSignupSetup />} />
                   <Route

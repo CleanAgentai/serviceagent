@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { supabase } from "@/app/lib/supabase";
 import { useNavigate } from "react-router-dom";
 
@@ -9,6 +9,19 @@ export function ResetPassword() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const checkSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      if (!session) {
+        navigate("/login");
+      }
+    };
+    checkSession();
+  }, [navigate]);
 
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
