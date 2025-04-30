@@ -18,7 +18,7 @@ export function ForgotPassword() {
 
     try {
       const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/reset-password-confirm`, // 비밀번호 재설정 링크
+        redirectTo: `${window.location.origin}/reset-password-confirm?bot-safe=true`, // 비밀번호 재설정 링크
       });
 
       if (error) throw error;

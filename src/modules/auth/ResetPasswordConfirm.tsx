@@ -5,34 +5,28 @@ import { supabase } from "@/app/lib/supabase";
 export function ResetPasswordConfirm() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [checked, setChecked] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const isBotSafe = params.get("bot-safe") === "true";
+    const isQuerySafe = params.get("bot-safe") === "true";
 
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (event === "PASSWORD_RECOVERY" && session && isBotSafe) {
-        navigate("/reset-password");
-      } else if (!session && !checked) {
-        setTimeout(() => {
-          if (!checked) {
-            setChecked(true);
-            navigate("/login");
-          }
-        }, 3000); // give it 3s to load
-      }
-    });
+    const isHeadless = navigator.webdriver || false;
+    const isSmallScreen = window.innerWidth < 100;
+    const ua = navigator.userAgent || "";
+    const isLikelyBot =
+      isHeadless || isSmallScreen || /puppeteer|HeadlessChrome/i.test(ua);
 
-    return () => subscription.unsubscribe();
-  }, [navigate, location.search, checked]);
+    if (isQuerySafe && !isLikelyBot) {
+      navigate("/reset-password");
+    } else {
+      console.warn("Bot detected or unsafe link.");
+    }
+  }, [navigate, location.search]);
 
   return (
     <div className="min-h-screen flex justify-center items-center">
       <p className="text-gray-700 text-lg font-medium">
-        Verifying your reset link...
+        Verifying your identity...
       </p>
     </div>
   );
