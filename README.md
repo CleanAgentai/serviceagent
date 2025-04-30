@@ -16,7 +16,7 @@ ServiceAgent.ai is a modern recruitment platform that leverages AI to streamline
 - React 18
 - TypeScript
 - Tailwind CSS
-- Firebase Authentication
+- Supabase Authentication
 - Willo API Integration
 - Vite
 
@@ -24,7 +24,7 @@ ServiceAgent.ai is a modern recruitment platform that leverages AI to streamline
 
 - Node.js 16.x or later
 - npm or yarn
-- Firebase account
+- Supabase account
 - Willo API credentials
 
 ## Getting Started
