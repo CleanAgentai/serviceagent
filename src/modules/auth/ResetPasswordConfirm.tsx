@@ -1,18 +1,23 @@
 // reset-password-confirm.tsx
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { supabase } from "@/app/lib/supabase";
 export function ResetPasswordConfirm() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // 실제 세션이 있는지 체크한 뒤 비밀번호 재설정 폼으로 보냄
-    const timeout = setTimeout(() => {
-      navigate("/reset-password");
-    }, 1500);
-
-    return () => clearTimeout(timeout);
-  }, [navigate]);
+    const check = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (session) {
+        navigate("/reset-password"); // 실제 reset page로 이동
+      } else {
+        navigate("/login");
+      }
+    };
+    check();
+  }, []);
 
   return (
     <div className="min-h-screen flex justify-center items-center">
