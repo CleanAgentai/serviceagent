@@ -659,7 +659,7 @@ export default function CreateInterview() {
                             handleQuestionChange(
                               question.id,
                               "maxDuration",
-                              parseInt(value)
+                              Number(value)
                             )
                           }
 
@@ -711,22 +711,25 @@ export default function CreateInterview() {
                         <Label htmlFor={`maxRetakes-${question.id}`}>
                           Max Retakes
                         </Label>
-                        <Input
-                          id={`maxRetakes-${question.id}`}
-                          type="number"
-                          min="0"
-                          value={question.maxRetakes || ""}
-                          onChange={(e) =>
+                        <Select
+                          value={question.maxRetakes?.toString() || ""}
+                          onValueChange={(value) =>
                             handleQuestionChange(
                               question.id,
                               "maxRetakes",
-                              e.target.value
-                                ? parseInt(e.target.value)
-                                : undefined
+                              Number(value)
                             )
                           }
-                          placeholder="e.g. 3"
-                        />
+                        >
+                          <SelectTrigger id={`maxRetakes-${question.id}`}>
+                            <SelectValue placeholder="Select number of retakes" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="1">1</SelectItem>
+                            <SelectItem value="2">2</SelectItem>
+                            <SelectItem value="3">3</SelectItem>
+                          </SelectContent>
+                        </Select>
                       </div>
 
                       {question.answerType === "video" && (
@@ -734,22 +737,27 @@ export default function CreateInterview() {
                           <Label htmlFor={`thinkingTime-${question.id}`}>
                             Thinking Time (seconds)
                           </Label>
-                          <Input
-                            id={`thinkingTime-${question.id}`}
-                            type="number"
-                            min="0"
-                            value={question.thinkingTime || ""}
-                            onChange={(e) =>
+                          <Select
+                            value={question.thinkingTime?.toString() || ""}
+                            onValueChange={(value) =>
                               handleQuestionChange(
                                 question.id,
                                 "thinkingTime",
-                                e.target.value
-                                  ? parseInt(e.target.value)
-                                  : undefined
+                                Number(value)
                               )
                             }
-                            placeholder="e.g. 30"
-                          />
+                          >
+                            <SelectTrigger id={`thinkingTime-${question.id}`}>
+                              <SelectValue placeholder="Select thinking time" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="10">10</SelectItem>
+
+                              <SelectItem value="30">30</SelectItem>
+
+                              <SelectItem value="60">60</SelectItem>
+                            </SelectContent>
+                          </Select>
                         </div>
                       )}
                     </div>
