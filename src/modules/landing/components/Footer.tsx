@@ -119,9 +119,9 @@ export function Footer() {
               onClick={() => handleLinkClick()}
             >
               <img
-                src="/ServiceAgent__.png"
+                src="/Banner_SA_new.svg"
                 alt="ServiceAgent Logo"
-                className="h-6 w-auto"
+                className="h-10 w-auto"
               />
               {/* <span className="text-xl font-semibold text-gray-900">
                 ServiceAgent

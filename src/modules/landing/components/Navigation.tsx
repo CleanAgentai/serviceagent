@@ -57,9 +57,9 @@ export function Navigation() {
             aria-label="ServiceAgent Home"
           >
             <img
-              src="/ServiceAgent__.png"
+              src="/Banner_SA_new.svg"
               alt="ServiceAgent Logo"
-              className="h-5 sm:h-6 md:h-7 w-auto"
+              className="h-10 sm:h-10 md:h-10 w-auto"
             />
             {/* <span className="text-lg sm:text-xl font-semibold text-gray-900"></span> */}
           </Link>

@@ -76,7 +76,7 @@ export default function DashboardLayout() {
           <div className="px-4 flex items-center border-b h-16">
             <div className="flex-1 flex justify-center">
               <img
-                src="/ServiceAgent__.png"
+                src="/Banner_SA_new.svg"
                 alt="ServiceAgent Logo"
                 className="h-6 w-auto"
               />
@@ -114,7 +114,7 @@ export default function DashboardLayout() {
           <ScrollArea className="h-full p-4">
             <div className="flex items-center justify-between mb-4">
               <img
-                src="/ServiceAgent__.png"
+                src="/Banner_SA_new.svg"
                 alt="ServiceAgent Logo"
                 className="h-10 w-auto"
               />
