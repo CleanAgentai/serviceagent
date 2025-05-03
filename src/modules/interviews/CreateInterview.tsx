@@ -751,7 +751,7 @@ export default function CreateInterview() {
                               <SelectValue placeholder="Select thinking time" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="10">10</SelectItem>
+                              <SelectItem value="10">20</SelectItem>
 
                               <SelectItem value="30">30</SelectItem>
 
