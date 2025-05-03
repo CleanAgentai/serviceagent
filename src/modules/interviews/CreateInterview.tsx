@@ -646,25 +646,36 @@ export default function CreateInterview() {
 
                     {question.answerType === "video" && (
                       <div className="space-y-2">
-                        <Label htmlFor={`maxDuration-${question.id}`}>
+                        <Label
+                          htmlFor={`maxDuration-${question.id}`}
+                          className="required"
+                        >
                           Max Duration (seconds)
                         </Label>
-                        <Input
-                          id={`maxDuration-${question.id}`}
-                          type="number"
-                          min="10"
-                          value={question.maxDuration || ""}
-                          onChange={(e) =>
+                        <Select
+                          //id={`maxDuration-${question.id}`}
+                          value={question.maxDuration?.toString() || ""}
+                          onValueChange={(value) =>
                             handleQuestionChange(
                               question.id,
                               "maxDuration",
-                              e.target.value
-                                ? parseInt(e.target.value)
-                                : undefined
+                              parseInt(value)
                             )
                           }
-                          placeholder="e.g. 60"
-                        />
+
+                          //placeholder="e.g. 60"
+                        >
+                          <SelectTrigger id={`maxDuration-${question.id}`}>
+                            <SelectValue placeholder="Select duration" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="60">60</SelectItem>
+                            <SelectItem value="120">120</SelectItem>
+                            <SelectItem value="180">180</SelectItem>
+                            <SelectItem value="240">240</SelectItem>
+                            <SelectItem value="300">300</SelectItem>
+                          </SelectContent>
+                        </Select>
                       </div>
                     )}
 
@@ -753,7 +764,12 @@ export default function CreateInterview() {
             </Button>
 
             <div className="flex justify-between items-center mt-4">
-              <Button type="button" variant="outline" onClick={prevTab} className="relative -top-1">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={prevTab}
+                className="relative -top-1"
+              >
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Previous
               </Button>
