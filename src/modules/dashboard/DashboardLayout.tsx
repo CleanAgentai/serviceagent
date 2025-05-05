@@ -78,7 +78,7 @@ export default function DashboardLayout() {
               <img
                 src="/Banner_SA_new.svg"
                 alt="ServiceAgent Logo"
-                className="h-6 w-auto"
+                className="h-14 w-auto"
               />
             </div>
           </div>
