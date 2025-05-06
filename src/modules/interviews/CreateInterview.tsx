@@ -751,11 +751,11 @@ export default function CreateInterview() {
                               <SelectValue placeholder="Select thinking time" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="10">20</SelectItem>
+                              <SelectItem value="30">30 sec</SelectItem>
 
-                              <SelectItem value="30">30</SelectItem>
+                              <SelectItem value="60">60 sec</SelectItem>
 
-                              <SelectItem value="60">60</SelectItem>
+                              <SelectItem value="90">90 sec</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
