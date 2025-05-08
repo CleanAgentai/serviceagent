@@ -279,8 +279,8 @@ export function ViewResponses() {
 
   return (
     <div className="container mx-auto px-4 py-6">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold">Interview Attempts</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Responses</h1>
       </div>
 
       <Card className="p-4 mb-6">
@@ -297,26 +297,26 @@ export function ViewResponses() {
       </Card>
 
       <div className="space-y-4">
-        <div className="grid grid-cols-8 gap-2 px-4 py-2 bg-gray-100 rounded-lg font-semibold">
+        <div className="grid grid-cols-8 gap-2 px-4 py-2 bg-gray-100 rounded-lg text-xs font-medium text-gray-500 uppercase tracking-wider">
           <button
             onClick={() => handleSort("name")}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 text-left"
           >
-            Candidate
+            CANDIDATE
             <ArrowUpDown className="w-4 h-4" />
           </button>
           <div>Interview</div>
           <button
             onClick={() => handleSort("date")}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 text-left"
           >
-            Submitted
+            SUBMITTED
             <ArrowUpDown className="w-4 h-4" />
           </button>
-          <div>Contact Info</div>
+          <div className="text-left">Contact Info</div>
           <div className="text-center">Qualified</div>
           <div className="text-center">Rating</div>
-          <div>Status</div>
+          <div className="text-left">Status</div>
           <div className="text-center">Actions</div>
         </div>
 
@@ -373,7 +373,7 @@ export function ViewResponses() {
                       handleLocalStatusChange(attempt.id, value)
                     }
                   >
-                    <SelectTrigger className="w-full">
+                    <SelectTrigger className="w-28">
                       <SelectValue placeholder="Select status" />
                     </SelectTrigger>
                     <SelectContent>
@@ -385,12 +385,13 @@ export function ViewResponses() {
                     </SelectContent>
                   </Select>
                 </div>
-                <div>
+                <div className="flex items-center justify-center space-x-1">
                   <Button
-                    variant="outline"
+                    variant="link"
                     onClick={() => handleViewAnalysis(attempt)}
+                    className="text-blue-600"
                   >
-                    View AI Analysis
+                    AI Analysis
                   </Button>
                 </div>
               </div>

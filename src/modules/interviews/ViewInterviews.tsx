@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Copy, Check } from "lucide-react";
+import { Copy, Check, Trash2, Pencil } from "lucide-react";
 import { toast } from "sonner";
 
 import {
@@ -33,6 +33,34 @@ export function ViewInterviews() {
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [error, setError] = useState<string | null>(null);
   const [copiedLinkId, setCopiedLinkId] = useState<string | null>(null);
+
+  const handleEdit = (interviewId: string) => {
+    navigate(`/interviews/edit/${interviewId}`);
+  };
+
+  const handleDelete = async (interviewId: string, interviewTitle: string) => {
+    if (window.confirm(`Are you sure you want to delete the interview "${interviewTitle}"?`)) {
+      try {
+        const { error: deleteError } = await supabase
+          .from("interviews")
+          .delete()
+          .match({ id: interviewId });
+
+        if (deleteError) {
+          toast.error(`Failed to delete interview: ${deleteError.message}`);
+          console.error("Error deleting interview:", deleteError);
+        } else {
+          setInterviews((prevInterviews) =>
+            prevInterviews.filter((interview) => interview.id !== interviewId)
+          );
+          toast.success(`Interview "${interviewTitle}" deleted successfully.`);
+        }
+      } catch (err) {
+        toast.error("An unexpected error occurred while deleting the interview.");
+        console.error("Unexpected error deleting interview:", err);
+      }
+    }
+  };
 
   useEffect(() => {
     const fetchInterviews = async () => {
@@ -164,7 +192,7 @@ export function ViewInterviews() {
                   onClick={() => handleSort("title")}
                   className="flex items-center gap-2"
                 >
-                  Title
+                  TITLE
                   <ArrowUpDown className="w-4 h-4" />
                 </button>
               </th>
@@ -173,7 +201,7 @@ export function ViewInterviews() {
                   onClick={() => handleSort("date")}
                   className="flex items-center gap-2"
                 >
-                  Created Date
+                  CREATED DATE
                   <ArrowUpDown className="w-4 h-4" />
                 </button>
               </th>
@@ -183,8 +211,8 @@ export function ViewInterviews() {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Link
               </th>
-              <th className="px-2 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider w-10">
-                {/* intentionally empty header for copy button */}
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Actions
               </th>
             </tr>
           </thead>
@@ -202,38 +230,62 @@ export function ViewInterviews() {
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {interview.deadline}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-600">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-600 hover:underline cursor-pointer">
                   {interview.interviewLink ? (
                     <a
                       href={interview.interviewLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="hover:underline flex items-center gap-1"
+                      onClick={(e) => e.stopPropagation()}
                     >
-                      <LinkIcon className="w-4 h-4" />
-                      Open
+                      Open Link
                     </a>
                   ) : (
-                    <span className="text-gray-300">No link</span>
+                    "N/A"
                   )}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-right">
-                  {interview.interviewLink ? (
-                    <button
-                      onClick={() =>
-                        copyToClipboard(interview.interviewLink!, interview.id)
-                      }
-                      className="text-gray-400 hover:text-gray-600"
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <div className="flex items-center space-x-2">
+                    {interview.interviewLink && (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          copyToClipboard(interview.interviewLink!, interview.id);
+                        }}
+                        aria-label="Copy link"
+                      >
+                        {copiedLinkId === interview.id ? (
+                          <Check className="h-4 w-4 text-green-500" />
+                        ) : (
+                          <Copy className="h-4 w-4" />
+                        )}
+                      </Button>
+                    )}
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleEdit(interview.id);
+                      }}
+                      aria-label="Edit interview"
                     >
-                      {copiedLinkId === interview.id ? (
-                        <Check className="w-5 h-5 text-green-500" />
-                      ) : (
-                        <Copy className="w-5 h-5" />
-                      )}
-                    </button>
-                  ) : (
-                    <Copy className="w-5 h-5 text-gray-300 cursor-not-allowed" />
-                  )}
+                      <Pencil className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={(e) => {
+                          e.stopPropagation();
+                          handleDelete(interview.id, interview.title);
+                      }}
+                      aria-label="Delete interview"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </td>
               </tr>
             ))}
