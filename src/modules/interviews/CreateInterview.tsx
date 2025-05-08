@@ -669,11 +669,11 @@ export default function CreateInterview() {
                             <SelectValue placeholder="Select duration" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="60">60</SelectItem>
-                            <SelectItem value="120">120</SelectItem>
-                            <SelectItem value="180">180</SelectItem>
-                            <SelectItem value="240">240</SelectItem>
-                            <SelectItem value="300">300</SelectItem>
+                            <SelectItem value="60">60 sec</SelectItem>
+                            <SelectItem value="120">120 sec</SelectItem>
+                            <SelectItem value="180">180 sec</SelectItem>
+                            <SelectItem value="240">240 sec</SelectItem>
+                            <SelectItem value="300">300 sec</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
@@ -681,25 +681,35 @@ export default function CreateInterview() {
 
                     {question.answerType === "text" && (
                       <div className="space-y-2">
-                        <Label htmlFor={`maxCharacters-${question.id}`}>
+                        <Label
+                          htmlFor={`maxCharacters-${question.id}`}
+                          className="required"
+                        >
                           Max Characters
                         </Label>
-                        <Input
-                          id={`maxCharacters-${question.id}`}
-                          type="number"
-                          min="10"
-                          value={question.maxCharacters || ""}
-                          onChange={(e) =>
+                        <Select
+                          //id={`maxDuration-${question.id}`}
+                          value={question.maxCharacters?.toString() || ""}
+                          onValueChange={(value) =>
                             handleQuestionChange(
                               question.id,
                               "maxCharacters",
-                              e.target.value
-                                ? parseInt(e.target.value)
-                                : undefined
+                              Number(value)
                             )
                           }
-                          placeholder="e.g. 500"
-                        />
+
+                          //placeholder="e.g. 60"
+                        >
+                          <SelectTrigger id={`maxCharacters-${question.id}`}>
+                            <SelectValue placeholder="Select max characters" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="200">200</SelectItem>
+                            <SelectItem value="400">400</SelectItem>
+                            <SelectItem value="600">600</SelectItem>
+                            <SelectItem value="800">800</SelectItem>
+                          </SelectContent>
+                        </Select>
                       </div>
                     )}
                   </div>
