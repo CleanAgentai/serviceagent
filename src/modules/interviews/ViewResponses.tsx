@@ -391,7 +391,7 @@ export function ViewResponses() {
                     onClick={() => handleViewAnalysis(attempt)}
                     className="text-blue-600"
                   >
-                    AI Analysis
+                    View AI Analysis
                   </Button>
                 </div>
               </div>
