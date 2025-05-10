@@ -10,21 +10,6 @@ export function ResetPassword() {
   const [success, setSuccess] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const code = params.get("code");
-
-    if (code) {
-      supabase.auth.exchangeCodeForSession(code).then(({ error }) => {
-        if (error) {
-          setError("Invalid or expired reset code.");
-        }
-      });
-    } else {
-      setError("Missing reset code.");
-    }
-  }, []);
-
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");

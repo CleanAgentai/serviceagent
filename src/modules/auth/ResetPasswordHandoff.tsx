@@ -1,30 +1,32 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/app/lib/supabase";
 
 export function ResetPasswordHandoff() {
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const access_token = params.get("access_token");
-    const refresh_token = params.get("refresh_token");
+    const code = searchParams.get("code");
 
-    if (access_token && refresh_token) {
-      supabase.auth
-        .setSession({ access_token, refresh_token })
-        .then(({ error }) => {
-          if (error) {
-            console.error("Session Error:", error);
-            navigate("/reset-password?session=error");
-          } else {
-            navigate("/reset-password");
-          }
-        });
-    } else {
+    if (!code) {
       navigate("/reset-password?session=missing");
+      return;
     }
-  }, [navigate]);
 
-  return <p>Loading secure reset session...</p>;
+    supabase.auth.exchangeCodeForSession(code).then(({ error }) => {
+      if (error) {
+        console.error("Session error:", error);
+        navigate("/reset-password?session=error");
+      } else {
+        navigate("/reset-password"); // 세션 설정 완료
+      }
+    });
+  }, [searchParams, navigate]);
+
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <p className="text-gray-600 text-sm">Setting up your secure session...</p>
+    </div>
+  );
 }

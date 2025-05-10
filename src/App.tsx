@@ -100,10 +100,10 @@ const App = () => {
                   <Route path="/signup" element={<Signup />} />
                   <Route path="/forgot-password" element={<ForgotPassword />} />
                   <Route path="/reset-password" element={<ResetPassword />} />
-                  {/* <Route
+                  <Route
                     path="reset-password-handoff"
                     element={<ResetPasswordHandoff />}
-                  /> */}
+                  />
                   <Route path="/oauth-callback" element={<OAuthCallback />} />
                   <Route path="/post-signup" element={<PostSignupSetup />} />
                   <Route
