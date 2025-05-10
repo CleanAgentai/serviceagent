@@ -17,16 +17,16 @@ export function ForgotPassword() {
     //To fix the sender, change the configuration in supabse
 
     try {
-      const { data, error } = await supabase.auth.admin.generateLink({
-        type: "recovery",
-        email,
-        options: {
-          redirectTo: `${window.location.origin}/reset-password`,
-        },
-      });
-      if (error || !data?.properties.action_link) {
-        throw new Error(error?.message || "Failed to generate reset link");
-      }
+      // const { data, error } = await supabase.auth.admin.generateLink({
+      //   type: "recovery",
+      //   email,
+      //   options: {
+      //     redirectTo: `${window.location.origin}/reset-password`,
+      //   },
+      // });
+      // if (error || !data?.properties.action_link) {
+      //   throw new Error(error?.message || "Failed to generate reset link");
+      // }
 
       // (email, {
       //   redirectTo: `${window.location.origin}/reset-password`, //
@@ -38,7 +38,7 @@ export function ForgotPassword() {
         },
         body: JSON.stringify({
           email,
-          resetLink: data.properties.action_link,
+          // resetLink: data.properties.action_link,
         }),
       });
 
