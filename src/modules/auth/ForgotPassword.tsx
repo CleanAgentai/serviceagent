@@ -31,7 +31,9 @@ export function ForgotPassword() {
       // (email, {
       //   redirectTo: `${window.location.origin}/reset-password`, //
       // });
-      const res = await fetch("/api/auth/send-reset-email", {
+
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+      const res = await fetch(`${apiBaseUrl}/api/auth/send-reset-email`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
