@@ -36,22 +36,29 @@ export function ForgotPassword() {
       //   redirectTo: `${window.location.origin}/reset-password`, //
       // });
 
-      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
-      const res = await fetch(`${apiBaseUrl}/api/auth/send-reset-email`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          // resetLink: data.properties.action_link,
-        }),
+      // API REST
+      // const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+      // const res = await fetch(`${apiBaseUrl}/api/auth/send-reset-email`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({
+      //     email,
+      //     // resetLink: data.properties.action_link,
+      //   }),
+      // });
+
+      // if (!res.ok) {
+      //   const errJson = await res.json();
+      //   throw new Error(errJson.error || "Failed to send email");
+      // }
+
+      const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: "https://www.fsagent.com/reset-password",
       });
 
-      if (!res.ok) {
-        const errJson = await res.json();
-        throw new Error(errJson.error || "Failed to send email");
-      }
+      if (error) throw error;
 
       setMessage("Reset link sent! Please check your email.");
     } catch (err: any) {
