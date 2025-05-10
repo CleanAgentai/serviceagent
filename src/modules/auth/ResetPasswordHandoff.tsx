@@ -8,6 +8,7 @@ export function ResetPasswordHandoff() {
 
   useEffect(() => {
     const code = searchParams.get("code");
+    console.log("🔐 Received code:", code);
 
     if (!code) {
       navigate("/reset-password?session=missing");
