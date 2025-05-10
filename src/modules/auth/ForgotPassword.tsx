@@ -31,7 +31,7 @@ export function ForgotPassword() {
       // (email, {
       //   redirectTo: `${window.location.origin}/reset-password`, //
       // });
-      const res = await fetch("/api/send-reset-email", {
+      const res = await fetch("/api/auth/send-reset-email", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
