@@ -17,11 +17,35 @@ export function ForgotPassword() {
     //To fix the sender, change the configuration in supabse
 
     try {
-      const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/reset-password`, //
+      const { data, error } = await supabase.auth.admin.generateLink({
+        type: "recovery",
+        email,
+        options: {
+          redirectTo: `${window.location.origin}/reset-password`,
+        },
+      });
+      if (error || !data?.properties.action_link) {
+        throw new Error(error?.message || "Failed to generate reset link");
+      }
+
+      // (email, {
+      //   redirectTo: `${window.location.origin}/reset-password`, //
+      // });
+      const res = await fetch("/api/send-reset-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          resetLink: data.properties.action_link,
+        }),
       });
 
-      if (error) throw error;
+      if (!res.ok) {
+        const errJson = await res.json();
+        throw new Error(errJson.error || "Failed to send email");
+      }
       setMessage("Reset link sent! Please check your email.");
     } catch (err: any) {
       console.error(err);
