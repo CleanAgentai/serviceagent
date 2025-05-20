@@ -202,10 +202,7 @@ export default function Settings() {
                 />
               </div>
               <button
-                className="w-full text-white py-2 px-4 rounded-lg transition-colors"
-                style={{
-                  backgroundColor: companyColors.primary,
-                }}
+                className="w-full text-white py-2 px-4 rounded-lg transition-colors bg-gray-900 hover:bg-gray-700"
                 onClick={handlePasswordChange}
               >
                 Update Password
