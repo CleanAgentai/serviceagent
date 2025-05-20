@@ -58,6 +58,12 @@ export default function Settings() {
     const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
     return fetch(`${apiBaseUrl}/api/checkout`, {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        lookup_key: "Regular_Plan-97796d9",
+      }),
     })
       .then((res) => res.json())
       .then((data) => data.clientSecret);
