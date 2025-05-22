@@ -14,6 +14,7 @@ import {
   Star,
   FileText,
   Calendar,
+  Trash2,
 } from "lucide-react";
 import {
   Select,
@@ -55,6 +56,15 @@ export function ViewResponses() {
 
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const [deleteConfirmation, setDeleteConfirmation] = useState<{
+    show: boolean;
+    attemptId: string;
+    candidateName: string;
+  }>({
+    show: false,
+    attemptId: "",
+    candidateName: "",
+  });
 
   useEffect(() => {
     const fetchAttempts = async () => {
@@ -251,6 +261,35 @@ export function ViewResponses() {
     }
   };
 
+  const handleDelete = async (attemptId: string, candidateName: string) => {
+    setDeleteConfirmation({
+      show: true,
+      attemptId,
+      candidateName,
+    });
+  };
+
+  const confirmDelete = async () => {
+    try {
+      const { error } = await supabase
+        .from("interview_attempts")
+        .delete()
+        .eq("id", deleteConfirmation.attemptId);
+
+      if (error) throw error;
+
+      setAttempts((prevAttempts) =>
+        prevAttempts.filter((attempt) => attempt.id !== deleteConfirmation.attemptId)
+      );
+      toast.success("Response deleted successfully");
+    } catch (error) {
+      console.error("Error deleting response:", error);
+      toast.error("Failed to delete response");
+    } finally {
+      setDeleteConfirmation({ show: false, attemptId: "", candidateName: "" });
+    }
+  };
+
   const filtered = attempts
     .filter(
       (a) =>
@@ -297,7 +336,7 @@ export function ViewResponses() {
       </Card>
 
       <div className="space-y-4">
-        <div className="grid grid-cols-8 gap-2 px-4 py-2 bg-gray-100 rounded-lg text-xs font-medium text-gray-500 uppercase tracking-wider">
+        <div className="grid grid-cols-7 gap-2 px-4 py-2 bg-gray-100 rounded-lg text-xs font-medium text-gray-500 uppercase tracking-wider">
           <button
             onClick={() => handleSort("name")}
             className="flex items-center gap-2 text-left"
@@ -308,12 +347,11 @@ export function ViewResponses() {
           <div>Interview</div>
           <button
             onClick={() => handleSort("date")}
-            className="flex items-center gap-2 text-left"
+            className="flex items-center gap-2 text-left pl-8"
           >
             SUBMITTED
             <ArrowUpDown className="w-4 h-4" />
           </button>
-          <div className="text-left">Contact Info</div>
           <div className="text-center">Qualified</div>
           <div className="text-center">Rating</div>
           <div className="text-left">Status</div>
@@ -328,7 +366,7 @@ export function ViewResponses() {
 
           return (
             <Card key={attempt.id} className="p-4">
-              <div className="grid grid-cols-8 gap-2 items-center">
+              <div className="grid grid-cols-7 gap-2 items-center">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500">
                     {attempt.candidateName.charAt(0)}
@@ -339,13 +377,9 @@ export function ViewResponses() {
                   <FileText className="w-4 h-4 text-gray-400" />
                   {attempt.interviewTitle}
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 pl-8">
                   <Calendar className="w-4 h-4 text-gray-400" />
                   {attempt.createdAt}
-                </div>
-                <div className="text-sm text-gray-600">
-                  <div>{attempt.email}</div>
-                  <div>{attempt.phone}</div>
                 </div>
                 <div className="flex items-center justify-center">
                   <Button
@@ -392,6 +426,14 @@ export function ViewResponses() {
                     className="text-blue-600"
                   >
                     View AI Analysis
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => handleDelete(attempt.id, attempt.candidateName)}
+                    className="text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                  >
+                    <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>
               </div>
@@ -440,6 +482,10 @@ export function ViewResponses() {
                   <div>
                     <p className="text-sm text-gray-600">Email</p>
                     <p className="font-medium">{selectedAttempt.email}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Phone</p>
+                    <p className="font-medium">{selectedAttempt.phone}</p>
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">Submission Date</p>
@@ -538,6 +584,42 @@ export function ViewResponses() {
                   className="w-full"
                 >
                   Full Response Details
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {deleteConfirmation.show && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md transform transition-all">
+            <div className="text-center">
+              <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Trash2 className="h-6 w-6 text-red-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                Delete Response
+              </h3>
+              <p className="text-gray-600 mb-8">
+                Are you sure you want to delete this response?<br />
+                All data associated with this response will be deleted.
+              </p>
+              <div className="flex justify-center space-x-4">
+                <Button
+                  variant="outline"
+                  onClick={() => setDeleteConfirmation({ show: false, attemptId: "", candidateName: "" })}
+                  className="px-6 hover:bg-gray-50"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="destructive"
+                  onClick={confirmDelete}
+                  className="bg-red-600 hover:bg-red-700 text-white px-6 transition-colors duration-200"
+                >
+                  Delete
                 </Button>
               </div>
             </div>

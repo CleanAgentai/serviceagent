@@ -33,32 +33,46 @@ export function ViewInterviews() {
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [error, setError] = useState<string | null>(null);
   const [copiedLinkId, setCopiedLinkId] = useState<string | null>(null);
+  const [deleteConfirmation, setDeleteConfirmation] = useState<{
+    show: boolean;
+    interviewId: string;
+    interviewTitle: string;
+  }>({
+    show: false,
+    interviewId: "",
+    interviewTitle: "",
+  });
 
   const handleEdit = (interviewId: string) => {
     navigate(`/interviews/edit/${interviewId}`);
   };
 
   const handleDelete = async (interviewId: string, interviewTitle: string) => {
-    if (window.confirm(`Are you sure you want to delete the interview "${interviewTitle}"?`)) {
-      try {
-        const { error: deleteError } = await supabase
-          .from("interviews")
-          .delete()
-          .match({ id: interviewId });
+    setDeleteConfirmation({
+      show: true,
+      interviewId,
+      interviewTitle,
+    });
+  };
 
-        if (deleteError) {
-          toast.error(`Failed to delete interview: ${deleteError.message}`);
-          console.error("Error deleting interview:", deleteError);
-        } else {
-          setInterviews((prevInterviews) =>
-            prevInterviews.filter((interview) => interview.id !== interviewId)
-          );
-          toast.success(`Interview "${interviewTitle}" deleted successfully.`);
-        }
-      } catch (err) {
-        toast.error("An unexpected error occurred while deleting the interview.");
-        console.error("Unexpected error deleting interview:", err);
-      }
+  const confirmDelete = async () => {
+    try {
+      const { error } = await supabase
+        .from("interviews")
+        .delete()
+        .eq("id", deleteConfirmation.interviewId);
+
+      if (error) throw error;
+
+      setInterviews((prevInterviews) =>
+        prevInterviews.filter((interview) => interview.id !== deleteConfirmation.interviewId)
+      );
+      toast.success("Interview deleted successfully");
+    } catch (error) {
+      console.error("Error deleting interview:", error);
+      toast.error("Failed to delete interview");
+    } finally {
+      setDeleteConfirmation({ show: false, interviewId: "", interviewTitle: "" });
     }
   };
 
@@ -296,6 +310,42 @@ export function ViewInterviews() {
       {filteredInterviews.length === 0 && (
         <div className="text-center py-8 text-gray-500">
           No interviews found matching your search criteria.
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {deleteConfirmation.show && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md transform transition-all">
+            <div className="text-center">
+              <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Trash2 className="h-6 w-6 text-red-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                Delete Interview
+              </h3>
+              <p className="text-gray-600 mb-8">
+                Are you sure you want to delete this interview?<br />
+                All responses associated with this interview will be deleted.
+              </p>
+              <div className="flex justify-center space-x-4">
+                <Button
+                  variant="outline"
+                  onClick={() => setDeleteConfirmation({ show: false, interviewId: "", interviewTitle: "" })}
+                  className="px-6 hover:bg-gray-50"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="destructive"
+                  onClick={confirmDelete}
+                  className="bg-red-600 hover:bg-red-700 text-white px-6 transition-colors duration-200"
+                >
+                  Delete
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>

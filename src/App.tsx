@@ -40,6 +40,7 @@ import { ForgotPassword } from "./modules/auth/ForgotPassword";
 import { ResetPassword } from "./modules/auth/ResetPassword";
 import { ResetPasswordConfirm } from "./modules/auth/ResetPasswordConfirm";
 import { Subscriptions } from "./modules/payment/Subscriptions";
+import { ResetPasswordHandoff } from "./modules/auth/ResetPasswordHandoff";
 
 // Sales Routes
 const SalesRoutes = React.lazy(() => import("@/pages/sales/setup"));
@@ -100,10 +101,10 @@ const App = () => {
                   <Route path="/signup" element={<Signup />} />
                   <Route path="/forgot-password" element={<ForgotPassword />} />
                   <Route path="/reset-password" element={<ResetPassword />} />
-                  {/* <Route
-                    path="reset-password-confirm"
-                    element={<ResetPasswordConfirm />}
-                  /> */}
+                  <Route
+                    path="reset-password-handoff"
+                    element={<ResetPasswordHandoff />}
+                  />
                   <Route path="/oauth-callback" element={<OAuthCallback />} />
                   <Route path="/post-signup" element={<PostSignupSetup />} />
                   <Route

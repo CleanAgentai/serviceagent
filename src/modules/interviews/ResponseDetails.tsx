@@ -50,7 +50,7 @@ interface Response {
     id: string;
     question: string;
     answer: string;
-    //videoUrl?: string;
+    videoUrl?: string | null;
   }>;
 }
 
@@ -58,6 +58,7 @@ interface QuestionData {
   id: string;
   responses_text: string;
   questions: { question_text: string } | null;
+  video_url: string | null;
 }
 
 export function ResponseDetails() {
@@ -89,6 +90,7 @@ export function ResponseDetails() {
           id,
           responses_text,
           question_id,
+          video_url,
           questions ( question_text )
         `
           )
@@ -104,6 +106,7 @@ export function ResponseDetails() {
           id: item.id,
           question: item.questions?.question_text || "Unknown question",
           answer: item.responses_text || "",
+          videoUrl: item.video_url || null,
         }));
 
         //fetch eval_results
@@ -224,10 +227,24 @@ export function ResponseDetails() {
           <Card className="p-6">
             <h2 className="text-lg font-semibold mb-4">Transcript</h2>
             {selectedQuestion ? (
-              <div className="text-gray-600">
-                {response.questions.find((q) => q.id === selectedQuestion)
-                  ?.answer || "Select a question to view its transcript"}
-              </div>
+              <>
+                {(() => {
+                  const q = response.questions.find(
+                    (q) => q.id === selectedQuestion
+                  );
+                  return q?.videoUrl ? (
+                    <video
+                      className="w-full mb-4 rounded-md"
+                      controls
+                      src={q.videoUrl}
+                    />
+                  ) : null;
+                })()}
+                <div className="text-gray-600">
+                  {response.questions.find((q) => q.id === selectedQuestion)
+                    ?.answer || "Select a question to view its transcript"}
+                </div>
+              </>
             ) : (
               <div className="text-center text-gray-500 py-8">
                 Select a question to view its transcript
