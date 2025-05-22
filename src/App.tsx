@@ -38,7 +38,7 @@ import { Contact } from "./modules/company/Contact";
 import { Blog, BlogPost } from "./modules/blog";
 import { ForgotPassword } from "./modules/auth/ForgotPassword";
 import { ResetPassword } from "./modules/auth/ResetPassword";
-import { ResetPasswordConfirm } from "./modules/auth/ResetPasswordConfirm";
+// import { ResetPasswordConfirm } from "./modules/auth/ResetPasswordConfirm";
 import { Subscriptions } from "./modules/payment/Subscriptions";
 import { ResetPasswordHandoff } from "./modules/auth/ResetPasswordHandoff";
 
