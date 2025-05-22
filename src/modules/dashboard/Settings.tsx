@@ -5,11 +5,7 @@ import { Building, LogOut, X } from "lucide-react";
 import { CompanyProfileForm } from "./CompanyProfileForm";
 import { supabase } from "@/app/lib/supabase";
 import { toast } from "sonner";
-import {loadStripe} from '@stripe/stripe-js';
-import {
-  EmbeddedCheckoutProvider,
-  EmbeddedCheckout
-} from '@stripe/react-stripe-js';
+import { StripeCheckoutBox } from "@/components/stripe/StripeCheckoutBox";
 
 export default function Settings() {
   const navigate = useNavigate();
@@ -23,7 +19,6 @@ export default function Settings() {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
   useEffect(() => {
     async function loadCompanyColors() {
@@ -52,24 +47,6 @@ export default function Settings() {
 
     loadCompanyColors();
   }, []);
-
-  const fetchClientSecret = useCallback(() => {
-    console.log("Stripe starting fetch client secret")
-    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
-    return fetch(`${apiBaseUrl}/api/checkout`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        lookup_key: "Regular_Plan-97796d9",
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => data.clientSecret);
-  }, []);
-
-  const options = {fetchClientSecret};
 
   const handleLogout = async () => {
     setLoading(true);
@@ -153,14 +130,7 @@ export default function Settings() {
               </div>
 
               <CompanyProfileForm mode="update" />
-              <div className="max-w-xl mx-auto mt-12 bg-white p-6 rounded-lg shadow">
-                <h2 className="text-xl font-bold mb-4">Stripe Embedded Checkout</h2>
-                <div id="checkout">
-                  <EmbeddedCheckoutProvider stripe={stripePromise} options={options}>
-                    <EmbeddedCheckout />
-                  </EmbeddedCheckoutProvider>
-                </div>
-              </div>
+              <StripeCheckoutBox planName="launch" yearly={true} />
             </div>
           </div>
         </div>

@@ -39,6 +39,7 @@ import { Blog, BlogPost } from "./modules/blog";
 import { ForgotPassword } from "./modules/auth/ForgotPassword";
 import { ResetPassword } from "./modules/auth/ResetPassword";
 import { ResetPasswordConfirm } from "./modules/auth/ResetPasswordConfirm";
+import { Subscriptions } from "./modules/payment/Subscriptions";
 
 // Sales Routes
 const SalesRoutes = React.lazy(() => import("@/pages/sales/setup"));
@@ -143,6 +144,7 @@ const App = () => {
                   <Route index element={<Dashboard />} />
                   <Route path="ai-analysis" element={<AIAnalysis />} />
                   <Route path="settings" element={<Settings />} />
+                  <Route path="subscription" element={<Subscriptions />} /> //TODO: change route
                 </Route>
 
                 {/* Interview Routes */}
