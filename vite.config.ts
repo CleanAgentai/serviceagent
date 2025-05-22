@@ -20,6 +20,9 @@ export default defineConfig(({ mode }) => {
       hmr: {
         overlay: true,
       },
+      allowedHosts: [
+        '6286-128-84-126-253.ngrok-free.app'
+      ],
     },
     build: {
       outDir: 'dist',

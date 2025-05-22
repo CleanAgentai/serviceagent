@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/app/providers/AuthContext";
 import { Building, LogOut, X } from "lucide-react";
 import { CompanyProfileForm } from "./CompanyProfileForm";
 import { supabase } from "@/app/lib/supabase";
 import { toast } from "sonner";
+import { StripeCheckoutBox } from "@/components/stripe/StripeCheckoutBox";
 
 export default function Settings() {
   const navigate = useNavigate();
@@ -129,6 +130,7 @@ export default function Settings() {
               </div>
 
               <CompanyProfileForm mode="update" />
+              <StripeCheckoutBox planName="launch" yearly={true} />
             </div>
           </div>
         </div>
