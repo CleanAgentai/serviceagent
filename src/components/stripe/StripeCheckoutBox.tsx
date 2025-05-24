@@ -52,7 +52,7 @@ export const StripeCheckoutBox: React.FC<StripeCheckoutBoxProps> = ({planName, y
       return Promise.reject("Invalid plan name");
     }
 
-    return fetch(`${apiBaseUrl}/api/checkout`, {
+    return fetch(`${apiBaseUrl}/api/stripe/checkout`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

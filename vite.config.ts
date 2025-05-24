@@ -1,10 +1,13 @@
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), '');
+
   const isProduction = mode === 'production';
+  const frontEndHostName = new URL(env.VITE_SITE_URL).host;
   
   return {
     plugins: [react()],
@@ -21,7 +24,7 @@ export default defineConfig(({ mode }) => {
         overlay: true,
       },
       allowedHosts: [
-        '6286-128-84-126-253.ngrok-free.app'
+        frontEndHostName,
       ],
     },
     build: {

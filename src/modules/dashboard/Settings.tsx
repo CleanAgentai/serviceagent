@@ -130,7 +130,6 @@ export default function Settings() {
               </div>
 
               <CompanyProfileForm mode="update" />
-              <StripeCheckoutBox planName="launch" yearly={true} />
             </div>
           </div>
         </div>

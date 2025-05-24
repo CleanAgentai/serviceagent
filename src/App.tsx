@@ -41,6 +41,7 @@ import { ResetPassword } from "./modules/auth/ResetPassword";
 // import { ResetPasswordConfirm } from "./modules/auth/ResetPasswordConfirm";
 import { Subscriptions } from "./modules/payment/Subscriptions";
 import { ResetPasswordHandoff } from "./modules/auth/ResetPasswordHandoff";
+import CheckoutSuccess from "./modules/payment/CheckoutSuccess";
 
 // Sales Routes
 const SalesRoutes = React.lazy(() => import("@/pages/sales/setup"));
@@ -106,6 +107,7 @@ const App = () => {
                     element={<ResetPasswordHandoff />}
                   />
                   <Route path="/oauth-callback" element={<OAuthCallback />} />
+                  <Route path="/checkout/success" element={<CheckoutSuccess />} />
                   <Route path="/post-signup" element={<PostSignupSetup />} />
                   <Route
                     path="/complete-profile"
