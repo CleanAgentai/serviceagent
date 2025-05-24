@@ -3,7 +3,8 @@ import {
   EmbeddedCheckoutProvider,
   EmbeddedCheckout,
 } from "@stripe/react-stripe-js";
-import React, {useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { supabase } from "@/app/lib/supabase";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY!);
 
@@ -25,8 +26,20 @@ interface StripeCheckoutBoxProps {
 }
 
 export const StripeCheckoutBox: React.FC<StripeCheckoutBoxProps> = ({planName, yearly}) => {
-  const fetchClientSecret = useCallback((planName : string, yearly : boolean) => {
-    console.log("Stripe starting fetch client secret")
+
+  const fetchClientSecret = useCallback(async (planName : string, yearly : boolean) => {
+    console.log("Stripe starting fetch client secret");
+
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.getUser();
+
+    if (error || !user) {
+      console.error("Fetch user error: ", error?.message);
+      return Promise.reject("Fetch user error");
+    }
+
     const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
     var lookupKeyMap : Record<string, string> = null;
@@ -59,6 +72,7 @@ export const StripeCheckoutBox: React.FC<StripeCheckoutBoxProps> = ({planName, y
       },
       body: JSON.stringify({
         lookup_key: lookup_key_match,
+        user_id: user.id,
       }),
     })
       .then((res) => res.json())
