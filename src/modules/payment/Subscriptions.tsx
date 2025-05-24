@@ -3,7 +3,13 @@ import React, { useState } from "react";
 
 export const Subscriptions: React.FC = () => {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+  const [selectedYearly, setSelectedYearly] = useState<boolean | null>(null);
   const currency = "$";
+
+  function wrapper(plan, yearly) {
+    setSelectedPlan(plan);
+    setSelectedYearly(yearly);
+  }
 
   const plans = [
     {
@@ -78,12 +84,22 @@ export const Subscriptions: React.FC = () => {
                   {plan.price.yearly.toLocaleString()}</p>
                 <p className="text-gray-600 mb-4">{plan.description}</p>
               </div>
-              <button
-                onClick={() => setSelectedPlan(plan.name)}
-                className="mt-4 bg-black text-white px-4 py-2 rounded hover:bg-gray-800"
-              >
-                Subscribe
-              </button>
+              <div className="flex justify-center">
+                <div className="flex flex-col items-center space-y-4 w-full max-w-xs">
+                  <button
+                    onClick={() => wrapper(plan.name, false)}
+                    className="w-full mt-4 bg-black text-white px-4 py-2 rounded hover:bg-gray-800"
+                  >
+                    Subscribe Monthly
+                  </button>
+                  <button
+                    onClick={() => wrapper(plan.name, true)}
+                    className="w-full mt-4 bg-black text-white px-4 py-2 rounded hover:bg-gray-800"
+                  >
+                    Subscribe Yearly
+                  </button>
+                </div>
+              </div>
             </div>
           ))}
         </div>
@@ -95,13 +111,13 @@ export const Subscriptions: React.FC = () => {
             Subscribing to: {selectedPlan} Plan
           </h2>
           <button
-            onClick={() => setSelectedPlan(null)}
+            onClick={() => wrapper(null, null)}
             className="mb-4 text-sm text-blue-600 underline"
           >
             ← Go back
           </button>
           <div id="checkout">
-            <StripeCheckoutBox planName={selectedPlan} yearly={true} />
+            <StripeCheckoutBox planName={selectedPlan} yearly={selectedYearly} />
           </div>
         </div>
       )}
