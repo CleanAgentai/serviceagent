@@ -86,18 +86,24 @@ export const Subscriptions: React.FC = () => {
               </div>
               <div className="flex justify-center">
                 <div className="flex flex-col items-center space-y-4 w-full max-w-xs">
-                  <button
-                    onClick={() => wrapper(plan.name, false)}
-                    className="w-full mt-4 bg-black text-white px-4 py-2 rounded hover:bg-gray-800"
-                  >
-                    Subscribe Monthly
-                  </button>
-                  <button
-                    onClick={() => wrapper(plan.name, true)}
-                    className="w-full mt-4 bg-black text-white px-4 py-2 rounded hover:bg-gray-800"
-                  >
-                    Subscribe Yearly
-                  </button>
+                  {
+                    plan.key != "CUSTOM" && (
+                      <div>
+                        <button
+                          onClick={() => wrapper(plan.name, false)}
+                          className="w-full mt-4 bg-black text-white px-4 py-2 rounded hover:bg-gray-800"
+                        >
+                          Subscribe Monthly
+                        </button>
+                        <button
+                          onClick={() => wrapper(plan.name, true)}
+                          className="w-full mt-4 bg-black text-white px-4 py-2 rounded hover:bg-gray-800"
+                        >
+                          Subscribe Yearly
+                        </button>
+                      </div>
+                    )
+                  }
                 </div>
               </div>
             </div>
