@@ -7,7 +7,8 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
 
   const isProduction = mode === 'production';
-  const frontEndHostName = new URL(env.VITE_SITE_URL).host;
+  const frontEndHostName = env.VITE_APP_DOMAIN;
+  console.log(frontEndHostName)
   
   return {
     plugins: [react()],
