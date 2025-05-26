@@ -57,7 +57,7 @@ export const Subscriptions: React.FC = () => {
         <>
           <p>Custom Enterprise-level features and support.</p>
           <br></br>
-          <p>Fully customizable plan. Contact us directly for questions. </p>
+          <p>Fully customizable plan. <a href="https://calendly.com/serviceagent/30min">Contact us directly for questions.</a> </p>
         </>
       ),
       price: {monthly: "Custom", yearly: "Custom"},
