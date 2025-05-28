@@ -56,6 +56,7 @@ interface Question {
 interface InterviewFormData {
   title: string;
   language: string;
+  hourly_wage: string;
   description: string;
   questions: Question[];
   showHints: boolean;
@@ -86,6 +87,7 @@ export default function EditInterview() {
   const [formData, setFormData] = useState<InterviewFormData>({
     title: "",
     language: "English",
+    hourly_wage: "",
     description: "",
     questions: [
       {
@@ -213,6 +215,7 @@ export default function EditInterview() {
         setFormData({
           title: data.title || "",
           language: data.language || "English",
+          hourly_wage: data.hourly_wage || "",
           description: data.description || "",
           questions: Array.isArray(data.questions) && data.questions.length > 0
             ? data.questions.map((q: any, idx: number) => ({
@@ -233,6 +236,7 @@ export default function EditInterview() {
         setOriginalFormData({
           title: data.title || "",
           language: data.language || "English",
+          hourly_wage: data.hourly_wage || "",
           description: data.description || "",
           questions: Array.isArray(data.questions) && data.questions.length > 0
             ? data.questions.map((q: any, idx: number) => ({
@@ -274,6 +278,7 @@ export default function EditInterview() {
         },
         body: JSON.stringify({
           ...formData,
+          hourly_wage: formData.hourly_wage,
           questions: formData.questions,
           settings: {
             show_hints_and_tips: formData.showHints,
@@ -352,6 +357,21 @@ export default function EditInterview() {
                       ))}
                     </SelectContent>
                   </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="hourly_wage">Hourly Wage (Optional)</Label>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <span style={{ marginRight: 4, fontWeight: 600 }}>$</span>
+                    <Input
+                      id="hourly_wage"
+                      value={formData.hourly_wage}
+                      onChange={(e) => handleBasicDetailsChange("hourly_wage", e.target.value.replace(/[^0-9.]/g, ""))}
+                      placeholder="e.g. 25.00"
+                      type="number"
+                      min="0"
+                      step="0.01"
+                    />
+                  </div>
                 </div>
               </div>
               <div className="space-y-2">

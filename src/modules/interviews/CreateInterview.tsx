@@ -56,7 +56,7 @@ interface Question {
 interface InterviewFormData {
   title: string;
   language: string;
-  hourlyRate: string;
+  hourly_wage: string;
   description: string;
   questions: Question[];
   showHints: boolean;
@@ -90,7 +90,7 @@ export default function CreateInterview() {
   const [formData, setFormData] = useState<InterviewFormData>({
     title: "",
     language: "English",
-    hourlyRate: "",
+    hourly_wage: "",
     description: "",
     questions: [
       {
@@ -281,6 +281,7 @@ export default function CreateInterview() {
         default_language: formData.language,
         department: departmentKey, //hardcoding
         description: formData.description,
+        hourly_wage: formData.hourly_wage,
         message_templates: {
           invitation_email: null,
           invitation_sms: null,
@@ -289,45 +290,14 @@ export default function CreateInterview() {
           interview_completed_email: null,
         },
         questions: transformedQuestions,
-        //hourly_rate: formData.hourlyRate,
         settings: {
           show_hints_and_tips: formData.showHints,
           show_availability_calendar: formData.showAvailability,
           deadline: formData.deadline ? formData.deadline.toISOString() : null,
         },
-
-        // created_at: new Date().toISOString(),
-        // interview_link: generatedLink,
       };
 
       console.log("Sending interview data:", interviewData);
-
-      // Directly insert data into the interviews table
-      // const { error: saveError } = await supabase
-      //   .from('interviews')
-      //   .insert(interviewData);
-
-      // if (saveError) {
-      //   console.error('Error saving interview:', saveError);
-
-      //   if (saveError.message) {
-      //     if (saveError.message.includes('does not exist')) {
-      //       // Table likely doesn't exist - show clear message
-      //       toast.error('The interviews table does not exist. Please contact your administrator to set up the database.');
-      //     } else if (saveError.message.includes('column')) {
-      //       // Column mismatch issue
-      //       toast.error('Database structure issue. Some fields may not match the current database structure.');
-      //     } else {
-      //       // Other database error
-      //       toast.error(`Database error: ${saveError.message}`);
-      //     }
-      //   } else {
-      //     toast.error('Failed to create interview. Please try again.');
-      //   }
-
-      //   setLoading(false);
-      //   return;
-      // }
 
       const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
       const response = await fetch(`${apiBaseUrl}/api/interviews`, {
@@ -468,7 +438,7 @@ export default function CreateInterview() {
                 setFormData({
                   title: "",
                   language: "English",
-                  hourlyRate: "",
+                  hourly_wage: "",
                   description: "",
                   questions: [
                     {
@@ -534,14 +504,15 @@ export default function CreateInterview() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="hourlyRate">Hourly Rate (Optional)</Label>
+                <Label htmlFor="hourly_wage">Hourly Wage (Optional)</Label>
                 <Input
-                  id="hourlyRate"
-                  value={formData.hourlyRate}
-                  onChange={(e) =>
-                    handleBasicDetailsChange("hourlyRate", e.target.value)
-                  }
-                  placeholder="e.g. $25 - $35"
+                  id="hourly_wage"
+                  value={formData.hourly_wage}
+                  onChange={(e) => handleBasicDetailsChange("hourly_wage", e.target.value)}
+                  placeholder="e.g. 25.00"
+                  type="number"
+                  min="0"
+                  step="0.01"
                 />
               </div>
             </div>
