@@ -79,7 +79,7 @@ const Hero = () => {
         <div className="max-w-4xl mx-auto text-center mt-16">
           <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-12 shadow-2xl border border-white/20">
             <h1 className="text-6xl md:text-7xl font-bold text-white mb-6 leading-tight animate-fade-in">
-              Hire Better Hourly Workers,
+              Hire Better Hourly Workers
               <br />
               <span className="text-[#A1E3FF]">10x Faster</span>
             </h1>
