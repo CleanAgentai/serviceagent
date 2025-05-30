@@ -149,8 +149,19 @@ const App = () => {
                   <Route index element={<Dashboard />} />
                   <Route path="ai-analysis" element={<AIAnalysis />} />
                   <Route path="settings" element={<Settings />} />
-                  <Route path="subscription" element={<Subscriptions />} /> //TODO: change route
-                  <Route path="manage-subscription" element={<ManageSubscriptions />} /> //TODO: change route
+                </Route>
+
+                {/* Protected Payment Routes */}
+                <Route
+                  path="/payment"
+                  element={
+                    <ProtectedRoute>
+                      <DashboardLayout />
+                    </ProtectedRoute>
+                  }
+                >
+                  <Route path="subscription" element={<Subscriptions />} />
+                  <Route path="manage-subscription" element={<ManageSubscriptions />} />
                 </Route>
 
                 {/* Interview Routes */}
