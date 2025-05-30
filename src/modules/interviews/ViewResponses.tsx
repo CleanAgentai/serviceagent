@@ -42,6 +42,7 @@ export function ViewResponses() {
   const [attempts, setAttempts] = useState<InterviewAttempt[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
+  const [planLimit, setPlanLimit] = useState<number | null>(null);
   const [sortBy, setSortBy] = useState<"date" | "name">("date");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [selectedAttempt, setSelectedAttempt] =
@@ -133,6 +134,20 @@ export function ViewResponses() {
         setAttempts([]);
         setLoading(false);
         return;
+      }
+
+      try {
+        const { data: plan, error: planError } = await supabase
+          .from("profiles")
+          .select("subscription")
+          .eq("id", user.id)
+          .single();
+        
+        console.log('Plan data: ', plan);
+        setPlanLimit(plan.subscription == 'Launch' ? 20 : 
+          (plan.subscription == 'Scale' ? 100 : 1)); //default limit set to 1 to avoid /0 error
+      } catch (planError) {
+        console.log('[DEBUG] PLAN ERROR: ', planError);
       }
 
       try {
@@ -325,7 +340,7 @@ export function ViewResponses() {
           <p className="text-sm font-medium text-gray-700 whitespace-nowrap">
             Plan Usage:
           </p>
-          <ProgressBar used={1} limit={20} />
+          <ProgressBar used={attempts.length} limit={planLimit} />
         </div>
       </div>
 
