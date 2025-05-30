@@ -112,11 +112,11 @@ const ManageSubscriptions = () => {
         {/* Tooltip when no active subscription */}
         {!hasActiveSub && (
           <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-72 bg-gray-800 text-white text-xs rounded px-3 py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none text-center z-10">
-            You don’t have an active subscription to cancel.
+            You don't have an active subscription to cancel.
           </div>
         )}
       </div>
-      
+
       {showConfirm && (
       <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
         <div className="bg-white dark:bg-zinc-800 p-6 rounded-lg shadow-xl w-full max-w-sm">
