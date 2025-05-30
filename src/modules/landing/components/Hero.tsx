@@ -27,12 +27,13 @@ const Hero = () => {
           <div className="relative container mx-auto px-6">
             <div className="flex items-center justify-between h-16">
               <div className="flex items-center">
-                <img 
-                  src="/ServiceAgent_new.svg" 
-                  alt="ServiceAgent Logo" 
-                  className="h-8 w-auto mr-2"
-                />
-                <span className="text-2xl font-bold text-slate-900">ServiceAgent</span>
+                <div className="flex items-center ml-6">
+                  <img 
+                    src="/Banner_SA_new.svg" 
+                    alt="ServiceAgent Logo" 
+                    className="h-12 w-auto"
+                  />
+                </div>
               </div>
               {/* Desktop Navigation */}
               <div className="hidden md:flex items-center space-x-8">

@@ -1,5 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export function Navigation() {
   const location = useLocation();
@@ -13,14 +15,13 @@ export function Navigation() {
       <div className="absolute inset-0 bg-gradient-to-r from-[#A1E3FF]/5 via-transparent to-[#0E7CFF]/5 pointer-events-none"></div>
       <div className="relative container mx-auto px-6">
         <div className="flex items-center justify-between h-16">
-          <div className="flex items-center">
+          <div className="flex items-center ml-6">
             <Link to="/" aria-label="ServiceAgent Home" className="flex items-center">
               <img 
-                src="/ServiceAgent_new.svg" 
+                src="/Banner_SA_new.svg" 
                 alt="ServiceAgent Logo" 
-                className="h-8 w-auto"
+                className="h-12 w-auto"
               />
-              <span className="ml-2 text-2xl font-bold text-slate-900">ServiceAgent</span>
             </Link>
           </div>
           {/* Desktop Navigation */}
@@ -48,9 +49,10 @@ export function Navigation() {
               </Link>
             )}
             {/* Book Demo Button */}
-            <button className="bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-2 border border-white/20" onClick={() => window.open('https://calendly.com/serviceagent/30min', '_blank')}>
+            <Button className="bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-2 border border-white/20 group" onClick={() => window.open('https://calendly.com/serviceagent/30min', '_blank')}>
               Book Demo
-            </button>
+              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+            </Button>
           </div>
           {/* Mobile Navigation - Only Sign In and Book Demo */}
           <div className="md:hidden flex items-center space-x-4">
@@ -59,9 +61,10 @@ export function Navigation() {
                 Sign In
               </Link>
             )}
-            <button className="bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-4 py-2 border border-white/20" onClick={() => window.open('https://calendly.com/serviceagent/30min', '_blank')}>
+            <Button size="sm" className="bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-4 py-2 border border-white/20 group" onClick={() => window.open('https://calendly.com/serviceagent/30min', '_blank')}>
               Book Demo
-            </button>
+              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+            </Button>
           </div>
         </div>
       </div>

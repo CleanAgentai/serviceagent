@@ -78,7 +78,7 @@ export function Login() {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
               <img 
-                src="/ServiceAgent_new.svg" 
+                src="/Banner_SA_new.svg" 
                 alt="ServiceAgent Logo" 
                 className="h-8 w-auto mr-2"
               />
