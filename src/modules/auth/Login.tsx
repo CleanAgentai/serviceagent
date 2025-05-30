@@ -72,17 +72,33 @@ export function Login() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-white">
+      {/* New Header */}
+      <nav className="w-full bg-gradient-to-r from-white/90 via-white/95 to-white/90 backdrop-blur-xl border-b border-slate-200/30 shadow-lg">
+        <div className="relative container mx-auto px-6">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center">
+              <img 
+                src="/ServiceAgent_new.svg" 
+                alt="ServiceAgent Logo" 
+                className="h-8 w-auto mr-2"
+              />
+              <span className="text-2xl font-bold text-slate-900">ServiceAgent</span>
+            </div>
+            <div className="hidden md:flex items-center space-x-8">
+              <Link to="/#features" className="text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 relative group">Features</Link>
+              <Link to="/#demo" className="text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 relative group">How It Works</Link>
+              <Link to="/#pricing" className="text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 relative group">Pricing</Link>
+              <Link to="/#testimonials" className="text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 relative group">Reviews</Link>
+              <Link to="/signin" className="text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 relative group">Sign In</Link>
+              <button className="bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-2 border border-white/20" onClick={() => window.open('https://calendly.com/serviceagent/30min', '_blank')}>Book Demo</button>
+            </div>
+          </div>
+        </div>
+      </nav>
       <main className="flex-grow">
         <div className="max-w-2xl mx-auto px-4 py-12">
           {/* Header */}
           <div className="text-center mb-8">
-            <Link to="/" className="inline-block mb-4">
-              <img
-                src="/ServiceAgent_new.svg"
-                alt="ServiceAgent Logo"
-                className="h-12 w-auto mx-auto"
-              />
-            </Link>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
               Welcome back!
             </h1>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
+import { Navigation } from "@/modules/landing/components/Navigation";
 
 export function CookiePolicy() {
   // Set meta title and description
@@ -10,10 +11,12 @@ export function CookiePolicy() {
     if (metaDescription) {
       metaDescription.setAttribute('content', 'ServiceAgent AI Cookie Policy - Learn about how we use cookies and similar technologies.');
     }
+    window.scrollTo(0, 0);
   }, []);
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <Navigation />
       {/* Content */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <article className="prose prose-lg max-w-none bg-white rounded-xl shadow-sm p-8 sm:p-12">

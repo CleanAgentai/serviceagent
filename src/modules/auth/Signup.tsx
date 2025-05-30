@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { User, Mail, Lock, Building2, ArrowRight } from "lucide-react";
 import { useAuth } from "@/app/providers/AuthContext";
+import { Navigation } from "@/modules/landing/components/Navigation";
 
 import { supabase } from "@/app/lib/supabase";
 
@@ -127,17 +128,11 @@ export function Signup() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-white">
-      <main className="flex-grow">
+      <Navigation />
+      <main className="flex-grow pt-24">
         <div className="max-w-2xl mx-auto px-4 py-12">
           {/* Header */}
           <div className="text-center mb-8">
-            <Link to="/" className="inline-block mb-4">
-              <img
-                src="/ServiceAgent_new.svg"
-                alt="ServiceAgent Logo"
-                className="h-12 w-auto mx-auto"
-              />
-            </Link>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
               Get Started with ServiceAgent
             </h1>

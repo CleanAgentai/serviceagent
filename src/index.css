@@ -255,3 +255,16 @@ img {
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes gradient-shift {
+  0%, 100% {
+    transform: translateX(0%) rotate(0deg);
+  }
+  50% {
+    transform: translateX(10%) rotate(1deg);
+  }
+}
+
+.animate-gradient-shift {
+  animation: gradient-shift 20s ease-in-out infinite;
+}

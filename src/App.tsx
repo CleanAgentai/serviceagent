@@ -32,7 +32,7 @@ import { ViewResponses } from "@/modules/interviews/ViewResponses";
 import { ResponseDetails } from "@/modules/interviews/ResponseDetails";
 
 // Public Pages
-import { LandingPage } from "@/modules/landing/LandingPage";
+import LandingPage from "@/modules/landing/LandingPage";
 import { AboutUs } from "./modules/company/AboutUs";
 import { Contact } from "./modules/company/Contact";
 import { Blog, BlogPost } from "./modules/blog";
@@ -86,6 +86,9 @@ const App = () => {
                 {/* Auth Callback Route - Must be outside AppLayout */}
                 <Route path="/auth/callback" element={<AuthCallback />} />
 
+                {/* Landing Page - NO AppLayout */}
+                <Route path="/" element={<LandingPage />} />
+
                 {/* Public Routes with AppLayout */}
                 <Route
                   element={
@@ -116,14 +119,10 @@ const App = () => {
                     <AppLayout showNavigation={true} showFooter={true} />
                   }
                 >
-                  {/* Landing Page */}
-                  <Route path="/" element={<LandingPage />} />
                   <Route path="/about-us" element={<AboutUs />} />
                   <Route path="/contact" element={<Contact />} />
-                  {/* <Route path="/blog" element={<Blog />} /> */}
                   <Route path="/blog" element={<Blog />} />
                   <Route path="/blog/:slug" element={<BlogPost />} />
-
                   <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                   <Route
                     path="/terms-of-service"
