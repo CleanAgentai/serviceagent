@@ -116,7 +116,7 @@ export function Footer() {
               The AI recruiter – source, interview, and qualify candidates at scale.
             </p>
             <div className="flex space-x-4">
-              <a href="https://twitter.com/cleanagentai" className="text-slate-400 hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">
+              <a href="https://x.com/porter2301" className="text-slate-400 hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">
                 <Twitter className="h-5 w-5" />
               </a>
               <a href="https://www.linkedin.com/company/cleanagent-ai/?viewAsMember=true" className="text-slate-400 hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">
@@ -140,8 +140,8 @@ export function Footer() {
                 <li><Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
                 <li><Link to="/terms-of-service" className="hover:text-white transition-colors">Terms of Service</Link></li>
                 <li><Link to="/cookie-policy" className="hover:text-white transition-colors">Cookie Policy</Link></li>
-              </ul>
-            </div>
+                </ul>
+              </div>
           </div>
         </div>
         <div className="border-t border-slate-800 mt-12 pt-8 text-center text-slate-400">

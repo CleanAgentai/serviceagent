@@ -61,6 +61,15 @@ const Hero = () => {
                   Book Demo
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
+                <a 
+                  href="https://x.com/porter2301" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-slate-600 hover:text-slate-900 transition-colors"
+                  aria-label="Follow us on X (formerly Twitter)"
+                >
+                  {/* X icon here */}
+                </a>
               </div>
               {/* Mobile Navigation - Only Sign In and Book Demo */}
               <div className="md:hidden flex items-center space-x-4">
@@ -79,10 +88,10 @@ const Hero = () => {
         <div className="max-w-4xl mx-auto text-center mt-16">
           <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-12 shadow-2xl border border-white/20">
             <h1 className="text-6xl md:text-7xl font-bold text-white mb-6 leading-tight animate-fade-in">
-              Hire Better Hourly Workers
+              Hire Better Hourly Workers,
               <br />
               <span className="text-[#A1E3FF]">10x Faster</span>
-            </h1>
+      </h1>
             <p className="text-xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed animate-fade-in" style={{ animationDelay: '0.2s' }}>
               Turn your recruiting process on autopilot. Source, interview, and qualify candidates at scale - so you only spend time making the final call.
             </p>

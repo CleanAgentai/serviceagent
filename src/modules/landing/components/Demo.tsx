@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Play } from "lucide-react";
 
 const Demo = () => {
   return (
@@ -16,20 +16,18 @@ const Demo = () => {
             See ServiceAgent in Action
           </h2>
           <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-            Watch how ServiceAgent transforms your hiring process from start to finish.
+            Watch how ServiceAgent transforms your hiring process from start to finish—live demo coming soon.
           </p>
         </div>
 
         <div className="max-w-4xl mx-auto">
           <div className="relative bg-gradient-to-br from-slate-50 to-white rounded-2xl shadow-2xl overflow-hidden border border-slate-200">
-            <div className="aspect-video">
-              <div style={{ position: "relative", paddingBottom: "54.270833333333336%", height: 0 }}>
-                <iframe 
-                  src="https://www.loom.com/embed/0ce245979e104aeab5613331002fa3c2?sid=44803711-1b62-437c-8183-bd5f6a90cffb" 
-                  frameBorder="0" 
-                  allowFullScreen
-                  style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}
-                />
+            <div className="aspect-video bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
+              <div className="text-center">
+                <div className="w-20 h-20 bg-[#0E7CFF] rounded-full flex items-center justify-center mb-4 mx-auto hover:bg-[#0B1C2D] transition-colors cursor-pointer group">
+                  <Play className="h-8 w-8 text-white ml-1 group-hover:scale-110 transition-transform" />
+                </div>
+                <p className="text-slate-600 text-lg">Live demo coming soon</p>
               </div>
             </div>
           </div>
