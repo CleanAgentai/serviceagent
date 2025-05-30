@@ -24,6 +24,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import ProgressBar from "@/components/stripe/ProgressBar";
 
 interface InterviewAttempt {
   id: string;
@@ -318,8 +319,14 @@ export function ViewResponses() {
 
   return (
     <div className="container mx-auto px-4 py-6">
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex items-center mb-6">
         <h1 className="text-3xl font-bold">Responses</h1>
+        <div className="ml-auto flex items-center space-x-2">
+          <p className="text-sm font-medium text-gray-700 whitespace-nowrap">
+            Plan Usage:
+          </p>
+          <ProgressBar used={1} limit={20} />
+        </div>
       </div>
 
       <Card className="p-4 mb-6">
