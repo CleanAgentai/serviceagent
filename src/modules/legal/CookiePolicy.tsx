@@ -27,7 +27,7 @@ export function CookiePolicy() {
           </div>
 
           <p className="lead">
-            This Cookie Policy explains how ServiceAgent, LLC ("Company," "we," "us," or "our") uses cookies and similar tracking technologies when you visit our website (https://www.serviceagent.ai) (the "Website"). This policy should be read in conjunction with our Privacy Policy.
+            This Cookie Policy explains how CleanAgent, LLC ("Company," "we," "us," or "our") uses cookies and similar tracking technologies when you visit our website (https://www.fsagent.com) (the "Website"). This policy should be read in conjunction with our Privacy Policy.
           </p>
 
           <h2>1. What Are Cookies?</h2>
@@ -81,10 +81,10 @@ export function CookiePolicy() {
           <div className="bg-gray-50 p-6 rounded-lg mt-8">
             <p className="font-medium mb-4">If you have any questions about this Cookie Policy, please contact us at:</p>
             <address className="not-italic">
-              <p className="font-bold">ServiceAgent, LLC</p>
+              <p className="font-bold">CleanAgent, LLC</p>
               <p>209 Turner Street</p>
               <p>Clearwater, Florida 33756</p>
-              <p>Email: <a href="mailto:support@serviceagent.ai">support@serviceagent.ai</a></p>
+              <p>Email: <a href="mailto:support@serviceagent.ai">admin@fsagent.com</a></p>
               <p>Phone: <a href="tel:+18137505308">813-750-5308</a></p>
             </address>
           </div>
