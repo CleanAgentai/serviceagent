@@ -37,7 +37,7 @@ const CheckoutSuccess = () => {
   }, [sessionId]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-white px-4">
       <div className="max-w-md w-full text-center bg-white p-8 rounded-lg shadow">
         {status === "verifying" && (
           <>
