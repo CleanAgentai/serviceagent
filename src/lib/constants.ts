@@ -36,7 +36,8 @@ export const routes = {
   responses: '/responses',
   login: '/login',
   signup: '/signup',
-  postSignup: '/post-signup'
+  postSignup: '/post-signup',
+  planOnboarding: '/plan-onboarding'
 };
 
 /**

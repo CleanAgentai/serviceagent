@@ -38,7 +38,7 @@ export function PostSignupSetup() {
         // This is more reliable than checking the profiles table which might have schema issues
         if (user.user_metadata?.company_profile_completed === true) {
           // User has completed their profile according to metadata, redirect to dashboard
-          navigate(routes.dashboard);
+          navigate(routes.planOnboarding);
           return;
         }
 
@@ -55,7 +55,7 @@ export function PostSignupSetup() {
   }, [navigate]);
 
   const handleComplete = () => {
-    navigate(routes.dashboard);
+    navigate(routes.planOnboarding);
   };
 
   if (loading) {

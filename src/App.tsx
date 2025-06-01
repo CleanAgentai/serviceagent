@@ -111,6 +111,7 @@ const App = () => {
                   <Route path="/oauth-callback" element={<OAuthCallback />} />
                   <Route path="/checkout/success" element={<CheckoutSuccess />} />
                   <Route path="/post-signup" element={<PostSignupSetup />} />
+                  <Route path ="/plan-onboarding" element={<Subscriptions />} />
                   <Route
                     path="/complete-profile"
                     element={<CompleteProfile />}
