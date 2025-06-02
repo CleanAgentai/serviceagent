@@ -555,7 +555,7 @@ export function ViewResponses() {
                 You've reached your plan's interview response limit.
               </p>
               <Button
-                onClick={() => navigate("/subscription")}
+                onClick={() => navigate("/payment/subscription")}
                 className="bg-blue-600 hover:bg-blue-700 text-white"
               >
                 Upgrade Plan to View More
