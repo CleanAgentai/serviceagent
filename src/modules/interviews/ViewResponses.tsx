@@ -45,6 +45,7 @@ export function ViewResponses() {
   const [planLimit, setPlanLimit] = useState<number | null>(null);
   const launchLimit = 20; //move to config
   const scaleLimit = 100; //move to config
+  const customLimit = 100000; //fix to unlimited
   const [sortBy, setSortBy] = useState<"date" | "name">("date");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [selectedAttempt, setSelectedAttempt] =
@@ -174,7 +175,8 @@ export function ViewResponses() {
         
         console.log('Plan data: ', plan);
         setPlanLimit(plan.subscription == 'Launch' ? launchLimit : 
-          (plan.subscription == 'Scale' ? scaleLimit : 1)); //default limit set to 1 to avoid /0 error
+          (plan.subscription == 'Scale' ? scaleLimit : 
+            (plan.subscription == 'Custom' ? customLimit : 1))); //default limit set to 1 to avoid /0 error
 
         const { data, error } = await supabase
           .from("interview_attempts")
@@ -194,7 +196,8 @@ export function ViewResponses() {
           .eq("department_key", companyKey)
           .order("created_at", { ascending: false })
           .limit(plan.subscription == 'Launch' ? launchLimit : 
-            (plan.subscription == 'Scale' ? scaleLimit : 1));
+            (plan.subscription == 'Scale' ? scaleLimit : 
+              (plan.subscription == 'Custom' ? customLimit : 1)));
 
         console.log("[ViewResponses] Attempts Fetch Result:", { data, error });
 
@@ -365,10 +368,14 @@ export function ViewResponses() {
       <div className="flex items-center mb-6">
         <h1 className="text-3xl font-bold">Responses</h1>
         <div className="ml-auto flex items-center space-x-2">
-          <p className="text-sm font-medium text-gray-700 whitespace-nowrap">
-            Plan Usage:
-          </p>
-          <ProgressBar used={attempts.length} limit={planLimit} />
+          {planLimit != customLimit && (
+            <div>
+            <p className="text-sm font-medium text-gray-700 whitespace-nowrap">
+              Plan Usage:
+            </p>
+            <ProgressBar used={attempts.length} limit={planLimit} />
+            </div>
+          )}
         </div>
       </div>
 
