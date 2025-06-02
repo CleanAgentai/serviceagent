@@ -278,6 +278,7 @@ img {
   text-align: left;
   font-family: inherit;
   font-size: inherit;
+}
   
 @keyframes gradient-shift {
   0%, 100% {
