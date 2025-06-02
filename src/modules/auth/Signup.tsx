@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { User, Mail, Lock, Building2, ArrowRight } from "lucide-react";
 import { useAuth } from "@/app/providers/AuthContext";
+import { Navigation } from "@/modules/landing/components/Navigation";
 
 import { supabase } from "@/app/lib/supabase";
 
@@ -126,18 +127,17 @@ export function Signup() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-white">
-      <main className="flex-grow">
+    <div className="relative min-h-screen w-full flex flex-col">
+      <div className="fixed inset-0 w-full h-full bg-gradient-to-b from-gray-50 to-white -z-10" />
+      <Navigation />
+      <main className="flex-grow pt-16">
         <div className="max-w-2xl mx-auto px-4 py-12">
+          {/* Logo above header */}
+          <div className="flex justify-center mb-4">
+            <img src="/singularlogo.png" alt="ServiceAgent Icon" className="h-16 w-auto" />
+          </div>
           {/* Header */}
           <div className="text-center mb-8">
-            <Link to="/" className="inline-block mb-4">
-              <img
-                src="/ServiceAgent_new.svg"
-                alt="ServiceAgent Logo"
-                className="h-12 w-auto mx-auto"
-              />
-            </Link>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
               Get Started with ServiceAgent
             </h1>
@@ -335,7 +335,7 @@ export function Signup() {
 
               <button
                 type="submit"
-                className="w-full flex items-center justify-center px-4 py-2 border border-transparent text-base font-medium rounded-lg text-white bg-gradient-to-r from-[#4FC3DC] to-[#1E529D] hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-sm"
+                className="w-full flex items-center justify-center bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 border border-white/20"
               >
                 Create Account
                 <ArrowRight className="ml-2 h-5 w-5" />

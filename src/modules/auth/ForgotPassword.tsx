@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/app/lib/supabase";
-import { Mail } from "lucide-react";
+import { Mail, ArrowRight } from "lucide-react";
 
 export function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -70,8 +70,9 @@ export function ForgotPassword() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-white">
-      <main className="flex-grow">
+    <div className="relative min-h-screen w-full flex flex-col">
+      <div className="fixed inset-0 w-full h-full bg-gradient-to-b from-gray-50 to-white -z-10" />
+      <main className="flex-grow pt-24">
         <div className="max-w-2xl mx-auto px-4 py-12">
           {/* Header */}
           <div className="text-center mb-8">
@@ -86,7 +87,7 @@ export function ForgotPassword() {
               Forgot your password?
             </h1>
             <p className="text-gray-600">
-              Enter your email and we’ll send you a password reset link.
+              Enter your email and we'll send you a password reset link.
             </p>
           </div>
 
@@ -132,9 +133,16 @@ export function ForgotPassword() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full flex items-center justify-center px-4 py-2 border border-transparent text-base font-medium rounded-lg text-white bg-gradient-to-r from-[#4FC3DC] to-[#1E529D] hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full flex items-center justify-center bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 border border-white/20 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isLoading ? "Sending..." : "Send Reset Link"}
+                {isLoading ? (
+                  "Sending..."
+                ) : (
+                  <>
+                    Send Reset Link
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </>
+                )}
               </button>
             </form>
 

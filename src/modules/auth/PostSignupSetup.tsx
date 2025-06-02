@@ -95,7 +95,10 @@ export function PostSignupSetup() {
   }
 
   return (
-    <div className="container max-w-4xl mx-auto py-12 px-4">
+    <div className="container max-w-4xl mx-auto py-8 px-4 pt-24">
+      <div className="flex justify-center mb-4">
+        <img src="/singularlogo.png" alt="ServiceAgent Icon" className="h-16 w-auto" />
+      </div>
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold mb-2">Welcome to ServiceAgent</h1>
         <p className="text-gray-600">

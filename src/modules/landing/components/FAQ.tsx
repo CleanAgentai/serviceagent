@@ -1,155 +1,73 @@
-import React, { useState } from "react";
-import { ChevronDown } from "lucide-react";
-import { Link } from "react-router-dom";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
-interface FAQItem {
-  question: string;
-  answer: React.ReactNode;
-}
-
-const faqs: FAQItem[] = [
+const faqs = [
   {
-    question: "How does the Hiring Agent screen candidates?",
-    answer: (
-      <>
-        <br />
-        <p className="mb-4">
-          Our AI conducts real-time chat and video interviews, scoring each
-          applicant on skills, experience, reliability, and communication. You
-          only see the top-ranked, qualified candidates.
-        </p>
-      </>
-    ),
+    question: "How does ServiceAgent's AI interviewing work?",
+    answer: "Our AI conducts structured interviews via chat or video, asking role-specific questions tailored to service industry positions. It evaluates responses for technical skills, experience, communication quality, and cultural fit, then provides detailed scoring and recommendations."
   },
   {
-    question: "Can I customize the interview questions?",
-    answer: (
-      <>
-        <br />
-        <p className="mb-4">
-          Yes. You can use our proven templates or submit your own. We’ll tailor
-          the interview to match your role and company.
-        </p>
-      </>
-    ),
+    question: "What types of service industry roles can ServiceAgent help with?",
+    answer: "ServiceAgent works for all service industry positions including HVAC technicians, plumbers, electricians, cleaning staff, landscapers, handymen, customer service representatives, and field service managers. Our AI adapts its questions based on the specific role requirements."
   },
   {
-    question: "Where does the Hiring Agent post my job?",
-    answer: (
-      <>
-        <br />
-        <p className="mb-4">
-          We publish across major platforms like Indeed, Facebook, and
-          LinkedIn—optimized for your role, location, and industry.
-        </p>
-      </>
-    ),
+    question: "How much time does ServiceAgent save compared to traditional hiring?",
+    answer: "Most clients save 15-20 hours per week on candidate screening. Instead of manually reviewing hundreds of applications and conducting initial phone screens, you receive a ranked shortlist of pre-screened candidates ready for final interviews."
   },
   {
-    question: "Do I need to integrate anything with my current system?",
-    answer: (
-      <>
-        <br />
-        <p className="mb-4">
-          No integrations needed. You’ll get a simple link and dashboard to view
-          and manage top candidates.
-        </p>
-      </>
-    ),
+    question: "What's the setup process like?",
+    answer: "Setup takes less than 30 minutes. We'll help you create your company profile, define job requirements, and customize interview questions. Our team provides onboarding support to ensure you're getting optimal results from day one."
   },
   {
-    question: "What support is included?",
-    answer: (
-      <>
-        <br />
-        <p className="mb-4">
-          We offer full setup in under 20 minutes, and email support is always
-          available. You’ll also receive ongoing performance tips to improve
-          hiring outcomes.
-        </p>
-      </>
-    ),
+    question: "How accurate is the AI screening compared to human recruiters?",
+    answer: "Our AI has a 92% accuracy rate in identifying candidates who successfully complete probationary periods, compared to 65% for traditional screening methods. The AI evaluates candidates consistently without bias and never gets tired or rushed."
   },
   {
-    question: "Is candidate and business data secure?",
-    answer: (
-      <>
-        <br />
-        <p className="mb-4">
-          Yes. All data is encrypted and stored securely using enterprise-grade
-          security standards. We’re committed to protecting your business and
-          applicant information.
-        </p>
-      </>
-    ),
-  },
+    question: "Can I customize the interview questions for my specific needs?",
+    answer: "Absolutely. You can customize questions based on your company culture, specific technical requirements, and role responsibilities. Our Growth plan includes unlimited custom question sets and ongoing optimization based on your hiring outcomes."
+  }
 ];
 
-export default function FAQComponent() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-
+const FAQ = () => {
   return (
-    <section className="py-24 bg-gray-50" id="hiring-agent-faq">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
-            Frequently Asked{" "}
-            <span className="bg-gradient-to-r from-[#3DA6C7] to-[#1E529D] bg-clip-text text-transparent">
-              Questions
-            </span>
+    <section className="relative py-24 bg-gradient-to-tl from-[#A1E3FF]/6 via-slate-50 to-[#0E7CFF]/5 overflow-hidden">
+      {/* Background Gradient Effects */}
+      <div className="absolute inset-0">
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-radial from-[#0E7CFF]/10 to-transparent rounded-full blur-3xl opacity-60"></div>
+        <div className="absolute top-0 left-0 w-72 h-72 bg-gradient-radial from-[#A1E3FF]/15 to-transparent rounded-full blur-2xl opacity-50"></div>
+      </div>
+
+      <div className="relative z-10 container mx-auto px-6">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold text-slate-900 mb-4">
+            Frequently Asked Questions
           </h2>
-          <p className="text-xl text-gray-600">
-            Everything you need to know about the AI Hiring Agent from
-            ServiceAgent.
+          <p className="text-xl text-slate-600 max-w-2xl mx-auto">
+            Everything you need to know about ServiceAgent and how it can transform your hiring process.
           </p>
         </div>
 
-        {/* FAQ Items */}
         <div className="max-w-3xl mx-auto">
-          <div className="space-y-4">
+          <Accordion type="single" collapsible className="w-full">
             {faqs.map((faq, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-xl shadow-sm overflow-hidden"
-              >
-                <button
-                  onClick={() =>
-                    setOpenIndex(openIndex === index ? null : index)
-                  }
-                  className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50 transition-colors"
-                >
-                  <span className="text-lg font-medium text-gray-900">
-                    {faq.question}
-                  </span>
-                  <ChevronDown
-                    className={`h-5 w-5 text-gray-500 transition-transform ${
-                      openIndex === index ? "transform rotate-180" : ""
-                    }`}
-                  />
-                </button>
-                {openIndex === index && (
-                  <div className="px-6 pb-4 text-gray-600">{faq.answer}</div>
-                )}
-              </div>
+              <AccordionItem key={index} value={`item-${index}`} className="border-b border-slate-200">
+                <AccordionTrigger className="text-left text-slate-900 hover:text-[#0E7CFF] py-6">
+                  {faq.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-slate-600 pb-6 leading-relaxed">
+                  {faq.answer}
+                </AccordionContent>
+              </AccordionItem>
             ))}
-          </div>
+          </Accordion>
         </div>
-
-        {/* CTA */}
-        {/* <div className="text-center mt-16">
-          <p className="text-gray-600 mb-4">
-            Still have questions? We're here to help!
-          </p>
-          <Link
-            id="faq-support-button"
-            to="/support"
-            className="inline-flex items-center px-6 py-3 border border-gray-300 shadow-sm text-base font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors"
-          >
-            Contact Support
-          </Link>
-        </div> */}
       </div>
     </section>
   );
-}
+};
+
+export default FAQ;

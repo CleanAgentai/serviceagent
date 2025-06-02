@@ -1,86 +1,75 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export function Navigation() {
   const location = useLocation();
-  const isHomePage = location.pathname === "/";
-  const [scrolled, setScrolled] = useState(false);
-  const [lastScrollY, setLastScrollY] = useState(0);
-  const [hidden, setHidden] = useState(false);
-
-  // Handle scroll events for header behavior
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-
-      // Determine if header should be visible
-      if (currentScrollY > 60) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
-
-      // Hide header on scroll down, show on scroll up
-      if (currentScrollY > lastScrollY && currentScrollY > 300) {
-        setHidden(true);
-      } else {
-        setHidden(false);
-      }
-
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
-
-  // Scroll to top on page load
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [location.pathname]);
-
-  const navClasses = `sticky top-0 z-50 transition-all duration-200 transform ${
-    hidden ? "-translate-y-full" : "translate-y-0"
-  } ${
-    scrolled ? "bg-white/95 backdrop-blur-sm shadow-sm" : "bg-white"
-  } border-b border-gray-200`;
+  // Determine if on sign in or sign up page
+  const isSignIn = location.pathname === "/login" || location.pathname === "/signin";
+  const isSignUp = location.pathname === "/signup";
 
   return (
-    <nav className={navClasses}>
-      <div className="max-w-7xl mx-auto px-2 sm:px-3 md:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-12 sm:h-14 md:h-16">
-          {/* Logo */}
-          <Link
-            to="/"
-            className="flex items-center"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            aria-label="ServiceAgent Home"
-          >
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-white/90 via-white/95 to-white/90 backdrop-blur-xl border-b border-slate-200/30 shadow-lg">
+      {/* Additional gradient overlay for depth */}
+      <div className="absolute inset-0 bg-gradient-to-r from-[#A1E3FF]/5 via-transparent to-[#0E7CFF]/5 pointer-events-none"></div>
+      <div className="relative container mx-auto px-6">
+        <div className="flex items-center justify-between h-16">
+          <div className="flex items-center ml-6">
+            <Link to="/" aria-label="ServiceAgent Home" className="flex items-center">
             <img
               src="/Banner_SA_new.svg"
               alt="ServiceAgent Logo"
-              className="h-10 sm:h-10 md:h-10 w-auto"
-            />
-            {/* <span className="text-lg sm:text-xl font-semibold text-gray-900"></span> */}
+                className="h-12 w-auto"
+              />
+            </Link>
+          </div>
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
+            <Link to="/#features" className="text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 relative group">
+              Features
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#0E7CFF] to-[#A1E3FF] group-hover:w-full transition-all duration-300"></span>
+            </Link>
+            <Link to="/#demo" className="text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 relative group">
+              How It Works
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#0E7CFF] to-[#A1E3FF] group-hover:w-full transition-all duration-300"></span>
+            </Link>
+            <Link to="/#pricing" className="text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 relative group">
+              Pricing
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#0E7CFF] to-[#A1E3FF] group-hover:w-full transition-all duration-300"></span>
+            </Link>
+            <Link to="/#testimonials" className="text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 relative group">
+              Reviews
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#0E7CFF] to-[#A1E3FF] group-hover:w-full transition-all duration-300"></span>
           </Link>
-
-          {/* CTA Buttons */}
-          <div className="flex items-center space-x-4">
+            {!isSignIn && (
+              <Link 
+                to="/signin" 
+                className="text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 relative group"
+              >
+                Sign In
+              </Link>
+            )}
+            {/* Book Demo Button */}
+            <Button className="bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-2 border border-white/20 group" onClick={() => window.open('https://calendly.com/serviceagent/30min', '_blank')}>
+              Book Demo
+              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+            </Button>
+          </div>
+          {/* Mobile Navigation - Only Sign In and Book Demo */}
+          <div className="md:hidden flex items-center space-x-4">
+            {!isSignIn && (
             <Link
-              to="/login"
-              className="text-gray-600 hover:text-gray-900 transition-colors text-sm whitespace-nowrap"
+                to="/signin" 
+                className="bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-2 border border-white/20"
             >
-              Sign In
+                Sign In
             </Link>
-            <Link
-              to="/signup"
-              className="px-4 py-2 bg-gradient-to-r from-[#3DA6C7] to-[#1E529D] 
-           hover:from-[#3099BC] hover:to-[#17467F] 
-           text-white rounded-lg transition-all duration-300 
-           shadow-md hover:shadow-xl text-sm whitespace-nowrap"
-            >
-              Sign up
-            </Link>
+            )}
+            <Button size="sm" className="bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-4 py-2 border border-white/20 group" onClick={() => window.open('https://calendly.com/serviceagent/30min', '_blank')}>
+              Book Demo
+              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+            </Button>
           </div>
         </div>
       </div>

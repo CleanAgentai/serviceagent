@@ -1,136 +1,103 @@
-import React from "react";
-import { Star, Quote } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Star } from "lucide-react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
-interface Testimonial {
-  quote: string;
-  author: string;
-  role: string;
-  company: string;
-  metrics: {
-    label: string;
-    value: string;
-  }[];
-}
-
-const testimonials: Testimonial[] = [
+const testimonials = [
   {
-    quote:
-      "Before ServiceAgent, we spent 15+ hours/week just trying to hire. Now the AI handles everything—we just review and hire. Total game changer.",
-    author: "Jason McBride",
-    role: "Owner",
-    company: "ProClean Solutions",
-    metrics: [
-      { label: "more qualified candidates/week", value: "4x" },
-      { label: "time Spent Hiring", value: "↓ 90%" },
-      { label: "average tiem-to-hire", value: "< 2 days" },
-    ],
+    name: "Marcus Johnson",
+    role: "Founder",
+    company: "Elite Plumbing Services", 
+    content: "ServiceAgent transformed our hiring. We went from spending 20 hours per week screening candidates to just 2 hours reviewing the top picks. Our new hires are 3x more likely to stay long-term.",
+    rating: 5,
+    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face"
   },
   {
-    quote:
-      "I used to dig through 50+ applications to find one tech. Now, the AI filters the noise and delivers exactly who I want to talk to.",
-    author: "Tina Alvarez",
-    role: "Office Manager",
-    company: "Reliable HVAC",
-    metrics: [
-      { label: "faster at finding qualified techs", value: "10x" },
-      { label: "increase in applicant volume", value: "+50%" },
-      { label: "manual reviews needed", value: "0" },
-    ],
+    name: "Jennifer Martinez",
+    role: "Operations Director",
+    company: "ProClean Commercial",
+    content: "The AI interviews caught red flags we would have missed. One candidate seemed perfect on paper, but the AI detected inconsistencies in their experience. Saved us from a bad hire.",
+    rating: 5,
+    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face"
   },
   {
-    quote:
-      "We’ve hired 3 amazing team members this month—no job posting, no ghosting. Just results. This is how hiring should work.",
-    author: "Eric Wallace",
-    role: "Operations Lead",
-    company: "Apex Plumbing Pros",
-    metrics: [
-      { label: "per month", value: "3 hires" },
-      { label: "avg. post-to-hire", value: "1.5 days" },
-      { label: "no-shows & ghosting", value: "↓ 100%" },
-    ],
-  },
+    name: "David Rodriguez", 
+    role: "CEO",
+    company: "Rodriguez HVAC",
+    content: "ROI was immediate. We used to pay $300+ per hire to recruiters. Now we get better candidates for a fraction of the cost. ServiceAgent pays for itself with just one good hire.",
+    rating: 5,
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face"
+  }
 ];
 
-export default function Testimonials() {
+const Testimonials = () => {
   return (
-    <section className="py-24 bg-gradient-to-b from-white to-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
-            Trusted by Growing{" "}
-            <span className="bg-gradient-to-r from-[#4FC3DC] to-[#1E529D] bg-clip-text text-transparent">
-              Service Teams Nationwide
-            </span>
+    <section id="testimonials" className="relative py-24 bg-gradient-to-tr from-[#A1E3FF]/5 via-white to-[#0E7CFF]/8 border-t border-slate-200 overflow-hidden">
+      {/* Background Gradient Effects */}
+      <div className="absolute inset-0">
+        <div className="absolute top-1/3 right-1/3 w-96 h-96 bg-gradient-radial from-[#0E7CFF]/10 to-transparent rounded-full blur-3xl opacity-60"></div>
+        <div className="absolute bottom-1/4 left-1/3 w-80 h-80 bg-gradient-radial from-[#A1E3FF]/20 to-transparent rounded-full blur-2xl opacity-70"></div>
+      </div>
+
+      <div className="relative z-10 container mx-auto px-6">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold text-slate-900 mb-4">
+            Trusted by Service Companies Nationwide
           </h2>
-          <p className="text-xl text-gray-600">
-            See how companies are hiring faster, smarter, and without the
-            hassle—powered by ServiceAgent.
+          <p className="text-xl text-slate-600 max-w-2xl mx-auto">
+            See how ServiceAgent is helping companies hire faster and smarter.
           </p>
         </div>
 
-        {/* Testimonials Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {testimonials.map((testimonial, index) => (
-            <div
-              key={index}
-              className="h-full flex flex-col justify-between bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
-            >
-              {/* Quote Section */}
-              <div className="p-8 flex flex-col h-full">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center space-x-1">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className="h-5 w-5 text-yellow-400 fill-current"
-                      />
-                    ))}
-                  </div>
-                  <Quote className="h-8 w-8 text-[#3DA6C7]/20" />
-                </div>
-                <p className="text-gray-600 mb-4 ">"{testimonial.quote}"</p>
-                <div className="mt-auto flex items-center pt-4">
-                  <div className="h-12 w-12 rounded-full bg-gradient-to-r from-[#7DD8F0] to-[#1E529D] flex items-center justify-center text-white font-bold text-lg mr-4">
-                    {testimonial.author.charAt(0)}
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900">
-                      {testimonial.author}
-                    </h4>
-                    <p className="text-sm text-gray-600">
-                      {testimonial.role}, {testimonial.company}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Metrics Section */}
-              <div className="bg-gradient-to-r from-blue-50 to-teal-50/30 px-8 py-6 min-h-[120px] flex items-center">
-                <div className="grid grid-cols-3 gap-4 w-full">
-                  {testimonial.metrics.map((metric, idx) => (
-                    <div key={idx} className="text-center">
-                      <div className="font-bold text-[#2F6DA8]">
-                        {metric.value}
+        <div className="max-w-5xl mx-auto">
+          <Carousel className="w-full" opts={{ align: "start", loop: true }}>
+            <CarouselContent>
+              {testimonials.map((testimonial, index) => (
+                <CarouselItem key={index} className="md:basis-1/1 lg:basis-1/1">
+                  <Card className="border-0 shadow-xl hover:shadow-2xl transition-all duration-300 bg-white/80 backdrop-blur-sm">
+                    <CardContent className="p-12 text-center">
+                      <div className="flex justify-center items-center mb-6">
+                        {[...Array(testimonial.rating)].map((_, i) => (
+                          <Star key={i} className="h-6 w-6 text-yellow-400 fill-current animate-pulse" style={{ animationDelay: `${i * 0.1}s` }} />
+                        ))}
                       </div>
-                      <div className="text-sm text-gray-600">
-                        {metric.label}
+                      
+                      <blockquote className="text-xl text-slate-700 mb-8 leading-relaxed italic">
+                        "{testimonial.content}"
+                      </blockquote>
+                      
+                      <div className="flex items-center justify-center">
+                        <img
+                          src={testimonial.avatar}
+                          alt={testimonial.name}
+                          className="w-16 h-16 rounded-full mr-4 object-cover border-2 border-slate-200"
+                        />
+                        <div className="text-left">
+                          <div className="font-semibold text-slate-900 text-lg">
+                            {testimonial.name}
+                          </div>
+                          <div className="text-slate-600">
+                            {testimonial.role}, {testimonial.company}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Trust Indicators */}
-        <div className="mt-16 text-center">
-          <p className="text-sm text-gray-500 mb-4">
-            Trusted by service businesses across North America
-          </p>
+                    </CardContent>
+                  </Card>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="hidden md:flex -left-12" />
+            <CarouselNext className="hidden md:flex -right-12" />
+          </Carousel>
         </div>
       </div>
     </section>
   );
-}
+};
+
+export default Testimonials;

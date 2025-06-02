@@ -107,69 +107,45 @@ export function Footer() {
   };
 
   return (
-    <footer className="bg-white border-t border-gray-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Top Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
-          {/* Brand Section */}
-          <div className="lg:col-span-2">
-            <Link
-              to="/"
-              className="inline-flex items-center space-x-2 mb-4"
-              onClick={() => handleLinkClick()}
-            >
-              <img
-                src="/Banner_SA_new.svg"
-                alt="ServiceAgent Logo"
-                className="h-10 w-auto"
-              />
-              {/* <span className="text-xl font-semibold text-gray-900">
-                ServiceAgent
-              </span> */}
-            </Link>
-            <p className="text-gray-600 mb-6 max-w-sm">
-              AI-powered hiring automation for field service companies. Save
-              time, hire faster, and scale your team—without the headaches.
+    <footer className="bg-slate-900 text-white py-16">
+      <div className="container mx-auto px-6">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-8">
+          <div className="md:w-1/2">
+            <div className="text-2xl font-bold mb-4">ServiceAgent</div>
+            <p className="text-slate-400 mb-6 max-w-md">
+              The AI recruiter – source, interview, and qualify candidates at scale.
             </p>
-            {/* Social Links */}
             <div className="flex space-x-4">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-gray-600 transition-colors"
-                  aria-label={social.label}
-                >
-                  <social.icon className="h-5 w-5" />
-                </a>
-              ))}
+              <a href="https://x.com/porter2301" className="text-slate-400 hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">
+                <Twitter className="h-5 w-5" />
+              </a>
+              <a href="https://www.linkedin.com/company/cleanagent-ai/?viewAsMember=true" className="text-slate-400 hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">
+                <Linkedin className="h-5 w-5" />
+              </a>
             </div>
           </div>
-
-          {/* Links Sections */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-8 lg:col-span-3">
-            {Object.entries(footerLinks).map(([category, links]) => (
-              <div key={category}>
-                <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">
-                  {category}
-                </h3>
-                <ul className="space-y-3">
-                  {links.map((link) => (
-                    <li key={link.label}>{renderLink(link)}</li>
-                  ))}
+          <div className="md:w-1/2 flex flex-col md:flex-row md:justify-end md:space-x-16 space-y-8 md:space-y-0">
+            <div>
+              <h3 className="font-semibold mb-4">Product</h3>
+              <ul className="space-y-2 text-slate-400">
+                <li><a href="#features" className="hover:text-white transition-colors">Features</a></li>
+                <li><a href="#pricing" className="hover:text-white transition-colors">Pricing</a></li>
+                <li><a href="#testimonials" className="hover:text-white transition-colors">Reviews</a></li>
+                <li><a href="https://calendly.com/serviceagent/30min" className="hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">Book a Demo</a></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-semibold mb-4">Legal</h3>
+              <ul className="space-y-2 text-slate-400">
+                <li><Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+                <li><Link to="/terms-of-service" className="hover:text-white transition-colors">Terms of Service</Link></li>
+                <li><Link to="/cookie-policy" className="hover:text-white transition-colors">Cookie Policy</Link></li>
                 </ul>
               </div>
-            ))}
           </div>
         </div>
-        {/* Copyright Row */}
-        <div
-          id="footer-copyright"
-          className="border-t border-gray-200 pt-6 text-center text-sm text-gray-500"
-        >
-          © 2025 ServiceAgent. All rights reserved.
+        <div className="border-t border-slate-800 mt-12 pt-8 text-center text-slate-400">
+          <p>&copy; 2025 ServiceAgent. All rights reserved. | fsagent.com</p>
         </div>
       </div>
     </footer>

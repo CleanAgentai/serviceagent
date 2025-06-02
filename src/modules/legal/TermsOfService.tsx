@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
+import { Navigation } from "@/modules/landing/components/Navigation";
 
 export function TermsOfService() {
   // Set meta title and description
@@ -10,10 +11,12 @@ export function TermsOfService() {
     if (metaDescription) {
       metaDescription.setAttribute('content', 'ServiceAgent AI Terms of Service - Read about our terms and conditions for using our services.');
     }
+    window.scrollTo(0, 0);
   }, []);
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <Navigation />
       {/* Content */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <article className="prose prose-lg max-w-none bg-white rounded-xl shadow-sm p-8 sm:p-12">
@@ -24,7 +27,7 @@ export function TermsOfService() {
           </div>
 
           <p className="lead">
-            Welcome to ServiceAgent AI, a service provided by ServiceAgent, LLC ("Company," "we," "us," or "our"). By accessing or using our website (https://www.serviceagent.ai) and services (collectively, the "Services"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree, please do not use our Services.
+            Welcome to ServiceAgent, a service provided by CleanAgent, LLC ("Company," "we," "us," or "our"). By accessing or using our website (https://www.fsagent.com) and services (collectively, the "Services"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree, please do not use our Services.
           </p>
 
           <h2>1. Acceptance of Terms</h2>
@@ -105,10 +108,10 @@ export function TermsOfService() {
           <div className="bg-gray-50 p-6 rounded-lg mt-8">
             <p className="font-medium mb-4">If you have any questions about these Terms, please contact us at:</p>
             <address className="not-italic">
-              <p className="font-bold">ServiceAgent, LLC</p>
+              <p className="font-bold">CleanAgent, LLC</p>
               <p>209 Turner Street</p>
               <p>Clearwater, Florida 33756</p>
-              <p>Email: <a href="mailto:support@serviceagent.ai">support@serviceagent.ai</a></p>
+              <p>Email: <a href="mailto:admin@fsagent.com">admin@fsagent.com</a></p>
               <p>Phone: <a href="tel:+18137505308">813-750-5308</a></p>
             </address>
           </div>
