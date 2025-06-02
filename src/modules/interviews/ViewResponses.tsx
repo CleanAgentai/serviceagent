@@ -24,6 +24,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import ProgressBar from "@/components/stripe/ProgressBar";
 
 interface InterviewAttempt {
   id: string;
@@ -41,6 +42,9 @@ export function ViewResponses() {
   const [attempts, setAttempts] = useState<InterviewAttempt[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
+  const [planLimit, setPlanLimit] = useState<number | null>(null);
+  const launchLimit = 20; //move to config
+  const scaleLimit = 100; //move to config
   const [sortBy, setSortBy] = useState<"date" | "name">("date");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [selectedAttempt, setSelectedAttempt] =
@@ -65,6 +69,33 @@ export function ViewResponses() {
     attemptId: "",
     candidateName: "",
   });
+
+  const sampleCards = [
+    {
+      candidateName: "Alice Smith",
+      interviewTitle: "Frontend Developer",
+      createdAt: "05/01/2025",
+      qualified: true,
+      generalScore: 8,
+      status: "Pending",
+    },
+    {
+      candidateName: "Bob Johnson",
+      interviewTitle: "Backend Engineer",
+      createdAt: "05/02/2025",
+      qualified: false,
+      generalScore: 6,
+      status: "Rejected",
+    },
+    {
+      candidateName: "Carol Davis",
+      interviewTitle: "Data Scientist",
+      createdAt: "05/03/2025",
+      qualified: true,
+      generalScore: 9,
+      status: "Hired",
+    },
+  ];
 
   useEffect(() => {
     const fetchAttempts = async () => {
@@ -135,6 +166,16 @@ export function ViewResponses() {
       }
 
       try {
+        const { data: plan, error: planError } = await supabase
+          .from("profiles")
+          .select("subscription")
+          .eq("id", user.id)
+          .single();
+        
+        console.log('Plan data: ', plan);
+        setPlanLimit(plan.subscription == 'Launch' ? launchLimit : 
+          (plan.subscription == 'Scale' ? scaleLimit : 1)); //default limit set to 1 to avoid /0 error
+
         const { data, error } = await supabase
           .from("interview_attempts")
           .select(
@@ -151,7 +192,9 @@ export function ViewResponses() {
           `
           )
           .eq("department_key", companyKey)
-          .order("created_at", { ascending: false });
+          .order("created_at", { ascending: false })
+          .limit(plan.subscription == 'Launch' ? launchLimit : 
+            (plan.subscription == 'Scale' ? scaleLimit : 1));
 
         console.log("[ViewResponses] Attempts Fetch Result:", { data, error });
 
@@ -188,10 +231,11 @@ export function ViewResponses() {
           );
           setAttempts([]);
         }
-      } catch (fetchCatchError) {
+      } catch (error) {
+        if (error)
         console.error(
-          "[ViewResponses] Error in fetch attempts block:",
-          fetchCatchError
+          "[ViewResponses] Error in fetch plan/attempts block:",
+          error
         );
         setError("An unexpected error occurred while fetching attempts.");
         setAttempts([]);
@@ -318,8 +362,14 @@ export function ViewResponses() {
 
   return (
     <div className="container mx-auto px-4 py-6">
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex items-center mb-6">
         <h1 className="text-3xl font-bold">Responses</h1>
+        <div className="ml-auto flex items-center space-x-2">
+          <p className="text-sm font-medium text-gray-700 whitespace-nowrap">
+            Plan Usage:
+          </p>
+          <ProgressBar used={attempts.length} limit={planLimit} />
+        </div>
       </div>
 
       <Card className="p-4 mb-6">
@@ -335,7 +385,7 @@ export function ViewResponses() {
         </div>
       </Card>
 
-      <div className="space-y-4">
+      <div className="space-y-4 relative">
         <div className="grid grid-cols-7 gap-2 px-4 py-2 bg-gray-100 rounded-lg text-xs font-medium text-gray-500 uppercase tracking-wider">
           <button
             onClick={() => handleSort("name")}
@@ -440,6 +490,79 @@ export function ViewResponses() {
             </Card>
           );
         })}
+
+        {planLimit !== null && attempts.length === planLimit && (
+          <div className="mt-10 w-full relative">
+            <div className="absolute inset-0 z-0">
+              <div className="blur-sm">
+                {sampleCards.map((card, index) => (
+                  <Card key={index} className="p-4">
+                    <div className="grid grid-cols-7 gap-2 items-center">
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500">
+                          {card.candidateName.charAt(0)}
+                        </div>
+                        <span>{card.candidateName}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <FileText className="w-4 h-4 text-gray-400" />
+                        {card.interviewTitle}
+                      </div>
+                      <div className="flex items-center gap-2 pl-8">
+                        <Calendar className="w-4 h-4 text-gray-400" />
+                        {card.createdAt}
+                      </div>
+                      <div className="flex items-center justify-center">
+                        <Button
+                          variant="default"
+                          size="sm"
+                          className={cn(
+                            "pointer-events-none h-7 px-2",
+                            card.qualified ? "bg-green-600 text-white" : "bg-red-600 text-white"
+                          )}
+                        >
+                          {card.qualified ? "Qualified" : "Not Qualified"}
+                        </Button>
+                      </div>
+                      <div className="text-center font-bold">{card.generalScore} / 10</div>
+                      <div>
+                        <Select value={card.status}>
+                          <SelectTrigger className="w-28">
+                            <SelectValue placeholder="Select status" />
+                          </SelectTrigger>
+                        </Select>
+                      </div>
+                      <div className="flex items-center justify-center space-x-1">
+                        <Button variant="link" className="text-blue-600">
+                          View AI Analysis
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  </Card>
+                  ))
+                }
+              </div>
+            </div>
+            <div className="relative z-10 w-full px-6 py-5 text-center rounded-lg bg-white/70 dark:bg-zinc-900/70 backdrop-blur-none">
+              <p className="text-sm text-gray-800 dark:text-gray-200 mb-3">
+                You've reached your plan's interview response limit.
+              </p>
+              <Button
+                onClick={() => navigate("/subscription")}
+                className="bg-blue-600 hover:bg-blue-700 text-white"
+              >
+                Upgrade Plan to View More
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
 
       {filtered.length === 0 && (

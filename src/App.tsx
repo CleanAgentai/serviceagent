@@ -39,7 +39,11 @@ import { Blog, BlogPost } from "./modules/blog";
 import { ForgotPassword } from "./modules/auth/ForgotPassword";
 import { ResetPassword } from "./modules/auth/ResetPassword";
 // import { ResetPasswordConfirm } from "./modules/auth/ResetPasswordConfirm";
+import { Subscriptions } from "./modules/payment/Subscriptions";
 import { ResetPasswordHandoff } from "./modules/auth/ResetPasswordHandoff";
+import CheckoutSuccess from "./modules/payment/CheckoutSuccess";
+import CancelSubscription from "./modules/payment/ManageSubscriptions";
+import ManageSubscriptions from "./modules/payment/ManageSubscriptions";
 
 // Sales Routes
 const SalesRoutes = React.lazy(() => import("@/pages/sales/setup"));
@@ -108,7 +112,9 @@ const App = () => {
                     element={<ResetPasswordHandoff />}
                   />
                   <Route path="/oauth-callback" element={<OAuthCallback />} />
+                  <Route path="/checkout/success" element={<CheckoutSuccess />} />
                   <Route path="/post-signup" element={<PostSignupSetup />} />
+                  <Route path ="/plan-onboarding" element={<Subscriptions />} />
                   <Route
                     path="/complete-profile"
                     element={<CompleteProfile />}
@@ -143,6 +149,19 @@ const App = () => {
                   <Route index element={<Dashboard />} />
                   <Route path="ai-analysis" element={<AIAnalysis />} />
                   <Route path="settings" element={<Settings />} />
+                </Route>
+
+                {/* Protected Payment Routes */}
+                <Route
+                  path="/payment"
+                  element={
+                    <ProtectedRoute>
+                      <DashboardLayout />
+                    </ProtectedRoute>
+                  }
+                >
+                  <Route path="subscription" element={<Subscriptions />} />
+                  <Route path="manage-subscription" element={<ManageSubscriptions />} />
                 </Route>
 
                 {/* Interview Routes */}
