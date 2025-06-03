@@ -36,7 +36,7 @@ export function InterviewNavigation() {
             className="flex items-center gap-2"
           >
             <Users size={16} />
-            View Responses
+            View Candidates
           </Button>
         </div>
       </div>

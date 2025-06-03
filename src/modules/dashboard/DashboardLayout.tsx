@@ -51,7 +51,7 @@ export default function DashboardLayout() {
     {
       path: "/interviews/responses",
       icon: <Users size={20} />,
-      label: "Responses",
+      label: "Candidates",
     },
     {
       path: "/dashboard/settings",

@@ -193,7 +193,7 @@ export function ResponseDetails() {
       <div className="flex flex-col items-center justify-center min-h-screen">
         <h2 className="text-2xl font-semibold mb-4">Response Not Found</h2>
         <Button onClick={() => navigate("/interviews/responses")}>
-          Back to Responses
+          Back to Candidates
         </Button>
       </div>
     );

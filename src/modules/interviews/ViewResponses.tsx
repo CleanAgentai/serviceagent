@@ -366,7 +366,7 @@ export function ViewResponses() {
   return (
     <div className="container mx-auto px-4 py-6">
       <div className="flex items-center mb-6">
-        <h1 className="text-3xl font-bold">Responses</h1>
+        <h1 className="text-3xl font-bold">Candidates</h1>
         <div className="ml-auto flex items-center space-x-2">
           {planLimit != customLimit && (
             <div>

@@ -212,7 +212,7 @@ const Dashboard = () => {
         "bg-gradient-to-br from-green-50 to-green-100 hover:from-green-100 hover:to-green-200",
     },
     {
-      title: "View Responses",
+      title: "View Candidates",
       description: "Review candidate responses",
       icon: <Users className="h-5 w-5 text-violet-600" />,
       action: () => navigate("/interviews/responses"),
@@ -308,7 +308,7 @@ const Dashboard = () => {
                   <Users className="h-6 w-6 text-purple-500" />
                 </div>
                 <div>
-                  <h3 className="font-medium">View Responses</h3>
+                  <h3 className="font-medium">View Candidates</h3>
                   <p className="text-sm text-gray-500">
                     Review candidate responses
                   </p>

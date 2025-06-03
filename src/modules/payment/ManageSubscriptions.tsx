@@ -182,9 +182,9 @@ const ManageSubscriptions = () => {
         {message && (
           <p className="mt-4 text-sm text-center text-zinc-700 dark:text-zinc-300">
             {message} 
-            {subName == 'Custom' && (<p>Please <a href='mailto:cleanagentai@gmail.com' 
+            {subName == 'Custom' && (<p>Please <a href='mailto:porter@fsagent.com' 
             className="text-blue-600 underline">
-              contact Porter</a> to cancel</p>)}
+              contact us</a> to cancel</p>)}
           </p>
         )}
       </div>
