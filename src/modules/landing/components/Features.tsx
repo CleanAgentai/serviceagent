@@ -31,7 +31,7 @@ const Features = () => {
         <div className="absolute bottom-1/3 left-1/4 w-80 h-80 bg-gradient-radial from-[#A1E3FF]/30 to-transparent rounded-full blur-2xl opacity-50"></div>
       </div>
 
-      <div className="relative z-10 container mx-auto px-6">
+      <div className="relative z-0 container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-slate-900 mb-4">
             How ServiceAgent Works
