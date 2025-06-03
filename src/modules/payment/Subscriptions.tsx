@@ -67,8 +67,8 @@ export const Subscriptions: React.FC = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-6 py-0 md:py-12 flex flex-col">
-      <div className="flex justify-center mb-4">
+    <div className="max-w-5xl mx-auto px-6 py-0 md:py-2 flex flex-col">
+      <div className="flex justify-center mb-0">
         <img src="/singularlogo.png" alt="ServiceAgent Icon" className="h-16 w-16 max-w-none object-contain md:h-16 md:w-auto md:max-w-none" />
       </div>
       <h2 className="text-2xl font-bold text-center mb-4">Our Plans</h2>
@@ -114,15 +114,33 @@ export const Subscriptions: React.FC = () => {
                 </CardContent>
               </Card>
             ))}
-            {/* Custom Plan Card (old style) */}
-            <div className="bg-white p-6 rounded-lg shadow flex flex-col justify-between">
-              <div>
-                <h3 className="text-xl font-bold mb-2">{customPlan.name}</h3>
-                <p className="text-gray-600 mb-4 font-bold"><span>Monthly Price: </span>{customPlan.price.monthly}</p>
-                <p className="text-gray-600 mb-4 font-bold"><span>Yearly Price: </span>{customPlan.price.yearly}</p>
-                <p className="text-gray-600 mb-4">{customPlan.description}</p>
-              </div>
-            </div>
+            {/* Custom Plan Card (Enterprise style) */}
+            <Card className="relative border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 bg-white/80 backdrop-blur-sm">
+              <CardContent className="p-8 flex flex-col h-full">
+                <div className="text-center mb-8">
+                  <h3 className="text-2xl font-bold text-slate-900 mb-4">Enterprise</h3>
+                  <div className="mb-4">
+                    <span className="text-5xl font-extrabold text-slate-900">Custom</span>
+                  </div>
+                  <p className="text-slate-600 leading-relaxed">Tailored solutions for large organizations</p>
+                </div>
+                <ul className="mb-8 space-y-4">
+                  <li className="flex items-start text-slate-600"><CheckCircle className="h-5 w-5 mr-3 text-blue-500 flex-shrink-0 mt-0.5" /><span>Unlimited interviews</span></li>
+                  <li className="flex items-start text-slate-600"><CheckCircle className="h-5 w-5 mr-3 text-blue-500 flex-shrink-0 mt-0.5" /><span>Unlimited job posts</span></li>
+                  <li className="flex items-start text-slate-600"><CheckCircle className="h-5 w-5 mr-3 text-blue-500 flex-shrink-0 mt-0.5" /><span>Dedicated account manager</span></li>
+                  <li className="flex items-start text-slate-600"><CheckCircle className="h-5 w-5 mr-3 text-blue-500 flex-shrink-0 mt-0.5" /><span>White-label solution</span></li>
+                  <li className="flex items-start text-slate-600"><CheckCircle className="h-5 w-5 mr-3 text-blue-500 flex-shrink-0 mt-0.5" /><span>Custom integrations</span></li>
+                  <li className="flex items-start text-slate-600"><CheckCircle className="h-5 w-5 mr-3 text-blue-500 flex-shrink-0 mt-0.5" /><span>24/7 phone support</span></li>
+                </ul>
+                <Button
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3"
+                  onClick={() => window.open('https://calendly.com/serviceagent/30min', '_blank')}
+                >
+                  Book a Call
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </CardContent>
+            </Card>
           </div>
         </>
       )}
