@@ -93,6 +93,11 @@ const App = () => {
                 {/* Landing Page - NO AppLayout */}
                 <Route path="/" element={<LandingPage />} />
 
+                {/* Post Signup - NO AppLayout (no nav, no footer) */}
+                <Route path="/post-signup" element={<PostSignupSetup />} />
+                {/* Plan Onboarding - NO AppLayout (no nav, no footer) */}
+                <Route path="/plan-onboarding" element={<Subscriptions />} />
+
                 {/* Public Routes with AppLayout */}
                 <Route
                   element={
@@ -113,8 +118,6 @@ const App = () => {
                   />
                   <Route path="/oauth-callback" element={<OAuthCallback />} />
                   <Route path="/checkout/success" element={<CheckoutSuccess />} />
-                  <Route path="/post-signup" element={<PostSignupSetup />} />
-                  <Route path ="/plan-onboarding" element={<Subscriptions />} />
                   <Route
                     path="/complete-profile"
                     element={<CompleteProfile />}

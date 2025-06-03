@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, ArrowRight } from "lucide-react";
 import { useAuth } from "@/app/providers/AuthContext";
 import { supabase } from "@/app/lib/supabase";
+import { Navigation } from "@/modules/landing/components/Navigation";
 
 export function Login() {
   const navigate = useNavigate();
@@ -72,35 +73,13 @@ export function Login() {
 
   return (
     <div className="relative min-h-screen w-full flex flex-col">
+      <Navigation />
       <div className="fixed inset-0 w-full h-full bg-gradient-to-b from-gray-50 to-white -z-10" />
-      {/* New Header */}
-      <nav className="w-full bg-gradient-to-r from-white/90 via-white/95 to-white/90 backdrop-blur-xl border-b border-slate-200/30 shadow-lg">
-        <div className="relative container mx-auto px-6">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center">
-              <img 
-                src="/Banner_SA_new.svg" 
-                alt="ServiceAgent Logo" 
-                className="h-8 w-auto mr-2"
-              />
-              <span className="text-2xl font-bold text-slate-900">ServiceAgent</span>
-            </div>
-            <div className="hidden md:flex items-center space-x-8">
-              <Link to="/#features" className="text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 relative group">Features</Link>
-              <Link to="/#demo" className="text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 relative group">How It Works</Link>
-              <Link to="/#pricing" className="text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 relative group">Pricing</Link>
-              <Link to="/#testimonials" className="text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 relative group">Reviews</Link>
-              <Link to="/signin" className="text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 relative group">Sign In</Link>
-              <button className="bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-2 border border-white/20" onClick={() => window.open('https://calendly.com/serviceagent/30min', '_blank')}>Book Demo</button>
-            </div>
-          </div>
-        </div>
-      </nav>
-      <main className="flex-grow">
+      {/* Logo above header */}
+      <main className="flex-grow pt-0 md:pt-16">
         <div className="max-w-2xl mx-auto px-4 py-12">
-          {/* Logo above header */}
           <div className="flex justify-center mb-4">
-            <img src="/singularlogo.png" alt="ServiceAgent Icon" className="h-16 w-auto" />
+            <img src="/singularlogo.png" alt="ServiceAgent Icon" className="h-16 w-16 max-w-none object-contain md:h-16 md:w-auto md:max-w-none" />
           </div>
           {/* Header */}
           <div className="text-center mb-8">
@@ -136,10 +115,10 @@ export function Login() {
                     id="email"
                     name="email"
                     type="email"
-                    autoComplete="email"
-                    required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    autoComplete="email"
+                    required
                     className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="you@example.com"
                   />
@@ -244,14 +223,14 @@ export function Login() {
             </div>
           </div>
 
-          {/* Sign up link */}
+          {/* Sign in link */}
           <p className="mt-8 text-center text-sm text-gray-600">
             Don't have an account?{" "}
             <Link
               to="/signup"
               className="font-medium text-blue-600 hover:text-blue-700"
             >
-              Sign up for free
+              Create an account
             </Link>
           </p>
         </div>

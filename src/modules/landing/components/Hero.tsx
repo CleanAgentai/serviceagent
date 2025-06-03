@@ -35,70 +35,7 @@ const Hero = () => {
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-[#0B1C2D]/10 via-transparent to-[#0E7CFF]/10 animate-gradient-shift"></div>
       </div>
 
-      <div className="relative z-10 container mx-auto px-6 pt-32 pb-16">
-        {/* Navigation/Header */}
-        <nav className={`fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-white/90 via-white/95 to-white/90 backdrop-blur-xl border-b border-slate-200/30 shadow-lg transition-transform duration-300 ${isNavVisible ? 'translate-y-0' : '-translate-y-full'}`}>
-          <div className="absolute inset-0 bg-gradient-to-r from-[#A1E3FF]/5 via-transparent to-[#0E7CFF]/5"></div>
-          <div className="relative container mx-auto px-6">
-            <div className="flex items-center justify-between h-16">
-              <div className="flex items-center">
-                <div className="flex items-center ml-6">
-                  <img 
-                    src="/Banner_SA_new.svg" 
-                    alt="ServiceAgent Logo" 
-                    className="h-12 w-auto"
-                  />
-                </div>
-              </div>
-              {/* Desktop Navigation */}
-              <div className="hidden md:flex items-center space-x-8">
-                <a href="#features" className="text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 relative group">
-                  Features
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#0E7CFF] to-[#A1E3FF] group-hover:w-full transition-all duration-300"></span>
-                </a>
-                <button onClick={() => scrollToSection('demo')} className="text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 relative group">
-                  How It Works
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#0E7CFF] to-[#A1E3FF] group-hover:w-full transition-all duration-300"></span>
-                </button>
-                <a href="#pricing" className="text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 relative group">
-                  Pricing
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#0E7CFF] to-[#A1E3FF] group-hover:w-full transition-all duration-300"></span>
-                </a>
-                <a href="#testimonials" className="text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 relative group">
-                  Reviews
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#0E7CFF] to-[#A1E3FF] group-hover:w-full transition-all duration-300"></span>
-                </a>
-                <Link to="/signin" className="text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 relative group">
-                  Sign In
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#0E7CFF] to-[#A1E3FF] group-hover:w-full transition-all duration-300"></span>
-                </Link>
-                <Button className="bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-2 border border-white/20" onClick={() => window.open('https://calendly.com/serviceagent/30min', '_blank')}>
-                  Book Demo
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-                <a 
-                  href="https://x.com/porter2301" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="text-slate-600 hover:text-slate-900 transition-colors"
-                  aria-label="Follow us on X (formerly Twitter)"
-                >
-                  {/* X icon here */}
-                </a>
-              </div>
-              {/* Mobile Navigation - Only Sign In and Book Demo */}
-              <div className="md:hidden flex items-center space-x-4">
-                <Link to="/signin" className="text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 font-medium">
-                  Sign In
-                </Link>
-                <Button size="sm" className="bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-4 py-2 border border-white/20" onClick={() => window.open('https://calendly.com/serviceagent/30min', '_blank')}>
-                  Book Demo
-                </Button>
-              </div>
-            </div>
-          </div>
-        </nav>
-
+      <div className="relative z-0 container mx-auto px-6 pt-32 pb-16">
         {/* Enhanced Hero Content */}
         <div className="max-w-4xl mx-auto text-center mt-16">
           <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-12 shadow-2xl border border-white/20">

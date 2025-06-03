@@ -95,17 +95,16 @@ export function PostSignupSetup() {
   }
 
   return (
-    <div className="container max-w-4xl mx-auto py-8 px-4 pt-24">
+    <div className="max-w-5xl mx-auto px-6 py-0 md:py-12">
       <div className="flex justify-center mb-4">
-        <img src="/singularlogo.png" alt="ServiceAgent Icon" className="h-16 w-auto" />
+        <img src="/singularlogo.png" alt="ServiceAgent Icon" className="h-16 w-16 max-w-none object-contain md:h-16 md:w-auto md:max-w-none" />
       </div>
-      <div className="text-center mb-8">
+      <div className="text-center mb-4">
         <h1 className="text-3xl font-bold mb-2">Welcome to ServiceAgent</h1>
         <p className="text-gray-600">
           Let's set up your company profile to get started
         </p>
       </div>
-
       <CompanyProfileForm mode="create" onComplete={handleComplete} />
     </div>
   );
