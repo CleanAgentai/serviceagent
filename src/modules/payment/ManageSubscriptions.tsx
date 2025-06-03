@@ -84,7 +84,11 @@ const ManageSubscriptions = () => {
         setHasActiveSub(false);
         setSubName("None");
       } else {
-        setMessage("Failed to cancel subscription.");
+        if (subName == 'Custom') {
+          setMessage("Contact us to cancel your custom plan.")
+        } else {
+          setMessage("Failed to cancel subscription.");
+        }
       }
     } catch (error) {
       console.error(error);
