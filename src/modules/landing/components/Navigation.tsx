@@ -41,12 +41,12 @@ export function Navigation({ isNavVisible = true }: { isNavVisible?: boolean }) 
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center ml-6">
             <Link to="/" aria-label="ServiceAgent Home" className="flex items-center">
-              <img
-                src="/Banner_SA_new.svg"
-                alt="ServiceAgent Logo"
+            <img
+              src="/Banner_SA_new.svg"
+              alt="ServiceAgent Logo"
                 className="h-12 w-auto"
-              />
-            </Link>
+            />
+          </Link>
           </div>
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
@@ -67,12 +67,12 @@ export function Navigation({ isNavVisible = true }: { isNavVisible?: boolean }) 
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#0E7CFF] to-[#A1E3FF] group-hover:w-full transition-all duration-300"></span>
             </button>
             {!isSignIn && (
-              <Link 
+            <Link
                 to="/signin" 
                 className="text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 relative group"
-              >
-                Sign In
-              </Link>
+            >
+              Sign In
+            </Link>
             )}
             {/* Book Demo Button */}
             <Button className="bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-2 border border-white/20 group" onClick={() => window.open('https://calendly.com/serviceagent/30min', '_blank')}>
