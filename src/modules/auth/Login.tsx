@@ -16,12 +16,12 @@ export function Login() {
 
   // Set meta title and description
   React.useEffect(() => {
-    document.title = "Sign In - ServiceAgent AI";
+    document.title = "Sign In - ServiceAgent";
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute(
         "content",
-        "Sign in to your ServiceAgent AI account to access your dashboard and manage your business."
+        "Sign in to your ServiceAgent account to access your dashboard and manage your business."
       );
     }
     window.scrollTo(0, 0);

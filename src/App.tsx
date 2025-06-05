@@ -61,10 +61,7 @@ const DashboardOverview = React.lazy(
 
 const App = () => {
   useEffect(() => {
-    // Set document title based on domain
-    const domain = import.meta.env.VITE_APP_DOMAIN || "dashboard.fsagent.com";
-    document.title = `ServiceAgent - ${domain}`;
-
+    document.title = "ServiceAgent - Automate hiring for hourly roles";
     // Initialize database
     const initDatabase = async () => {
       try {
@@ -73,7 +70,6 @@ const App = () => {
         console.error("Failed to initialize database:", error);
       }
     };
-
     initDatabase();
   }, []);
 

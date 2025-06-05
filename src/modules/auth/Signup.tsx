@@ -22,12 +22,12 @@ export function Signup() {
   const [isLoading, setIsLoading] = useState(false);
   // Set meta title and description
   React.useEffect(() => {
-    document.title = "Sign Up - ServiceAgent AI";
+    document.title = "Sign Up - ServiceAgent";
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute(
         "content",
-        "Create your ServiceAgent AI account to start automating and growing your business."
+        "Create your ServiceAgent account to start automating and growing your business."
       );
     }
     window.scrollTo(0, 0);

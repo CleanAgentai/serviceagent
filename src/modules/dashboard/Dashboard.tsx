@@ -142,6 +142,7 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
+    document.title = "dashboard.fsagent.com";
     const fetchAll = async () => {
       try {
         await Promise.all([fetchRecentInterviews(), fetchCandidatesApplied()]);
@@ -151,7 +152,6 @@ const Dashboard = () => {
         setLoading(false);
       }
     };
-
     fetchAll();
   }, []);
 
