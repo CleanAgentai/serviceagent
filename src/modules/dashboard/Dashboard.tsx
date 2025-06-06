@@ -112,7 +112,7 @@ const Dashboard = () => {
       }
     }
 
-    const appliedCount = uniqueCandidates.size;
+    const appC = uniqueCandidates.size;
     const qualifiedCount = [...uniqueCandidates.values()].filter(
       (c) => c.qualified === true
     ).length;
@@ -128,17 +128,16 @@ const Dashboard = () => {
     if (error || !data || data.total_hired_cases === 0) {
       console.error("Error fetching average time to hire:", error);
       setAverageTimeToHire(0);
-      return;
+    } else {
+      const avg =
+        Math.round((data.total_days_to_hire / data.total_hired_cases) * 10) / 10;
+      setAverageTimeToHire(avg);
     }
 
-    const avg =
-      Math.round((data.total_days_to_hire / data.total_hired_cases) * 10) / 10;
-
     // 3. Set to state
-    setAppliedCount(appliedCount);
+    setAppliedCount(appC);
     setQualifiedCount(qualifiedCount);
     setHiredCount(hiredCount);
-    setAverageTimeToHire(avg);
   };
 
   useEffect(() => {
