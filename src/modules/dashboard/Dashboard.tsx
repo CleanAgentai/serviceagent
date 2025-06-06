@@ -156,15 +156,6 @@ const Dashboard = () => {
 
   const metrics = [
     {
-      title: "Candidates Hired",
-      value: hiredCount.toString(),
-      change: "",
-      icon: UserCheck,
-      description: "Successfully hired candidates",
-      color: "text-green-500",
-      bgColor: "bg-green-50",
-    },
-    {
       title: "Candidates Applied",
       value: appliedCount.toString(),
       change: "",
@@ -181,6 +172,15 @@ const Dashboard = () => {
       description: "Candidates with a 7+ rating",
       color: "text-purple-500",
       bgColor: "bg-purple-50",
+    },
+    {
+      title: "Candidates Hired",
+      value: hiredCount.toString(),
+      change: "",
+      icon: UserCheck,
+      description: "Successfully hired candidates",
+      color: "text-green-500",
+      bgColor: "bg-green-50",
     },
     {
       title: "Average Time to Hire",
