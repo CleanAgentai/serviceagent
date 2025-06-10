@@ -61,6 +61,7 @@ interface InterviewFormData {
   showHints: boolean;
   showAvailability: boolean;
   deadline?: Date;
+  hourly_wage?: string;
 }
 
 const languages = [
@@ -98,6 +99,7 @@ export default function EditInterview() {
     showHints: true,
     showAvailability: true,
     deadline: undefined,
+    hourly_wage: "",
   });
   const [originalFormData, setOriginalFormData] = useState(formData);
 
@@ -198,7 +200,11 @@ export default function EditInterview() {
       setLoading(true);
       try {
         const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
-        const response = await fetch(`${apiBaseUrl}/api/interviews/${interviewId}`);
+        const response = await fetch(`${apiBaseUrl}/api/interviews/${interviewId}`, {
+          headers: {
+            "ngrok-skip-browser-warning": "true",
+          }
+        });
         console.log('[EditInterview] Raw fetch response:', response);
         if (!response.ok) {
           toast.error("Failed to load interview data");
@@ -229,6 +235,7 @@ export default function EditInterview() {
           showHints: data.show_hints_and_tips ?? true,
           showAvailability: data.show_availability_calendar ?? true,
           deadline: data.deadline ? new Date(data.deadline) : undefined,
+          hourly_wage: data.hourly_wage || "",
         });
         setOriginalFormData({
           title: data.title || "",
@@ -249,6 +256,7 @@ export default function EditInterview() {
           showHints: data.show_hints_and_tips ?? true,
           showAvailability: data.show_availability_calendar ?? true,
           deadline: data.deadline ? new Date(data.deadline) : undefined,
+          hourly_wage: data.hourly_wage || "",
         });
       } catch (err) {
         toast.error("Error loading interview");
@@ -270,6 +278,7 @@ export default function EditInterview() {
       const response = await fetch(`${apiBaseUrl}/api/interviews/${interviewId}`, {
         method: "PUT",
         headers: {
+          "ngrok-skip-browser-warning": "true",
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
@@ -352,6 +361,16 @@ export default function EditInterview() {
                       ))}
                     </SelectContent>
                   </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="hourly_wage">Hourly Rate (Optional)</Label>
+                  <Input
+                    id="hourly_wage"
+                    type="text"
+                    value={formData.hourly_wage || ""}
+                    onChange={(e) => handleBasicDetailsChange("hourly_wage", e.target.value)}
+                    placeholder="e.g. $25 - $35"
+                  />
                 </div>
               </div>
               <div className="space-y-2">
