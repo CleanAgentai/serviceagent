@@ -83,6 +83,7 @@ export default function EditInterview() {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("basic-details");
   const [loading, setLoading] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
   const [showConfirmCancel, setShowConfirmCancel] = useState(false);
   const [formData, setFormData] = useState<InterviewFormData>({
     title: "",
@@ -269,11 +270,11 @@ export default function EditInterview() {
     // eslint-disable-next-line
   }, [interviewId]);
 
-  // Update handleApply to call the backend PUT endpoint
+  // Update handleApply to use isUpdating
   const handleApply = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      setLoading(true);
+      setIsUpdating(true);
       const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
       const response = await fetch(`${apiBaseUrl}/api/interviews/${interviewId}`, {
         method: "PUT",
@@ -293,7 +294,7 @@ export default function EditInterview() {
       });
       if (!response.ok) {
         toast.error("Failed to update interview");
-        setLoading(false);
+        setIsUpdating(false);
         return;
       }
       toast.success("Interview updated successfully!");
@@ -304,7 +305,7 @@ export default function EditInterview() {
     } catch (err) {
       toast.error("Error updating interview");
     } finally {
-      setLoading(false);
+      setIsUpdating(false);
     }
   };
 
@@ -316,6 +317,15 @@ export default function EditInterview() {
   // Render the form UI (mirroring CreateInterview)
   return (
     <div className="container max-w-4xl mx-auto py-8 px-4">
+      {isUpdating && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4"></div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">Saving Changes</h3>
+            <p className="text-gray-600">Please wait while we update your interview...</p>
+          </div>
+        </div>
+      )}
       <div className="mb-8">
         <h1 className="text-3xl font-bold">Edit Interview</h1>
         <p className="text-gray-600 mt-2">
