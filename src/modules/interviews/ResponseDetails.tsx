@@ -507,7 +507,7 @@ export function ResponseDetails() {
             }}
           >
             <ArrowRight className="w-4 h-4 inline-block mr-2 rotate-90" />
-            Download Transcript
+            View Transcript
           </button>
           <button
             className="px-4 py-2 font-medium text-gray-600 hover:text-gray-900"
