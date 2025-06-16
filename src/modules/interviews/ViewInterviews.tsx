@@ -277,7 +277,7 @@ export function ViewInterviews() {
                         )}
                       </Button>
                     )}
-                    {/* <Button
+                    <Button
                       variant="ghost"
                       size="icon"
                       onClick={(e) => {
@@ -287,7 +287,7 @@ export function ViewInterviews() {
                       aria-label="Edit interview"
                     >
                       <Pencil className="h-4 w-4" />
-                    </Button> */}
+                    </Button>
                     <Button
                       variant="ghost"
                       size="icon"

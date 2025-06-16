@@ -289,7 +289,7 @@ export default function CreateInterview() {
           interview_completed_email: null,
         },
         questions: transformedQuestions,
-        //hourly_rate: formData.hourlyRate,
+        salary: formData.hourlyRate,
         settings: {
           show_hints_and_tips: formData.showHints,
           show_availability_calendar: formData.showAvailability,
@@ -364,6 +364,7 @@ export default function CreateInterview() {
         interview_link,
         show_hints_and_tips,
         show_availability_calendar,
+        hourly_wage: formData.hourlyRate,
       });
 
       if (insertError) {

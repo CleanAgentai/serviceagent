@@ -30,7 +30,7 @@ import CreateInterview from "@/modules/interviews/CreateInterview";
 import { ViewInterviews } from "@/modules/interviews/ViewInterviews";
 import { ViewResponses } from "@/modules/interviews/ViewResponses";
 import { ResponseDetails } from "@/modules/interviews/ResponseDetails";
-
+import EditInterview from "@/modules/interviews/EditInterview";
 // Public Pages
 import LandingPage from "@/modules/landing/LandingPage";
 import { AboutUs } from "./modules/company/AboutUs";
@@ -172,6 +172,7 @@ const App = () => {
                 >
                   <Route index element={<ViewInterviews />} />
                   <Route path="create" element={<CreateInterview />} />
+                  <Route path="edit/:interviewId" element={<EditInterview />} />
                   <Route path="responses" element={<ViewResponses />} />
                   <Route
                     path="responses/:responseId"
