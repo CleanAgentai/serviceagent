@@ -42,6 +42,8 @@ export function ViewResponses() {
   const [attempts, setAttempts] = useState<InterviewAttempt[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
+  const [showPdf, setShowPdf] = useState(false);
+  const [selectedAttemptPdfUrl, setSelectedAttemptPdfUrl] = useState<string | null>(null);
   const [planLimit, setPlanLimit] = useState<number | null>(null);
   const launchLimit = 20; //move to config
   const scaleLimit = 100; //move to config
