@@ -59,6 +59,8 @@ const DashboardOverview = React.lazy(
   () => import("@/modules/dashboard/help/articles/DashboardOverview")
 );
 
+import Integrations from "@/pages/integrations";
+
 const App = () => {
   useEffect(() => {
     document.title = "ServiceAgent - Automate hiring for hourly roles";
@@ -146,6 +148,7 @@ const App = () => {
                   <Route index element={<Dashboard />} />
                   <Route path="ai-analysis" element={<AIAnalysis />} />
                   <Route path="settings" element={<Settings />} />
+                  <Route path="integrations" element={<Integrations />} />
                 </Route>
 
                 {/* Protected Payment Routes */}
