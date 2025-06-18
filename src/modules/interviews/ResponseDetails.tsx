@@ -3,7 +3,7 @@ import { supabase } from "@/app/lib/supabase";
 import { useParams, useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Video, X, Star, MessageCircle, ArrowRight } from "lucide-react";
+import { ArrowLeft, Video, X, Star, MessageCircle, ArrowRight, Eye } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import {
@@ -193,6 +193,44 @@ export function ResponseDetails() {
         )}
       />
     ));
+  };
+
+  const downloadPdf = async (type: 'transcript' | 'analysis') => {
+    if (plan != "Scale" && plan != "Custom") return;
+    
+    try {
+      const fileName = `${responseId}.pdf`;
+      const bucket = type === 'transcript' ? 'interview-transcripts' : 'interview-pdfs';
+      const { data, error } = await supabase.storage
+        .from(bucket)
+        .createSignedUrl(fileName, 60);
+
+      if (error || !data?.signedUrl) {
+        console.error(`Failed to fetch ${type} PDF:`, error);
+        return;
+      }
+
+      // Create custom filename
+      const candidateName = passedName || response?.candidateName || 'Candidate';
+      const position = passedTitle || response?.appliedPosition || 'Interview';
+      const sanitizedName = candidateName.replace(/[^a-zA-Z0-9]/g, '_');
+      const sanitizedPosition = position.replace(/[^a-zA-Z0-9]/g, '_');
+      const customFileName = `${sanitizedName}_${sanitizedPosition}_${type}_${new Date().toISOString().split('T')[0]}.pdf`;
+
+      // Fetch the PDF and trigger download
+      const pdfResponse = await fetch(data.signedUrl);
+      const blob = await pdfResponse.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = customFileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error(`Error downloading ${type} PDF:`, err);
+    }
   };
 
   if (loading) {
@@ -507,7 +545,7 @@ export function ResponseDetails() {
                 : "text-gray-600 hover:text-gray-900"
             )}
             disabled={plan != "Scale" && plan != "Custom"}
-            title={plan != "Scale" && plan != "Custom" ? "Upgrade your plan to access transcript" : ""}
+            title={plan != "Scale" && plan != "Custom" ? "Upgrade your plan to access transcript PDF" : ""}
             onClick={async () => {
               if (plan != "Scale" && plan != "Custom") return;
               try {
@@ -529,8 +567,8 @@ export function ResponseDetails() {
               }
             }}
           >
-            <ArrowRight className="w-4 h-4 inline-block mr-2 rotate-90" />
-            View Transcript
+            <Eye className="w-4 h-4 inline-block mr-2" />
+            View Transcript PDF
           </button>
 
           <button
@@ -541,7 +579,7 @@ export function ResponseDetails() {
                 : "text-gray-600 hover:text-gray-900"
             )}
             disabled={plan != "Scale" && plan != "Custom"}
-            title={plan != "Scale" && plan != "Custom" ? "Upgrade your plan to access analysis" : ""}
+            title={plan != "Scale" && plan != "Custom" ? "Upgrade your plan to access analysis PDF" : ""}
             onClick={async () => {
               if (plan != "Scale" && plan != "Custom") return;
               try {
@@ -563,8 +601,8 @@ export function ResponseDetails() {
               }
             }}
           >
-            <ArrowRight className="w-4 h-4 inline-block mr-2 rotate-90" />
-            View Analysis
+            <Eye className="w-4 h-4 inline-block mr-2" />
+            View Analysis PDF
           </button>
         </div>
       </div>
