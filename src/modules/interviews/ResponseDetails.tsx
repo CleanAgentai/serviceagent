@@ -3,7 +3,7 @@ import { supabase } from "@/app/lib/supabase";
 import { useParams, useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Video, X, Star, MessageCircle } from "lucide-react";
+import { ArrowLeft, Video, X, Star, MessageCircle, ArrowRight, Eye } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import {
@@ -66,11 +66,12 @@ export function ResponseDetails() {
   const navigate = useNavigate();
   const [response, setResponse] = useState<Response | null>(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<"questions" | "reviews">(
-    "questions"
-  );
+  const [activeTab, setActiveTab] = useState<"questions" | "reviews" | "pdf" | "transcript">("questions");
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+  const [transcriptUrl, setTranscriptUrl] = useState<string | null>(null);
   const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);
   const [selectedMetric, setSelectedMetric] = useState<string | null>(null);
+  const [plan, setPlan] = useState<string | null>(null);
   const [evaluationData, setEvaluationData] = useState<any | null>(null);
   const location = useLocation();
   const { candidateName: passedName, interviewTitle: passedTitle } =
@@ -80,6 +81,20 @@ export function ResponseDetails() {
     // TODO: Replace with actual API call
     const fetchResponse = async () => {
       try {
+
+        const {
+          data: { user },
+          error: userError,
+        } = await supabase.auth.getUser();
+
+        const { data: plan, error: planError } = await supabase
+          .from("profiles")
+          .select("subscription")
+          .eq("id", user.id)
+          .single();
+
+        setPlan(plan.subscription);
+
         // Simulate API call
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
@@ -180,6 +195,44 @@ export function ResponseDetails() {
     ));
   };
 
+  const downloadPdf = async (type: 'transcript' | 'analysis') => {
+    if (plan != "Scale" && plan != "Custom") return;
+    
+    try {
+      const fileName = `${responseId}.pdf`;
+      const bucket = type === 'transcript' ? 'interview-transcripts' : 'interview-pdfs';
+      const { data, error } = await supabase.storage
+        .from(bucket)
+        .createSignedUrl(fileName, 60);
+
+      if (error || !data?.signedUrl) {
+        console.error(`Failed to fetch ${type} PDF:`, error);
+        return;
+      }
+
+      // Create custom filename
+      const candidateName = passedName || response?.candidateName || 'Candidate';
+      const position = passedTitle || response?.appliedPosition || 'Interview';
+      const sanitizedName = candidateName.replace(/[^a-zA-Z0-9]/g, '_');
+      const sanitizedPosition = position.replace(/[^a-zA-Z0-9]/g, '_');
+      const customFileName = `${sanitizedName}_${sanitizedPosition}_${type}_${new Date().toISOString().split('T')[0]}.pdf`;
+
+      // Fetch the PDF and trigger download
+      const pdfResponse = await fetch(data.signedUrl);
+      const blob = await pdfResponse.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = customFileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error(`Error downloading ${type} PDF:`, err);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -253,142 +306,174 @@ export function ResponseDetails() {
           </Card>
         </div>
       );
-    }
+    } else if (activeTab === "reviews") {
+        return (
+          <div className="space-y-6">
+            <Card className="p-6">
+              <h2 className="text-xl font-semibold mb-4">Overall Rating</h2>
+              <div className="flex items-center gap-4">
+                <span className="text-4xl font-bold text-blue-600">
+                  {response.overallRating}/10
+                </span>
+                <div className="flex">{renderStars(response.overallRating)}</div>
+              </div>
+            </Card>
 
-    return (
-      <div className="space-y-6">
-        <Card className="p-6">
-          <h2 className="text-xl font-semibold mb-4">Overall Rating</h2>
-          <div className="flex items-center gap-4">
-            <span className="text-4xl font-bold text-blue-600">
-              {response.overallRating}/10
-            </span>
-            <div className="flex">{renderStars(response.overallRating)}</div>
-          </div>
-        </Card>
+            <Card className="p-6">
+              <h2 className="text-xl font-semibold mb-4">Ratings</h2>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b">
+                      <th className="text-left py-2 px-4 font-semibold text-gray-700">
+                        Metric
+                      </th>
+                      <th className="text-left py-2 px-4 font-semibold text-gray-700">
+                        Rating
+                      </th>
+                      <th className="text-left py-2 px-4 font-semibold text-gray-700">
+                        Evaluation and Feedback
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b">
+                      <td className="py-2 px-4">Communication</td>
+                      <td className="py-2 px-4">
+                        {response.metrics.communication}/10
+                      </td>
+                      <td className="py-2 px-4">
+                        {response.metricEvaluations.communication}
+                      </td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 px-4">Experience</td>
+                      <td className="py-2 px-4">
+                        {response.metrics.experience}/10
+                      </td>
+                      <td className="py-2 px-4">
+                        {response.metricEvaluations.experience}
+                      </td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 px-4">Professionalism</td>
+                      <td className="py-2 px-4">
+                        {response.metrics.professionalism}/10
+                      </td>
+                      <td className="py-2 px-4">
+                        {response.metricEvaluations.professionalism}
+                      </td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 px-4">Reliability</td>
+                      <td className="py-2 px-4">
+                        {response.metrics.reliability}/10
+                      </td>
+                      <td className="py-2 px-4">
+                        {response.metricEvaluations.reliability}
+                      </td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 px-4">Problem Solving</td>
+                      <td className="py-2 px-4">
+                        {response.metrics.problemSolving}/10
+                      </td>
+                      <td className="py-2 px-4">
+                        {response.metricEvaluations.problemSolving}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-2 px-4">Cognitive Ability</td>
+                      <td className="py-2 px-4">
+                        {response.metrics.cognitiveAbility}/10
+                      </td>
+                      <td className="py-2 px-4">
+                        {response.metricEvaluations.cognitiveAbility}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </Card>
 
-        <Card className="p-6">
-          <h2 className="text-xl font-semibold mb-4">Ratings</h2>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b">
-                  <th className="text-left py-2 px-4 font-semibold text-gray-700">
-                    Metric
-                  </th>
-                  <th className="text-left py-2 px-4 font-semibold text-gray-700">
-                    Rating
-                  </th>
-                  <th className="text-left py-2 px-4 font-semibold text-gray-700">
-                    Evaluation and Feedback
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="border-b">
-                  <td className="py-2 px-4">Communication</td>
-                  <td className="py-2 px-4">
-                    {response.metrics.communication}/10
-                  </td>
-                  <td className="py-2 px-4">
-                    {response.metricEvaluations.communication}
-                  </td>
-                </tr>
-                <tr className="border-b">
-                  <td className="py-2 px-4">Experience</td>
-                  <td className="py-2 px-4">
-                    {response.metrics.experience}/10
-                  </td>
-                  <td className="py-2 px-4">
-                    {response.metricEvaluations.experience}
-                  </td>
-                </tr>
-                <tr className="border-b">
-                  <td className="py-2 px-4">Professionalism</td>
-                  <td className="py-2 px-4">
-                    {response.metrics.professionalism}/10
-                  </td>
-                  <td className="py-2 px-4">
-                    {response.metricEvaluations.professionalism}
-                  </td>
-                </tr>
-                <tr className="border-b">
-                  <td className="py-2 px-4">Reliability</td>
-                  <td className="py-2 px-4">
-                    {response.metrics.reliability}/10
-                  </td>
-                  <td className="py-2 px-4">
-                    {response.metricEvaluations.reliability}
-                  </td>
-                </tr>
-                <tr className="border-b">
-                  <td className="py-2 px-4">Problem Solving</td>
-                  <td className="py-2 px-4">
-                    {response.metrics.problemSolving}/10
-                  </td>
-                  <td className="py-2 px-4">
-                    {response.metricEvaluations.problemSolving}
-                  </td>
-                </tr>
-                <tr>
-                  <td className="py-2 px-4">Cognitive Ability</td>
-                  <td className="py-2 px-4">
-                    {response.metrics.cognitiveAbility}/10
-                  </td>
-                  <td className="py-2 px-4">
-                    {response.metricEvaluations.cognitiveAbility}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </Card>
+            <div>
+              <h2 className="text-xl font-semibold mb-4">AI Analysis</h2>
+              <Card className="p-6 mb-4 bg-blue-50">
+                <div className="flex items-start gap-3">
+                  <MessageCircle className="w-5 h-5 text-blue-600 mt-1" />
+                  <div>
+                    <h3 className="font-medium text-blue-900 mb-2">
+                      Key Observations
+                    </h3>
+                    <p className="text-blue-800">
+                      {response.aiAnalysis.keyObservations}
+                    </p>
+                  </div>
+                </div>
+              </Card>
 
-        <div>
-          <h2 className="text-xl font-semibold mb-4">AI Analysis</h2>
-          <Card className="p-6 mb-4 bg-blue-50">
-            <div className="flex items-start gap-3">
-              <MessageCircle className="w-5 h-5 text-blue-600 mt-1" />
-              <div>
-                <h3 className="font-medium text-blue-900 mb-2">
-                  Key Observations
-                </h3>
-                <p className="text-blue-800">
-                  {response.aiAnalysis.keyObservations}
-                </p>
+              <div className="grid grid-cols-2 gap-4">
+                <Card className="p-6 bg-green-50">
+                  <h3 className="font-medium text-green-900 mb-3">Strengths</h3>
+                  <ul className="space-y-2">
+                    {response.aiAnalysis.strengths.map((strength, index) => (
+                      <li key={index} className="flex items-center text-green-800">
+                        <span className="w-2 h-2 bg-green-600 rounded-full mr-2"></span>
+                        {strength.replace(/^[-•]\s*/, "")}
+                      </li>
+                    ))}
+                  </ul>
+                </Card>
+
+                <Card className="p-6 bg-red-50">
+                  <h3 className="font-medium text-red-900 mb-3">Weaknesses</h3>
+                  <ul className="space-y-2">
+                    {response.aiAnalysis.weaknesses.map((weakness, index) => (
+                      <li key={index} className="flex items-center text-red-800">
+                        <span className="w-2 h-2 bg-red-600 rounded-full mr-2"></span>
+                        {weakness.replace(/^[-•]\s*/, "")}
+                      </li>
+                    ))}
+                  </ul>
+                </Card>
               </div>
             </div>
-          </Card>
-
-          <div className="grid grid-cols-2 gap-4">
-            <Card className="p-6 bg-green-50">
-              <h3 className="font-medium text-green-900 mb-3">Strengths</h3>
-              <ul className="space-y-2">
-                {response.aiAnalysis.strengths.map((strength, index) => (
-                  <li key={index} className="flex items-center text-green-800">
-                    <span className="w-2 h-2 bg-green-600 rounded-full mr-2"></span>
-                    {strength.replace(/^[-•]\s*/, "")}
-                  </li>
-                ))}
-              </ul>
-            </Card>
-
-            <Card className="p-6 bg-red-50">
-              <h3 className="font-medium text-red-900 mb-3">Weaknesses</h3>
-              <ul className="space-y-2">
-                {response.aiAnalysis.weaknesses.map((weakness, index) => (
-                  <li key={index} className="flex items-center text-red-800">
-                    <span className="w-2 h-2 bg-red-600 rounded-full mr-2"></span>
-                    {weakness.replace(/^[-•]\s*/, "")}
-                  </li>
-                ))}
-              </ul>
-            </Card>
           </div>
-        </div>
-      </div>
-    );
-  };
+        );
+      } else if (activeTab === "pdf") {
+          return (
+            <div className="w-full h-[80vh] border rounded-lg overflow-hidden">
+              {pdfUrl ? (
+                <iframe
+                  src={pdfUrl}
+                  title="Interview PDF"
+                  className="w-full h-full border-none"
+                  allow="fullscreen"
+                  allowFullScreen
+                />
+              ) : (
+                <div className="text-center text-gray-500 py-8">Loading PDF...</div>
+              )}
+            </div>
+          );
+        } else if (activeTab === "transcript") {
+            return (
+              <div className="w-full h-[80vh] border rounded-lg overflow-hidden">
+                {transcriptUrl ? (
+                  <iframe
+                    src={transcriptUrl}
+                    title="Transcript PDF"
+                    className="w-full h-full border-none"
+                    allow="fullscreen"
+                    allowFullScreen
+                  />
+                ) : (
+                  <div className="text-center text-gray-500 py-8">Loading PDF...</div>
+                )}
+              </div>
+            );
+          }
+  }
 
   return (
     <div className="container mx-auto px-4 py-6">
@@ -422,29 +507,104 @@ export function ResponseDetails() {
         </Button>
       </div>
 
-      <div className="flex gap-4 border-b mb-6">
-        <button
-          className={`px-4 py-2 font-medium ${
-            activeTab === "questions"
-              ? "text-blue-600 border-b-2 border-blue-600"
-              : "text-gray-600 hover:text-gray-900"
-          }`}
-          onClick={() => setActiveTab("questions")}
-        >
-          <Video className="w-4 h-4 inline-block mr-2" />
-          Video & Transcripts
-        </button>
-        <button
-          className={`px-4 py-2 font-medium ${
-            activeTab === "reviews"
-              ? "text-blue-600 border-b-2 border-blue-600"
-              : "text-gray-600 hover:text-gray-900"
-          }`}
-          onClick={() => setActiveTab("reviews")}
-        >
-          <Star className="w-4 h-4 inline-block mr-2" />
-          Reviews & Ratings
-        </button>
+      <div className="flex items-center justify-between border-b mb-6">
+        {/* Left side tabs */}
+        <div className="flex gap-4">
+          <button
+            className={`px-4 py-2 font-medium ${
+              activeTab === "questions"
+                ? "text-blue-600 border-b-2 border-blue-600"
+                : "text-gray-600 hover:text-gray-900"
+            }`}
+            onClick={() => setActiveTab("questions")}
+          >
+            <Video className="w-4 h-4 inline-block mr-2" />
+            Video & Transcripts
+          </button>
+
+          <button
+            className={`px-4 py-2 font-medium ${
+              activeTab === "reviews"
+                ? "text-blue-600 border-b-2 border-blue-600"
+                : "text-gray-600 hover:text-gray-900"
+            }`}
+            onClick={() => setActiveTab("reviews")}
+          >
+            <Star className="w-4 h-4 inline-block mr-2" />
+            Reviews & Ratings
+          </button>
+        </div>
+
+        {/* Right side labels */}
+        <div className="flex gap-4">
+          <button
+            className={cn(
+              "px-4 py-2 font-medium rounded",
+              plan != "Scale" && plan != "Custom"
+                ? "text-gray-400 cursor-not-allowed"
+                : "text-gray-600 hover:text-gray-900"
+            )}
+            disabled={plan != "Scale" && plan != "Custom"}
+            title={plan != "Scale" && plan != "Custom" ? "Upgrade your plan to access transcript PDF" : ""}
+            onClick={async () => {
+              if (plan != "Scale" && plan != "Custom") return;
+              try {
+                console.log("Fetching transcript pdf");
+                const fileName = `${responseId}.pdf`;
+                const { data, error } = await supabase.storage
+                  .from("interview-transcripts")
+                  .createSignedUrl(fileName, 60);
+
+                if (error || !data?.signedUrl) {
+                  console.error("Failed to fetch PDF:", error);
+                  return;
+                }
+
+                setTranscriptUrl(data.signedUrl);
+                setActiveTab("transcript");
+              } catch (err) {
+                console.error("Error generating signed URL for transcript PDF:", err);
+              }
+            }}
+          >
+            <Eye className="w-4 h-4 inline-block mr-2" />
+            View Transcript PDF
+          </button>
+
+          <button
+            className={cn(
+              "px-4 py-2 font-medium rounded",
+              plan != "Scale" && plan != "Custom"
+                ? "text-gray-400 cursor-not-allowed"
+                : "text-gray-600 hover:text-gray-900"
+            )}
+            disabled={plan != "Scale" && plan != "Custom"}
+            title={plan != "Scale" && plan != "Custom" ? "Upgrade your plan to access analysis PDF" : ""}
+            onClick={async () => {
+              if (plan != "Scale" && plan != "Custom") return;
+              try {
+                console.log("Fetching pdf");
+                const fileName = `${responseId}.pdf`;
+                const { data, error } = await supabase.storage
+                  .from("interview-pdfs")
+                  .createSignedUrl(fileName, 60);
+
+                if (error || !data?.signedUrl) {
+                  console.error("Failed to fetch PDF:", error);
+                  return;
+                }
+
+                setPdfUrl(data.signedUrl);
+                setActiveTab("pdf");
+              } catch (err) {
+                console.error("Error generating signed URL for PDF:", err);
+              }
+            }}
+          >
+            <Eye className="w-4 h-4 inline-block mr-2" />
+            View Analysis PDF
+          </button>
+        </div>
       </div>
 
       {renderContent()}
