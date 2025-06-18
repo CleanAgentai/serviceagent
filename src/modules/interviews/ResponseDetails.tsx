@@ -71,6 +71,7 @@ export function ResponseDetails() {
   const [transcriptUrl, setTranscriptUrl] = useState<string | null>(null);
   const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);
   const [selectedMetric, setSelectedMetric] = useState<string | null>(null);
+  const [plan, setPlan] = useState<string | null>(null);
   const [evaluationData, setEvaluationData] = useState<any | null>(null);
   const location = useLocation();
   const { candidateName: passedName, interviewTitle: passedTitle } =
@@ -80,6 +81,20 @@ export function ResponseDetails() {
     // TODO: Replace with actual API call
     const fetchResponse = async () => {
       try {
+
+        const {
+          data: { user },
+          error: userError,
+        } = await supabase.auth.getUser();
+
+        const { data: plan, error: planError } = await supabase
+          .from("profiles")
+          .select("subscription")
+          .eq("id", user.id)
+          .single();
+
+        setPlan(plan.subscription);
+
         // Simulate API call
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
@@ -485,8 +500,16 @@ export function ResponseDetails() {
         {/* Right side labels */}
         <div className="flex gap-4">
           <button
-            className="px-4 py-2 font-medium text-gray-600 hover:text-gray-900"
+            className={cn(
+              "px-4 py-2 font-medium rounded",
+              plan != "Scale" && plan != "Custom"
+                ? "text-gray-400 cursor-not-allowed"
+                : "text-gray-600 hover:text-gray-900"
+            )}
+            disabled={plan != "Scale" && plan != "Custom"}
+            title={plan != "Scale" && plan != "Custom" ? "Upgrade your plan to access transcript" : ""}
             onClick={async () => {
+              if (plan != "Scale" && plan != "Custom") return;
               try {
                 console.log("Fetching transcript pdf");
                 const fileName = `${responseId}.pdf`;
@@ -502,16 +525,25 @@ export function ResponseDetails() {
                 setTranscriptUrl(data.signedUrl);
                 setActiveTab("transcript");
               } catch (err) {
-                console.error("Error generating signed URL for  transcript PDF:", err);
+                console.error("Error generating signed URL for transcript PDF:", err);
               }
             }}
           >
             <ArrowRight className="w-4 h-4 inline-block mr-2 rotate-90" />
             View Transcript
           </button>
+
           <button
-            className="px-4 py-2 font-medium text-gray-600 hover:text-gray-900"
+            className={cn(
+              "px-4 py-2 font-medium rounded",
+              plan != "Scale" && plan != "Custom"
+                ? "text-gray-400 cursor-not-allowed"
+                : "text-gray-600 hover:text-gray-900"
+            )}
+            disabled={plan != "Scale" && plan != "Custom"}
+            title={plan != "Scale" && plan != "Custom" ? "Upgrade your plan to access analysis" : ""}
             onClick={async () => {
+              if (plan != "Scale" && plan != "Custom") return;
               try {
                 console.log("Fetching pdf");
                 const fileName = `${responseId}.pdf`;
