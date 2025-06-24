@@ -123,7 +123,7 @@ export default function Settings() {
                 </div>
                 <button
                   onClick={() => setShowChangePasswordModal(true)}
-                  className="inline-flex items-center px-4 py-2 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors"
+                  className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full border border-white/20 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
                 >
                   Change Password
                 </button>
@@ -203,7 +203,7 @@ export default function Settings() {
                 />
               </div>
               <button
-                className="w-full text-white py-2 px-4 rounded-lg transition-colors bg-gray-900 hover:bg-gray-700"
+                className="w-full flex items-center justify-center bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 border border-white/20"
                 onClick={handlePasswordChange}
               >
                 Update Password
