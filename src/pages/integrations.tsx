@@ -24,11 +24,11 @@ async function fetchCurrentUser(): Promise<CurrentUser> {
     
     console.log("User fetched:", user.id);
     
-    // Get company profile data
+    // Get company profile data - using created_by_user_id instead of user_id
     const { data: profile, error: profileError } = await supabase
       .from('company_profiles')
       .select('*')
-      .eq('user_id', user.id)
+      .eq('created_by_user_id', user.id)
       .single();
     
     if (profileError || !profile) {
