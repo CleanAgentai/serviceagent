@@ -55,6 +55,7 @@ const Integrations: React.FC = () => {
   const [companyProfileId, setCompanyProfileId] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
   // 1) On mount, fetch user info and then a link token
   useEffect(() => {
@@ -67,16 +68,17 @@ const Integrations: React.FC = () => {
         setCompanyProfileId(user.companyProfileId);
 
         console.log("Requesting link token from API...");
-        const resp = await fetch("/api/merge/link-token", {
+        const resp = await fetch(`${apiBaseUrl}api/merge/link-token`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             userId: user.id,
             orgName: user.companyName,
             email: user.email,
-            integration: "breezy",      // or any ATS slug you want to skip to
           }),
         });
+
+        console.log("HELLO", resp)
         
         if (!resp.ok) {
           const errorData = await resp.json();
@@ -102,7 +104,7 @@ const Integrations: React.FC = () => {
       console.log("Merge Link success! Public token received:", public_token);
       try {
         console.log("Exchanging public token for account token...");
-        const resp = await fetch("/api/merge/exchange-token", {
+        const resp = await fetch(`${apiBaseUrl}api/merge/exchange-token`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -134,6 +136,11 @@ const Integrations: React.FC = () => {
     onSuccess,
     // Optional: onExit, tenantConfig, etc.
   });
+
+  const loggedOpen = () => {
+    console.log("Open called");
+    open();
+  }
 
   console.log("Merge Link state:", { isReady, hasLinkToken: !!linkToken });
 
@@ -174,7 +181,7 @@ const Integrations: React.FC = () => {
         
         <button
           disabled={isLoading || !isReady}
-          onClick={open}
+          onClick={loggedOpen}
           style={{
             padding: "14px 36px",
             fontSize: 18,
