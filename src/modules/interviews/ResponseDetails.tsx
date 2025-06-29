@@ -76,6 +76,8 @@ export function ResponseDetails() {
   const location = useLocation();
   const { candidateName: passedName, interviewTitle: passedTitle } =
     location.state || {};
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+  const [fileName, setFileName] = useState<string | null>(null);
 
   useEffect(() => {
     // TODO: Replace with actual API call
@@ -443,33 +445,25 @@ export function ResponseDetails() {
       } else if (activeTab === "pdf") {
           return (
             <div className="w-full h-[80vh] border rounded-lg overflow-hidden">
-              {pdfUrl ? (
                 <iframe
-                  src={pdfUrl}
+                  src={`${apiBaseUrl}/api/pdf/download/${fileName}?responseId=${responseId}&type=analysis`}
                   title="Interview PDF"
                   className="w-full h-full border-none"
                   allow="fullscreen"
                   allowFullScreen
                 />
-              ) : (
-                <div className="text-center text-gray-500 py-8">Loading PDF...</div>
-              )}
             </div>
           );
         } else if (activeTab === "transcript") {
             return (
               <div className="w-full h-[80vh] border rounded-lg overflow-hidden">
-                {transcriptUrl ? (
                   <iframe
-                    src={transcriptUrl}
+                    src={`${apiBaseUrl}/api/pdf/download/${fileName}?responseId=${responseId}&type=transcript`}
                     title="Transcript PDF"
                     className="w-full h-full border-none"
                     allow="fullscreen"
                     allowFullScreen
                   />
-                ) : (
-                  <div className="text-center text-gray-500 py-8">Loading PDF...</div>
-                )}
               </div>
             );
           }
@@ -548,23 +542,13 @@ export function ResponseDetails() {
             title={plan != "Scale" && plan != "Custom" ? "Upgrade your plan to access transcript PDF" : ""}
             onClick={async () => {
               if (plan != "Scale" && plan != "Custom") return;
-              try {
-                console.log("Fetching transcript pdf");
-                const fileName = `${responseId}.pdf`;
-                const { data, error } = await supabase.storage
-                  .from("interview-transcripts")
-                  .createSignedUrl(fileName, 60);
-
-                if (error || !data?.signedUrl) {
-                  console.error("Failed to fetch PDF:", error);
-                  return;
-                }
-
-                setTranscriptUrl(data.signedUrl);
-                setActiveTab("transcript");
-              } catch (err) {
-                console.error("Error generating signed URL for transcript PDF:", err);
-              }
+              setActiveTab("transcript");
+              const candidateName = passedName || response?.candidateName || 'Candidate';
+              const position = passedTitle || response?.appliedPosition || 'Interview';
+              const sanitizedName = candidateName.replace(/[^a-zA-Z0-9]/g, '_');
+              const sanitizedPosition = position.replace(/[^a-zA-Z0-9]/g, '_');
+              const customFileName = `${sanitizedName}_${sanitizedPosition}_transcript_${new Date().toISOString().split('T')[0]}.pdf`;
+              setFileName(customFileName);
             }}
           >
             <Eye className="w-4 h-4 inline-block mr-2" />
@@ -582,23 +566,13 @@ export function ResponseDetails() {
             title={plan != "Scale" && plan != "Custom" ? "Upgrade your plan to access analysis PDF" : ""}
             onClick={async () => {
               if (plan != "Scale" && plan != "Custom") return;
-              try {
-                console.log("Fetching pdf");
-                const fileName = `${responseId}.pdf`;
-                const { data, error } = await supabase.storage
-                  .from("interview-pdfs")
-                  .createSignedUrl(fileName, 60);
-
-                if (error || !data?.signedUrl) {
-                  console.error("Failed to fetch PDF:", error);
-                  return;
-                }
-
-                setPdfUrl(data.signedUrl);
-                setActiveTab("pdf");
-              } catch (err) {
-                console.error("Error generating signed URL for PDF:", err);
-              }
+              setActiveTab("pdf");
+              const candidateName = passedName || response?.candidateName || 'Candidate';
+              const position = passedTitle || response?.appliedPosition || 'Interview';
+              const sanitizedName = candidateName.replace(/[^a-zA-Z0-9]/g, '_');
+              const sanitizedPosition = position.replace(/[^a-zA-Z0-9]/g, '_');
+              const customFileName = `${sanitizedName}_${sanitizedPosition}_analysis_${new Date().toISOString().split('T')[0]}.pdf`;
+              setFileName(customFileName);
             }}
           >
             <Eye className="w-4 h-4 inline-block mr-2" />
