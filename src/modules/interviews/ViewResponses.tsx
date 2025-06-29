@@ -482,7 +482,7 @@ export function ViewResponses() {
                   <Button
                     variant="link"
                     onClick={() => handleViewAnalysis(attempt)}
-                    className="text-blue-600"
+                    className="bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 border border-white/20"
                   >
                     View AI Analysis
                   </Button>
@@ -542,7 +542,7 @@ export function ViewResponses() {
                         </Select>
                       </div>
                       <div className="flex items-center justify-center space-x-1">
-                        <Button variant="link" className="text-blue-600">
+                        <Button variant="link" className="bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 border border-white/20">
                           View AI Analysis
                         </Button>
                         <Button
@@ -565,7 +565,7 @@ export function ViewResponses() {
               </p>
               <Button
                 onClick={() => navigate("/payment/subscription")}
-                className="bg-blue-600 hover:bg-blue-700 text-white"
+                className="bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 border border-white/20"
               >
                 Upgrade Plan to View More
               </Button>

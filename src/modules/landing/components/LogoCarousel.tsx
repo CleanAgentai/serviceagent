@@ -41,7 +41,7 @@ const LogoCarousel: React.FC = () => {
     <div className="overflow-hidden w-full py-6 flex justify-center" style={{ background: 'transparent' }}>
       <div className="rounded-xl shadow-lg border border-gray-100 px-2 py-8 w-full max-w-6xl bg-white">
         <div className="mb-6 text-center">
-          <span className="text-black text-lg font-medium">Trusted to power integrations at</span>
+          <span className="text-black text-lg font-medium">Integrates with</span>
         </div>
         <div className="relative flex items-center">
           <div className="logo-carousel-track flex gap-12 animate-logo-scroll">
