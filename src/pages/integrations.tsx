@@ -137,8 +137,30 @@ const Integrations: React.FC = () => {
     // Optional: onExit, tenantConfig, etc.
   });
 
-  const loggedOpen = () => {
+  const loggedOpen = async () => {
     console.log("Open called");
+
+    const { id, email, companyName } = await fetchCurrentUser();
+    const resp = await fetch(`${apiBaseUrl}/api/merge/link-token`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId: id,
+        orgName: companyName,
+        email: email,
+      }),
+    });
+
+    if (!resp.ok) {
+      const errorData = await resp.json();
+      console.error("Error refreshing link token:", errorData);
+      alert("Failed to refresh integration token. Please try again.");
+      return;
+    }
+
+    const { linkToken: newToken } = await resp.json();
+    console.log("Refreshed link token:", newToken);
+    setLinkToken(newToken);
     open();
   }
 
