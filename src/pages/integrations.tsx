@@ -68,7 +68,7 @@ const Integrations: React.FC = () => {
         setCompanyProfileId(user.companyProfileId);
 
         console.log("Requesting link token from API...");
-        const resp = await fetch(`${apiBaseUrl}api/merge/link-token`, {
+        const resp = await fetch(`${apiBaseUrl}/api/merge/link-token`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -104,7 +104,7 @@ const Integrations: React.FC = () => {
       console.log("Merge Link success! Public token received:", public_token);
       try {
         console.log("Exchanging public token for account token...");
-        const resp = await fetch(`${apiBaseUrl}api/merge/exchange-token`, {
+        const resp = await fetch(`${apiBaseUrl}/api/merge/exchange-token`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
