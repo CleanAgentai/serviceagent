@@ -8,6 +8,7 @@ interface CurrentUser {
   email: string;
   companyName: string;
   companyProfileId: string;
+  mergePublicToken: string | null;
 }
 
 // Fetch current user from Supabase
@@ -22,9 +23,6 @@ async function fetchCurrentUser(): Promise<CurrentUser> {
       throw new Error("Failed to fetch user");
     }
     
-    console.log("User fetched:", user.id);
-    
-    // Get company profile data - using created_by_user_id instead of user_id
     const { data: profile, error: profileError } = await supabase
       .from('company_profiles')
       .select('*')
@@ -35,14 +33,13 @@ async function fetchCurrentUser(): Promise<CurrentUser> {
       console.error("Error fetching company profile:", profileError);
       throw new Error("Failed to fetch company profile");
     }
-    
-    console.log("Company profile fetched:", profile.id);
-    
+
     return {
       id: user.id,
       email: user.email || "",
       companyName: profile.company_name || "My Company",
-      companyProfileId: profile.id
+      companyProfileId: profile.id,
+      mergePublicToken: profile.merge_public_token || null,
     };
   } catch (err) {
     console.error("Error in fetchCurrentUser:", err);
@@ -53,19 +50,19 @@ async function fetchCurrentUser(): Promise<CurrentUser> {
 const Integrations: React.FC = () => {
   const [linkToken, setLinkToken] = useState<string>("");
   const [companyProfileId, setCompanyProfileId] = useState<string>("");
+  const [mergePublicToken, setMergePublicToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
-  // 1) On mount, fetch user info and then a link token
   useEffect(() => {
     (async () => {
       setIsLoading(true);
       try {
         console.log("Integrations component mounted, fetching user data...");
         const user = await fetchCurrentUser();
-        console.log("User data fetched successfully:", user.id);
         setCompanyProfileId(user.companyProfileId);
+        setMergePublicToken(user.mergePublicToken);
 
         console.log("Requesting link token from API...");
         const resp = await fetch(`${apiBaseUrl}/api/merge/link-token`, {
@@ -78,16 +75,13 @@ const Integrations: React.FC = () => {
           }),
         });
 
-        console.log("HELLO", resp)
-        
         if (!resp.ok) {
           const errorData = await resp.json();
           console.error("Link token API error:", errorData);
           throw new Error(`API error: ${errorData.error || resp.statusText}`);
         }
-        
+
         const { linkToken } = await resp.json();
-        console.log("Link token received:", linkToken ? "✅ Valid token" : "❌ Invalid token");
         setLinkToken(linkToken);
       } catch (err) {
         console.error("Failed to fetch link token", err);
@@ -98,12 +92,10 @@ const Integrations: React.FC = () => {
     })();
   }, []);
 
-  // 2) When the end user finishes linking, swap public_token for account_token
   const onSuccess = useCallback(
     async (public_token: string) => {
       console.log("Merge Link success! Public token received:", public_token);
       try {
-        console.log("Exchanging public token for account token...");
         const resp = await fetch(`${apiBaseUrl}/api/merge/exchange-token`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -112,15 +104,17 @@ const Integrations: React.FC = () => {
             companyProfileId,
           }),
         });
-        
+
         if (!resp.ok) {
           const errorData = await resp.json();
           console.error("Token exchange API error:", errorData);
           throw new Error(`API error: ${errorData.error || resp.statusText}`);
         }
-        
+
         const { accountToken } = await resp.json();
         console.log("Token exchange successful! Account token received");
+
+        setMergePublicToken(public_token);
         alert(`Integration successful! Your ATS is now connected.`);
       } catch (err) {
         console.error("Token exchange failed", err);
@@ -130,24 +124,23 @@ const Integrations: React.FC = () => {
     [companyProfileId]
   );
 
-  // 3) Initialize Merge Link with your dynamic token
   const { open, isReady } = useMergeLink({
     linkToken,
     onSuccess,
-    // Optional: onExit, tenantConfig, etc.
   });
 
   const loggedOpen = async () => {
     console.log("Open called");
 
-    const { id, email, companyName } = await fetchCurrentUser();
+    const user = await fetchCurrentUser();
+
     const resp = await fetch(`${apiBaseUrl}/api/merge/link-token`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        userId: id,
-        orgName: companyName,
-        email: email,
+        userId: user.id,
+        orgName: user.companyName,
+        email: user.email,
       }),
     });
 
@@ -162,9 +155,7 @@ const Integrations: React.FC = () => {
     console.log("Refreshed link token:", newToken);
     setLinkToken(newToken);
     open();
-  }
-
-  console.log("Merge Link state:", { isReady, hasLinkToken: !!linkToken });
+  };
 
   return (
     <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "80vh" }}>
@@ -186,13 +177,13 @@ const Integrations: React.FC = () => {
         <p style={{ color: "#555", fontSize: 16, marginBottom: 24, textAlign: "center" }}>
           Connect your favorite ATS tools to ServiceAgent to automate your workflow.
         </p>
-        
+
         {error && (
-          <div style={{ 
-            padding: "12px 16px", 
-            backgroundColor: "#fee2e2", 
-            color: "#b91c1c", 
-            borderRadius: 8, 
+          <div style={{
+            padding: "12px 16px",
+            backgroundColor: "#fee2e2",
+            color: "#b91c1c",
+            borderRadius: 8,
             marginBottom: 16,
             width: "100%",
             textAlign: "center"
@@ -200,7 +191,7 @@ const Integrations: React.FC = () => {
             {error}
           </div>
         )}
-        
+
         <button
           disabled={isLoading || !isReady}
           onClick={loggedOpen}
@@ -217,8 +208,13 @@ const Integrations: React.FC = () => {
             boxShadow: (!isLoading && isReady) ? "0 2px 8px rgba(37,99,235,0.08)" : undefined,
           }}
         >
-          {isLoading ? "Loading..." : "Connect an Integration"}
+          {isLoading
+            ? "Loading..."
+            : mergePublicToken
+              ? "Edit Integration"
+              : "Connect an Integration"}
         </button>
+
         <div
           style={{
             width: "100%",
@@ -229,7 +225,11 @@ const Integrations: React.FC = () => {
             fontSize: 15,
           }}
         >
-          <span>No integrations connected yet.</span>
+          {mergePublicToken ? (
+            <span>Integration successful!</span>
+          ) : (
+            <span>No integrations connected yet.</span>
+          )}
         </div>
       </div>
     </div>
