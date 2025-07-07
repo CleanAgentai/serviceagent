@@ -174,9 +174,11 @@ const Integrations: React.FC = () => {
       >
         <Plug size={48} color="#2563eb" style={{ marginBottom: 16 }} />
         <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 8 }}>Integrations</h1>
-        <p style={{ color: "#555", fontSize: 16, marginBottom: 24, textAlign: "center" }}>
-          Connect your favorite ATS tools to ServiceAgent to automate your workflow.
-        </p>
+        {!mergePublicToken && (
+          <p style={{ color: "#555", fontSize: 16, marginBottom: 24, textAlign: "center" }}>
+            Connect your favorite ATS tools to ServiceAgent to automate your workflow.
+          </p>
+        )}
 
         {error && (
           <div style={{
@@ -226,7 +228,12 @@ const Integrations: React.FC = () => {
           }}
         >
           {mergePublicToken ? (
-            <span>Integration successful!</span>
+            <span style={{ color: "#555", fontSize: 16 }}>
+              Integration successful!<br />
+              Your selected ATS is now connected. ServiceAgent will now automatically send candidate data to your ATS.<br />
+              <br />
+              To unlink your ATS Please <a href="mailto:porter@fsagent.com" style={{ color: "#2563eb", textDecoration: "underline" }}>contact us</a> at porter@fsagent.com.
+            </span>
           ) : (
             <span>No integrations connected yet.</span>
           )}

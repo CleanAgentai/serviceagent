@@ -72,6 +72,7 @@ export function Navigation({ isNavVisible = true }: { isNavVisible?: boolean }) 
                 className="text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 relative group"
             >
               Sign In
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#0E7CFF] to-[#A1E3FF] group-hover:w-full transition-all duration-300"></span>
             </Link>
             )}
             {/* Book Demo Button */}
