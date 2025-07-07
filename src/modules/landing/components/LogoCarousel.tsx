@@ -41,7 +41,7 @@ const LogoCarousel: React.FC = () => {
     <div className="overflow-hidden w-full py-6 flex justify-center relative" style={{ background: 'transparent' }}>
       <div className="rounded-xl shadow-lg border border-gray-100 px-2 py-8 w-full max-w-6xl bg-white relative z-10">
         <div className="mb-6 text-center">
-          <span className="text-black text-lg font-medium">Integrates with popular job platforms</span>
+          <span className="text-black text-lg font-medium">Integrates with popular ATS platforms</span>
         </div>
         <div className="relative flex items-center" style={{height: '96px'}}>
           {/* Left Gradient Overlay - wider and flush with card edge */}

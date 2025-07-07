@@ -109,24 +109,32 @@ export default function Settings() {
   return (
     <div className="h-screen flex bg-gray-50">
       <div className="flex-1 min-w-0 h-screen overflow-y-auto">
-        <div className="max-w-3xl mx-auto py-8 px-8">
-          <div className="p-8">
+        <div className="max-w-3xl mx-auto py-4 px-6">
+          <div className="p-4">
             <div className="max-w-3xl mx-auto">
-              <div className="flex items-center justify-between mb-8">
+              <div className="flex items-center justify-between mb-4">
                 <div>
                   <h1 className="text-2xl font-bold text-gray-900">
                     Company Settings
                   </h1>
-                  <p className="text-gray-600 mt-1">
+                  <p className="text-gray-600 mt-1 text-sm leading-tight whitespace-nowrap truncate max-w-xl">
                     Manage your company information and branding
                   </p>
                 </div>
+                <div className="flex flex-col items-end gap-2">
                 <button
                   onClick={() => setShowChangePasswordModal(true)}
-                  className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full border border-white/20 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                    className="inline-flex items-center px-6 py-2 bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full border border-white/20 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
                 >
                   Change Password
                 </button>
+                  <button
+                    onClick={() => navigate('/payment/manage-subscription')}
+                    className="inline-flex items-center px-6 py-2 bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full border border-white/20 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                  >
+                    Manage Subscription
+                  </button>
+                </div>
               </div>
 
               <CompanyProfileForm mode="update" />
