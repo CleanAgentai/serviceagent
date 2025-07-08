@@ -58,11 +58,6 @@ export default function DashboardLayout() {
       icon: <Settings size={20} />,
       label: "Settings",
     },
-        {
-      path: "/payment/manage-subscription",
-      icon: <CreditCard size={20} />,
-      label: "Subscription",
-    },
   ];
 
   const closeSidebar = () => {
@@ -104,7 +99,7 @@ export default function DashboardLayout() {
           <div className="p-4 border-t">
             <Button
               variant="outline"
-              className="w-full justify-start"
+              className="w-full justify-start rounded-full"
               onClick={handleLogout}
             >
               <LogOut className="mr-2 h-4 w-4" />
@@ -146,7 +141,7 @@ export default function DashboardLayout() {
             <div className="pt-4 border-t">
               <Button
                 variant="outline"
-                className="w-full justify-start"
+                className="w-full justify-start rounded-full"
                 onClick={handleLogout}
               >
                 <LogOut className="mr-2 h-4 w-4" />

@@ -1,5 +1,6 @@
 import { Send, Users, ArrowRight, Target, Bot } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import LogoCarousel from "./LogoCarousel";
 
 const features = [
   {
@@ -86,36 +87,7 @@ const Features = () => {
 
           {/* Platform Logos */}
           <div className="mt-16 text-center">
-            <p className="text-slate-500 mb-8">Integrates with popular job platforms</p>
-            <div className="flex flex-wrap justify-center items-center gap-12 opacity-80">
-              {/* Indeed Logo */}
-              <div className="flex items-center">
-                <div className="bg-blue-700 text-white px-6 py-3 rounded-lg font-bold text-xl tracking-wide shadow-md">
-                  indeed
-                </div>
-              </div>
-              
-              {/* Facebook Logo */}
-              <div className="flex items-center">
-                <div className="bg-blue-600 text-white px-6 py-3 rounded-lg font-bold text-xl shadow-md">
-                  facebook
-                </div>
-              </div>
-              
-              {/* LinkedIn Logo */}
-              <div className="flex items-center">
-                <div className="bg-blue-700 text-white px-6 py-3 rounded-lg font-bold text-xl shadow-md">
-                  Linked<span className="bg-white text-blue-700 px-1 rounded">in</span>
-                </div>
-              </div>
-              
-              {/* ZipRecruiter Logo */}
-              <div className="flex items-center">
-                <div className="bg-green-600 text-white px-6 py-3 rounded-lg font-bold text-xl shadow-md">
-                  ZipRecruiter
-                </div>
-              </div>
-            </div>
+            <LogoCarousel />
           </div>
         </div>
       </div>

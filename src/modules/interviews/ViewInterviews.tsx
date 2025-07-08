@@ -176,7 +176,7 @@ export function ViewInterviews() {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Interviews</h1>
         <Button
-          className="flex items-center gap-2"
+          className="flex items-center gap-2 bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 border border-white/20"
           onClick={() => navigate("/interviews/create")}
         >
           <Plus className="w-4 h-4" />
