@@ -564,7 +564,7 @@ export default function CreateInterview() {
             </div>
 
             <div className="flex justify-end">
-              <Button type="button" onClick={nextTab}>
+              <Button type="button" onClick={nextTab} className="bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 border border-white/20">
                 Next: Questions
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -785,12 +785,12 @@ export default function CreateInterview() {
                 type="button"
                 variant="outline"
                 onClick={prevTab}
-                className="relative -top-1"
+                className="bg-white text-black shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 border border-gray-200 focus:z-10 relative"
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Previous
               </Button>
-              <Button type="button" onClick={nextTab}>
+              <Button type="button" onClick={nextTab} className="bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 border border-white/20">
                 Next: Settings
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -883,11 +883,11 @@ export default function CreateInterview() {
               </div>
 
               <div className="flex justify-between mt-6">
-                <Button type="button" variant="outline" onClick={prevTab}>
+                <Button type="button" variant="outline" onClick={prevTab} className="bg-white text-black shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 border border-gray-200 focus:z-10 relative">
                   <ArrowLeft className="mr-2 h-4 w-4" />
                   Previous
                 </Button>
-                <Button type="button" onClick={handleSubmit} disabled={loading}>
+                <Button type="button" onClick={handleSubmit} disabled={loading} className="bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 border border-white/20">
                   {loading ? "Creating..." : "Create Interview"}
                 </Button>
               </div>
