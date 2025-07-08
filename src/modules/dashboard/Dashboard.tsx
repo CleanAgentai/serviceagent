@@ -355,7 +355,7 @@ const Dashboard = () => {
               </p>
               <button
                 onClick={() => navigate("/interviews/create")}
-                className="inline-flex items-center px-4 py-2 bg-[#1E529D] text-white text-sm font-medium rounded-lg hover:bg-[#1E529D]/90"
+                className="inline-flex items-center px-6 py-2 bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full border border-white/20 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
               >
                 <Plus className="h-4 w-4 mr-2" />
                 Create Interview
