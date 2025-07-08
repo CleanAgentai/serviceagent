@@ -9,7 +9,6 @@ import {
   Users,
   Clipboard,
   LogOut,
-  CreditCard,
   Plug,
 } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -55,19 +54,14 @@ export default function DashboardLayout() {
       label: "Candidates",
     },
     {
-      path: "/dashboard/settings",
-      icon: <Settings size={20} />,
-      label: "Settings",
-    },
-    {
       path: "/dashboard/integrations",
       icon: <Plug size={20} />,
       label: "Integrations",
     },
     {
-      path: "/payment/manage-subscription",
-      icon: <CreditCard size={20} />,
-      label: "Subscription",
+      path: "/dashboard/settings",
+      icon: <Settings size={20} />,
+      label: "Settings",
     },
   ];
 
