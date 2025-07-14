@@ -217,7 +217,7 @@ export function ResponseDetails() {
       const position = passedTitle || response?.appliedPosition || 'Interview';
       const sanitizedName = candidateName.replace(/[^a-zA-Z0-9]/g, '_');
       const sanitizedPosition = position.replace(/[^a-zA-Z0-9]/g, '_');
-      const customFileName = `${sanitizedName}_${sanitizedPosition}_${type}_${new Date().toISOString().split('T')[0]}.pdf`;
+      const customFileName = `${sanitizedName}_${sanitizedPosition}_${type}.pdf`;
 
       // Fetch the PDF and trigger download
       const pdfResponse = await fetch(data.signedUrl);
@@ -547,7 +547,7 @@ export function ResponseDetails() {
               const position = passedTitle || response?.appliedPosition || 'Interview';
               const sanitizedName = candidateName.replace(/[^a-zA-Z0-9]/g, '_');
               const sanitizedPosition = position.replace(/[^a-zA-Z0-9]/g, '_');
-              const customFileName = `${sanitizedName}_${sanitizedPosition}_transcript_${new Date().toISOString().split('T')[0]}.pdf`;
+              const customFileName = `${sanitizedName}_${sanitizedPosition}_transcript.pdf`;
               setFileName(customFileName);
             }}
           >
@@ -571,7 +571,7 @@ export function ResponseDetails() {
               const position = passedTitle || response?.appliedPosition || 'Interview';
               const sanitizedName = candidateName.replace(/[^a-zA-Z0-9]/g, '_');
               const sanitizedPosition = position.replace(/[^a-zA-Z0-9]/g, '_');
-              const customFileName = `${sanitizedName}_${sanitizedPosition}_analysis_${new Date().toISOString().split('T')[0]}.pdf`;
+              const customFileName = `${sanitizedName}_${sanitizedPosition}_analysis.pdf`;
               setFileName(customFileName);
             }}
           >
