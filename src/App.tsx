@@ -59,6 +59,19 @@ const DashboardOverview = React.lazy(
   () => import("@/modules/dashboard/help/articles/DashboardOverview")
 );
 
+// Industry Pages
+const ResidentialCleaning = React.lazy(() => import("@/modules/industries/ResidentialCleaning"));
+const CommercialCleaning = React.lazy(() => import("@/modules/industries/CommercialCleaning"));
+const HVAC = React.lazy(() => import("@/modules/industries/HVAC"));
+const Plumbing = React.lazy(() => import("@/modules/industries/Plumbing"));
+const Landscaping = React.lazy(() => import("@/modules/industries/Landscaping"));
+const PestControl = React.lazy(() => import("@/modules/industries/PestControl"));
+const Franchises = React.lazy(() => import("@/modules/industries/Franchises"));
+const Staffing = React.lazy(() => import("@/modules/industries/Staffing"));
+const OutsourcingFirms = React.lazy(() => import("@/modules/industries/OutsourcingFirms"));
+const Restaurants = React.lazy(() => import("@/modules/industries/Restaurants"));
+const Hospitality = React.lazy(() => import("@/modules/industries/Hospitality"));
+
 const App = () => {
   useEffect(() => {
     document.title = "ServiceAgent - Automate hiring for hourly roles";
@@ -132,6 +145,17 @@ const App = () => {
                     element={<TermsOfService />}
                   />
                   <Route path="/cookie-policy" element={<CookiePolicy />} />
+                  <Route path="/industries/residential-cleaning" element={<ResidentialCleaning />} />
+                  <Route path="/industries/commercial-cleaning" element={<CommercialCleaning />} />
+                  <Route path="/industries/hvac" element={<HVAC />} />
+                  <Route path="/industries/plumbing" element={<Plumbing />} />
+                  <Route path="/industries/landscaping" element={<Landscaping />} />
+                  <Route path="/industries/pest-control" element={<PestControl />} />
+                  <Route path="/industries/franchises" element={<Franchises />} />
+                  <Route path="/industries/staffing" element={<Staffing />} />
+                  <Route path="/industries/outsourcing-firms" element={<OutsourcingFirms />} />
+                  <Route path="/industries/restaurants" element={<Restaurants />} />
+                  <Route path="/industries/hospitality" element={<Hospitality />} />
                 </Route>
 
                 {/* Protected Dashboard Routes */}

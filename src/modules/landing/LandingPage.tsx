@@ -14,6 +14,7 @@ import Statistics from "./components/Statistics";
 import Demo from "./components/Demo";
 import Services from "./components/Services";
 import CTA from "./components/CTA";
+import IndustriesSlider from "./components/IndustriesSlider";
 
 // Stats
 const stats = [
@@ -137,6 +138,7 @@ const LandingPage = () => {
       <Features />
       <Statistics />
       <Demo />
+      <IndustriesSlider />
       <Testimonials />
       <Services />
       <FAQ />
