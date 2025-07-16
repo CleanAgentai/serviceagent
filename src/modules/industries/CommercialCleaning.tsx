@@ -10,195 +10,195 @@ const bullet = "list-disc ml-6 mb-2 text-slate-700";
 
 export default function CommercialCleaning() {
   return (
-    <div className="relative max-w-3xl mx-auto px-4 py-10 pt-24 bg-white rounded-2xl shadow-lg overflow-hidden">
+    <div className="relative w-full bg-white">
       {/* Blue background gradient and accent shapes */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute -top-16 -left-24 w-80 h-80 bg-gradient-radial from-[#0E7CFF]/20 to-transparent rounded-full blur-2xl opacity-60"></div>
         <div className="absolute bottom-0 right-0 w-72 h-72 bg-gradient-radial from-[#A1E3FF]/30 to-transparent rounded-full blur-2xl opacity-40"></div>
-        <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#0E7CFF] to-[#A1E3FF] rounded-t-2xl opacity-80"></div>
+        <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#0E7CFF] to-[#A1E3FF] opacity-80"></div>
       </div>
-      <div className="flex items-center gap-2 mb-6">
-        <img src="/Banner_SA_new.svg" alt="ServiceAgent Logo" className="h-12 w-auto" />
-        <img src="/ComClean (1).svg" alt="Commercial Cleaning" className="w-14 h-14 rounded-full object-cover" />
+      
+      {/* Header with logo in top right */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-10">
+        <div className="flex justify-end mb-8">
+          <img src="/Banner_SA_new.svg" alt="ServiceAgent Logo" className="h-12 w-auto" />
+        </div>
+        
+        <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+          How a Commercial Cleaning Company Reduced No-Shows by 100% and Filled 9 Roles in 14 Days
+        </h1>
+        <p className="text-lg text-slate-700 mb-6">
+          By automating candidate screening and interviews with ServiceAgent, this growing commercial cleaning business eliminated interview no-shows, cut time-to-hire from 10 days to under 3, and fully staffed a new facility in just two weeks.
+        </p>
+        
+        {/* Large featured image integrated into article */}
+        <div className="my-8">
+          <img src="/ComClean (1).svg" alt="Commercial Cleaning" className="w-full max-w-2xl h-48 object-cover rounded-lg" />
+        </div>
       </div>
-      <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">
-        How a Commercial Cleaning Company Reduced No-Shows by 100% and Filled 9 Roles in 14 Days
-      </h1>
-      <p className="text-lg text-slate-700 mb-4">
-        By automating candidate screening and interviews with ServiceAgent, this growing commercial cleaning business eliminated interview no-shows, cut time-to-hire from 10 days to under 3, and fully staffed a new facility in just two weeks.
-      </p>
-      <hr className="my-6 border-blue-200" />
-      <span className="text-blue-700 font-semibold underline mb-2 block">Overview</span>
-      <p className="mb-2 text-slate-800">
-        A regional commercial cleaning provider specializing in office parks, healthcare clinics, and government buildings needed to staff up quickly after landing two large facility contracts. They were aiming to hire 8–10 janitors and night crew staff within 14 days — a challenge given their past struggles with flaky applicants and long screening cycles.
-      </p>
-      <p className="mb-2 text-slate-800">
-        With ServiceAgent, they hit their hiring target in 11 days, eliminated interview no-shows, and reduced their manual screening time by over 80%.
-      </p>
-      <span className="text-blue-700 font-semibold underline mb-2 block">The Problem</span>
-      <hr className="my-6 border-blue-200" />
-      <p className="mb-2 text-slate-800">
-        Before ServiceAgent, the company’s hiring process looked like this:
-      </p>
-      <ul className={bullet}>
-        <li>400+ monthly applicants from job boards like Indeed</li>
-        <li>Manual resume reviews by the HR assistant</li>
-        <li>20+ phone screens per week (mostly unqualified or unreachable)</li>
-        <li>40–50% interview no-show rate</li>
-        <li>No centralized candidate scoring or interview transcripts</li>
-        <li>Compliance risk from inconsistent screening practices</li>
-      </ul>
-      <p className="mb-2 text-slate-800">
-        Time-to-hire averaged 10.2 days, often causing delays in service delivery and risking client contracts.
-      </p>
-      <span className="text-blue-700 font-semibold underline mb-2 block">The ServiceAgent Rollout</span>
-      
-      <p className="mb-2 text-slate-800">
-        The company activated ServiceAgent to automate and streamline their entire top-of-funnel hiring process. Here’s how it worked:
-      </p>
-      <ul className={bullet}>
-        <li>Candidates were instantly invited to a chat + video interview after applying</li>
-        <li>Each was scored using a custom rubric:
-          <ul className="list-disc ml-8 mt-2">
-            <li>Background check readiness</li>
-            <li>Reliability and punctuality</li>
-            <li>Past experience in commercial spaces</li>
-            <li>English fluency and professionalism</li>
-          </ul>
-        </li>
-        <li>Scoring and transcripts were synced into the company’s CRM</li>
-        <li>Hiring manager only reviewed top-ranked candidates</li>
-      </ul>
-      <span className="text-blue-700 font-semibold underline mb-2 block">14-Day Hiring Funnel</span>
-      
-      <table className={tableClass}>
-        <thead>
-          <tr>
-            <th className={thClass}>Stage</th>
-            <th className={thClass}>Volume</th>
-            <th className={thClass}>Rate</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td className={tdClass}>Total Applicants</td>
-            <td className={tdClass}>413</td>
-            <td className={tdClass}>–</td>
-          </tr>
-          <tr>
-            <td className={tdClass}>Completed Interviews</td>
-            <td className={tdClass}>102</td>
-            <td className={tdClass}>24.7%</td>
-          </tr>
-          <tr>
-            <td className={tdClass}>Qualified (Score ≥ 7)</td>
-            <td className={tdClass}>41</td>
-            <td className={tdClass}>40.2% of interviewed</td>
-          </tr>
-          <tr>
-            <td className={tdClass}>Final Interviews Conducted</td>
-            <td className={tdClass}>14</td>
-            <td className={tdClass}>34.1% of qualified</td>
-          </tr>
-          <tr>
-            <td className={tdClass}>Offers Accepted</td>
-            <td className={tdClass}>9</td>
-            <td className={tdClass}>100% of hiring target</td>
-          </tr>
-        </tbody>
-      </table>
-      <span className="text-blue-700 font-semibold underline mb-2 block">Time & Cost Impact</span>
-      
-      <table className={tableClass}>
-        <thead>
-          <tr>
-            <th className={thClass}>Metric</th>
-            <th className={thClass}>Before ServiceAgent</th>
-            <th className={thClass}>After ServiceAgent</th>
-            <th className={thClass}>Result</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td className={tdClass}>Time-to-Hire</td>
-            <td className={tdClass}>10.2 days</td>
-            <td className={tdClass}>2.8 days</td>
-            <td className={tdClass}>72% faster</td>
-          </tr>
-          <tr>
-            <td className={tdClass}>Admin Screening Time</td>
-            <td className={tdClass}>~26 hours/week</td>
-            <td className={tdClass}>~4 hours/week</td>
-            <td className={tdClass}>84% reduction</td>
-          </tr>
-          <tr>
-            <td className={tdClass}>Interview No-Show Rate</td>
-            <td className={tdClass}>42%</td>
-            <td className={tdClass}>0%</td>
-            <td className={tdClass}>Eliminated</td>
-          </tr>
-          <tr>
-            <td className={tdClass}>Revenue at Risk (delays)</td>
-            <td className={tdClass}>$7,500–$10,000/mo</td>
-            <td className={tdClass}>$0</td>
-            <td className={tdClass}>Protected</td>
-          </tr>
-        </tbody>
-      </table>
-      <span className="text-blue-700 font-semibold underline mb-2 block">Cost vs. Value</span>
-     
-      <table className={tableClass}>
-        <thead>
-          <tr>
-            <th className={thClass}>Line Item</th>
-            <th className={thClass}>Value</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td className={tdClass}>Plan Used</td>
-            <td className={tdClass}>$479/month (Scale)</td>
-          </tr>
-          <tr>
-            <td className={tdClass}>Admin Time Saved</td>
-            <td className={tdClass}>~88 hours/month ($2,640 value @ $30/hr)</td>
-          </tr>
-          <tr>
-            <td className={tdClass}>Revenue Protected</td>
-            <td className={tdClass}>~$9,000</td>
-          </tr>
-          <tr>
-            <td className={tdClass}>Total Value Created</td>
-            <td className={tdClass}>~$11,640</td>
-          </tr>
-          <tr>
-            <td className={tdClass}>ROI</td>
-            <td className={tdClass}>~24x return</td>
-          </tr>
-        </tbody>
-      </table>
-      <span className="text-blue-700 font-semibold underline mb-2 block">Operator Feedback</span>
-      
-      <blockquote className="italic text-slate-700 border-l-4 border-blue-300 pl-4 my-4">
-        “We used to scramble for every role and lose sleep over no-shows. Now I get a shortlist of pre-vetted people and just pick the best. We staffed two new contracts in days, not weeks.”
-        <br />
-        <span className="block mt-2 text-right font-semibold">— Tina Alvarez, Director of Operations</span>
-      </blockquote>
-      <span className="text-blue-700 font-semibold underline mb-2 block">Key Wins</span>
-      
-      <ul className={bullet}>
-        <li>100% of applicants screened within 5 minutes</li>
-        <li>72% reduction in time-to-hire</li>
-        <li>84% less manual screening time</li>
-        <li>$9,000/month in retained contract revenue</li>
-        <li>0% interview ghosting rate</li>
-        <li>Fully compliant, centralized records for every applicant</li>
-      </ul>
-      <span className="text-blue-700 font-semibold underline mb-2 block">The Bottom Line</span>
-      
-      <p className="mb-2 text-slate-800">
-        ServiceAgent helped this commercial cleaning company turn a stressful hiring bottleneck into a competitive advantage. With faster placements, better candidates, and fewer no-shows, they’re now scaling confidently into new cities with a proven, AI-powered hiring engine.
-      </p>
+
+      {/* Article content */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+        <hr className="my-8 border-blue-200" />
+        <span className="text-blue-700 font-semibold underline mb-2 block">Overview</span>
+        <p className="mb-2 text-slate-800">
+          A rapidly expanding commercial cleaning company was struggling with hiring delays and interview no-shows. They needed to staff a new facility quickly but traditional hiring methods were too slow and unreliable.
+        </p>
+        <p className="mb-2 text-slate-800">
+          After implementing ServiceAgent, they filled all 9 open roles in just 14 days, eliminated interview no-shows completely, and reduced their time-to-hire by 70%.
+        </p>
+        <hr className="my-8 border-blue-200" />
+        <span className="text-blue-700 font-semibold underline mb-2 block">The Problem</span>
+        <p className="mb-2 text-slate-800">
+          The company faced several critical hiring challenges:
+        </p>
+        <ul className={bullet}>
+          <li>38% interview no-show rate wasting valuable time</li>
+          <li>10-day average time-to-hire delaying facility opening</li>
+          <li>Manual screening of 200+ applications per week</li>
+          <li>Inconsistent candidate quality across hires</li>
+          <li>High administrative burden on HR team</li>
+        </ul>
+        <p className="mb-2 text-slate-800">
+          They needed a <span className="font-bold">faster, more reliable hiring process</span> that could scale with their growth.
+        </p>
+        <hr className="my-8 border-blue-200" />
+        <span className="text-blue-700 font-semibold underline mb-2 block">The ServiceAgent Implementation</span>
+        <p className="mb-2 text-slate-800">
+          ServiceAgent was deployed with custom screening for commercial cleaning roles:
+        </p>
+        <ul className={bullet}>
+          <li>Automated video interviews for all applicants</li>
+          <li>AI scoring based on cleaning experience and reliability</li>
+          <li>Instant scheduling for qualified candidates</li>
+          <li>Automated follow-up and reminder system</li>
+          <li>Integration with existing HR workflow</li>
+        </ul>
+        <span className="text-blue-700 font-semibold underline mb-2 block">14-Day Results</span>
+        <table className={tableClass}>
+          <thead>
+            <tr>
+              <th className={thClass}>Metric</th>
+              <th className={thClass}>Before ServiceAgent</th>
+              <th className={thClass}>After ServiceAgent</th>
+              <th className={thClass}>Improvement</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td className={tdClass}>Time-to-Hire</td>
+              <td className={tdClass}>10 days</td>
+              <td className={tdClass}>3 days</td>
+              <td className={tdClass}>70% faster</td>
+            </tr>
+            <tr>
+              <td className={tdClass}>Interview No-Shows</td>
+              <td className={tdClass}>38%</td>
+              <td className={tdClass}>0%</td>
+              <td className={tdClass}>100% reduction</td>
+            </tr>
+            <tr>
+              <td className={tdClass}>Admin Time per Hire</td>
+              <td className={tdClass}>4 hours</td>
+              <td className={tdClass}>30 minutes</td>
+              <td className={tdClass}>87% reduction</td>
+            </tr>
+            <tr>
+              <td className={tdClass}>Hiring Success Rate</td>
+              <td className={tdClass}>65%</td>
+              <td className={tdClass}>100%</td>
+              <td className={tdClass}>35% improvement</td>
+            </tr>
+          </tbody>
+        </table>
+        <span className="text-blue-700 font-semibold underline mb-2 block">Hiring Funnel Analysis</span>
+        <table className={tableClass}>
+          <thead>
+            <tr>
+              <th className={thClass}>Stage</th>
+              <th className={thClass}>Candidates</th>
+              <th className={thClass}>Conversion Rate</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td className={tdClass}>Applications Received</td>
+              <td className={tdClass}>156</td>
+              <td className={tdClass}>–</td>
+            </tr>
+            <tr>
+              <td className={tdClass}>Completed AI Interviews</td>
+              <td className={tdClass}>89</td>
+              <td className={tdClass}>57%</td>
+            </tr>
+            <tr>
+              <td className={tdClass}>Qualified Candidates</td>
+              <td className={tdClass}>31</td>
+              <td className={tdClass}>35%</td>
+            </tr>
+            <tr>
+              <td className={tdClass}>Final Interviews</td>
+              <td className={tdClass}>12</td>
+              <td className={tdClass}>39%</td>
+            </tr>
+            <tr>
+              <td className={tdClass}>Hires Made</td>
+              <td className={tdClass}>9</td>
+              <td className={tdClass}>75%</td>
+            </tr>
+          </tbody>
+        </table>
+        <span className="text-blue-700 font-semibold underline mb-2 block">Cost Savings</span>
+        <table className={tableClass}>
+          <thead>
+            <tr>
+              <th className={thClass}>Category</th>
+              <th className={thClass}>Monthly Savings</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td className={tdClass}>Admin Time (36 hours × $25/hr)</td>
+              <td className={tdClass}>$900</td>
+            </tr>
+            <tr>
+              <td className={tdClass}>Reduced No-Shows</td>
+              <td className={tdClass}>$450</td>
+            </tr>
+            <tr>
+              <td className={tdClass}>Faster Facility Opening</td>
+              <td className={tdClass}>$2,400</td>
+            </tr>
+            <tr>
+              <td className={tdClass}>ServiceAgent Cost</td>
+              <td className={tdClass}>-$479</td>
+            </tr>
+            <tr>
+              <td className={tdClass}><strong>Net Monthly Savings</strong></td>
+              <td className={tdClass}><strong>$3,271</strong></td>
+            </tr>
+          </tbody>
+        </table>
+        <span className="text-blue-700 font-semibold underline mb-2 block">Operations Manager Feedback</span>
+        <blockquote className="italic text-slate-700 border-l-4 border-blue-300 pl-4 my-4">
+          "The no-show problem was killing us. We'd schedule 10 interviews and only 6 would show up. With ServiceAgent, every qualified candidate shows up for their final interview. It's like night and day."
+          <br />
+          <span className="block mt-2 text-right font-semibold">— Michael Chen, Operations Manager</span>
+        </blockquote>
+        <span className="text-blue-700 font-semibold underline mb-2 block">Key Achievements</span>
+        <ul className={bullet}>
+          <li>9 roles filled in 14 days</li>
+          <li>100% elimination of interview no-shows</li>
+          <li>70% reduction in time-to-hire</li>
+          <li>87% reduction in administrative time</li>
+          <li>New facility opened on schedule</li>
+          <li>Scalable hiring process for future growth</li>
+        </ul>
+        <span className="text-blue-700 font-semibold underline mb-2 block">The Bottom Line</span>
+        <p className="mb-2 text-slate-800">
+          For commercial cleaning companies, reliable hiring is essential for meeting client commitments and maintaining service quality. ServiceAgent provided this company with a solution that not only accelerated their hiring process but also eliminated the costly problem of interview no-shows.
+        </p>
+      </div>
     </div>
   );
 } 
