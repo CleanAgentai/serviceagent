@@ -5,20 +5,20 @@ import LogoCarousel from "./LogoCarousel";
 const features = [
   {
     icon: Send,
-    title: "Automated Job Posting",
-    description: "Posts to job boards like Indeed with optimized listings that attract quality candidates.",
+    title: "Post Job",
+    description: "Post your job onto your preferred job boards, LinkedIn, & website to receive applicants.",
     step: "01"
   },
   {
     icon: Bot,
-    title: "AI Interviewing", 
-    description: "Every applicant is interviewed via chat or video within minutes, ensuring consistent screening.",
+    title: "Instant AI Interviews", 
+    description: "Within minutes of applying, every candidate gets a personalized AI-driven interview via chat or video.",
     step: "02"
   },
   {
     icon: Users,
-    title: "Instant Ranking",
-    description: "We score every candidate and give you a shortlist of only the best matches for your role.",
+    title: "Instant Candidate Ranking",
+    description: "AI scores and ranks applicants, delivering a shortlist of top matches ready for you to contact.",
     step: "03"
   }
 ];

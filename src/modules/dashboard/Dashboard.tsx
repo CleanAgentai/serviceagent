@@ -242,9 +242,9 @@ const Dashboard = () => {
           {metrics.map((metric) => {
             const Icon = metric.icon;
             return (
-              <Card key={metric.title} className="p-6">
+              <Card key={metric.title} className="p-6 shadow-lg border-0 bg-white hover:shadow-xl transition-all duration-300">
                 <div className="flex items-center gap-4">
-                  <div className={`${metric.bgColor} p-3 rounded-lg`}>
+                                      <div className={`${metric.bgColor} p-3 rounded-lg shadow-md ring-2 ring-white/50`}>
                     <Icon className={`h-6 w-6 ${metric.color}`} />
                   </div>
                   <div>
@@ -281,11 +281,11 @@ const Dashboard = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Create Interview Card */}
             <Card
-              className="p-6 cursor-pointer hover:bg-gray-50 transition-colors"
+              className="p-6 cursor-pointer hover:bg-gray-50 transition-all duration-300 shadow-lg border-0 bg-white hover:shadow-xl hover:scale-105"
               onClick={() => navigate("/interviews/create")}
             >
               <div className="flex items-center gap-4">
-                <div className="bg-blue-50 p-3 rounded-lg">
+                <div className="bg-blue-50 p-3 rounded-lg shadow-md ring-2 ring-blue-100">
                   <Plus className="h-6 w-6 text-blue-500" />
                 </div>
                 <div>
@@ -299,11 +299,11 @@ const Dashboard = () => {
 
             {/* View Responses Card */}
             <Card
-              className="p-6 cursor-pointer hover:bg-gray-50 transition-colors"
+              className="p-6 cursor-pointer hover:bg-gray-50 transition-all duration-300 shadow-lg border-0 bg-white hover:shadow-xl hover:scale-105"
               onClick={() => navigate("/interviews/responses")}
             >
               <div className="flex items-center gap-4">
-                <div className="bg-purple-50 p-3 rounded-lg">
+                <div className="bg-purple-50 p-3 rounded-lg shadow-md ring-2 ring-purple-100">
                   <Users className="h-6 w-6 text-purple-500" />
                 </div>
                 <div>
@@ -318,7 +318,7 @@ const Dashboard = () => {
         </div>
 
         {/* Recent Interviews */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="bg-white rounded-xl shadow-lg border-0 overflow-hidden hover:shadow-xl transition-all duration-300">
           <div className="p-6 border-b border-gray-200 flex justify-between items-center">
             <div>
               <h2 className="text-lg font-semibold text-gray-900">
@@ -344,7 +344,7 @@ const Dashboard = () => {
             </div>
           ) : recentInterviews.length === 0 ? (
             <div className="p-8 text-center">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4 shadow-lg ring-4 ring-gray-50">
                 <Calendar className="h-8 w-8 text-gray-400" />
               </div>
               <h3 className="text-lg font-medium text-gray-900 mb-1">
@@ -355,7 +355,7 @@ const Dashboard = () => {
               </p>
               <button
                 onClick={() => navigate("/interviews/create")}
-                className="inline-flex items-center px-6 py-2 bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full border border-white/20 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                className="inline-flex items-center px-6 py-2 bg-[#004aad] hover:bg-[#004aad]/80 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
               >
                 <Plus className="h-4 w-4 mr-2" />
                 Create Interview
@@ -366,12 +366,12 @@ const Dashboard = () => {
               {recentInterviews.map((interview, index) => (
                 <div
                   key={index}
-                  className="p-4 hover:bg-gray-50 transition-colors cursor-pointer"
+                  className="p-4 hover:bg-blue-50 hover:shadow-md transition-all duration-200 cursor-pointer"
                   onClick={() => navigate(`/interviews/${interview.id}`)}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
-                      <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 mr-3">
+                      <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 mr-3 shadow-md ring-2 ring-white">
                         {interview.title.charAt(0)}
                       </div>
                       <div>

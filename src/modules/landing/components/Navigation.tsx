@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ArrowRight, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,23 @@ export function Navigation({ isNavVisible = true }: { isNavVisible?: boolean }) 
   const isPostSignup = location.pathname === "/post-signup";
   const isPlanOnboarding = location.pathname === "/plan-onboarding";
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [industriesOpen, setIndustriesOpen] = useState(false);
+  const industriesRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (industriesRef.current && !industriesRef.current.contains(event.target as Node)) {
+        setIndustriesOpen(false);
+      }
+    }
+    if (industriesOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [industriesOpen]);
 
   // Only render nav on allowed pages
   if (isPostSignup || isPlanOnboarding) return null;
@@ -58,12 +75,51 @@ export function Navigation({ isNavVisible = true }: { isNavVisible?: boolean }) 
               How It Works
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#0E7CFF] to-[#A1E3FF] group-hover:w-full transition-all duration-300"></span>
             </button>
+            {/* Industries Dropdown */}
+            <div className="relative" ref={industriesRef}>
+              <button
+                className="text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 relative group bg-transparent border-none outline-none cursor-pointer flex items-center"
+                onClick={() => setIndustriesOpen((open) => !open)}
+                aria-expanded={industriesOpen}
+                aria-haspopup="true"
+                type="button"
+              >
+                Industries
+                <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#0E7CFF] to-[#A1E3FF] group-hover:w-full transition-all duration-300"></span>
+              </button>
+              {industriesOpen && (
+                <div className="absolute left-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-slate-100 z-50" style={{top: '100%'}}>
+                  <ul className="py-2">
+                    {[
+                      { label: 'Residential Cleaning', path: '/industries/residential-cleaning' },
+                      { label: 'Commercial Cleaning', path: '/industries/commercial-cleaning' },
+                      { label: 'HVAC', path: '/industries/hvac' },
+                      { label: 'Plumbing', path: '/industries/plumbing' },
+                      { label: 'Landscaping', path: '/industries/landscaping' },
+                      { label: 'Pest Control', path: '/industries/pest-control' },
+                      { label: 'Franchises', path: '/industries/franchises' },
+                      { label: 'Staffing', path: '/industries/staffing' },
+                      { label: 'Outsourcing Firms', path: '/industries/outsourcing-firms' },
+                      { label: 'Restaurants', path: '/industries/restaurants' },
+                      { label: 'Hospitality', path: '/industries/hospitality' },
+                    ].map((item) => (
+                      <li key={item.path}>
+                        <Link
+                          to={item.path}
+                          className="block px-5 py-2 text-slate-700 hover:bg-blue-50 hover:text-[#0E7CFF] transition-all duration-200 rounded-lg"
+                          onClick={() => setIndustriesOpen(false)}
+                        >
+                          {item.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
             <button onClick={() => handleScrollTo("pricing")} className="text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 relative group bg-transparent border-none outline-none cursor-pointer">
               Pricing
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#0E7CFF] to-[#A1E3FF] group-hover:w-full transition-all duration-300"></span>
-            </button>
-            <button onClick={() => handleScrollTo("testimonials")} className="text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 relative group bg-transparent border-none outline-none cursor-pointer">
-              Reviews
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#0E7CFF] to-[#A1E3FF] group-hover:w-full transition-all duration-300"></span>
             </button>
             {!isSignIn && (
@@ -74,11 +130,12 @@ export function Navigation({ isNavVisible = true }: { isNavVisible?: boolean }) 
               Sign In
             </Link>
             )}
-            {/* Book Demo Button */}
-            <Button className="bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-2 border border-white/20 group" onClick={() => window.open('https://calendly.com/serviceagent/30min', '_blank')}>
-              Book Demo
-              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-            </Button>
+            {/* Start Trial Button */}
+            <Link to="/signup">
+              <Button className="bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-2 border border-white/20">
+                Start 7 Day Free Trial
+              </Button>
+            </Link>
           </div>
           {/* Mobile Navigation - Burger/X toggle */}
           <div className="md:hidden flex items-center">
@@ -103,14 +160,14 @@ export function Navigation({ isNavVisible = true }: { isNavVisible?: boolean }) 
           <button onClick={() => handleScrollTo("features")} className="text-xl font-bold text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 w-full text-center">Features</button>
           <button onClick={() => handleScrollTo("demo")} className="text-xl font-bold text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 w-full text-center">How It Works</button>
           <button onClick={() => handleScrollTo("pricing")} className="text-xl font-bold text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 w-full text-center">Pricing</button>
-          <button onClick={() => handleScrollTo("testimonials")} className="text-xl font-bold text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 w-full text-center">Reviews</button>
           {!isSignIn && (
             <Link to="/signin" className="text-xl font-bold text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 w-full text-center" onClick={() => setMobileMenuOpen(false)}>Sign In</Link>
           )}
-          <Button className="w-full bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white transition-all duration-300 rounded-full px-8 py-4 border border-white/20 text-xl font-bold mt-2" onClick={() => { setMobileMenuOpen(false); window.open('https://calendly.com/serviceagent/30min', '_blank'); }}>
-            Book Demo
-            <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-          </Button>
+          <Link to="/signup" onClick={() => setMobileMenuOpen(false)}>
+            <Button className="w-full bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white transition-all duration-300 rounded-full px-8 py-4 border border-white/20 text-xl font-bold mt-2">
+              Start 7 Day Free Trial
+            </Button>
+          </Link>
         </div>
       </div>
     </nav>

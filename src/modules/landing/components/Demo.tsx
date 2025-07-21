@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Demo = () => {
   return (
@@ -16,7 +17,7 @@ const Demo = () => {
             See ServiceAgent in Action
           </h2>
           <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-            Watch how ServiceAgent transforms your hiring process from start to finish.
+            Watch how our AI transforms your hiring from start to finish.
           </p>
         </div>
 
@@ -35,14 +36,23 @@ const Demo = () => {
           </div>
           
           <div className="text-center mt-8">
-            <Button 
-              size="lg" 
-              className="bg-[#0E7CFF] hover:bg-[#0B1C2D] text-white px-12 py-6 text-lg rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
-              onClick={() => window.open('https://calendly.com/serviceagent/30min', '_blank')}
-            >
-              Book a Demo
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
+            <Link to="/signup">
+              <Button 
+                size="lg" 
+                className="bg-[#0E7CFF] hover:bg-[#0B1C2D] text-white px-12 py-6 text-lg rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 mb-4"
+              >
+                Try It Free for 7 Days
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
+            <div className="mt-4">
+              <button 
+                onClick={() => window.open('https://calendly.com/serviceagent/30min', '_blank')}
+                className="text-[#0E7CFF] hover:text-[#0B1C2D] underline transition-colors duration-300"
+              >
+                Prefer a personal touch? Book a live demo.
+              </button>
+            </div>
           </div>
         </div>
       </div>

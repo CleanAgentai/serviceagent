@@ -1,36 +1,36 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { TrendingUp, Zap, Target, Play, Building } from "lucide-react";
+import { TrendingUp, Zap, Target, Play, Building, Clock, PiggyBank, Award } from "lucide-react";
 
 const stats = [
   {
-    icon: TrendingUp,
+    icon: Clock,
     value: "85%",
-    label: "less time on hiring tasks",
-    description: "We automate job posts, interviews, and follow-ups—so you don't have to."
+    label: "Less Time Spent on Hiring",
+    description: "We automate repetitive tasks like posting, initial screening, and follow-ups. Customers report cutting time spent on hiring from 20 hours a week to just 2 hours."
   },
   {
     icon: Zap,
     value: "100%",
-    label: "of applicants interviewed in 5 min",
-    description: "Every applicant gets an AI interview instantly—no ghosting, no bottlenecks."
+    label: "of Applicants Interviewed in 5 Minutes",
+    description: "Every applicant gets an interview immediately via AI. No one slips through the cracks or waits weeks – no ghosting, no bottlenecks in your pipeline."
   },
   {
     icon: Target,
-    value: "5x",
-    label: "more predictive than manual screening",
-    description: "Trained on 1M+ data points to surface the best candidates every time."
+    value: "5×",
+    label: "More Predictive than Manual Screening",
+    description: "Our AI, trained on 1M+ hiring data points, identifies top performers with 5× greater accuracy than a quick resume scan. In short, you get better hires with less guesswork."
   },
   {
     icon: Play,
-    value: "10 min",
-    label: "setup time to go live",
-    description: "No setup. No tech skills. Just results."
+    value: "10",
+    label: "Live in 10 Minutes",
+    description: "Get set up and post your first job in minutes. No technical setup or training needed – if you can fill out a form, you're ready to go. (Yes, it's really that fast.)"
   },
   {
     icon: Building,
     value: "100+",
-    label: "service businesses trust us",
-    description: "From solo operators to franchises—we scale with you."
+    label: "Companies Trust Us",
+    description: "From local mom-and-pop shops to national franchises, service businesses across the country rely on ServiceAgent to staff their teams. We grow with you."
   }
 ];
 
@@ -46,10 +46,10 @@ const Statistics = () => {
       <div className="relative z-0 container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-slate-900 mb-4">
-            Proven Results That Transform Your Hiring
+            Proven Results That Transform Hiring
           </h2>
           <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-            Join hundreds of companies already experiencing game-changing improvements in their hiring process.
+            Join 100+ service businesses who have supercharged their hiring process.
           </p>
         </div>
 
@@ -79,17 +79,17 @@ const Statistics = () => {
           <div className="text-center bg-white/50 backdrop-blur-sm rounded-2xl p-8 border border-white/30">
             <div className="text-5xl font-bold text-[#0E7CFF] mb-2">92%</div>
             <div className="text-lg font-semibold text-slate-800 mb-2">Faster Time-to-Hire</div>
-            <div className="text-sm text-slate-600">Weeks reduced to hours</div>
+            <div className="text-sm text-slate-600">Cut your hiring timeline from weeks down to hours.</div>
           </div>
           <div className="text-center bg-white/50 backdrop-blur-sm rounded-2xl p-8 border border-white/30">
             <div className="text-5xl font-bold text-[#0E7CFF] mb-2">87%</div>
-            <div className="text-lg font-semibold text-slate-800 mb-2">Cost Savings</div>
-            <div className="text-sm text-slate-600">Thousands saved per hire</div>
+            <div className="text-lg font-semibold text-slate-800 mb-2">Cost Savings per Hire</div>
+            <div className="text-sm text-slate-600">Save on job ads, admin time, and bad hires.</div>
           </div>
-          <div className="text-center bg-white/50 backdrop-blur-sm rounded-2xl p-8 border border-white/30">
-            <div className="text-5xl font-bold text-[#0E7CFF] mb-2">5x</div>
+                      <div className="text-center bg-white/50 backdrop-blur-sm rounded-2xl p-8 border border-white/30">
+            <div className="text-5xl font-bold text-[#0E7CFF] mb-2">5×</div>
             <div className="text-lg font-semibold text-slate-800 mb-2">Better Candidates</div>
-            <div className="text-sm text-slate-600">AI-filtered top performers</div>
+            <div className="text-sm text-slate-600">Focus only on top-tier applicants.</div>
           </div>
         </div>
       </div>

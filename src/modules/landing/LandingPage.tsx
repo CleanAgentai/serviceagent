@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import * as Icons from "lucide-react";
 import Timeline from "./components/Timeline";
-import Testimonials from "./components/Testimonials";
 import FAQ from "./components/FAQ";
 import Pricing from "./components/Pricing";
 import { openCalendly } from "@/app/shared/utils/calendly";
@@ -14,6 +13,7 @@ import Statistics from "./components/Statistics";
 import Demo from "./components/Demo";
 import Services from "./components/Services";
 import CTA from "./components/CTA";
+import IndustriesSlider from "./components/IndustriesSlider";
 
 // Stats
 const stats = [
@@ -137,7 +137,7 @@ const LandingPage = () => {
       <Features />
       <Statistics />
       <Demo />
-      <Testimonials />
+      <IndustriesSlider />
       <Services />
       <FAQ />
       <CTA />

@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const CTA = () => {
   return (
@@ -17,32 +18,39 @@ const CTA = () => {
             Ready to Transform Your Hiring?
           </h2>
           <p className="text-xl text-[#A1E3FF]/90 mb-8 max-w-2xl mx-auto">
-            Join hundreds of service companies already using ServiceAgent to hire faster, smarter, and more cost-effectively.
+            Join hundreds of service businesses using ServiceAgent to hire faster, smarter, and more cost‑effectively.
           </p>
           
-          <div className="mb-12">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <Link to="/signup">
+              <Button 
+                size="lg" 
+                className="bg-white hover:bg-transparent text-[#0B1C2D] hover:text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-12 py-6 text-lg font-semibold border border-white/30"
+              >
+                Start Your Free 7 Day Trial
+              </Button>
+            </Link>
             <Button 
               size="lg" 
-              className="bg-white text-[#0E7CFF] hover:bg-[#A1E3FF] hover:text-[#0B1C2D] px-12 py-6 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+              className="bg-white hover:bg-transparent text-[#0B1C2D] hover:text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-12 py-6 text-lg font-semibold border border-white/30"
               onClick={() => window.open('https://calendly.com/serviceagent/30min', '_blank')}
             >
               Book a Demo
-              <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-[#A1E3FF]/90">
-            <div className="flex items-center">
-              <CheckCircle className="h-5 w-5 mr-2" />
-              <span>Free consultation</span>
+          <div className="flex items-center justify-center gap-3 md:gap-6 text-[#A1E3FF]/90 text-xs md:text-sm">
+            <div className="flex items-center whitespace-nowrap">
+              <CheckCircle className="h-4 w-4 mr-1 md:h-5 md:w-5 md:mr-2" />
+              <span>No credit card required</span>
             </div>
-            <div className="flex items-center">
-              <CheckCircle className="h-5 w-5 mr-2" />
-              <span>Custom hiring strategy</span>
+            <div className="flex items-center whitespace-nowrap">
+              <CheckCircle className="h-4 w-4 mr-1 md:h-5 md:w-5 md:mr-2" />
+              <span>Free strategy consultation</span>
             </div>
-            <div className="flex items-center">
-              <CheckCircle className="h-5 w-5 mr-2" />
-              <span>No commitment required</span>
+            <div className="flex items-center whitespace-nowrap">
+              <CheckCircle className="h-4 w-4 mr-1 md:h-5 md:w-5 md:mr-2" />
+              <span>Cancel anytime</span>
             </div>
           </div>
         </div>

@@ -138,10 +138,11 @@ export function Signup() {
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              Get Started with ServiceAgent
+              Start Your Free 7-Day Trial
             </h1>
             <p className="text-gray-600">
-              Create your account and start automating your service business
+              Create your account in seconds.<br />
+              No payment required up front, and no commitment cancel anytime.
             </p>
           </div>
 

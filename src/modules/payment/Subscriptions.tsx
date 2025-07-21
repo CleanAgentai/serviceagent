@@ -68,10 +68,15 @@ export const Subscriptions: React.FC = () => {
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-0 md:py-2 flex flex-col">
-      <div className="flex justify-center mb-0">
+      <div className="flex justify-center mb-4">
         <img src="/singularlogo.png" alt="ServiceAgent Icon" className="h-16 w-16 max-w-none object-contain md:h-16 md:w-auto md:max-w-none" />
       </div>
-      <h2 className="text-2xl font-bold text-center mb-4">Our Plans</h2>
+      <div className="text-center mb-8">
+        <h2 className="text-3xl font-bold mb-2">Choose Your Plan</h2>
+        <p className="text-gray-600">
+          Select a plan to start your free 7-day trial. You won't be charged until the trial ends.
+        </p>
+      </div>
       {!selectedPlan && (
         <>
           <div className="flex justify-center mb-8">
@@ -103,11 +108,11 @@ export const Subscriptions: React.FC = () => {
                   <div className="flex-1 flex flex-col justify-end">
                     {isYearly ? (
                       <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3" onClick={() => wrapper(plan.title, true)}>
-                        Subscribe Yearly<ArrowRight className="ml-2 h-4 w-4" />
+                        Choose Plan
                       </Button>
                     ) : (
                       <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3" onClick={() => wrapper(plan.title, false)}>
-                        Subscribe Monthly<ArrowRight className="ml-2 h-4 w-4" />
+                        Choose Plan
                       </Button>
                     )}
                   </div>
@@ -137,26 +142,49 @@ export const Subscriptions: React.FC = () => {
                   onClick={() => window.open('https://calendly.com/serviceagent/30min', '_blank')}
                 >
                   Book a Call
-                  <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </CardContent>
             </Card>
+          </div>
+          
+          {/* Selection Note */}
+          <div className="text-center mt-12 max-w-2xl mx-auto">
+            <p className="text-sm text-slate-600">
+              All plans include all features during your trial. You can change your plan at any time.
+            </p>
           </div>
         </>
       )}
       {selectedPlan && (
         <div className="max-w-xl mx-auto bg-white p-6 rounded-lg shadow mt-10">
-          <h2 className="text-xl font-bold mb-4">
-            Subscribing to: {selectedPlan} Plan
-          </h2>
-          <button
-            onClick={() => wrapper(null, null)}
-            className="mb-4 text-sm text-blue-600 underline"
-          >
-            ← Go back
-          </button>
+          <div className="text-center mb-6">
+            <h2 className="text-2xl font-bold mb-2">
+              Enter Payment Details
+            </h2>
+            <p className="text-gray-600 text-sm">
+              Your 7-day free trial begins now. You can cancel anytime before {new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString()} to avoid charges. We'll remind you via email before your trial ends.
+            </p>
+          </div>
+          <div className="text-center mb-4">
+            <p className="text-sm text-gray-700 mb-2">
+              Selected Plan: <span className="font-semibold">{selectedPlan}</span>
+            </p>
+            <button
+              onClick={() => wrapper(null, null)}
+              className="text-sm text-blue-600 underline hover:text-blue-800"
+            >
+              ← Change plan
+            </button>
+          </div>
           <div id="checkout">
             <StripeCheckoutBox planName={selectedPlan} yearly={selectedYearly} />
+          </div>
+          
+          {/* Security Note */}
+          <div className="text-center mt-6">
+            <p className="text-xs text-gray-500">
+              Payments are processed securely via Stripe. Your data is encrypted and protected.
+            </p>
           </div>
         </div>
       )}

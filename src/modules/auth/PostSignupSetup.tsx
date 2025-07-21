@@ -100,9 +100,9 @@ export function PostSignupSetup() {
         <img src="/singularlogo.png" alt="ServiceAgent Icon" className="h-16 w-16 max-w-none object-contain md:h-16 md:w-auto md:max-w-none" />
       </div>
       <div className="text-center mb-4">
-        <h1 className="text-3xl font-bold mb-2">Welcome to ServiceAgent</h1>
+        <h1 className="text-3xl font-bold mb-2">Tell Us About Your Business</h1>
         <p className="text-gray-600">
-          Let's set up your company profile to get started
+          This helps us tailor ServiceAgent for you.
         </p>
       </div>
       <CompanyProfileForm mode="create" onComplete={handleComplete} />

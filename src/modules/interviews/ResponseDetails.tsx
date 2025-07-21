@@ -507,8 +507,8 @@ export function ResponseDetails() {
           <button
             className={`px-4 py-2 font-medium ${
               activeTab === "questions"
-                ? "text-blue-600 border-b-2 border-blue-600"
-                : "text-gray-600 hover:text-gray-900"
+                ? "text-blue-500 border-b-2 border-blue-500"
+                : "text-gray-600 hover:text-blue-500"
             }`}
             onClick={() => setActiveTab("questions")}
           >
@@ -519,8 +519,8 @@ export function ResponseDetails() {
           <button
             className={`px-4 py-2 font-medium ${
               activeTab === "reviews"
-                ? "text-blue-600 border-b-2 border-blue-600"
-                : "text-gray-600 hover:text-gray-900"
+                ? "text-purple-500 border-b-2 border-purple-500"
+                : "text-gray-600 hover:text-purple-500"
             }`}
             onClick={() => setActiveTab("reviews")}
           >
@@ -533,10 +533,12 @@ export function ResponseDetails() {
         <div className="flex gap-4">
           <button
             className={cn(
-              "px-4 py-2 font-medium rounded",
+              "px-4 py-2 font-medium",
               plan != "Scale" && plan != "Custom"
                 ? "text-gray-400 cursor-not-allowed"
-                : "text-gray-600 hover:text-gray-900"
+                : activeTab === "transcript"
+                ? "text-green-500 border-b-2 border-green-500"
+                : "text-gray-600 hover:text-green-500"
             )}
             disabled={plan != "Scale" && plan != "Custom"}
             title={plan != "Scale" && plan != "Custom" ? "Upgrade your plan to access transcript PDF" : ""}
@@ -557,10 +559,12 @@ export function ResponseDetails() {
 
           <button
             className={cn(
-              "px-4 py-2 font-medium rounded",
+              "px-4 py-2 font-medium",
               plan != "Scale" && plan != "Custom"
                 ? "text-gray-400 cursor-not-allowed"
-                : "text-gray-600 hover:text-gray-900"
+                : activeTab === "pdf"
+                ? "text-orange-500 border-b-2 border-orange-500"
+                : "text-gray-600 hover:text-orange-500"
             )}
             disabled={plan != "Scale" && plan != "Custom"}
             title={plan != "Scale" && plan != "Custom" ? "Upgrade your plan to access analysis PDF" : ""}

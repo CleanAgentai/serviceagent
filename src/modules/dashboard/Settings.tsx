@@ -124,13 +124,13 @@ export default function Settings() {
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => navigate('/payment/manage-subscription')}
-                    className="inline-flex items-center px-6 py-2 bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full border border-white/20 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                    className="inline-flex items-center px-6 py-2 bg-[#004aad] hover:bg-[#004aad]/80 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
                   >
                     Manage Subscription
                   </button>
                   <button
                     onClick={() => setShowChangePasswordModal(true)}
-                    className="inline-flex items-center px-6 py-2 bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full border border-white/20 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                    className="inline-flex items-center px-6 py-2 bg-[#004aad] hover:bg-[#004aad]/80 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
                   >
                     Change Password
                   </button>
@@ -211,7 +211,7 @@ export default function Settings() {
                 />
               </div>
               <button
-                className="w-full flex items-center justify-center bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 border border-white/20"
+                className="w-full flex items-center justify-center bg-[#004aad] hover:bg-[#004aad]/80 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-lg px-6 py-3"
                 onClick={handlePasswordChange}
               >
                 Update Password
