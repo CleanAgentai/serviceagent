@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import * as Icons from "lucide-react";
 import Timeline from "./components/Timeline";
-import Testimonials from "./components/Testimonials";
 import FAQ from "./components/FAQ";
 import Pricing from "./components/Pricing";
 import { openCalendly } from "@/app/shared/utils/calendly";
@@ -139,7 +138,6 @@ const LandingPage = () => {
       <Statistics />
       <Demo />
       <IndustriesSlider />
-      <Testimonials />
       <Services />
       <FAQ />
       <CTA />

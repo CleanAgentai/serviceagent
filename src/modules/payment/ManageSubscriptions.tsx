@@ -112,10 +112,10 @@ const ManageSubscriptions = () => {
           <button
             onClick={() => setShowConfirm(true)}
             disabled={!hasActiveSub || loading}
-            className={`w-full py-2 font-medium transition duration-200 rounded-full shadow-lg hover:shadow-xl border border-white/20 focus:z-10 relative ${
+            className={`w-full py-2 font-medium transition duration-200 rounded-md shadow-lg hover:shadow-xl focus:z-10 relative ${
               !hasActiveSub
                 ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                : "bg-gradient-to-r from-[#FF4B2B] to-[#FF416C] hover:from-[#FF416C] hover:to-[#FF4B2B] text-white"
+                : "bg-red-600 hover:bg-red-700 text-white"
             } disabled:opacity-50`}
           >
             {loading ? "Cancelling..." : "Cancel Subscription"}
@@ -163,10 +163,10 @@ const ManageSubscriptions = () => {
           <button
             onClick={() => navigate("/payment/subscription")}
             disabled={hasActiveSub}
-            className={`w-full py-2 font-medium transition duration-200 rounded-full shadow-lg hover:shadow-xl border border-white/20 focus:z-10 relative ${
+            className={`w-full py-2 font-medium transition duration-200 rounded-md shadow-lg hover:shadow-xl focus:z-10 relative ${
               hasActiveSub
                 ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                : "bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white"
+                : "bg-[#004aad] hover:bg-[#004aad]/80 text-white"
             }`}
           >
             Add a Subscription

@@ -8,27 +8,27 @@ import {
 const faqs = [
   {
     question: "How does ServiceAgent's AI interviewing work?",
-    answer: "Our AI conducts structured interviews via chat or video, asking role-specific questions tailored to service industry positions. It evaluates responses for technical skills, experience, communication quality, and cultural fit, then provides detailed scoring and recommendations."
+    answer: "ServiceAgent conducts interviews via an AI chatbot (or video) immediately after someone applies. The AI asks a structured set of questions that you'd typically ask in a first-round interview – for example, work experience, availability, situational judgment questions. It then analyzes the responses in real-time. You'll see a summarized interview report for each candidate, along with an objective score. In short, every applicant gets a fair, fast interview without you lifting a finger, and you get consistent data to compare candidates."
   },
   {
-    question: "What types of service industry roles can ServiceAgent help with?",
-    answer: "ServiceAgent works for all service industry positions including HVAC technicians, plumbers, electricians, cleaning staff, landscapers, handymen, customer service representatives, and field service managers. Our AI adapts its questions based on the specific role requirements."
+    question: "What types of roles or industries does ServiceAgent support?",
+    answer: "We're built for service industry hiring. Think of roles like cleaners, HVAC technicians, landscapers, plumbers, electricians, front-desk staff – any hourly or skilled trade positions. Our AI interviews are customizable to fit each role. Whether you're a cleaning company hiring dozens of cleaners or a small HVAC business hiring your first technician, ServiceAgent can adapt to your needs. (And if you ever need help tailoring it to a unique role, our support team is here to assist.)"
   },
   {
-    question: "How much time does ServiceAgent save compared to traditional hiring?",
-    answer: "Most clients save 15-20 hours per week on candidate screening. Instead of manually reviewing hundreds of applications and conducting initial phone screens, you receive a ranked shortlist of pre-screened candidates ready for final interviews."
+    question: "How much time will ServiceAgent really save me?",
+    answer: "Customers report saving dozens of hours per hire. On average, owners see about an 85% reduction in time spent on hiring tasks. For example, one user used to spend 20 hours a week on hiring and cut that down to ~2 hours using ServiceAgent. By automating job posting, scheduling, and initial interviews, you reclaim your time and can focus on only the final round interviews and hiring decisions. Many roles that used to take a month to fill can now be filled in under a week – a huge time savings for your business."
   },
   {
-    question: "What's the setup process like?",
-    answer: "Setup takes less than 30 minutes. We'll help you create your company profile, define job requirements, and customize interview questions. Our team provides onboarding support to ensure you're getting optimal results from day one."
+    question: "What's the setup process like? Do I need technical skills?",
+    answer: "Setup is extremely quick and non-technical. You sign up for a free trial (just a simple form). Once in, you'll enter basic info about the job you're hiring for (job title, description, requirements). That's it – ServiceAgent's platform then takes over by distributing the job post and activating the AI interviews. The whole setup and posting process takes about 10 minutes. You don't need any special technical knowledge or additional software. And if you do use an ATS or other HR software, ServiceAgent can integrate with it seamlessly, but it's absolutely not required to start."
   },
   {
-    question: "How accurate is the AI screening compared to human recruiters?",
-    answer: "Our AI has a 92% accuracy rate in identifying candidates who successfully complete probationary periods, compared to 65% for traditional screening methods. The AI evaluates candidates consistently without bias and never gets tired or rushed."
+    question: "How accurate is ServiceAgent's AI screening? Can it really find better candidates than a person can?",
+    answer: "Our AI isn't here to replace your judgment – it's here to enhance it. ServiceAgent's screening AI has been trained on over 1,000,000+ hiring decisions and outcomes, allowing it to predict candidate success much better than hunches or cursory resume glances. In tests, our AI's candidate rankings were 5× more predictive of on-the-job success compared to traditional manual screening. It uses consistent criteria for every applicant (no human bias or tired eyes), so you won't miss hidden gems. Of course, you make the final call on who to hire, but ServiceAgent ensures you're looking at the best of the best first."
   },
   {
-    question: "Can I customize the interview questions for my specific needs?",
-    answer: "Absolutely. You can customize questions based on your company culture, specific technical requirements, and role responsibilities. Our Growth plan includes unlimited custom question sets and ongoing optimization based on your hiring outcomes."
+    question: "Can I customize the interview questions or criteria?",
+    answer: "Yes, definitely. ServiceAgent comes with expert-designed interview templates for common service roles, but you have full control to customize them. You can add your own questions – for example, ask about a specific certification or include a scenario question relevant to your business. You can also adjust the importance of certain answers in the scoring (for instance, if having a driver's license is non-negotiable, the AI can weight that heavily). The system is flexible: use it out-of-the-box or tailor it to fit your idea of an ideal hire. Either way, the AI will handle the heavy lifting of asking and evaluating the answers."
   }
 ];
 
@@ -47,7 +47,7 @@ const FAQ = () => {
             Frequently Asked Questions
           </h2>
           <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-            Everything you need to know about ServiceAgent and how it can transform your hiring process.
+            All you need to know about ServiceAgent's AI hiring assistant.
           </p>
         </div>
 

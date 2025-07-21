@@ -122,10 +122,6 @@ export function Navigation({ isNavVisible = true }: { isNavVisible?: boolean }) 
               Pricing
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#0E7CFF] to-[#A1E3FF] group-hover:w-full transition-all duration-300"></span>
             </button>
-            <button onClick={() => handleScrollTo("testimonials")} className="text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 relative group bg-transparent border-none outline-none cursor-pointer">
-              Reviews
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#0E7CFF] to-[#A1E3FF] group-hover:w-full transition-all duration-300"></span>
-            </button>
             {!isSignIn && (
             <Link
                 to="/signin" 
@@ -134,11 +130,12 @@ export function Navigation({ isNavVisible = true }: { isNavVisible?: boolean }) 
               Sign In
             </Link>
             )}
-            {/* Book Demo Button */}
-            <Button className="bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-2 border border-white/20 group" onClick={() => window.open('https://calendly.com/serviceagent/30min', '_blank')}>
-              Book Demo
-              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-            </Button>
+            {/* Start Trial Button */}
+            <Link to="/signup">
+              <Button className="bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-2 border border-white/20">
+                Start 7 Day Free Trial
+              </Button>
+            </Link>
           </div>
           {/* Mobile Navigation - Burger/X toggle */}
           <div className="md:hidden flex items-center">
@@ -163,14 +160,14 @@ export function Navigation({ isNavVisible = true }: { isNavVisible?: boolean }) 
           <button onClick={() => handleScrollTo("features")} className="text-xl font-bold text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 w-full text-center">Features</button>
           <button onClick={() => handleScrollTo("demo")} className="text-xl font-bold text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 w-full text-center">How It Works</button>
           <button onClick={() => handleScrollTo("pricing")} className="text-xl font-bold text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 w-full text-center">Pricing</button>
-          <button onClick={() => handleScrollTo("testimonials")} className="text-xl font-bold text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 w-full text-center">Reviews</button>
           {!isSignIn && (
             <Link to="/signin" className="text-xl font-bold text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 w-full text-center" onClick={() => setMobileMenuOpen(false)}>Sign In</Link>
           )}
-          <Button className="w-full bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white transition-all duration-300 rounded-full px-8 py-4 border border-white/20 text-xl font-bold mt-2" onClick={() => { setMobileMenuOpen(false); window.open('https://calendly.com/serviceagent/30min', '_blank'); }}>
-            Book Demo
-            <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-          </Button>
+          <Link to="/signup" onClick={() => setMobileMenuOpen(false)}>
+            <Button className="w-full bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white transition-all duration-300 rounded-full px-8 py-4 border border-white/20 text-xl font-bold mt-2">
+              Start 7 Day Free Trial
+            </Button>
+          </Link>
         </div>
       </div>
     </nav>

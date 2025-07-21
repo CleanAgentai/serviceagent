@@ -480,9 +480,9 @@ export function ViewResponses() {
                 </div>
                 <div className="flex items-center justify-center space-x-1">
                   <Button
-                    variant="link"
+                    variant="default"
                     onClick={() => handleViewAnalysis(attempt)}
-                    className="bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 border border-white/20"
+                    className="bg-[#004aad] hover:bg-[#004aad]/80 text-white shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3 no-underline"
                   >
                     View AI Analysis
                   </Button>
@@ -490,9 +490,9 @@ export function ViewResponses() {
                     variant="ghost"
                     size="icon"
                     onClick={() => handleDelete(attempt.id, attempt.candidateName)}
-                    className="text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                    className="hover:bg-red-50"
                   >
-                    <Trash2 className="h-4 w-4" />
+                    <Trash2 className="h-4 w-4 text-red-600" />
                   </Button>
                 </div>
               </div>
@@ -542,15 +542,15 @@ export function ViewResponses() {
                         </Select>
                       </div>
                       <div className="flex items-center justify-center space-x-1">
-                        <Button variant="link" className="bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 border border-white/20">
+                        <Button variant="link" className="bg-[#004aad] hover:bg-[#004aad]/80 text-white shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3">
                           View AI Analysis
                         </Button>
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                          className="hover:bg-red-50"
                         >
-                          <Trash2 className="h-4 w-4" />
+                          <Trash2 className="h-4 w-4 text-red-600" />
                         </Button>
                       </div>
                     </div>
@@ -565,7 +565,7 @@ export function ViewResponses() {
               </p>
               <Button
                 onClick={() => navigate("/payment/subscription")}
-                className="bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 border border-white/20"
+                className="bg-[#004aad] hover:bg-[#004aad]/80 text-white shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3"
               >
                 Upgrade Plan to View More
               </Button>
@@ -713,7 +713,7 @@ export function ViewResponses() {
                       },
                     })
                   }
-                  className="w-full"
+                  className="w-full bg-[#004aad] hover:bg-[#004aad]/80 text-white shadow-lg hover:shadow-xl transition-all duration-300"
                 >
                   Full Response Details
                 </Button>

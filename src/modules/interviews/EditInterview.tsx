@@ -397,7 +397,7 @@ export default function EditInterview() {
                 />
               </div>
               <div className="flex justify-end">
-                <Button type="button" onClick={nextTab} className="bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 border border-white/20">
+                <Button type="button" onClick={nextTab} className="bg-[#004aad] hover:bg-[#004aad]/80 text-white shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3">
                   Next: Questions
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
@@ -561,11 +561,11 @@ export default function EditInterview() {
                 Add Question
               </Button>
               <div className="flex justify-between items-center mt-4">
-                <Button type="button" variant="outline" onClick={prevTab} className="bg-white text-black shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 border border-gray-200 focus:z-10 relative">
+                <Button type="button" variant="outline" onClick={prevTab} className="bg-white text-black shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3 border border-gray-200 focus:z-10 relative">
                   <ArrowLeft className="mr-2 h-4 w-4" />
                   Previous
                 </Button>
-                <Button type="button" onClick={nextTab} className="bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 border border-white/20">
+                <Button type="button" onClick={nextTab} className="bg-[#004aad] hover:bg-[#004aad]/80 text-white shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3">
                   Next: Settings
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
@@ -590,6 +590,7 @@ export default function EditInterview() {
                       id="showHints"
                       checked={formData.showHints}
                       onCheckedChange={(checked) => handleBasicDetailsChange("showHints", checked)}
+                      className="data-[state=checked]:bg-[#004aad]"
                     />
                   </div>
                   <div className="flex items-center justify-between">
@@ -605,6 +606,7 @@ export default function EditInterview() {
                       id="showAvailability"
                       checked={formData.showAvailability}
                       onCheckedChange={(checked) => handleBasicDetailsChange("showAvailability", checked)}
+                      className="data-[state=checked]:bg-[#004aad]"
                     />
                   </div>
                   <div className="space-y-2">
@@ -634,14 +636,14 @@ export default function EditInterview() {
                   </div>
                 </div>
                 <div className="flex justify-between mt-6">
-                  <Button type="button" variant="outline" onClick={prevTab} className="bg-white text-black shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 border border-gray-200 focus:z-10 relative">
+                  <Button type="button" variant="outline" onClick={prevTab} className="bg-white text-black shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3 border border-gray-200 focus:z-10 relative">
                     <ArrowLeft className="mr-2 h-4 w-4" />
                     Previous
                   </Button>
-                  <Button type="button" onClick={handleApply} disabled={!isChanged} className="bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 border border-white/20">
+                  <Button type="button" onClick={handleApply} disabled={!isChanged} className="bg-[#004aad] hover:bg-[#004aad]/80 text-white shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3">
                     Apply
                   </Button>
-                  <Button type="button" variant="destructive" onClick={handleCancel} className="bg-gradient-to-r from-[#FF4B2B] to-[#FF416C] hover:from-[#FF416C] hover:to-[#FF4B2B] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 border border-white/20">
+                  <Button type="button" variant="destructive" onClick={handleCancel} className="bg-red-600 hover:bg-red-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3">
                     Cancel
                   </Button>
                 </div>

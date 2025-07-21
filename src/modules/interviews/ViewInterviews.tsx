@@ -176,7 +176,7 @@ export function ViewInterviews() {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Interviews</h1>
         <Button
-          className="flex items-center gap-2 bg-gradient-to-r from-[#0E7CFF] to-[#0B1C2D] hover:from-[#0B1C2D] hover:to-[#0E7CFF] text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 border border-white/20"
+          className="flex items-center gap-2 bg-[#004aad] hover:bg-[#004aad]/80 text-white shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3"
           onClick={() => navigate("/interviews/create")}
         >
           <Plus className="w-4 h-4" />
@@ -244,18 +244,22 @@ export function ViewInterviews() {
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {interview.deadline}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-600 hover:underline cursor-pointer">
+                <td className="px-6 py-4 whitespace-nowrap text-sm">
                   {interview.interviewLink ? (
                     <a
                       href={interview.interviewLink}
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={(e) => e.stopPropagation()}
+                      className="inline-flex items-center px-3 py-1.5 bg-[#004aad] hover:bg-[#004aad]/80 text-white text-xs font-medium rounded-md shadow-sm hover:shadow-md transition-all duration-200"
                     >
+                      <LinkIcon className="w-3 h-3 mr-1.5" />
                       Open Link
                     </a>
                   ) : (
-                    "N/A"
+                    <span className="inline-flex items-center px-3 py-1.5 bg-gray-100 text-gray-500 text-xs font-medium rounded-md">
+                      No Link
+                    </span>
                   )}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -269,11 +273,12 @@ export function ViewInterviews() {
                           copyToClipboard(interview.interviewLink!, interview.id);
                         }}
                         aria-label="Copy link"
+                        className="hover:bg-green-50"
                       >
                         {copiedLinkId === interview.id ? (
-                          <Check className="h-4 w-4 text-green-500" />
+                          <Check className="h-4 w-4 text-green-600" />
                         ) : (
-                          <Copy className="h-4 w-4" />
+                          <Copy className="h-4 w-4 text-green-600" />
                         )}
                       </Button>
                     )}
@@ -285,8 +290,9 @@ export function ViewInterviews() {
                         handleEdit(interview.id);
                       }}
                       aria-label="Edit interview"
+                      className="hover:bg-blue-50"
                     >
-                      <Pencil className="h-4 w-4" />
+                      <Pencil className="h-4 w-4 text-blue-600" />
                     </Button>
                     <Button
                       variant="ghost"
@@ -296,8 +302,9 @@ export function ViewInterviews() {
                           handleDelete(interview.id, interview.title);
                       }}
                       aria-label="Delete interview"
+                      className="hover:bg-red-50"
                     >
-                      <Trash2 className="h-4 w-4" />
+                      <Trash2 className="h-4 w-4 text-red-600" />
                     </Button>
                   </div>
                 </td>

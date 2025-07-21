@@ -42,11 +42,11 @@ const Hero = () => {
             <h1 className="text-6xl md:text-7xl font-bold text-white mb-6 leading-tight animate-fade-in">
               Hire Better Hourly Workers
               <br />
-              <span className="text-[#A1E3FF]">10x Faster</span>
+              <span className="text-[#A1E3FF]">10× Faster</span>
             </h1>
-            <p className="text-xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed animate-fade-in" style={{ animationDelay: '0.2s' }}>
-              Turn your recruiting process on autopilot. Source, interview, and qualify candidates at scale - so you only spend time making the final call.
-            </p>
+            <h2 className="text-xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed animate-fade-in" style={{ animationDelay: '0.2s' }}>
+              Spend less time hiring and more time running your business. ServiceAgent is your AI-powered hiring assistant that instantly interviews every applicant and delivers a shortlist of top candidates — all in hours, not weeks.
+            </h2>
             {/* Key Statistics Highlight */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 animate-fade-in" style={{ animationDelay: '0.3s' }}>
               <div className="bg-white/15 backdrop-blur-sm rounded-xl p-4 border border-white/20">
@@ -54,30 +54,34 @@ const Hero = () => {
                   <Clock className="h-6 w-6 text-[#A1E3FF] mr-2" />
                   <span className="text-2xl font-bold text-white">92%</span>
                 </div>
-                <p className="text-sm text-white/80">Faster time-to-hire</p>
+                <p className="text-sm font-semibold text-white/90 mb-1">Faster Time-to-Hire</p>
+                <p className="text-xs text-white/70">Cut hiring time from weeks to hours.</p>
               </div>
               <div className="bg-white/15 backdrop-blur-sm rounded-xl p-4 border border-white/20">
                 <div className="flex items-center justify-center mb-2">
                   <DollarSign className="h-6 w-6 text-[#A1E3FF] mr-2" />
                   <span className="text-2xl font-bold text-white">87%</span>
                 </div>
-                <p className="text-sm text-white/80">Cost reduction</p>
+                <p className="text-sm font-semibold text-white/90 mb-1">Lower Hiring Costs</p>
+                <p className="text-xs text-white/70">Save thousands on every hire.</p>
               </div>
               <div className="bg-white/15 backdrop-blur-sm rounded-xl p-4 border border-white/20">
                 <div className="flex items-center justify-center mb-2">
                   <Users className="h-6 w-6 text-[#A1E3FF] mr-2" />
-                  <span className="text-2xl font-bold text-white">5x</span>
+                  <span className="text-2xl font-bold text-white">5×</span>
                 </div>
-                <p className="text-sm text-white/80">Better candidates</p>
+                <p className="text-sm font-semibold text-white/90 mb-1">More Qualified Candidates</p>
+                <p className="text-xs text-white/70">AI-filtered top performers only.</p>
               </div>
             </div>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16 animate-fade-in" style={{ animationDelay: '0.4s' }}>
-              <Button size="lg" className="bg-white hover:bg-gray-50 text-[#0B1C2D] shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-12 py-6 text-lg font-semibold border border-white/30 group" onClick={() => window.open('https://calendly.com/serviceagent/30min', '_blank')}>
+              <Link to="/signup">
+                <Button size="lg" className="bg-white hover:bg-transparent text-[#0B1C2D] hover:text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-12 py-6 text-lg font-semibold border border-white/30">
+                  Start Free 7-Day Trial
+                </Button>
+              </Link>
+              <Button size="lg" className="bg-white hover:bg-transparent text-[#0B1C2D] hover:text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-12 py-6 text-lg font-semibold border border-white/30" onClick={() => window.open('https://calendly.com/serviceagent/30min', '_blank')}>
                 Book Demo
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform text-[#0B1C2D]" />
-              </Button>
-              <Button size="lg" variant="outline" className="px-12 py-6 text-lg font-semibold rounded-full border-2 border-white bg-white/10 text-white hover:border-white hover:bg-white hover:text-[#0B1C2D] transition-all duration-300 backdrop-blur-sm" onClick={() => scrollToSection('demo')}>
-                See How It Works
               </Button>
             </div>
           </div>
