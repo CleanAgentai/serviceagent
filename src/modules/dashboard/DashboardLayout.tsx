@@ -10,6 +10,7 @@ import {
   Clipboard,
   LogOut,
   CreditCard,
+  Play
 } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -52,6 +53,11 @@ export default function DashboardLayout() {
       path: "/interviews/responses",
       icon: <Users size={20} />,
       label: "Candidates",
+    },
+    {
+      path: "/dashboard/onboarding",
+      icon: <Play size={20} />,
+      label: "Getting Started",
     },
     {
       path: "/dashboard/settings",
