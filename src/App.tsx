@@ -44,7 +44,7 @@ import { ResetPasswordHandoff } from "./modules/auth/ResetPasswordHandoff";
 import CheckoutSuccess from "./modules/payment/CheckoutSuccess";
 import CancelSubscription from "./modules/payment/ManageSubscriptions";
 import ManageSubscriptions from "./modules/payment/ManageSubscriptions";
-
+import Integrations from "./pages/integrations";
 // Sales Routes
 const SalesRoutes = React.lazy(() => import("@/pages/sales/setup"));
 
@@ -194,6 +194,7 @@ const App = () => {
                     </ProtectedRoute>
                   }
                 >
+
                   <Route index element={<ViewInterviews />} />
                   <Route path="create" element={<CreateInterview />} />
                   <Route path="edit/:interviewId" element={<EditInterview />} />
@@ -203,6 +204,18 @@ const App = () => {
                     element={<ResponseDetails />}
                   />
                   <Route path=":interviewId" element={<ViewResponses />} />
+                </Route>
+                
+                {/* Integrations Route */}
+                                <Route
+                  path="/integrations"
+                  element={
+                    <ProtectedRoute>
+                      <DashboardLayout />
+                    </ProtectedRoute>
+                  }
+                >
+                  <Route index element={<Integrations />} />
                 </Route>
 
                 {/* 404 Route */}
