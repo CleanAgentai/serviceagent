@@ -630,7 +630,7 @@ export function ViewResponses() {
                 <h3 className="text-lg font-semibold mb-2">
                   Performance Rating
                 </h3>
-                <Card className="p-4 bg-blue-50">
+                <Card className="p-4 bg-blue-50 border-none">
                   <div className="flex items-center gap-2">
                     {Array.from({ length: 5 }).map((_, i) => (
                       <Star

@@ -26,7 +26,7 @@ const Demo = () => {
             <div className="aspect-video">
               <div style={{ position: "relative", paddingBottom: "54.270833333333336%", height: 0 }}>
                 <iframe 
-                  src="https://www.loom.com/embed/0ce245979e104aeab5613331002fa3c2?sid=44803711-1b62-437c-8183-bd5f6a90cffb" 
+                  src="https://www.loom.com/share/c6331eb111804e92a20090266c736074?sid=a7df1056-af9a-4c8c-b4f2-561a565e7538" 
                   frameBorder="0" 
                   allowFullScreen
                   style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}

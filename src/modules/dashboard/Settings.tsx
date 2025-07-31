@@ -125,20 +125,23 @@ export default function Settings() {
               </div>
 
               <CompanyProfileForm mode="update" />
-              <div className="flex items-center gap-3 mt-6">
+
+              <div className="w-full max-w-4xl mx-auto mt-6">
+                <div className="grid grid-cols-2 gap-3">
                   <button
                     onClick={() => navigate('/payment/manage-subscription')}
-                    className="inline-flex items-center px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full inline-flex items-center justify-center px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
                     Manage Subscription
                   </button>
                   <button
                     onClick={() => setShowChangePasswordModal(true)}
-                    className="inline-flex items-center px-6 py-2  bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full inline-flex items-center justify-center px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
                     Change Password
                   </button>
                 </div>
+              </div>
             </div>
           </div>
         </div>

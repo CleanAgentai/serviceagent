@@ -37,27 +37,29 @@ const Hero = () => {
 
       <div className="relative z-0 container mx-auto px-4 pt-16 pb-16">
         {/* Enhanced Hero Content */}
-        <div className="max-w-10xl mx-auto text-center mt-16">
+        <div className="max-w-7xl mx-auto text-center mt-16">
           <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-12 shadow-2xl border border-white/20">
             <h1 className="text-6xl md:text-7xl font-bold text-white mb-6 leading-tight animate-fade-in">
-              We Interview All Your Applicants With AI 
+              Reducing Time-To-Hire
               <br />
-              <span className="text-[#A1E3FF]">So You Can Hire Fast Without Wasting Time</span>
+              <span className="text-[#A1E3FF]">By 85%</span>
             </h1>
             <h2 className="text-xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed animate-fade-in" style={{ animationDelay: '0.2s' }}>
-              ServiceAgent handles every interview for you and ranks your best candidates.
+              ServiceAgent cuts your hiring cycle from 3 weeks to 3 days. 
               <br />
-              You hire faster, save hours, and stop dealing with no-shows.
+              Our AI instantly interviews every applicant using video and chat, ranks them
+              <br />
+              on a scale of 1‑10, and stores the full interview for you to review.
             </h2>
             {/* Key Statistics Highlight */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 animate-fade-in" style={{ animationDelay: '0.3s' }}>
               <div className="bg-white/15 backdrop-blur-sm rounded-xl p-4 border border-white/20">
                 <div className="flex items-center justify-center mb-2">
                   <Clock className="h-6 w-6 text-[#A1E3FF] mr-2" />
-                  <span className="text-2xl font-bold text-white">92%</span>
+                  <span className="text-2xl font-bold text-white">10m</span>
                 </div>
-                <p className="text-sm font-semibold text-white/90 mb-1">Faster Hires</p>
-                <p className="text-xs text-white/70">Go from weeks to hours.</p>
+                <p className="text-sm font-semibold text-white/90 mb-1">Go Live in Minutes</p>
+                <p className="text-xs text-white/70">Setup your account and start interviewing new candidates in less than 10 minutes.</p>
               </div>
               <div className="bg-white/15 backdrop-blur-sm rounded-xl p-4 border border-white/20">
                 <div className="flex items-center justify-center mb-2">
@@ -78,14 +80,12 @@ const Hero = () => {
             </div>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16 animate-fade-in" style={{ animationDelay: '0.4s' }}>
               <Link to="/signup">
-                <Button size="lg" className="flex flex-col items-center bg-white hover:bg-transparent text-[#0B1C2D] hover:text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-12 py-8 text-lg font-semibold border border-white/30">
+                <Button size="lg" className="bg-white hover:bg-transparent text-[#0B1C2D] hover:text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-12 py-8 text-lg font-semibold border border-white/30">
                   Start Free 7-Day Trial
-                  <sub className="text-xs font-normal opacity-70">Credit card required. Cancel anytime.</sub>
                 </Button>
               </Link>
-              <Button size="lg" className="flex flex-col items-center bg-white hover:bg-transparent text-[#0B1C2D] hover:text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-12 py-8 text-lg font-semibold border border-white/30" onClick={() => window.open('https://calendly.com/serviceagent/30min', '_blank')}>
+              <Button size="lg" className="bg-white hover:bg-transparent text-[#0B1C2D] hover:text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-12 py-8 text-lg font-semibold border border-white/30" onClick={() => window.open('https://calendly.com/serviceagent/30min', '_blank')}>
                 Book a Demo
-                <sub className="text-xs font-normal opacity-70">See how it works in 15 minutes.</sub>
               </Button>
             </div>
           </div>
