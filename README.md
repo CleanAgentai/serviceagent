@@ -1,4 +1,4 @@
-# ServiceAgent.ai
+# ServiceAgent
 
 ServiceAgent.ai is a modern recruitment platform that leverages AI to streamline the hiring process. Built with React, TypeScript, and integrated with Willo's video interview platform.
 
@@ -45,7 +45,7 @@ npm install
 cp .env.example .env
 ```
 
-4. Update the `.env` file with your Firebase and Willo credentials.
+4. Update the `.env` file with your Supabase and Willo credentials.
 
 5. Start the development server:
 ```bash
@@ -70,13 +70,6 @@ src/
 - Build for production: `npm run build`
 - Run linter: `npm run lint`
 
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch: `git checkout -b feature/my-new-feature`
-3. Commit your changes: `git commit -am 'Add some feature'`
-4. Push to the branch: `git push origin feature/my-new-feature`
-5. Submit a pull request
 
 ## License
 
