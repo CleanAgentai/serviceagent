@@ -174,7 +174,7 @@ const CreateInterview = () => {
   return (
     <div className="max-w-[1200px] mx-auto space-y-8">
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-xl p-8 shadow-md">
+      <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl p-8 shadow-md">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="text-white">
             <button
@@ -207,7 +207,7 @@ const CreateInterview = () => {
                   ? handleCreateInterview
                   : () => setStep(Math.min(4, step + 1))
               }
-              className="px-5 py-2.5 bg-white text-blue-700 text-sm font-medium rounded-lg hover:bg-blue-50 transition-colors shadow-sm"
+              className="px-5 py-2.5 bg-white text-blue-700 text-sm font-medium rounded-lg hover:bg-blue-500 transition-colors shadow-sm"
             >
               {step === 4 ? "Create Interview" : "Next"}
             </button>

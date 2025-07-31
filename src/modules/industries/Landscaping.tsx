@@ -30,11 +30,6 @@ export default function Landscaping() {
         <p className="text-lg text-slate-700 mb-6">
           With ServiceAgent, this commercial landscaping firm automated applicant screening and hired a full field crew—before their competitors even started interviews.
         </p>
-        
-        {/* Large featured image integrated into article */}
-        <div className="my-8">
-          <img src="/LandScapping.svg" alt="Landscaping" className="w-full max-w-2xl h-48 object-cover rounded-lg" />
-        </div>
       </div>
 
       {/* Article content */}

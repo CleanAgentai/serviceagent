@@ -30,11 +30,6 @@ export default function Staffing() {
         <p className="text-lg text-slate-700 mb-6">
           By automating their hiring process with ServiceAgent, this staffing team increased fill rates, reduced admin time, and improved candidate quality across the board.
         </p>
-        
-        {/* Large featured image integrated into article */}
-        <div className="my-8">
-          <img src="/WareHouse.svg" alt="Staffing" className="w-full max-w-2xl h-48 object-cover rounded-lg" />
-        </div>
       </div>
 
       {/* Article content */}

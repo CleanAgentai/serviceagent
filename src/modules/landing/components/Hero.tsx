@@ -35,17 +35,19 @@ const Hero = () => {
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-[#0B1C2D]/10 via-transparent to-[#0E7CFF]/10 animate-gradient-shift"></div>
       </div>
 
-      <div className="relative z-0 container mx-auto px-6 pt-32 pb-16">
+      <div className="relative z-0 container mx-auto px-4 pt-16 pb-16">
         {/* Enhanced Hero Content */}
-        <div className="max-w-4xl mx-auto text-center mt-16">
+        <div className="max-w-10xl mx-auto text-center mt-16">
           <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-12 shadow-2xl border border-white/20">
             <h1 className="text-6xl md:text-7xl font-bold text-white mb-6 leading-tight animate-fade-in">
-              Hire Better Hourly Workers
+              We Interview All Your Applicants With AI 
               <br />
-              <span className="text-[#A1E3FF]">10× Faster</span>
+              <span className="text-[#A1E3FF]">So You Can Hire Fast Without Wasting Time</span>
             </h1>
             <h2 className="text-xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed animate-fade-in" style={{ animationDelay: '0.2s' }}>
-              Spend less time hiring and more time running your business. ServiceAgent is your AI-powered hiring assistant that instantly interviews every applicant and delivers a shortlist of top candidates — all in hours, not weeks.
+              ServiceAgent handles every interview for you and ranks your best candidates.
+              <br />
+              You hire faster, save hours, and stop dealing with no-shows.
             </h2>
             {/* Key Statistics Highlight */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 animate-fade-in" style={{ animationDelay: '0.3s' }}>
@@ -54,8 +56,8 @@ const Hero = () => {
                   <Clock className="h-6 w-6 text-[#A1E3FF] mr-2" />
                   <span className="text-2xl font-bold text-white">92%</span>
                 </div>
-                <p className="text-sm font-semibold text-white/90 mb-1">Faster Time-to-Hire</p>
-                <p className="text-xs text-white/70">Cut hiring time from weeks to hours.</p>
+                <p className="text-sm font-semibold text-white/90 mb-1">Faster Hires</p>
+                <p className="text-xs text-white/70">Go from weeks to hours.</p>
               </div>
               <div className="bg-white/15 backdrop-blur-sm rounded-xl p-4 border border-white/20">
                 <div className="flex items-center justify-center mb-2">
@@ -63,32 +65,34 @@ const Hero = () => {
                   <span className="text-2xl font-bold text-white">87%</span>
                 </div>
                 <p className="text-sm font-semibold text-white/90 mb-1">Lower Hiring Costs</p>
-                <p className="text-xs text-white/70">Save thousands on every hire.</p>
+                <p className="text-xs text-white/70">Save big on every new hire.</p>
               </div>
               <div className="bg-white/15 backdrop-blur-sm rounded-xl p-4 border border-white/20">
                 <div className="flex items-center justify-center mb-2">
                   <Users className="h-6 w-6 text-[#A1E3FF] mr-2" />
                   <span className="text-2xl font-bold text-white">5×</span>
                 </div>
-                <p className="text-sm font-semibold text-white/90 mb-1">More Qualified Candidates</p>
-                <p className="text-xs text-white/70">AI-filtered top performers only.</p>
+                <p className="text-sm font-semibold text-white/90 mb-1">Better Candidates</p>
+                <p className="text-xs text-white/70">AI picks the top performers for you.</p>
               </div>
             </div>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16 animate-fade-in" style={{ animationDelay: '0.4s' }}>
               <Link to="/signup">
-                <Button size="lg" className="bg-white hover:bg-transparent text-[#0B1C2D] hover:text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-12 py-6 text-lg font-semibold border border-white/30">
+                <Button size="lg" className="flex flex-col items-center bg-white hover:bg-transparent text-[#0B1C2D] hover:text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-12 py-8 text-lg font-semibold border border-white/30">
                   Start Free 7-Day Trial
+                  <sub className="text-xs font-normal opacity-70">Credit card required. Cancel anytime.</sub>
                 </Button>
               </Link>
-              <Button size="lg" className="bg-white hover:bg-transparent text-[#0B1C2D] hover:text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-12 py-6 text-lg font-semibold border border-white/30" onClick={() => window.open('https://calendly.com/serviceagent/30min', '_blank')}>
-                Book Demo
+              <Button size="lg" className="flex flex-col items-center bg-white hover:bg-transparent text-[#0B1C2D] hover:text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-12 py-8 text-lg font-semibold border border-white/30" onClick={() => window.open('https://calendly.com/serviceagent/30min', '_blank')}>
+                Book a Demo
+                <sub className="text-xs font-normal opacity-70">See how it works in 15 minutes.</sub>
               </Button>
             </div>
           </div>
         </div>
 
         {/* Scroll Down Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <div className="mt-2 absolute bottom-2 left-1/2 transform -translate-x-1/2 animate-bounce">
           <ChevronDown className="h-8 w-8 text-white/70 cursor-pointer hover:text-white transition-colors" onClick={() => scrollToSection('stats')} />
         </div>
       </div>

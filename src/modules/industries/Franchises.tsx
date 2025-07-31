@@ -30,11 +30,6 @@ export default function Franchises() {
         <p className="text-lg text-slate-700 mb-6">
           This fast-growing franchise used ServiceAgent to centralize and automate its entire recruiting process—cutting hiring time by 68%, boosting hire quality, and freeing up managers to focus on operations instead of resumes.
         </p>
-        
-        {/* Large featured image integrated into article */}
-        <div className="my-8">
-          <img src="/Franchise.svg" alt="Franchises" className="w-full max-w-2xl h-48 object-cover rounded-lg" />
-        </div>
       </div>
 
       {/* Article content */}

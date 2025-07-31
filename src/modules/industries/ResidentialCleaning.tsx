@@ -35,11 +35,6 @@ export default function ResidentialCleaning() {
         <p className="text-lg text-slate-700 mb-6">
           Automating interviews, qualification, and follow-up saved over 50 hours a month and kept every branch fully staffed—all for under $750.
         </p>
-        
-        {/* Large featured image integrated into article */}
-        <div className="my-8">
-          <img src="/CleaningService.svg" alt="Residential Cleaning" className="w-full max-w-2xl h-48 object-cover rounded-lg" />
-        </div>
       </div>
 
       {/* Article content */}

@@ -259,7 +259,7 @@ const ViewInterviews = () => {
       </div>
 
       {/* Interviews Table */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+      <div className="bg-white shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden">
         {/* Table Header */}
         <div className="grid grid-cols-12 gap-4 px-4 py-3 bg-gray-50 border-b border-gray-200 text-xs font-medium text-gray-600 uppercase tracking-wider">
           <div className="col-span-5">
@@ -316,7 +316,7 @@ const ViewInterviews = () => {
                 <div className="col-span-4">
                   <button 
                     onClick={() => setSelectedLink(interview.interviewLink)}
-                    className="inline-flex items-center text-blue-600 hover:text-blue-800"
+                    className="inline-flex items-center text-blue-600 hover:text-blue-700"
                   >
                     <LinkIcon className="h-3.5 w-3.5 mr-1" />
                     <span className="truncate">View Link</span>

@@ -381,7 +381,7 @@ export function ViewResponses() {
         </div>
       </div>
 
-      <Card className="p-4 mb-6">
+      <Card className="p-4 mb-6 shadow-lg hover:shadow-xl transition-all duration-300">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
           <Input
@@ -424,7 +424,7 @@ export function ViewResponses() {
           const demoRating = index % 2 === 0 ? 7 : 8;
 
           return (
-            <Card key={attempt.id} className="p-4">
+            <Card key={attempt.id} className="p-4 shadow-lg hover:shadow-xl transition-all duration-300">
               <div className="grid grid-cols-7 gap-2 items-center">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500">
@@ -482,7 +482,7 @@ export function ViewResponses() {
                   <Button
                     variant="default"
                     onClick={() => handleViewAnalysis(attempt)}
-                    className="bg-[#004aad] hover:bg-[#004aad]/80 text-white shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3 no-underline"
+                    className="bg-blue-600 hover:bg-blue-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3 no-underline"
                   >
                     View AI Analysis
                   </Button>
@@ -542,7 +542,7 @@ export function ViewResponses() {
                         </Select>
                       </div>
                       <div className="flex items-center justify-center space-x-1">
-                        <Button variant="link" className="bg-[#004aad] hover:bg-[#004aad]/80 text-white shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3">
+                        <Button variant="link" className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3">
                           View AI Analysis
                         </Button>
                         <Button
@@ -565,7 +565,7 @@ export function ViewResponses() {
               </p>
               <Button
                 onClick={() => navigate("/payment/subscription")}
-                className="bg-[#004aad] hover:bg-[#004aad]/80 text-white shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3"
+                className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 px-6 py-3"
               >
                 Upgrade Plan to View More
               </Button>
@@ -713,7 +713,7 @@ export function ViewResponses() {
                       },
                     })
                   }
-                  className="w-full bg-[#004aad] hover:bg-[#004aad]/80 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
                 >
                   Full Response Details
                 </Button>

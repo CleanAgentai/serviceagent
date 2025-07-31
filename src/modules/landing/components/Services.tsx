@@ -9,53 +9,54 @@ const Services = () => {
 
   const plans = [
     {
-      title: "Launch",
+      title: "Launch Plan",
       price: isYearly ? "$119" : "$149",
       originalPrice: isYearly ? "$149" : null,
       period: isYearly ? "/month (billed yearly)" : "/month",
       description: "For small businesses getting started",
       features: [
-        "Up to 20 AI interviews/month",
-        "Up to 4 job posts/week",
-        "Interview transcripts & reporting",
-        "AI candidate ranking system",
-        "Email support"
+        "20 AI interviews/month",
+        "4 job posts/week",
+        "Top candidates ranked for you",
+        "Email support",
+        "Saves 10+ hours/month on hiring"
       ],
       popular: false,
       cta: "Start Free Trial",
       ctaLink: "/signup"
     },
     {
-      title: "Scale",
+      title: "Scale Plan",
       price: isYearly ? "$479" : "$599",
       originalPrice: isYearly ? "$599" : null,
       period: isYearly ? "/month (billed yearly)" : "/month",
       description: "For growing companies with higher volume hiring",
       features: [
-        "Up to 100 AI interviews/month",
-        "Up to 20 job posts/week",
-        "Custom branding on candidate interface",
-        "10+ language support for interviews",
-        "Analytics dashboard",
-        "Priority support"
+        "100 AI interviews/month",
+        "20 job posts/week",
+        "Your logo + branding for candidates",
+        "Interview transcripts + analytics",
+        "Priority support",
+        "Integration with your ATS",
+        "Saves 50+ hours/month and fills roles faster"
       ],
       popular: true,
       cta: "Start Free Trial",
       ctaLink: "/signup"
     },
     {
-      title: "Enterprise",
-      price: "Custom",
+      title: "Enterprise Plan",
+      price: "Custom Pricing",
       originalPrice: null,
       period: "",
-      description: "Tailored solutions for large organizations",
+      description: "For franchises, chains, or large teams hiring at scale",
       features: [
-        "Unlimited AI interviews & job posts",
+        "Unlimited AI interviews + job posts",
+        "24/7 phone support",
         "Dedicated account manager",
-        "White-glove onboarding",
-        "White-label solution",
-        "Custom integrations",
-        "24/7 phone support"
+        "Custom branding + white-label",
+        "Integration with your ATS",
+        "Let our team set everything for you",
       ],
       popular: false,
       cta: "Contact Sales",
@@ -71,13 +72,13 @@ const Services = () => {
       </div>
       <div className="relative z-10 container mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-slate-900 mb-4">Simple Pricing, Powerful Results</h2>
-          <p className="text-xl text-slate-600 max-w-2xl mx-auto">Flexible plans for any size business. Start with a 7-day free trial of any plan – no upfront commitment.</p>
+          <h2 className="text-4xl font-bold text-slate-900 mb-4">Simple Pricing That Pays for Itself</h2>
+          <p className="text-xl text-slate-600 max-w-2xl mx-auto">Start with a 7-day free trial. No setup fees. Cancel anytime.</p>
         </div>
         <div className="flex justify-center mb-16">
-          <div className="flex items-center space-x-4 bg-white/80 backdrop-blur-sm rounded-full p-1 shadow-lg border border-[#0E7CFF]/20">
-            <button onClick={() => setIsYearly(false)} className={`px-6 py-2 rounded-full font-medium transition-all duration-300 ${!isYearly ? 'bg-[#0E7CFF] text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}>Monthly</button>
-            <button onClick={() => setIsYearly(true)} className={`px-6 py-2 rounded-full font-medium transition-all duration-300 ${isYearly ? 'bg-[#0E7CFF] text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}>Yearly (Save 20%)</button>
+          <div className="flex items-center space-x-4 bg-white/80 backdrop-blur-sm rounded-full p-1 shadow-lg border border-gray-200">
+            <button onClick={() => setIsYearly(false)} className={`px-6 py-2 rounded-full font-medium transition-all duration-300 ${!isYearly ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}>Monthly</button>
+            <button onClick={() => setIsYearly(true)} className={`px-6 py-2 rounded-full font-medium transition-all duration-300 ${isYearly ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}>Yearly (Save 20%)</button>
           </div>
         </div>
         <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto items-stretch">

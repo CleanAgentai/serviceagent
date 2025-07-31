@@ -5,32 +5,32 @@ const stats = [
   {
     icon: Clock,
     value: "85%",
-    label: "Less Time Spent on Hiring",
-    description: "We automate repetitive tasks like posting, initial screening, and follow-ups. Customers report cutting time spent on hiring from 20 hours a week to just 2 hours."
+    label: "Less Time on Hiring",
+    description: "Owners went from spending 20 hours a week to just 2."
   },
   {
     icon: Zap,
     value: "100%",
-    label: "of Applicants Interviewed in 5 Minutes",
-    description: "Every applicant gets an interview immediately via AI. No one slips through the cracks or waits weeks – no ghosting, no bottlenecks in your pipeline."
+    label: "of Applicants Interviewed in Minutes",
+    description: "Every single applicant gets interviewed by AI — right away."
   },
   {
     icon: Target,
     value: "5×",
-    label: "More Predictive than Manual Screening",
-    description: "Our AI, trained on 1M+ hiring data points, identifies top performers with 5× greater accuracy than a quick resume scan. In short, you get better hires with less guesswork."
+    label: "More Accurate Than Guesswork",
+    description: "No more quick hires that don’t work out. We pick the top talent for you."
   },
   {
     icon: Play,
     value: "10",
     label: "Live in 10 Minutes",
-    description: "Get set up and post your first job in minutes. No technical setup or training needed – if you can fill out a form, you're ready to go. (Yes, it's really that fast.)"
+    description: "No training or tech headaches. Just log in and post."
   },
   {
     icon: Building,
     value: "100+",
     label: "Companies Trust Us",
-    description: "From local mom-and-pop shops to national franchises, service businesses across the country rely on ServiceAgent to staff their teams. We grow with you."
+    description: "From growing cleaning teams to national franchises."
   }
 ];
 
@@ -46,10 +46,10 @@ const Statistics = () => {
       <div className="relative z-0 container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-slate-900 mb-4">
-            Proven Results That Transform Hiring
+            Real Results from Real Businesses
           </h2>
           <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-            Join 100+ service businesses who have supercharged their hiring process.
+            100+ service teams use ServiceAgent to hire faster and smarter.
           </p>
         </div>
 
@@ -73,23 +73,11 @@ const Statistics = () => {
             </Card>
           ))}
         </div>
-
-        {/* Featured Stats Section */}
-        <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-          <div className="text-center bg-white/50 backdrop-blur-sm rounded-2xl p-8 border border-white/30">
-            <div className="text-5xl font-bold text-[#0E7CFF] mb-2">92%</div>
-            <div className="text-lg font-semibold text-slate-800 mb-2">Faster Time-to-Hire</div>
-            <div className="text-sm text-slate-600">Cut your hiring timeline from weeks down to hours.</div>
-          </div>
-          <div className="text-center bg-white/50 backdrop-blur-sm rounded-2xl p-8 border border-white/30">
-            <div className="text-5xl font-bold text-[#0E7CFF] mb-2">87%</div>
-            <div className="text-lg font-semibold text-slate-800 mb-2">Cost Savings per Hire</div>
-            <div className="text-sm text-slate-600">Save on job ads, admin time, and bad hires.</div>
-          </div>
-                      <div className="text-center bg-white/50 backdrop-blur-sm rounded-2xl p-8 border border-white/30">
-            <div className="text-5xl font-bold text-[#0E7CFF] mb-2">5×</div>
-            <div className="text-lg font-semibold text-slate-800 mb-2">Better Candidates</div>
-            <div className="text-sm text-slate-600">Focus only on top-tier applicants.</div>
+        <div className="relative z-0 container mx-auto px-6">
+          <div className="text-center mt-16 mb-8">
+            <p className="text-xl text-slate-600 max-w-2xl mx-auto">
+              We save owners time, money, and stress — without changing how they already work.
+            </p>
           </div>
         </div>
       </div>

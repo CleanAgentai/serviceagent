@@ -564,7 +564,7 @@ export default function CreateInterview() {
             </div>
 
             <div className="flex justify-end">
-              <Button type="button" onClick={nextTab} className="bg-[#004aad] hover:bg-[#004aad]/80 text-white shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3">
+              <Button type="button" onClick={nextTab} className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 px-6 py-3">
                 Next: Questions
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -576,7 +576,7 @@ export default function CreateInterview() {
         return (
           <div className="space-y-8">
             {formData.questions.map((question, index) => (
-              <Card key={question.id} className="relative">
+              <Card key={question.id} className="relative border-0 shadow-lg hover:shadow-xl transition-all duration-300">
                 <CardHeader className="pb-3">
                   <div className="flex justify-between items-center">
                     <CardTitle className="text-lg">
@@ -775,7 +775,7 @@ export default function CreateInterview() {
               </Card>
             ))}
 
-            <Button variant="outline" onClick={addQuestion} className="w-full">
+            <Button variant="outline" onClick={addQuestion} className="w-full bg-white text-black shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3 border border-gray-200 focus:z-10">
               <Plus className="h-4 w-4 mr-1" />
               Add Question
             </Button>
@@ -790,7 +790,7 @@ export default function CreateInterview() {
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Previous
               </Button>
-              <Button type="button" onClick={nextTab} className="bg-[#004aad] hover:bg-[#004aad]/80 text-white shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3">
+              <Button type="button" onClick={nextTab} className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 px-6 py-3">
                 Next: Settings
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -823,7 +823,7 @@ export default function CreateInterview() {
                     onCheckedChange={(checked) =>
                       handleBasicDetailsChange("showHints", checked)
                     }
-                    className="data-[state=checked]:bg-[#004aad]"
+                    className="data-[state=checked]:bg-blue-600"
                   />
                 </div>
 
@@ -845,7 +845,7 @@ export default function CreateInterview() {
                     onCheckedChange={(checked) =>
                       handleBasicDetailsChange("showAvailability", checked)
                     }
-                    className="data-[state=checked]:bg-[#004aad]"
+                    className="data-[state=checked]:bg-blue-600"
                   />
                 </div>
 
@@ -889,7 +889,7 @@ export default function CreateInterview() {
                   <ArrowLeft className="mr-2 h-4 w-4" />
                   Previous
                 </Button>
-                <Button type="button" onClick={handleSubmit} disabled={loading} className="bg-[#004aad] hover:bg-[#004aad]/80 text-white shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3">
+                <Button type="button" onClick={handleSubmit} disabled={loading} className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 px-6 py-3">
                   {loading ? "Creating..." : "Create Interview"}
                 </Button>
               </div>
@@ -913,7 +913,7 @@ export default function CreateInterview() {
 
       {!interviewLink && (
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-3 border-0 shadow-lg hover:shadow-xl transition-all duration-300">
             <TabsTrigger value="basic-details">Basic Details</TabsTrigger>
             <TabsTrigger value="questions">Interview Questions</TabsTrigger>
             <TabsTrigger value="settings">Settings</TabsTrigger>

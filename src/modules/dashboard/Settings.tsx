@@ -121,23 +121,24 @@ export default function Settings() {
                     Manage your company information and branding
                   </p>
                 </div>
-                <div className="flex items-center gap-3">
+             
+              </div>
+
+              <CompanyProfileForm mode="update" />
+              <div className="flex items-center gap-3 mt-6">
                   <button
                     onClick={() => navigate('/payment/manage-subscription')}
-                    className="inline-flex items-center px-6 py-2 bg-[#004aad] hover:bg-[#004aad]/80 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                    className="inline-flex items-center px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
                     Manage Subscription
                   </button>
                   <button
                     onClick={() => setShowChangePasswordModal(true)}
-                    className="inline-flex items-center px-6 py-2 bg-[#004aad] hover:bg-[#004aad]/80 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                    className="inline-flex items-center px-6 py-2  bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
                     Change Password
                   </button>
                 </div>
-              </div>
-
-              <CompanyProfileForm mode="update" />
             </div>
           </div>
         </div>

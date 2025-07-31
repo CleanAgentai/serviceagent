@@ -80,6 +80,7 @@ export default function DashboardLayout() {
                 src="/Banner_SA_new.svg"
                 alt="ServiceAgent Logo"
                 className="h-14 w-auto"
+                draggable={false}
               />
             </div>
           </div>
@@ -118,6 +119,7 @@ export default function DashboardLayout() {
                 src="/Banner_SA_new.svg"
                 alt="ServiceAgent Logo"
                 className="h-10 w-auto"
+                draggable={false}
               />
               <Button
                 variant="ghost"

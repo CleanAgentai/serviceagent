@@ -30,11 +30,6 @@ export default function Hospitality() {
         <p className="text-lg text-slate-700 mb-6">
           By automating their hiring process with ServiceAgent, this hotel chain filled 67 positions across 12 properties in just 3 weeks while dramatically improving employee retention and guest satisfaction scores.
         </p>
-        
-        {/* Large featured image integrated into article */}
-        <div className="my-8">
-          <img src="/Hotel.svg" alt="Hospitality" className="w-full max-w-2xl h-48 object-cover rounded-lg" />
-        </div>
       </div>
 
       {/* Article content */}

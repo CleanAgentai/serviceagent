@@ -30,11 +30,6 @@ export default function HVAC() {
         <p className="text-lg text-slate-700 mb-6">
           Using ServiceAgent to automate applicant screening, this HVAC company filled 7 technician roles in under 3 weeks, reduced time-to-hire by 68%, and freed up over 45 hours of admin time—all during peak season.
         </p>
-        
-        {/* Large featured image integrated into article */}
-        <div className="my-8">
-          <img src="/HVAC.svg" alt="HVAC" className="w-full max-w-2xl h-48 object-cover rounded-lg" />
-        </div>
       </div>
 
       {/* Article content */}

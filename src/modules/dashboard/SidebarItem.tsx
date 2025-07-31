@@ -29,10 +29,10 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
     <Button
       variant={isActive ? "secondary" : "ghost"}
       className={cn(
-        "w-full justify-start text-sm font-medium",
+        "w-full justify-start text-sm font-medium rounded-none",
         isActive 
           ? "bg-secondary text-secondary-foreground"
-          : "text-[#004aad] hover:text-[#004aad] hover:bg-muted"
+          : "text-blue-600 hover:text-blue-700 hover:bg-muted"
       )}
       onClick={handleClick}
     >
