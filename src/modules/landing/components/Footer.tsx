@@ -113,7 +113,7 @@ export function Footer() {
           <div className="md:w-1/2">
             <div className="text-2xl font-bold mb-4">ServiceAgent</div>
             <p className="text-slate-400 mb-6 max-w-md">
-              The AI recruiter – source, interview, and qualify candidates at scale.
+              ServiceAgent helps you hire faster by doing the interviews for you.
             </p>
             <div className="flex space-x-4">
               <a href="https://x.com/porter2301" className="text-slate-400 hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">

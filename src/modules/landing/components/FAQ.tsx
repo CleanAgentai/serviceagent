@@ -8,27 +8,27 @@ import {
 const faqs = [
   {
     question: "How does ServiceAgent's AI interviewing work?",
-    answer: "ServiceAgent conducts interviews via an AI chatbot (or video) immediately after someone applies. The AI asks a structured set of questions that you'd typically ask in a first-round interview – for example, work experience, availability, situational judgment questions. It then analyzes the responses in real-time. You'll see a summarized interview report for each candidate, along with an objective score. In short, every applicant gets a fair, fast interview without you lifting a finger, and you get consistent data to compare candidates."
+    answer: "Right after someone applies, our AI interviews them by chat or video with no scheduling needed. It asks key questions like experience, availability, and attitude. You get a clear report and score for every applicant, without lifting a finger."
   },
   {
-    question: "What types of roles or industries does ServiceAgent support?",
-    answer: "We're built for service industry hiring. Think of roles like cleaners, HVAC technicians, landscapers, plumbers, electricians, front-desk staff – any hourly or skilled trade positions. Our AI interviews are customizable to fit each role. Whether you're a cleaning company hiring dozens of cleaners or a small HVAC business hiring your first technician, ServiceAgent can adapt to your needs. (And if you ever need help tailoring it to a unique role, our support team is here to assist.)"
+    question: "What types of jobs does it work best for?",
+    answer: "We’re built for field service jobs like cleaners, technicians, kitchen staff, landscapers, and more. If you hire hourly workers or skilled trades, ServiceAgent fits. Major franchise or growing teams, we’ve got you covered."
   },
   {
-    question: "How much time will ServiceAgent really save me?",
-    answer: "Customers report saving dozens of hours per hire. On average, owners see about an 85% reduction in time spent on hiring tasks. For example, one user used to spend 20 hours a week on hiring and cut that down to ~2 hours using ServiceAgent. By automating job posting, scheduling, and initial interviews, you reclaim your time and can focus on only the final round interviews and hiring decisions. Many roles that used to take a month to fill can now be filled in under a week – a huge time savings for your business."
+    question: "How much time will this really save me?",
+    answer: "Most users cut their hiring time by 85%. One owner went from 20 hours/week to 2. No more chasing down no-shows or wasting time on bad interviews."
   },
   {
-    question: "What's the setup process like? Do I need technical skills?",
-    answer: "Setup is extremely quick and non-technical. You sign up for a free trial (just a simple form). Once in, you'll enter basic info about the job you're hiring for (job title, description, requirements). That's it – ServiceAgent's platform then takes over by distributing the job post and activating the AI interviews. The whole setup and posting process takes about 10 minutes. You don't need any special technical knowledge or additional software. And if you do use an ATS or other HR software, ServiceAgent can integrate with it seamlessly, but it's absolutely not required to start."
+    question: "Is setup hard? Do I need tech skills?",
+    answer: "Nope. It takes about 10 minutes. Just fill in your job details and we’ll do the rest. No special software or training needed. Use your ATS or run it solo."
   },
   {
-    question: "How accurate is ServiceAgent's AI screening? Can it really find better candidates than a person can?",
-    answer: "Our AI isn't here to replace your judgment – it's here to enhance it. ServiceAgent's screening AI has been trained on over 1,000,000+ hiring decisions and outcomes, allowing it to predict candidate success much better than hunches or cursory resume glances. In tests, our AI's candidate rankings were 5× more predictive of on-the-job success compared to traditional manual screening. It uses consistent criteria for every applicant (no human bias or tired eyes), so you won't miss hidden gems. Of course, you make the final call on who to hire, but ServiceAgent ensures you're looking at the best of the best first."
+    question: "Can the AI really find better candidates than me?",
+    answer: "Yes, but you still make the final call. Our AI was trained on over 1 million hiring decisions. It ranks applicants by who’s most likely to succeed, without bias or burnout. You get a smarter shortlist, faster."
   },
   {
-    question: "Can I customize the interview questions or criteria?",
-    answer: "Yes, definitely. ServiceAgent comes with expert-designed interview templates for common service roles, but you have full control to customize them. You can add your own questions – for example, ask about a specific certification or include a scenario question relevant to your business. You can also adjust the importance of certain answers in the scoring (for instance, if having a driver's license is non-negotiable, the AI can weight that heavily). The system is flexible: use it out-of-the-box or tailor it to fit your idea of an ideal hire. Either way, the AI will handle the heavy lifting of asking and evaluating the answers."
+    question: "Can I change the questions or scoring?",
+    answer: "Yes.You can use our proven templates or fully customize your interviews. Add questions about driving, licenses, experience or whatever matters most. The AI will score them based on what you care about."
   }
 ];
 

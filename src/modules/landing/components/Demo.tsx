@@ -39,7 +39,7 @@ const Demo = () => {
             <Link to="/signup">
               <Button 
                 size="lg" 
-                className="bg-[#0E7CFF] hover:bg-[#0B1C2D] text-white px-12 py-6 text-lg rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 mb-4"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 text-lg rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 mb-4"
               >
                 Try It Free for 7 Days
                 <ArrowRight className="ml-2 h-5 w-5" />
@@ -48,7 +48,7 @@ const Demo = () => {
             <div className="mt-4">
               <button 
                 onClick={() => window.open('https://calendly.com/serviceagent/30min', '_blank')}
-                className="text-[#0E7CFF] hover:text-[#0B1C2D] underline transition-colors duration-300"
+                className="text-blue-600 hover:text-blue-700 underline transition-colors duration-300"
               >
                 Prefer a personal touch? Book a live demo.
               </button>

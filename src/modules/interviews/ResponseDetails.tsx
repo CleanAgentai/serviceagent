@@ -258,7 +258,7 @@ export function ResponseDetails() {
     if (activeTab === "questions") {
       return (
         <div className="grid grid-cols-2 gap-6">
-          <Card className="p-6">
+          <Card className="p-6 shadow-lg">
             <h2 className="text-lg font-semibold mb-4">Interview Questions</h2>
             <div className="space-y-4">
               {response.questions.map((q) => (
@@ -279,7 +279,7 @@ export function ResponseDetails() {
             </div>
           </Card>
 
-          <Card className="p-6">
+          <Card className="p-6 shadow-lg">
             <h2 className="text-lg font-semibold mb-4">Transcript</h2>
             {selectedQuestion ? (
               <>
@@ -311,7 +311,7 @@ export function ResponseDetails() {
     } else if (activeTab === "reviews") {
         return (
           <div className="space-y-6">
-            <Card className="p-6">
+            <Card className="p-6 shadow-lg">
               <h2 className="text-xl font-semibold mb-4">Overall Rating</h2>
               <div className="flex items-center gap-4">
                 <span className="text-4xl font-bold text-blue-600">
@@ -321,7 +321,7 @@ export function ResponseDetails() {
               </div>
             </Card>
 
-            <Card className="p-6">
+            <Card className="p-6 shadow-lg">
               <h2 className="text-xl font-semibold mb-4">Ratings</h2>
               <div className="overflow-x-auto">
                 <table className="w-full">
@@ -400,7 +400,7 @@ export function ResponseDetails() {
 
             <div>
               <h2 className="text-xl font-semibold mb-4">AI Analysis</h2>
-              <Card className="p-6 mb-4 bg-blue-50">
+              <Card className="p-6 mb-4 bg-blue-50 shadow-lg">
                 <div className="flex items-start gap-3">
                   <MessageCircle className="w-5 h-5 text-blue-600 mt-1" />
                   <div>
@@ -415,7 +415,7 @@ export function ResponseDetails() {
               </Card>
 
               <div className="grid grid-cols-2 gap-4">
-                <Card className="p-6 bg-green-50">
+                <Card className="p-6 bg-green-50 shadow-lg">
                   <h3 className="font-medium text-green-900 mb-3">Strengths</h3>
                   <ul className="space-y-2">
                     {response.aiAnalysis.strengths.map((strength, index) => (
@@ -427,7 +427,7 @@ export function ResponseDetails() {
                   </ul>
                 </Card>
 
-                <Card className="p-6 bg-red-50">
+                <Card className="p-6 bg-red-50 shadow-lg">
                   <h3 className="font-medium text-red-900 mb-3">Weaknesses</h3>
                   <ul className="space-y-2">
                     {response.aiAnalysis.weaknesses.map((weakness, index) => (

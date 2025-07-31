@@ -123,10 +123,10 @@ const IndustriesSlider = () => {
       <div className="relative z-10 container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-slate-900 mb-4">
-            Explore ServiceAgent Success by Industry
+            See How ServiceAgent Works in Your Industry
           </h2>
           <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-            See how ServiceAgent is transforming hiring for every field service sector.
+            We help cleaning, pest control, and restaurant businesses hire faster, better people without all the stress.
           </p>
         </div>
         <div className="max-w-5xl mx-auto">

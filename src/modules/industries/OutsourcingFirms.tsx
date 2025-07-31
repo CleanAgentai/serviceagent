@@ -30,11 +30,6 @@ export default function OutsourcingFirms() {
         <p className="text-lg text-slate-700 mb-6">
           By automating their hiring process with ServiceAgent, this outsourcing firm quadrupled their workforce while maintaining quality standards and reducing hiring costs by 60%.
         </p>
-        
-        {/* Large featured image integrated into article */}
-        <div className="my-8">
-          <img src="/Call Service.svg" alt="Outsourcing Firms" className="w-full max-w-2xl h-48 object-cover rounded-lg" />
-        </div>
       </div>
 
       {/* Article content */}

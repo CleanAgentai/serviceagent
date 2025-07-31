@@ -30,11 +30,6 @@ export default function CommercialCleaning() {
         <p className="text-lg text-slate-700 mb-6">
           By automating candidate screening and interviews with ServiceAgent, this growing commercial cleaning business eliminated interview no-shows, cut time-to-hire from 10 days to under 3, and fully staffed a new facility in just two weeks.
         </p>
-        
-        {/* Large featured image integrated into article */}
-        <div className="my-8">
-          <img src="/ComClean (1).svg" alt="Commercial Cleaning" className="w-full max-w-2xl h-48 object-cover rounded-lg" />
-        </div>
       </div>
 
       {/* Article content */}

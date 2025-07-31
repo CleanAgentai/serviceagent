@@ -397,7 +397,7 @@ export default function EditInterview() {
                 />
               </div>
               <div className="flex justify-end">
-                <Button type="button" onClick={nextTab} className="bg-[#004aad] hover:bg-[#004aad]/80 text-white shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3">
+                <Button type="button" onClick={nextTab} className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 px-6 py-3">
                   Next: Questions
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
@@ -565,7 +565,7 @@ export default function EditInterview() {
                   <ArrowLeft className="mr-2 h-4 w-4" />
                   Previous
                 </Button>
-                <Button type="button" onClick={nextTab} className="bg-[#004aad] hover:bg-[#004aad]/80 text-white shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3">
+                <Button type="button" onClick={nextTab} className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 px-6 py-3">
                   Next: Settings
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
@@ -590,7 +590,7 @@ export default function EditInterview() {
                       id="showHints"
                       checked={formData.showHints}
                       onCheckedChange={(checked) => handleBasicDetailsChange("showHints", checked)}
-                      className="data-[state=checked]:bg-[#004aad]"
+                      className="data-[state=checked]:bg-blue-600"
                     />
                   </div>
                   <div className="flex items-center justify-between">
@@ -606,7 +606,7 @@ export default function EditInterview() {
                       id="showAvailability"
                       checked={formData.showAvailability}
                       onCheckedChange={(checked) => handleBasicDetailsChange("showAvailability", checked)}
-                      className="data-[state=checked]:bg-[#004aad]"
+                      className="data-[state=checked]:bg-blue-600"
                     />
                   </div>
                   <div className="space-y-2">
@@ -640,10 +640,10 @@ export default function EditInterview() {
                     <ArrowLeft className="mr-2 h-4 w-4" />
                     Previous
                   </Button>
-                  <Button type="button" onClick={handleApply} disabled={!isChanged} className="bg-[#004aad] hover:bg-[#004aad]/80 text-white shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3">
+                  <Button type="button" onClick={handleApply} disabled={!isChanged} className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xlfocus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 px-6 py-3">
                     Apply
                   </Button>
-                  <Button type="button" variant="destructive" onClick={handleCancel} className="bg-red-600 hover:bg-red-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3">
+                  <Button type="button" variant="destructive" onClick={handleCancel} className="bg-red-600 hover:bg-red-700 text-white shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-300 px-6 py-3">
                     Cancel
                   </Button>
                 </div>

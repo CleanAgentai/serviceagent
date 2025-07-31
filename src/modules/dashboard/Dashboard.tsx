@@ -330,7 +330,7 @@ const Dashboard = () => {
             </div>
             <button
               onClick={() => navigate("/interviews")}
-              className="text-sm text-[#1E529D] font-medium flex items-center hover:text-[#1E529D]/90 transition-colors"
+              className="text-sm text-blue-500 font-medium flex items-center hover:text-blue-500/90 transition-colors"
             >
               View All
               <ChevronRight className="h-4 w-4 ml-1" />
@@ -355,7 +355,7 @@ const Dashboard = () => {
               </p>
               <button
                 onClick={() => navigate("/interviews/create")}
-                className="inline-flex items-center px-6 py-2 bg-[#004aad] hover:bg-[#004aad]/80 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                className="inline-flex items-center px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <Plus className="h-4 w-4 mr-2" />
                 Create Interview

@@ -30,11 +30,6 @@ export default function PestControl() {
         <p className="text-lg text-slate-700 mb-6">
           By automating their hiring process with ServiceAgent, this pest control company filled 9 technician roles in under two weeks—while improving quality and reducing burnout across the team.
         </p>
-        
-        {/* Large featured image integrated into article */}
-        <div className="my-8">
-          <img src="/Pest.svg" alt="Pest Control" className="w-full max-w-2xl h-48 object-cover rounded-lg" />
-        </div>
       </div>
 
       {/* Article content */}

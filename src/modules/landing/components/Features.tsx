@@ -5,20 +5,20 @@ import LogoCarousel from "./LogoCarousel";
 const features = [
   {
     icon: Send,
-    title: "Post Job",
-    description: "Post your job onto your preferred job boards, LinkedIn, & website to receive applicants.",
+    title: "Post Your Job",
+    description: "Post to Indeed, Facebook, or anywhere you already get applicants. We’ll start tracking them right away.",
     step: "01"
   },
   {
     icon: Bot,
-    title: "Instant AI Interviews", 
-    description: "Within minutes of applying, every candidate gets a personalized AI-driven interview via chat or video.",
+    title: "AI Interviews Every Applicant", 
+    description: "Our AI interviews with each candidate right after they apply — no scheduling or follow-up needed.",
     step: "02"
   },
   {
     icon: Users,
-    title: "Instant Candidate Ranking",
-    description: "AI scores and ranks applicants, delivering a shortlist of top matches ready for you to contact.",
+    title: "Get a Shortlist of Top Picks",
+    description: "We score every applicant and send you a ranked list so you only review the best ones.",
     step: "03"
   }
 ];
@@ -35,10 +35,10 @@ const Features = () => {
       <div className="relative z-0 container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-slate-900 mb-4">
-            How ServiceAgent Works
+            How It Works
           </h2>
           <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-            Three simple steps to transform your hiring process and find the perfect candidates faster.
+            3 simple steps to save hours and hire faster.
           </p>
         </div>
 

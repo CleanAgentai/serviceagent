@@ -15,42 +15,46 @@ const CTA = () => {
       <div className="relative z-10 container mx-auto px-6">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Ready to Transform Your Hiring?
+            Want to Stop Wasting Time on Hiring?
           </h2>
           <p className="text-xl text-[#A1E3FF]/90 mb-8 max-w-2xl mx-auto">
-            Join hundreds of service businesses using ServiceAgent to hire faster, smarter, and more cost‑effectively.
+            Join 100+ service businesses using AI to interview every applicant 24/7. 
+            <br />
+            No more ghosting. No more bad hires.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <Link to="/signup">
               <Button 
                 size="lg" 
-                className="bg-white hover:bg-transparent text-[#0B1C2D] hover:text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-12 py-6 text-lg font-semibold border border-white/30"
+                className="flex flex-col items-center bg-white hover:bg-transparent text-[#0B1C2D] hover:text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-12 py-8 text-lg font-semibold border border-white/30"
               >
-                Start Your Free 7 Day Trial
+                Start Free 7 Day Trial
+                <sub className="text-xs font-normal opacity-70">Credit card required. Cancel anytime.</sub>
               </Button>
             </Link>
             <Button 
               size="lg" 
-              className="bg-white hover:bg-transparent text-[#0B1C2D] hover:text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-12 py-6 text-lg font-semibold border border-white/30"
+              className="flex flex-col items-center bg-white hover:bg-transparent text-[#0B1C2D] hover:text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-12 py-8 text-lg font-semibold border border-white/30"
               onClick={() => window.open('https://calendly.com/serviceagent/30min', '_blank')}
             >
-              Book a Demo
+              Book a 15-Min Demo
+              <sub className="text-xs font-normal opacity-70">We’ll show you how it works fast.</sub>
             </Button>
           </div>
 
           <div className="flex items-center justify-center gap-3 md:gap-6 text-[#A1E3FF]/90 text-xs md:text-sm">
             <div className="flex items-center whitespace-nowrap">
               <CheckCircle className="h-4 w-4 mr-1 md:h-5 md:w-5 md:mr-2" />
-              <span>No credit card required</span>
+              <span>AI interviews every applicant instantly</span>
             </div>
             <div className="flex items-center whitespace-nowrap">
               <CheckCircle className="h-4 w-4 mr-1 md:h-5 md:w-5 md:mr-2" />
-              <span>Free strategy consultation</span>
+              <span>Credit card required for trial</span>
             </div>
             <div className="flex items-center whitespace-nowrap">
               <CheckCircle className="h-4 w-4 mr-1 md:h-5 md:w-5 md:mr-2" />
-              <span>Cancel anytime</span>
+              <span>Cancel anytime with no hassle</span>
             </div>
           </div>
         </div>

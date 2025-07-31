@@ -30,11 +30,6 @@ export default function Restaurants() {
         <p className="text-lg text-slate-700 mb-6">
           By automating their hiring process with ServiceAgent, this restaurant chain filled 45 positions across 8 locations in just 2 weeks while dramatically improving employee retention and reducing management workload.
         </p>
-        
-        {/* Large featured image integrated into article */}
-        <div className="my-8">
-          <img src="/Resturant.svg" alt="Restaurants" className="w-full max-w-2xl h-48 object-cover rounded-lg" />
-        </div>
       </div>
 
       {/* Article content */}

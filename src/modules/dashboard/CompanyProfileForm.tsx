@@ -376,7 +376,7 @@ export function CompanyProfileForm({
         </CardContent>
 
         <CardFooter className="flex justify-end gap-2">
-          <Button type="submit" disabled={loading} className="w-full flex items-center justify-center bg-[#004aad] hover:bg-[#004aad]/80 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-md px-6 py-3 disabled:opacity-50 disabled:cursor-not-allowed">
+          <Button type="submit" disabled={loading} className="w-full flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-md px-6 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed">
             {loading ? "Saving..." : "Save Company Profile"}
           </Button>
         </CardFooter>

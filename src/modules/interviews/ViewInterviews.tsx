@@ -176,7 +176,7 @@ export function ViewInterviews() {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Interviews</h1>
         <Button
-          className="flex items-center gap-2 bg-[#004aad] hover:bg-[#004aad]/80 text-white shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3"
+          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           onClick={() => navigate("/interviews/create")}
         >
           <Plus className="w-4 h-4" />
@@ -184,7 +184,7 @@ export function ViewInterviews() {
         </Button>
       </div>
 
-      <Card className="p-4 mb-6">
+      <Card className="p-4 mb-6 border-0 shadow-lg hover:shadow-xl transition-all duration-300">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
           <Input
@@ -197,7 +197,7 @@ export function ViewInterviews() {
         </div>
       </Card>
 
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      <div className="bg-white rounded-lg border-0 shadow-lg overflow-hidden">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
@@ -251,7 +251,7 @@ export function ViewInterviews() {
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={(e) => e.stopPropagation()}
-                      className="inline-flex items-center px-3 py-1.5 bg-[#004aad] hover:bg-[#004aad]/80 text-white text-xs font-medium rounded-md shadow-sm hover:shadow-md transition-all duration-200"
+                      className="inline-flex items-center px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-md shadow-sm hover:shadow-md transform hover:scale-101 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     >
                       <LinkIcon className="w-3 h-3 mr-1.5" />
                       Open Link
