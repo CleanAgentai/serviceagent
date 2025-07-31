@@ -47,61 +47,65 @@ const Integrations: React.FC = () => {
     try {
       console.log("🔄 Starting fetchSessionToken...");
       const user = await fetchCurrentUser();
-      console.log("👤 User fetched:", user);
+      console.log("👤 User fetched successfully");
       
-      const apiUrl = `${apiBaseUrl}/api/knit/session-token`;
-      console.log("🌐 API URL:", apiUrl);
-      console.log("📦 Request payload:", {
-        userId: user.id,
-        orgName: user.companyName,
-        email: user.email,
-      });
+      // Validate API configuration
+      if (!apiBaseUrl) {
+        console.error("❌ API base URL not configured");
+        setError("API base URL not configured");
+        return;
+      }
+
+      
+      const apiUrl = `${apiBaseUrl}/api/knit/auth/session`;
+      console.log("🌐 Initiating auth session...");
+      
+      // Updated to match backend controller field names
+      const requestPayload = {
+        originOrgId: user.id, // Using user.id as org identifier
+        originOrgName: user.companyName,
+        originUserEmail: user.email,
+        originUserName: user.email.split('@')[0] // Extract username from email
+      };
+      console.log("📦 Sending auth request...");
       
       const resp = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userId: user.id,
-          orgName: user.companyName,
-          email: user.email,
-        }),
+        body: JSON.stringify(requestPayload),
       });
-      
-      console.log("📡 Response status:", resp.status);
-      console.log("📡 Response headers:", Object.fromEntries(resp.headers.entries()));
       
       if (!resp.ok) {
         const responseText = await resp.text();
-        console.error("❌ Response not OK. Status:", resp.status);
-        console.error("❌ Response text:", responseText);
-        throw new Error(`API error: ${resp.status} - ${responseText}`);
+        console.error("❌ Auth request failed. Status:", resp.status);
+        throw new Error(`Authentication failed: ${resp.status}`);
       }
       
       const responseText = await resp.text();
-      console.log("📄 Raw response text:", responseText);
+      console.log("📄 Response received");
       
       let responseData;
       try {
         responseData = JSON.parse(responseText);
-        console.log("✅ Parsed JSON:", responseData);
+        console.log("✅ Response parsed successfully");
       } catch (jsonError) {
-        console.error("❌ JSON parse error:", jsonError);
-        console.error("❌ Response was not valid JSON:", responseText);
-        throw new Error(`Invalid JSON response: ${responseText.substring(0, 100)}...`);
+        console.error("❌ Invalid response format");
+        throw new Error("Invalid response from server");
       }
       
-      const { token } = responseData;
-      console.log("🔑 Token received:", token ? "✅ Yes" : "❌ No");
+      // Backend returns { success: true, token: "..." }
+      const { success, token } = responseData;
+      console.log("🔑 Auth session:", success ? "✅ Success" : "❌ Failed");
       
-      if (token) {
+      if (success && token) {
         knitRef.current?.setAttribute("authsessiontoken", token);
         console.log("✅ Token set on knit-auth element");
       } else {
-        throw new Error("No token in response");
+        throw new Error("Authentication session failed");
       }
     } catch (err: any) {
-      console.error("🚨 Knit session error:", err);
-      setError(err.message || "Unknown error");
+      console.error("🚨 Auth session failed:", err.message);
+      setError(err.message || "Authentication failed");
     } finally {
       setLoading(false);
     }
@@ -133,7 +137,10 @@ const Integrations: React.FC = () => {
   // 3) Wire up listeners & kick off first session
   useEffect(() => {
     const el = knitRef.current;
-    if (!el) return;
+    if (!el) {
+      console.warn("⚠️ Knit component not ready, retrying...");
+      return;
+    }
     el.addEventListener("onNewSession", handleNewSession as EventListener);
     el.addEventListener("onFinish", handleFinish as EventListener);
     el.addEventListener(
@@ -142,8 +149,10 @@ const Integrations: React.FC = () => {
     );
     el.addEventListener("onKnitClose", handleClose as EventListener);
 
-    // initial load
-    fetchSessionToken();
+    // Initialize auth session
+    fetchSessionToken().catch(err => {
+      console.error("🚨 Auth session initialization failed:", err.message);
+    });
 
     return () => {
       el.removeEventListener(
