@@ -80,11 +80,11 @@ const Hero = () => {
             </div>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16 animate-fade-in" style={{ animationDelay: '0.4s' }}>
               <Link to="/signup">
-                <Button size="lg" className="bg-white hover:bg-transparent text-[#0B1C2D] hover:text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-12 py-8 text-lg font-semibold border border-white/30">
+                <Button size="lg" className="bg-white hover:bg-transparent/30 text-[#0B1C2D] hover:text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-12 py-8 text-lg font-semibold border border-white/40">
                   Start Free 7-Day Trial
                 </Button>
               </Link>
-              <Button size="lg" className="bg-white hover:bg-transparent text-[#0B1C2D] hover:text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-12 py-8 text-lg font-semibold border border-white/30" onClick={() => window.open('https://calendly.com/serviceagent/30min', '_blank')}>
+              <Button size="lg" className="bg-white hover:bg-transparent/30 text-[#0B1C2D] hover:text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-12 py-8 text-lg font-semibold border border-white/40" onClick={() => window.open('https://calendly.com/serviceagent/30min', '_blank')}>
                 Book a Demo
               </Button>
             </div>
