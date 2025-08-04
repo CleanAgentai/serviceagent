@@ -59,7 +59,7 @@ export const Subscriptions: React.FC = () => {
       <>
         <p>Custom Enterprise-level features and support.</p>
         <br />
-        <p>Fully customizable plan. <a href="https://calendly.com/serviceagent/30min"><span className="text-blue-500">Contact us </span></a> directly for questions.</p>
+        <p>Fully customizable plan. <a href="https://calendly.com/serviceagent/25min"><span className="text-blue-500">Contact us </span></a> directly for questions.</p>
       </>
     ),
     price: { monthly: "Custom", yearly: "Custom" },
@@ -139,7 +139,7 @@ export const Subscriptions: React.FC = () => {
                 </ul>
                 <Button
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3"
-                  onClick={() => window.open('https://calendly.com/serviceagent/30min', '_blank')}
+                  onClick={() => window.open('https://calendly.com/serviceagent/25min', '_blank')}
                 >
                   Book a Call
                 </Button>
