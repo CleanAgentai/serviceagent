@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { UserPreferencesProvider } from "@/app/providers/UserPreferencesContext";
 import { AuthProvider } from "@/app/providers/AuthContext";
@@ -45,6 +45,7 @@ import CheckoutSuccess from "./modules/payment/CheckoutSuccess";
 import CancelSubscription from "./modules/payment/ManageSubscriptions";
 import ManageSubscriptions from "./modules/payment/ManageSubscriptions";
 import GettingStarted from "./components/onboarding/GettingStarted";
+import WelcomePopupController from "@/components/onboarding/PopupController";
 
 // Sales Routes
 const SalesRoutes = React.lazy(() => import("@/pages/sales/setup"));
@@ -96,6 +97,7 @@ const App = () => {
             fallback={<LoadingState variant="full" message="Loading page..." />}
           >
             <ErrorBoundary>
+              <WelcomePopupController />
               <Routes>
                 {/* Auth Callback Route - Must be outside AppLayout */}
                 <Route path="/auth/callback" element={<AuthCallback />} />

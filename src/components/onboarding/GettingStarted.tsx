@@ -133,7 +133,7 @@ export default function GettingStarted() {
         </ul>
       </aside>
 
-      <main className="flex-1 p-6 overflow-y-auto">
+      <main className="flex-1 p-6">
         {activeStep === "create" && <CreateInterview hasInterview={!!firstInterviewId} />}
         {activeStep === "copy" && (
           <CopyInterviewLink
@@ -164,14 +164,6 @@ export default function GettingStarted() {
 
 function CreateInterview({ hasInterview }: { hasInterview: boolean }) {
   const navigate = useNavigate();
-  if (hasInterview) {
-    return (
-      <div className="space-y-4 max-w-xl">
-        <h2 className="text-3xl font-semibold">First Interview Successfully Created!</h2>
-        <p className="text-gray-600">You can now move to the next step.</p>
-      </div>
-    );
-  }
 
   return (
     <div className="space-y-6 max-w-2xl">
@@ -255,10 +247,20 @@ function CreateInterview({ hasInterview }: { hasInterview: boolean }) {
           </ul>
         </div>
       </div>
-
-      <Button onClick={() => navigate("/interviews/create")}>
-        Go to Create Interview
-      </Button>
+      {hasInterview ? (
+        <div className="space-y-4 max-w-xl">
+          <p className="text-blue-600 text-lg font-semibold">
+            First Interview Successfully Created!
+          </p>
+          <p className="text-blue-600 text-lg font-semibold">
+            You can now move to the next step.
+          </p>
+        </div>
+      ) : (
+        <Button onClick={() => navigate("/interviews/create")}>
+          Go to Create Interview
+        </Button>
+      )}
     </div>
   );
 }
