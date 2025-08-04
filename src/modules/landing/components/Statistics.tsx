@@ -22,7 +22,7 @@ const stats = [
   },
   {
     icon: Play,
-    value: "10",
+    value: "10m",
     label: "Live in 10 Minutes",
     description: "No training or tech headaches. Just log in and post."
   },

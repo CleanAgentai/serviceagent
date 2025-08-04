@@ -27,19 +27,17 @@ const CTA = () => {
             <Link to="/signup">
               <Button 
                 size="lg" 
-                className="flex flex-col items-center bg-white hover:bg-transparent text-[#0B1C2D] hover:text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-12 py-8 text-lg font-semibold border border-white/30"
+                className="bg-white hover:bg-transparent/30 text-[#0B1C2D] hover:text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-12 py-8 text-lg font-semibold border border-white/40"
               >
                 Start Free 7 Day Trial
-                <sub className="text-xs font-normal opacity-70">Credit card required. Cancel anytime.</sub>
               </Button>
             </Link>
             <Button 
               size="lg" 
-              className="flex flex-col items-center bg-white hover:bg-transparent text-[#0B1C2D] hover:text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-12 py-8 text-lg font-semibold border border-white/30"
+              className="bg-white hover:bg-transparent/30 text-[#0B1C2D] hover:text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-12 py-8 text-lg font-semibold border border-white/40"
               onClick={() => window.open('https://calendly.com/serviceagent/30min', '_blank')}
             >
-              Book a 15-Min Demo
-              <sub className="text-xs font-normal opacity-70">We’ll show you how it works fast.</sub>
+              Book a Demo
             </Button>
           </div>
 
