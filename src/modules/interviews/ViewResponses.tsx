@@ -171,14 +171,14 @@ export function ViewResponses() {
       try {
         const { data: plan, error: planError } = await supabase
           .from("profiles")
-          .select("subscription")
+          .select("subscription, custom_interview_limit")
           .eq("id", user.id)
           .single();
         
         console.log('Plan data: ', plan);
         setPlanLimit(plan.subscription == 'Launch' ? launchLimit : 
           (plan.subscription == 'Scale' ? scaleLimit : 
-            (plan.subscription == 'Custom' ? customLimit : 1))); //default limit set to 1 to avoid /0 error
+            (plan.subscription == 'Custom' ? plan.custom_interview_limit ?? customLimit : 1))); //default limit set to 1 to avoid /0 error
 
         const { data, error } = await supabase
           .from("interview_attempts")
@@ -199,7 +199,7 @@ export function ViewResponses() {
           .order("created_at", { ascending: false })
           .limit(plan.subscription == 'Launch' ? launchLimit : 
             (plan.subscription == 'Scale' ? scaleLimit : 
-              (plan.subscription == 'Custom' ? customLimit : 1)));
+              (plan.subscription == 'Custom' ? plan.custom_interview_limit ?? customLimit : 1)));
 
         console.log("[ViewResponses] Attempts Fetch Result:", { data, error });
 
