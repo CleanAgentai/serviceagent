@@ -131,7 +131,7 @@ export function Footer() {
                 <li><a href="#features" className="hover:text-white transition-colors">Features</a></li>
                 <li><a href="#pricing" className="hover:text-white transition-colors">Pricing</a></li>
                 <li><a href="#testimonials" className="hover:text-white transition-colors">Reviews</a></li>
-                <li><a href="https://calendly.com/serviceagent/30min" className="hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">Book a Demo</a></li>
+                <li><a href="https://calendly.com/serviceagent/25min" className="hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">Book a Demo</a></li>
               </ul>
             </div>
             <div>

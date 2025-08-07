@@ -47,7 +47,7 @@ const Demo = () => {
             </Link>
             <div className="mt-4">
               <button 
-                onClick={() => window.open('https://calendly.com/serviceagent/30min', '_blank')}
+                onClick={() => window.open('https://calendly.com/serviceagent/25min', '_blank')}
                 className="text-blue-600 hover:text-blue-700 underline transition-colors duration-300"
               >
                 Prefer a personal touch? Book a live demo.

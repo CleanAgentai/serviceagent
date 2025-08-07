@@ -127,7 +127,7 @@ export function BookDemo() {
             <div className="bg-white rounded-xl shadow-sm overflow-hidden h-[500px] sm:h-[600px]">
               <div 
                 className="calendly-inline-widget" 
-                data-url="https://calendly.com/cleanagent/demo"
+                data-url="https://calendly.com/serviceagent/25min"
                 style={{ width: '100%', height: '100%', minWidth: '320px' }}
               />
             </div>

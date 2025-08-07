@@ -84,7 +84,7 @@ const Hero = () => {
                   Start Free 7-Day Trial
                 </Button>
               </Link>
-              <Button size="lg" className="bg-white hover:bg-transparent/30 text-[#0B1C2D] hover:text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-12 py-8 text-lg font-semibold border border-white/40" onClick={() => window.open('https://calendly.com/serviceagent/30min', '_blank')}>
+              <Button size="lg" className="bg-white hover:bg-transparent/30 text-[#0B1C2D] hover:text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-12 py-8 text-lg font-semibold border border-white/40" onClick={() => window.open('https://calendly.com/serviceagent/25min', '_blank')}>
                 Book a Demo
               </Button>
             </div>
