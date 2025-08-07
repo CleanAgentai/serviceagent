@@ -11,6 +11,7 @@ import {
 import { supabase } from "@/app/lib/supabase";
 import { useAuth } from "@/app/providers/AuthContext";
 import { Button } from "@/components/ui/button";
+import { VideoEmbed } from "../ui/video";
 
 const steps = [
   { id: "create", title: "Create Interview", icon: Rocket },
@@ -102,7 +103,7 @@ export default function GettingStarted() {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-fill">
       <aside className="w-64 border-r p-4 bg-gray-50">
         <h2 className="text-xl font-semibold">Getting Started</h2>
         <p className="text-[10px] text-gray-500 mb-4 leading-snug">
@@ -166,8 +167,9 @@ function CreateInterview({ hasInterview }: { hasInterview: boolean }) {
   const navigate = useNavigate();
 
   return (
-    <div className="space-y-6 max-w-2xl">
+    <div className="space-y-6">
       <h2 className="text-3xl font-semibold">Create Interview</h2>
+      <VideoEmbed src={"https://www.youtube.com/embed/ScMzIvxBSi4"} />
       <p>
         The first step to using ServiceAgent is to create your initial interview. This interview will be used
         to assess candidates applying for the role you’re hiring. You can customize your questions and tailor
@@ -257,7 +259,7 @@ function CreateInterview({ hasInterview }: { hasInterview: boolean }) {
           </p>
         </div>
       ) : (
-        <Button onClick={() => navigate("/interviews/create")}>
+        <Button className="bg-blue-500 text-white" onClick={() => navigate("/interviews/create")}>
           Go to Create Interview
         </Button>
       )}
@@ -308,6 +310,7 @@ function CopyInterviewLink({
   return (
     <div>
       <h2 className="text-2xl font-semibold mb-4">Copy Interview Link</h2>
+      <VideoEmbed src={"https://www.youtube.com/embed/ScMzIvxBSi4"} />
 
       {loading ? (
         <p>Loading...</p>
@@ -368,7 +371,7 @@ function EditInterview({
             <br /><br />
             Click the <strong>Edit</strong> button below to make updates. If no changes are needed, you can skip this step and continue.
           </p>
-          <Button onClick={handleEdit}>Edit Interview</Button>
+          <Button className="bg-blue-500 text-white" onClick={handleEdit}>Edit Interview</Button>
         </div>
       ) : (
         <p>No Interviews Exist</p>
@@ -398,6 +401,7 @@ function FirstCandidate({
   return (
     <div>
       <h2 className="text-2xl font-semibold mb-2">First Candidate</h2>
+      <VideoEmbed src={"https://www.youtube.com/embed/ScMzIvxBSi4"} />
 
       {attemptId ? (
         <div className="space-y-4">
@@ -407,7 +411,7 @@ function FirstCandidate({
             response and start your evaluation. The AI-powered analysis will provide insights into
             the candidate's strengths and areas for improvement.
           </p>
-          <Button onClick={handleView}>View Candidate</Button>
+          <Button className="bg-blue-500 text-white" onClick={handleView}>View Candidate</Button>
         </div>
       ) : (
         <p>No candidates have submitted yet.</p>
