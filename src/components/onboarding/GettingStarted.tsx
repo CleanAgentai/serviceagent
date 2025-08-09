@@ -169,7 +169,7 @@ function CreateInterview({ hasInterview }: { hasInterview: boolean }) {
   return (
     <div className="space-y-6">
       <h2 className="text-3xl font-semibold">Create Interview</h2>
-      <VideoEmbed src={"https://www.youtube.com/embed/ScMzIvxBSi4"} />
+      <VideoEmbed src={"https://www.loom.com/embed/dbf03e1878d5497389971199c7b2419d?sid=95f31335-a69f-4861-9d4c-5096515f686c"} />
       <p>
         The first step to using ServiceAgent is to create your initial interview. This interview will be used
         to assess candidates applying for the role you’re hiring. You can customize your questions and tailor
@@ -310,7 +310,7 @@ function CopyInterviewLink({
   return (
     <div>
       <h2 className="text-2xl font-semibold mb-4">Copy Interview Link</h2>
-      <VideoEmbed src={"https://www.youtube.com/embed/ScMzIvxBSi4"} />
+      <VideoEmbed src={"https://www.loom.com/embed/395e38d76853447fb6d673be2e2f36ce?sid=5d9b2bf7-7572-4a34-895e-3fad4d2f86be"} />
 
       {loading ? (
         <p>Loading...</p>
@@ -401,7 +401,7 @@ function FirstCandidate({
   return (
     <div>
       <h2 className="text-2xl font-semibold mb-2">First Candidate</h2>
-      <VideoEmbed src={"https://www.youtube.com/embed/ScMzIvxBSi4"} />
+      <VideoEmbed src={"https://www.loom.com/embed/650a5ef732684cc5a63f72dbb8cfcdd8?sid=c453200f-84ef-427c-ac4e-e7bfa8316150"} />
 
       {attemptId ? (
         <div className="space-y-4">
