@@ -414,7 +414,13 @@ function FirstCandidate({
           <Button className="bg-blue-500 text-white" onClick={handleView}>View Candidate</Button>
         </div>
       ) : (
-        <p>No candidates have submitted yet.</p>
+        <p>
+          No candidates have submitted their interview yet. 
+          Once a candidate completes the interview, you’ll be able to 
+          review their responses and see AI-powered analysis of their performance, 
+          including strengths and areas for improvement. Share your interview link to start 
+          receiving submissions.
+        </p>
       )}
     </div>
   );
