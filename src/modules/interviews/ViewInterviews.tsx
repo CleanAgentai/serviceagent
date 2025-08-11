@@ -172,7 +172,7 @@ export function ViewInterviews() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6">
+    <div className="w-full min-w-[90%] px-4 py-6">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Interviews</h1>
         <Button
@@ -197,8 +197,12 @@ export function ViewInterviews() {
         </div>
       </Card>
 
-      <div className="bg-white rounded-lg border-0 shadow-lg overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
+      <div className="bg-white rounded-lg border-0 shadow-lg">
+      <div
+          className="container m-0 overflow-scroll"
+          style={{ WebkitOverflowScrolling: "touch" }}
+        >
+        <table className="w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -312,6 +316,7 @@ export function ViewInterviews() {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
 
       {filteredInterviews.length === 0 && (

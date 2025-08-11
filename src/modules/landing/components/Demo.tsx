@@ -11,7 +11,7 @@ const Demo = () => {
         <div className="absolute bottom-1/4 right-1/4 w-72 h-72 bg-gradient-radial from-[#A1E3FF]/25 to-transparent rounded-full blur-2xl opacity-70"></div>
       </div>
 
-      <div className="relative z-10 container mx-auto px-6">
+      <div className="relative z-10 mx-8 md:container px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-slate-900 mb-4">
             See ServiceAgent in Action
@@ -21,7 +21,7 @@ const Demo = () => {
           </p>
         </div>
 
-        <div className="max-w-4xl mx-auto">
+        <div className="w-full md:max-w-4xl mx-auto">
           <div className="relative bg-gradient-to-br from-slate-50 to-white rounded-2xl shadow-2xl overflow-hidden border border-slate-200">
             <div style={{ position: "relative", paddingBottom: "57.25%", height: 0 }}>
               <iframe 

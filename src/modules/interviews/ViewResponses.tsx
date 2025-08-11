@@ -394,72 +394,98 @@ export function ViewResponses() {
         </div>
       </Card>
 
-      <div className="space-y-4 relative">
-        <div className="grid grid-cols-7 gap-2 px-4 py-2 bg-gray-100 rounded-lg text-xs font-medium text-gray-500 uppercase tracking-wider">
-          <button
-            onClick={() => handleSort("name")}
-            className="flex items-center gap-2 text-left"
-          >
-            CANDIDATE
-            <ArrowUpDown className="w-4 h-4" />
-          </button>
-          <div>Interview</div>
-          <button
-            onClick={() => handleSort("date")}
-            className="flex items-center gap-2 text-left pl-8"
-          >
-            SUBMITTED
-            <ArrowUpDown className="w-4 h-4" />
-          </button>
-          <div className="text-center">Qualified</div>
-          <div className="text-center">Rating</div>
-          <div className="text-left">Status</div>
-          <div className="text-center">Actions</div>
-        </div>
-
-        {filtered.map((attempt, index) => {
-          const lastChar = attempt.id.slice(-1);
-          const isQualifiedDemo =
-            !isNaN(parseInt(lastChar, 16)) && parseInt(lastChar, 16) % 2 === 0;
-          const demoRating = index % 2 === 0 ? 7 : 8;
-
-          return (
-            <Card key={attempt.id} className="p-4 shadow-lg hover:shadow-xl transition-all duration-300">
-              <div className="grid grid-cols-7 gap-2 items-center">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500">
-                    {attempt.candidateName.charAt(0)}
+      <div className="bg-white rounded-lg border-0 shadow-lg">
+        <div className="overflow-x-auto max-w-full">
+          <table className="w-full table-fixed divide-y divide-gray-200">
+        <thead className="bg-gray-50">
+          <tr>
+            <th className="w-1/4 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <button
+                onClick={() => handleSort("name")}
+                className="flex items-center gap-2 text-left"
+              >
+                CANDIDATE
+                <ArrowUpDown className="w-4 h-4" />
+              </button>
+            </th>
+            <th className="w-1/5 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              INTERVIEW
+            </th>
+            <th className="w-1/5 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <button
+                onClick={() => handleSort("date")}
+                className="flex items-center gap-2 text-left"
+              >
+                SUBMITTED
+                <ArrowUpDown className="w-4 h-4" />
+              </button>
+            </th>
+            <th className="w-1/4 px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+              QUALIFIED
+            </th>
+            <th className="w-1/4 px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+              RATING
+            </th>
+            <th className="w-1/4 px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+              STATUS
+            </th>
+            <th className="w-1/4 px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+              ACTIONS
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+            {filtered.map((attempt, index) => {
+              const lastChar = attempt.id.slice(-1);
+              const isQualifiedDemo =
+              !isNaN(parseInt(lastChar, 16)) && parseInt(lastChar, 16) % 2 === 0;
+              const demoRating = index % 2 === 0 ? 7 : 8;
+          
+          
+            return (
+              <tr key={attempt.id} className="hover:bg-gray-50">
+                <td className="px-3 py-4 text-sm font-medium text-gray-900">
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500">
+                      {attempt.candidateName.charAt(0)}
+                    </div>
+                    <span>{attempt.candidateName}</span>
                   </div>
-                  <span>{attempt.candidateName}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <FileText className="w-4 h-4 text-gray-400" />
-                  {attempt.interviewTitle}
-                </div>
-                <div className="flex items-center gap-2 pl-8">
-                  <Calendar className="w-4 h-4 text-gray-400" />
-                  {attempt.createdAt}
-                </div>
-                <div className="flex items-center justify-center">
-                  <Button
-                    variant="default"
-                    size="sm"
-                    className={cn(
-                      "pointer-events-none h-7 px-2",
-                      attempt.qualified
-                        ? "bg-green-600 text-white"
-                        : "bg-red-600 text-white"
-                    )}
-                  >
-                    {attempt.qualified ? "Qualified" : "Not Qualified"}
-                  </Button>
-                </div>
-                <div className="text-center font-bold">
+                </td>
+                <td className="px-3 py-4 text-sm text-gray-500">
+                  <div className="flex items-center gap-2">
+                    <FileText className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                    <span className="truncate">{attempt.interviewTitle}</span>
+                  </div>
+                </td>
+                <td className="px-3 py-4 text-sm text-gray-500">
+                  <div className="flex items-center gap-2">
+                    <Calendar className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                    <span>{attempt.createdAt}</span>
+                  </div>
+                </td>
+                <td className="px-3 py-4 text-sm text-gray-500">
+                  <div className="flex items-center justify-center">
+                    <Button
+                      variant="default"
+                      size="sm"
+                      className={cn(
+                        "pointer-events-none h-7 px-2 text-xs",
+                        attempt.qualified
+                          ? "bg-green-600 text-white"
+                          : "bg-red-600 text-white"
+                      )}
+                    >
+                      {attempt.qualified ? "Qualified" : "Not Qualified"}
+                    </Button>
+                  </div>
+                </td>
+                <td className="px-3 py-4 text-center font-bold text-sm">
                   {attempt.generalScore
-                    ? `${attempt.generalScore} / 10`
+                    ? `${attempt.generalScore}/10`
                     : "N/A"}
-                </div>
-                <div>
+                </td>
+                <td className="px-3 py-4 text-sm">
                   <Select
                     value={attempt.status}
                     onValueChange={(value) =>
@@ -477,36 +503,38 @@ export function ViewResponses() {
                       ))}
                     </SelectContent>
                   </Select>
-                </div>
-                <div className="flex items-center justify-center space-x-1">
-                  <Button
-                    variant="default"
-                    onClick={() => handleViewAnalysis(attempt)}
-                    className="bg-blue-600 hover:bg-blue-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3 no-underline"
-                  >
-                    View AI Analysis
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => handleDelete(attempt.id, attempt.candidateName)}
-                    className="hover:bg-red-50"
-                  >
-                    <Trash2 className="h-4 w-4 text-red-600" />
-                  </Button>
-                </div>
-              </div>
-            </Card>
-          );
-        })}
+                </td>
+                <td className="px-3 py-4 text-sm">
+                  <div className="flex items-center justify-center space-x-1">
+                    <Button
+                      variant="default"
+                      onClick={() => handleViewAnalysis(attempt)}
+                      className="bg-blue-600 hover:bg-blue-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-lg hover:shadow-xl transition-all duration-300 px-3 py-2 text-xs no-underline"
+                    >
+                      View AI Analysis
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => handleDelete(attempt.id, attempt.candidateName)}
+                      className="hover:bg-red-50"
+                    >
+                      <Trash2 className="h-4 w-4 text-red-600" />
+                    </Button>
+                  </div>
+                </td>
+              </tr>
+            );
+          })}
 
         {planLimit !== null && attempts.length === planLimit && (
+          <tr>
+          <td colSpan={7}>
           <div className="mt-10 w-full relative">
             <div className="absolute inset-0 z-0">
               <div className="blur-sm">
                 {sampleCards.map((card, index) => (
                   <Card key={index} className="p-4">
-                    <div className="grid grid-cols-7 gap-2 items-center">
                       <div className="flex items-center gap-2">
                         <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500">
                           {card.candidateName.charAt(0)}
@@ -529,7 +557,7 @@ export function ViewResponses() {
                             "pointer-events-none h-7 px-2",
                             card.qualified ? "bg-green-600 text-white" : "bg-red-600 text-white"
                           )}
-                        >
+                          >
                           {card.qualified ? "Qualified" : "Not Qualified"}
                         </Button>
                       </div>
@@ -549,14 +577,12 @@ export function ViewResponses() {
                           variant="ghost"
                           size="icon"
                           className="hover:bg-red-50"
-                        >
+                          >
                           <Trash2 className="h-4 w-4 text-red-600" />
                         </Button>
                       </div>
-                    </div>
                   </Card>
-                  ))
-                }
+                ))}
               </div>
             </div>
             <div className="relative z-10 w-full px-6 py-5 text-center rounded-lg bg-white/70 dark:bg-zinc-900/70 backdrop-blur-none">
@@ -571,7 +597,12 @@ export function ViewResponses() {
               </Button>
             </div>
           </div>
+        </td>
+      </tr>
         )}
+        </tbody>
+      </table>
+        </div>
       </div>
 
       {filtered.length === 0 && (

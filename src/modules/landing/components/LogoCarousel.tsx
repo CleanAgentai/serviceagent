@@ -1,6 +1,5 @@
 import React from "react";
 
-// Explicit list of SVG filenames in the public folder, in order
 const logoFilenames = [
   "Untitled design.svg",
   "Untitled design (1).svg",
@@ -33,36 +32,50 @@ const logoFilenames = [
   "Untitled design (28).svg",
   "Untitled design (29).svg",
   "Untitled design (30).svg",
-  "Untitled design (31).svg"
+  "Untitled design (31).svg",
 ];
 
 const LogoCarousel: React.FC = () => {
   return (
-    <div className="overflow-hidden w-full py-6 flex justify-center relative" style={{ background: 'transparent' }}>
-            <div className="rounded-xl shadow-lg border border-gray-100 px-2 py-8 w-full max-w-6xl bg-white relative z-10">
+    <div className="w-full py-6 flex justify-center relative bg-transparent">
+      <div className="relative z-10 w-full max-w-7xl rounded-xl bg-white shadow-lg border border-gray-100 px-2 py-8">
         <div className="mb-6 text-center">
-          <span className="text-black text-lg font-medium">Seamlessly integrates with popular ATS platforms.</span>
+          <span className="text-black text-lg font-medium">
+            Seamlessly integrates with
+            <br className="sm:hidden" />
+            {" "}popular ATS platforms.
+          </span>
         </div>
-        <div className="relative flex items-center" style={{height: '96px'}}>
-          {/* Left Gradient Overlay - wider and flush with card edge */}
-          <div className="pointer-events-none absolute left-0 top-0 h-full w-24 -ml-8 z-20" style={{background: 'linear-gradient(to right, white 40%, transparent)'}} />
-          {/* Right Gradient Overlay - wider and flush with card edge */}
-          <div className="pointer-events-none absolute right-0 top-0 h-full w-24 -mr-8 z-20" style={{background: 'linear-gradient(to left, white 40%, transparent)'}} />
-          <div className="logo-carousel-track flex gap-12 animate-logo-scroll -ml-16">
+
+        {/* Masked viewport */}
+        <div
+          className="relative h-24 overflow-hidden"
+          style={{
+            maskImage:
+              "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
+            WebkitMaskImage:
+              "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
+          }}
+        >
+          <div className="logo-carousel-track flex gap-12">
             {logoFilenames.concat(logoFilenames).map((filename, idx) => (
-              <div key={idx} className="flex items-center justify-center h-24 w-36 opacity-80 hover:opacity-100 transition-all">
+              <div
+                key={idx}
+                className="flex items-center justify-center h-24 w-36 opacity-80 hover:opacity-100 transition-opacity"
+              >
                 <img
                   src={`/${filename}`}
                   alt="Logo"
                   className="max-h-16 max-w-[120px] object-contain"
                   draggable="false"
-                  style={{ width: 'auto', height: '64px' }}
+                  style={{ width: "auto", height: "64px" }}
                 />
               </div>
             ))}
           </div>
         </div>
       </div>
+
       <style>{`
         @keyframes logo-scroll {
           0% { transform: translateX(0); }
@@ -77,4 +90,4 @@ const LogoCarousel: React.FC = () => {
   );
 };
 
-export default LogoCarousel; 
+export default LogoCarousel;
