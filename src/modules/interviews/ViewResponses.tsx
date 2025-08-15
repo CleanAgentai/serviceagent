@@ -32,6 +32,7 @@ interface InterviewAttempt {
   email: string;
   phone: string;
   createdAt: string;
+  createdAtFormatted: string;
   interviewTitle: string;
   status: string;
   qualified: boolean | null;
@@ -40,6 +41,7 @@ interface InterviewAttempt {
 
 export function ViewResponses() {
   const [attempts, setAttempts] = useState<InterviewAttempt[]>([]);
+  const [currentMonthAttempts, setCurrentMonthAttempts] = useState<InterviewAttempt[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
   const [showPdf, setShowPdf] = useState(false);
@@ -101,6 +103,11 @@ export function ViewResponses() {
   ];
 
   useEffect(() => {
+
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth() + 1; // Adding 1 because months are zero-based
+    const monthly_reset = currentMonth + 1;
+
     const fetchAttempts = async () => {
       setLoading(true);
       setError(null);
@@ -180,6 +187,8 @@ export function ViewResponses() {
           (plan.subscription == 'Scale' ? scaleLimit : 
             (plan.subscription == 'Custom' ? plan.custom_interview_limit ?? customLimit : 1))); //default limit set to 1 to avoid /0 error
 
+        const {data: monthData, error: monthError} = await supabase.from("profiles").select("monthly_reset_start").eq("id", user.id).single();
+
         const { data, error } = await supabase
           .from("interview_attempts")
           .select(
@@ -197,9 +206,6 @@ export function ViewResponses() {
           )
           .eq("department_key", companyKey)
           .order("created_at", { ascending: false })
-          .limit(plan.subscription == 'Launch' ? launchLimit : 
-            (plan.subscription == 'Scale' ? scaleLimit : 
-              (plan.subscription == 'Custom' ? plan.custom_interview_limit ?? customLimit : 1)));
 
         console.log("[ViewResponses] Attempts Fetch Result:", { data, error });
 
@@ -214,7 +220,8 @@ export function ViewResponses() {
               candidateName: item.candidates?.name || "Unknown",
               email: item.candidates?.email || "N/A",
               phone: item.candidates?.phone || "N/A",
-              createdAt: new Date(item.created_at).toLocaleDateString("en-US"),
+              createdAt: item.created_at,
+              createdAtFormatted: new Date(item.created_at).toLocaleDateString("en-US"),
               interviewTitle: item.interviews?.title || "Untitled Interview",
               status: item.status || "Pending",
               qualified: item.qualified ?? null,
@@ -222,6 +229,16 @@ export function ViewResponses() {
             }));
             console.log("[ViewResponses] Formatted Attempts:", formatted);
             setAttempts(formatted);
+
+            const monthly = formatted.filter((item) => {
+              const resetMonth =  new Date(monthData.monthly_reset_start).getTime();
+              const itemTimestamp = new Date(item.createdAt).getTime();
+              return itemTimestamp >= resetMonth;
+            });
+
+            setCurrentMonthAttempts(monthly);
+            console.log("[ViewResponses] Monthly Attempts:", monthly);
+
           } catch (mapError) {
             console.error(
               "[ViewResponses] Error formatting attempts data:",
@@ -375,7 +392,7 @@ export function ViewResponses() {
             <p className="text-sm font-medium text-gray-700 whitespace-nowrap">
               Plan Usage:
             </p>
-            <ProgressBar used={attempts.length} limit={planLimit} />
+            <ProgressBar used={currentMonthAttempts.length} limit={planLimit} />
             </div>
           )}
         </div>
@@ -438,7 +455,7 @@ export function ViewResponses() {
                 </div>
                 <div className="flex items-center gap-2 pl-8">
                   <Calendar className="w-4 h-4 text-gray-400" />
-                  {attempt.createdAt}
+                  {attempt.createdAtFormatted}
                 </div>
                 <div className="flex items-center justify-center">
                   <Button
@@ -500,7 +517,7 @@ export function ViewResponses() {
           );
         })}
 
-        {planLimit !== null && attempts.length === planLimit && (
+        {planLimit !== null && currentMonthAttempts.length === planLimit && (
           <div className="mt-10 w-full relative">
             <div className="absolute inset-0 z-0">
               <div className="blur-sm">
