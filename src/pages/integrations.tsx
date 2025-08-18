@@ -77,7 +77,78 @@ const Integrations: React.FC = () => {
   const [connectedIntegrations, setConnectedIntegrations] = useState<Set<string>>(new Set());
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
-  // 1) Fetch & inject a fresh Knit session token
+  // 1) Fetch existing integrations from backend
+  const fetchExistingIntegrations = useCallback(async () => {
+    try {
+      console.log("🔄 Starting fetchExistingIntegrations...");
+      const user = await fetchCurrentUser();
+      console.log("👤 User for integrations fetch:", { id: user.id, email: user.email });
+      
+      if (!apiBaseUrl) {
+        console.error("❌ API base URL not configured");
+        return;
+      }
+
+      const url = `${apiBaseUrl}/api/knit/integrations/${user.id}`;
+      console.log("🌐 Fetching integrations from:", url);
+
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: { 
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': 'true'
+        }
+      });
+
+      console.log("📡 Response status:", response.status, response.statusText);
+
+      if (response.ok) {
+        const responseText = await response.text();
+        console.log("📄 Raw response text:", responseText);
+        
+        // Only try to parse JSON if we have content
+        if (responseText.trim()) {
+          try {
+            const data = JSON.parse(responseText);
+            console.log("✅ Parsed data:", data);
+            
+            // Extract appIds from the integrations and update state
+            if (data.integrations && Array.isArray(data.integrations)) {
+              console.log("🔍 Processing integrations array:", data.integrations);
+              const connectedIds = new Set<string>(data.integrations.map((integration: any) => {
+                console.log("🏷️ Processing integration:", integration);
+                return integration.appId;
+              }));
+              setConnectedIntegrations(connectedIds);
+              console.log("✅ Connected integrations loaded:", Array.from(connectedIds));
+            } else {
+              console.log("⚠️ No integrations array found in response");
+            }
+          } catch (parseError) {
+            console.log("❌ JSON parse error:", parseError);
+          }
+        } else {
+          console.log("ℹ️ Empty response, no existing integrations");
+        }
+      } else if (response.status === 404) {
+        console.log("ℹ️ Integrations endpoint not implemented yet");
+      } else {
+        console.log(`❌ HTTP error: ${response.status} - ${response.statusText}`);
+        const errorText = await response.text();
+        console.log("❌ Error response body:", errorText);
+      }
+    } catch (error: any) {
+      // Handle network errors gracefully
+      console.log("❌ Fetch error:", error);
+      if (error.message?.includes('Failed to fetch') || error.message?.includes('hostname could not be found')) {
+        console.log("ℹ️ Backend not available, skipping integration loading");
+      } else {
+        console.log("ℹ️ Could not load existing integrations:", error.message);
+      }
+    }
+  }, [apiBaseUrl]);
+
+  // 2) Fetch & inject a fresh Knit session token
   const fetchSessionToken = useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -157,21 +228,59 @@ const Integrations: React.FC = () => {
     [fetchSessionToken]
   );
 
-  const handleFinish = useCallback((e: CustomEvent) => {
+  const handleFinish = useCallback(async (e: CustomEvent) => {
     const details = e.detail.integrationDetails;
     console.log("Knit integration completed:", details);
-    // TODO: optionally POST `details` back to your server to persist
-  }, []);
+    
+    try {
+      // Send integration details to backend
+      const response = await fetch(`${apiBaseUrl}/api/knit/save-integration`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          integrationId: details.integrationId,
+          appId: details.appId,
+          categoryId: details.categoryId,
+          originOrgId: details.originOrgId
+        })
+      });
+      
+      if (response.ok) {
+        console.log("✅ Integration details saved successfully");
+        // Update UI to show connected state
+        setConnectedIntegrations(prev => new Set([...prev, details.appId]));
+      } else {
+        console.error("❌ Failed to save integration details");
+      }
+    } catch (error) {
+      console.error("❌ Error saving integration details:", error);
+    }
+  }, [apiBaseUrl]);
 
   const handleDeactivate = useCallback((e: CustomEvent) => {
-    console.log("Knit integration deactivated:", e.detail.integrationDetails);
+    const details = e.detail.integrationDetails;
+    console.log("Knit integration deactivated:", details);
+    
+    // Remove the deactivated integration from UI state
+    setConnectedIntegrations(prev => {
+      const updated = new Set(prev);
+      updated.delete(details.appId);
+      return updated;
+    });
   }, []);
 
   const handleClose = useCallback((e: CustomEvent) => {
     console.log("Knit UI closed");
   }, []);
 
-  // 3) Wire up listeners & kick off first session
+  // 3) Load existing integrations on component mount
+  useEffect(() => {
+    fetchExistingIntegrations().catch(err => {
+      console.error("🚨 Failed to load existing integrations:", err.message);
+    });
+  }, [fetchExistingIntegrations]);
+
+  // 4) Wire up listeners & kick off auth session
   useEffect(() => {
     const el = knitRef.current;
     if (!el) {
@@ -252,17 +361,19 @@ const Integrations: React.FC = () => {
           Integrations
         </h1>
         
-        <p style={{ 
-          fontSize: '20px', 
-          color: '#64748b',
-          margin: '0 0 48px 0',
-          lineHeight: '1.5',
-          maxWidth: '600px',
-          marginLeft: 'auto',
-          marginRight: 'auto'
-        }}>
-          Connect your ATS to ServiceAgent to automate your hiring workflow.
-        </p>
+        {connectedIntegrations.size === 0 && (
+          <p style={{ 
+            fontSize: '20px', 
+            color: '#64748b',
+            margin: '0 0 48px 0',
+            lineHeight: '1.5',
+            maxWidth: '600px',
+            marginLeft: 'auto',
+            marginRight: 'auto'
+          }}>
+            Connect your ATS to ServiceAgent to automate your hiring workflow.
+          </p>
+        )}
 
         {/* Main Connection Button */}
         <div style={{ marginBottom: '64px' }}>
@@ -309,9 +420,79 @@ const Integrations: React.FC = () => {
                 }
               }}
             >
-              {loading ? "Loading..." : "Connect an Integration"}
+              {loading ? "Loading..." : connectedIntegrations.size > 0 ? "Edit Integration" : "Connect an Integration"}
             </button>
           </knit-auth>
+
+          {/* Checkmark under button */}
+          {connectedIntegrations.size > 0 && (
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              marginTop: '16px'
+            }}>
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" fill="#22c55e"/>
+                <path d="M9 12l2 2 4-4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+          )}
+
+          {/* Success Message */}
+          {connectedIntegrations.size > 0 && (
+            <div style={{
+              textAlign: 'center',
+              marginTop: '24px'
+            }}>
+              <p style={{
+                fontSize: '20px',
+                color: '#64748b',
+                margin: 0,
+                lineHeight: '1.5'
+              }}>
+                Your ATS is now connected to ServiceAgent.<br/>Candidate analysis and interview transcripts PDFs will be automatically delivered to your ATS platform.
+              </p>
+            </div>
+          )}
+
+          {/* Connection Status - moved here from bottom */}
+          {connectedIntegrations.size > 0 && (
+            <div style={{
+              backgroundColor: '#f0fdf4',
+              border: '1px solid #bbf7d0',
+              borderRadius: '12px',
+              padding: '24px',
+              marginTop: '32px'
+            }}>
+              <h3 style={{
+                fontSize: '18px',
+                fontWeight: '600',
+                color: '#166534',
+                margin: '0 0 16px 0'
+              }}>
+                Connected Integrations
+              </h3>
+              <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', justifyContent: 'center' }}>
+                {Array.from(connectedIntegrations).map(id => {
+                  const integration = atsIntegrations.find(i => i.id === id);
+                  return integration ? (
+                    <div key={id} style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      padding: '8px 12px',
+                      backgroundColor: 'white',
+                      border: '1px solid #bbf7d0',
+                      borderRadius: '8px'
+                    }}>
+                      <img src={integration.logo} alt={integration.name} style={{ width: '20px', height: '20px', borderRadius: '4px' }} />
+                      <span style={{ fontSize: '14px', color: '#166534' }}>{integration.name}</span>
+                    </div>
+                  ) : null;
+                })}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Available Integrations Showcase */}
@@ -379,8 +560,8 @@ const Integrations: React.FC = () => {
           </p>
         </div>
 
-        {/* Connection Status */}
-        {connectedIntegrations.size === 0 ? (
+        {/* Show message when no integrations connected */}
+        {connectedIntegrations.size === 0 && (
           <p style={{
             fontSize: '16px',
             color: '#64748b',
@@ -388,42 +569,6 @@ const Integrations: React.FC = () => {
           }}>
             No integrations connected yet.
           </p>
-        ) : (
-          <div style={{
-            backgroundColor: '#f0fdf4',
-            border: '1px solid #bbf7d0',
-            borderRadius: '12px',
-            padding: '24px',
-            marginTop: '32px'
-          }}>
-            <h3 style={{
-              fontSize: '18px',
-              fontWeight: '600',
-              color: '#166534',
-              margin: '0 0 16px 0'
-            }}>
-              Connected Integrations ({connectedIntegrations.size})
-            </h3>
-            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', justifyContent: 'center' }}>
-              {Array.from(connectedIntegrations).map(id => {
-                const integration = atsIntegrations.find(i => i.id === id);
-                return integration ? (
-                  <div key={id} style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    padding: '8px 12px',
-                    backgroundColor: 'white',
-                    border: '1px solid #bbf7d0',
-                    borderRadius: '8px'
-                  }}>
-                    <img src={integration.logo} alt={integration.name} style={{ width: '20px', height: '20px', borderRadius: '4px' }} />
-                    <span style={{ fontSize: '14px', color: '#166534' }}>{integration.name}</span>
-                  </div>
-                ) : null;
-              })}
-            </div>
-          </div>
         )}
       </div>
     </div>
