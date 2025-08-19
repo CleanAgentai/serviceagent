@@ -172,17 +172,20 @@ export function ViewInterviews() {
   }
 
   return (
-    <div className="w-full min-w-[90%] px-4 py-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Interviews</h1>
+    <div className="mx-auto w-full px-2 sm:px-4 md:px-6 lg:px-8 sm:max-w-screen-md md:max-w-screen-lg lg:max-w-screen-xl">
+      <div className="flex sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+        <h1 className="text-2xl sm:text-3xl font-bold">Interviews</h1>
+        <div className="flex items-center space-x-2">
         <Button
-          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 px-4 sm:px-6 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           onClick={() => navigate("/interviews/create")}
         >
           <Plus className="w-4 h-4" />
           Create Interview
         </Button>
       </div>
+      </div>
+
 
       <Card className="p-4 mb-6 border-0 shadow-lg hover:shadow-xl transition-all duration-300">
         <div className="relative">
@@ -192,20 +195,17 @@ export function ViewInterviews() {
             placeholder="Search interviews..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
+            className="pl-10 w-full min-w-0 max-w-full"
           />
         </div>
       </Card>
 
-      <div className="bg-white rounded-lg border-0 shadow-lg">
-      <div
-          className="container m-0 overflow-scroll"
-          style={{ WebkitOverflowScrolling: "touch" }}
-        >
-        <table className="w-full divide-y divide-gray-200">
+      <div className="bg-white rounded-lg border-0 shadow-lg overflow-hidden">
+        <div className="w-full max-w-full overflow-x-auto scrollbar-hide">
+        <table className="w-full min-w-max divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-2 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 <button
                   onClick={() => handleSort("title")}
                   className="flex items-center gap-2"
@@ -214,7 +214,7 @@ export function ViewInterviews() {
                   <ArrowUpDown className="w-4 h-4" />
                 </button>
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-2 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 <button
                   onClick={() => handleSort("date")}
                   className="flex items-center gap-2"
@@ -223,13 +223,13 @@ export function ViewInterviews() {
                   <ArrowUpDown className="w-4 h-4" />
                 </button>
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-0 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Deadline
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-0 sm:px-7 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Link
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Actions
               </th>
             </tr>
@@ -237,18 +237,18 @@ export function ViewInterviews() {
           <tbody className="bg-white divide-y divide-gray-200">
             {filteredInterviews.map((interview) => (
               <tr key={interview.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm font-medium text-gray-900">
+                <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm font-medium text-gray-900 whitespace-nowrap">
                     {interview.title}
                   </div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {interview.createdAt}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {interview.deadline}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm">
+                <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm">
                   {interview.interviewLink ? (
                     <a
                       href={interview.interviewLink}
@@ -257,7 +257,7 @@ export function ViewInterviews() {
                       onClick={(e) => e.stopPropagation()}
                       className="inline-flex items-center px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-md shadow-sm hover:shadow-md transform hover:scale-101 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     >
-                      <LinkIcon className="w-3 h-3 mr-1.5" />
+                      <LinkIcon className="w-3 h-3 mr-1" />
                       Open Link
                     </a>
                   ) : (

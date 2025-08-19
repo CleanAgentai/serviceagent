@@ -229,12 +229,12 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="container mx-auto p-6">
+    <div className="relative z-0 md:container max-sm:mx-8 max-md:mt-8 md:mx-auto px-2 sm:px-6">
       <div className="flex flex-col gap-6">
         {/* Header */}
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-gray-500 mt-1">Welcome to ServiceAgent!</p>
+          <h1 className="text-left text-2xl font-bold text-gray-900">Dashboard</h1>
+          <p className="text-left text-gray-500 mt-1">Welcome to ServiceAgent!</p>
         </div>
 
         {/* Metrics Grid */}
@@ -243,9 +243,9 @@ const Dashboard = () => {
             const Icon = metric.icon;
             return (
               <Card key={metric.title} className="p-6 shadow-lg border-0 bg-white hover:shadow-xl transition-all duration-300">
-                <div className="flex items-center gap-4">
-                                      <div className={`${metric.bgColor} p-3 rounded-lg shadow-md ring-2 ring-white/50`}>
-                    <Icon className={`h-6 w-6 ${metric.color}`} />
+                <div className="flex flex-row lg:flex-col xl:flex-row items-center lg:justify-start lg:items-start xl:items-center xl:justify-center gap-4">
+                    <div className={`${metric.bgColor} p-3 rounded-lg shadow-md ring-2 ring-white/50`}>
+                      <Icon className={`h-6 w-6 ${metric.color}`} />
                   </div>
                   <div>
                     <p className="text-sm font-medium text-gray-600">
@@ -277,7 +277,7 @@ const Dashboard = () => {
 
         {/* Quick Actions */}
         <div className="mt-6">
-          <h2 className="text-lg font-semibold mb-4">Quick Actions</h2>
+          <h2 className="text-left text-lg font-semibold mb-4">Quick Actions</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Create Interview Card */}
             <Card
@@ -289,7 +289,7 @@ const Dashboard = () => {
                   <Plus className="h-6 w-6 text-blue-500" />
                 </div>
                 <div>
-                  <h3 className="font-medium">Create Interview</h3>
+                  <h3 className="text-left font-medium">Create Interview</h3>
                   <p className="text-sm text-gray-500">
                     Set up a new interview session
                   </p>
@@ -307,7 +307,7 @@ const Dashboard = () => {
                   <Users className="h-6 w-6 text-purple-500" />
                 </div>
                 <div>
-                  <h3 className="font-medium">View Candidates</h3>
+                  <h3 className="text-left font-medium">View Candidates</h3>
                   <p className="text-sm text-gray-500">
                     Review candidate responses
                   </p>
@@ -319,21 +319,21 @@ const Dashboard = () => {
 
         {/* Recent Interviews */}
         <div className="bg-white rounded-xl shadow-lg border-0 overflow-hidden hover:shadow-xl transition-all duration-300">
-          <div className="p-6 border-b border-gray-200 flex justify-between items-center">
-            <div>
-              <h2 className="text-lg font-semibold text-gray-900">
-                Recent Interviews
-              </h2>
-              <p className="text-sm text-gray-600 mt-1">
-                Your latest interviews
-              </p>
-            </div>
-            <button
-              onClick={() => navigate("/interviews")}
-              className="text-sm text-blue-500 font-medium flex items-center hover:text-blue-500/90 transition-colors"
-            >
+            <div className="p-6 border-b border-gray-200 flex justify-between items-center">
+             <div>
+               <h2 className="text-left text-lg font-semibold text-gray-900">
+                 Recent Interviews
+               </h2>
+               <p className="text-sm text-gray-600 mt-1">
+                 Your latest interviews
+               </p>
+             </div>
+             <button
+               onClick={() => navigate("/interviews")}
+               className="group text-right text-sm pl-4 text-blue-500 font-medium flex items-center hover:text-blue-500/90 transition-colors"
+             >
               View All
-              <ChevronRight className="h-4 w-4 ml-1" />
+              <ChevronRight className="h-4 w-4 ml-1 transition-transform duration-200 group-hover:translate-x-1" />
             </button>
           </div>
 
@@ -362,40 +362,44 @@ const Dashboard = () => {
               </button>
             </div>
           ) : (
-            <div className="divide-y divide-gray-100">
-              {recentInterviews.map((interview, index) => (
-                <div
-                  key={index}
-                  className="p-4 hover:bg-blue-50 hover:shadow-md transition-all duration-200 cursor-pointer"
-                  onClick={() => navigate(`/interviews/${interview.id}`)}
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 mr-3 shadow-md ring-2 ring-white">
-                        {interview.title.charAt(0)}
-                      </div>
-                      <div>
-                        <h3 className="text-sm font-medium text-gray-900">
-                          {interview.title}
-                        </h3>
-                        <p className="text-xs text-gray-500">
-                          Created on {interview.createdAt}
-                        </p>
+            <div className="w-full overflow-hidden">
+                <div className="w-full max-w-full overflow-x-auto">
+              <div className="w-full min-w-max divide-y divide-gray-100">
+                  {recentInterviews.map((interview, index) => (
+                    <div
+                      key={index}
+                      className="p-4 hover:bg-blue-50 hover:shadow-md transition-all duration-200 cursor-pointer"
+                      onClick={() => navigate(`/interviews/${interview.id}`)}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center">
+                          <div className="w-10 h-10 rounded-full bg-gray-100 flex flex-shrink-0 items-center justify-center text-gray-500 mr-3 shadow-md ring-2 ring-white">
+                            {interview.title.charAt(0)}
+                          </div>
+                          <div>
+                            <h3 className="text-left text-sm font-medium text-gray-900 max-sm:truncate max-sm:max-w-[200px] pr-4">
+                              {interview.title}
+                            </h3>
+                            <p className="text-xs text-wrap text-gray-500">
+                              Created on {interview.createdAt}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex flex-col items-end">
+                          <div className="flex items-center text-xs text-gray-500">
+                            <Languages className="h-3 w-3 mr-1" />
+                            {interview.location}
+                          </div>
+                          <div className="flex items-center text-xs text-gray-500 mt-1">
+                            <Calendar className="h-3 w-3 mr-1" />
+                            {interview.deadline}
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <div className="flex flex-col items-end">
-                      <div className="flex items-center text-xs text-gray-500">
-                        <Languages className="h-3 w-3 mr-1" />
-                        {interview.location}
-                      </div>
-                      <div className="flex items-center text-xs text-gray-500 mt-1">
-                        <Calendar className="h-3 w-3 mr-1" />
-                        {interview.deadline}
-                      </div>
-                    </div>
-                  </div>
+                  ))}
                 </div>
-              ))}
+              </div>
             </div>
           )}
         </div>

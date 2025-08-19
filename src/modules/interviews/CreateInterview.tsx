@@ -813,18 +813,37 @@ export default function CreateInterview() {
                     >
                       Show Hints and Tips
                     </Label>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-gray-500 pr-8 max-sm:text-wrap">
                       Display helpful hints to candidates during the interview
                     </p>
                   </div>
-                  <Switch
-                    id="showHints"
-                    checked={formData.showHints}
-                    onCheckedChange={(checked) =>
-                      handleBasicDetailsChange("showHints", checked)
-                    }
-                    className="data-[state=checked]:bg-blue-600"
-                  />
+                  {/* Mobile: Select, Desktop: Switch */}
+                  <div className="md:hidden">
+                    <Select
+                      value={formData.showHints ? "yes" : "no"}
+                      onValueChange={(value) =>
+                        handleBasicDetailsChange("showHints", value === "yes")
+                      }
+                    >
+                      <SelectTrigger className="w-20">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="yes">Yes</SelectItem>
+                        <SelectItem value="no">No</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="hidden md:flex justify-end">
+                    <Switch
+                      id="showHints"
+                      checked={formData.showHints}
+                      onCheckedChange={(checked) =>
+                        handleBasicDetailsChange("showHints", checked)
+                      }
+                      className="data-[state=checked]:bg-blue-600"
+                    />
+                  </div>
                 </div>
 
                 <div className="flex items-center justify-between">
@@ -835,25 +854,44 @@ export default function CreateInterview() {
                     >
                       Show Availability
                     </Label>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-gray-500 pr-8 max-sm:pr-0">
                       Allow candidates to see when the interview is available
                     </p>
                   </div>
-                  <Switch
-                    id="showAvailability"
-                    checked={formData.showAvailability}
-                    onCheckedChange={(checked) =>
-                      handleBasicDetailsChange("showAvailability", checked)
-                    }
-                    className="data-[state=checked]:bg-blue-600"
-                  />
+                  {/* Mobile: Select, Desktop: Switch */}
+                  <div className="md:hidden">
+                    <Select
+                      value={formData.showAvailability ? "yes" : "no"}
+                      onValueChange={(value) =>
+                        handleBasicDetailsChange("showAvailability", value === "yes")
+                      }
+                    >
+                      <SelectTrigger className="w-20">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="yes">Yes</SelectItem>
+                        <SelectItem value="no">No</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="hidden md:flex justify-end">
+                    <Switch
+                      id="showAvailability"
+                      checked={formData.showAvailability}
+                      onCheckedChange={(checked) =>
+                        handleBasicDetailsChange("showAvailability", checked)
+                      }
+                      className="data-[state=checked]:bg-blue-600"
+                    />
+                  </div>
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="deadline" className="text-base font-medium">
                     Interview Deadline
                   </Label>
-                  <p className="text-sm text-gray-500 mb-2">
+                  <p className="text-sm text-gray-500 mb-4 pr-8">
                     Set a deadline for when candidates must complete the
                     interview
                   </p>
@@ -904,7 +942,7 @@ export default function CreateInterview() {
 
   return (
     <div className="container max-w-4xl mx-auto py-8 px-4">
-      <div className="mb-8">
+      <div className="mb-8 text-center md:text-left">
         <h1 className="text-3xl font-bold">Create Interview</h1>
         <p className="text-gray-600 mt-2">
           Set up an interview process for your candidates
@@ -913,10 +951,10 @@ export default function CreateInterview() {
 
       {!interviewLink && (
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 border-0 shadow-lg hover:shadow-xl transition-all duration-300">
-            <TabsTrigger value="basic-details">Basic Details</TabsTrigger>
-            <TabsTrigger value="questions">Interview Questions</TabsTrigger>
-            <TabsTrigger value="settings">Settings</TabsTrigger>
+          <TabsList className="grid w-full h-full grid-cols-3 border-0 shadow-lg hover:shadow-xl transition-all duration-300">
+            <TabsTrigger value="basic-details"><p className="max-sm:text-wrap">Basic Details</p></TabsTrigger>
+            <TabsTrigger value="questions"><p className="max-sm:text-wrap">Interview Questions</p></TabsTrigger>
+            <TabsTrigger value="settings"><p className="max-sm:text-wrap">Settings</p></TabsTrigger>
           </TabsList>
           <div className="mt-6">{renderTabContent()}</div>
         </Tabs>

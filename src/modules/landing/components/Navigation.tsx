@@ -55,26 +55,24 @@ export function Navigation({ isNavVisible = true }: { isNavVisible?: boolean }) 
       {/* Additional gradient overlay for depth */}
       <div className="absolute inset-0 bg-gradient-to-r from-[#A1E3FF]/5 via-transparent to-[#0E7CFF]/5 pointer-events-none"></div>
       <div className="relative mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-start ${mobileMenuOpen ? 'h-14' : 'h-16'}">
+        <div className="flex items-center justify-start h-24 md:h-16">
           <div className="flex items-center">
-            <Link to="/" aria-label="ServiceAgent Home" className="flex items-center md:min-w-32">
+            <Link to="/" aria-label="ServiceAgent Home" className="flex items-center min-w-32">
             <img
               src="/Banner_SA_new.svg"
               alt="ServiceAgent Logo"
-              className="block w-auto transition-all duration-200 sm:h-8 md:h-16"
+              className="block w-3/4 md:w-full sm:h-6 md:h-14 transition-all duration-200"
             />
           </Link>
           </div>
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center md:flex-1 md:justify-center space-x-4 md:space-x-8 ml-6 lg:ml-64">
+          <div className="hidden md:flex items-center md:flex-1 md:justify-center space-x-2 md:space-x-3 lg:space-x-6 xl:space-x-8 ml-2 md:ml-4 lg:ml-64">
             <button onClick={() => handleScrollTo("features")} className="text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 relative group bg-transparent border-none outline-none cursor-pointer">
               Features
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#0E7CFF] to-[#A1E3FF] group-hover:w-full transition-all duration-300"></span>
             </button>
             <button onClick={() => handleScrollTo("demo")} className="text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 relative group bg-transparent border-none outline-none cursor-pointer">
-              <span className="block md:hidden">How It Works</span>
-              <span className="hidden md:block lg:hidden">Demo</span>
-              <span className="hidden lg:block">How It Works</span>
+              Demo
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#0E7CFF] to-[#A1E3FF] group-hover:w-full transition-all duration-300"></span>
             </button>
             {/* Industries Dropdown */}
@@ -161,7 +159,7 @@ export function Navigation({ isNavVisible = true }: { isNavVisible?: boolean }) 
         style={{ willChange: 'transform, opacity' }}>
         <div className="bg-white rounded-b-2xl p-8 w-full max-w-[600px] flex flex-col items-center space-y-10 max-h-[80vh] overflow-y-auto" style={{ boxShadow: 'none', borderTopLeftRadius: 0, borderTopRightRadius: 0 }}>
           <button onClick={() => handleScrollTo("features")} className="text-xl font-bold text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 w-full text-center">Features</button>
-          <button onClick={() => handleScrollTo("demo")} className="text-xl font-bold text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 w-full text-center">How It Works</button>
+          <button onClick={() => handleScrollTo("demo")} className="text-xl font-bold text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 w-full text-center">Demo</button>
           <button onClick={() => handleScrollTo("pricing")} className="text-xl font-bold text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 w-full text-center">Pricing</button>
           {!isSignIn && (
             <Link to="/signin" className="text-xl font-bold text-slate-700 hover:text-[#0E7CFF] transition-all duration-300 w-full text-center" onClick={() => setMobileMenuOpen(false)}>Sign In</Link>

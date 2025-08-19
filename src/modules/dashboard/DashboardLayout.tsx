@@ -70,9 +70,9 @@ export default function DashboardLayout() {
   };
 
   return (
-    <div className="flex h-screen bg-background">
+    <div className="flex h-screen bg-background overflow-x-hidden">
       {/* Desktop Sidebar - Added border-r back */}
-      <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 border-r">
+      <div className="hidden md:flex md:w-56 md:flex-col md:fixed md:inset-y-0 border-r">
         <div className="flex flex-col flex-grow overflow-y-auto">
           <div className="px-4 flex items-center border-b h-16">
             <div className="flex-1 flex justify-center">
@@ -112,7 +112,7 @@ export default function DashboardLayout() {
 
       {/* Mobile Sidebar */}
       <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
-        <SheetContent side="left" className="p-0 w-64 sm:max-w-sm">
+        <SheetContent side="left" className="p-0 w-56 sm:max-w-sm">
           <ScrollArea className="h-full p-4">
             <div className="flex items-center justify-between mb-4">
               <img
@@ -155,9 +155,9 @@ export default function DashboardLayout() {
       </Sheet>
 
       {/* Main Content */}
-      <div className="md:pl-64 flex flex-col flex-1">
+      <div className="md:pl-56 flex flex-col flex-1 min-w-0">
         {/* Top Navigation - Added border-b back */}
-        <div className="sticky top-0 z-10 flex-shrink-0 h-16 bg-background/95 backdrop-blur-sm border-b flex">
+        <div className="sticky top-0 z-10 flex-shrink-0 h-24 md:h-16 bg-background/95 backdrop-blur-sm border-b flex items-center">
           {/* Mobile menu button */}
           <Button
             variant="ghost"
@@ -189,8 +189,8 @@ export default function DashboardLayout() {
         </div>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-y-auto">
-          <div className="py-6 px-4 sm:px-6 md:px-8">
+        <main className="flex-1 overflow-y-auto min-w-0">
+          <div className="py-6 px-4 sm:px-6 md:px-8 min-w-0">
             <Outlet />
           </div>
         </main>

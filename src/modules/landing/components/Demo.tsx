@@ -11,7 +11,7 @@ const Demo = () => {
         <div className="absolute bottom-1/4 right-1/4 w-72 h-72 bg-gradient-radial from-[#A1E3FF]/25 to-transparent rounded-full blur-2xl opacity-70"></div>
       </div>
 
-      <div className="relative z-10 mx-8 md:container px-8">
+      <div className="relative z-0 md:container max-sm:mx-8 max-md:mt-8 md:mx-auto px-2 sm:px-6">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-slate-900 mb-4">
             See ServiceAgent in Action
@@ -21,14 +21,15 @@ const Demo = () => {
           </p>
         </div>
 
-        <div className="w-full md:max-w-4xl mx-auto">
+        <div>
           <div className="relative bg-gradient-to-br from-slate-50 to-white rounded-2xl shadow-2xl overflow-hidden border border-slate-200">
-            <div style={{ position: "relative", paddingBottom: "57.25%", height: 0 }}>
-              <iframe 
+          
+            <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+              <iframe
                 src="https://www.loom.com/embed/c6331eb111804e92a20090266c736074?sid=a7df1056-af9a-4c8c-b4f2-561a565e7538&hide_owner=true&hide_share=true&hide_title=true&hideEmbedTopBar=true" 
                 frameBorder="0" 
                 allowFullScreen
-                style={{ position: "absolute", border: "none", top: 0, left: 0, width: "100%", height: "100%" }}
+                className="aspect-[16/9] absolute top-0 left-0 w-full h-full border-0"
               />
             </div>
           </div>

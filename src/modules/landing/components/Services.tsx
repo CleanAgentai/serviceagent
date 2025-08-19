@@ -79,15 +79,15 @@ const Services = () => {
         </div>
         <div className="flex justify-center mb-16">
           <div className="flex items-center space-x-4 bg-white/80 backdrop-blur-sm rounded-full p-1 shadow-lg border border-gray-200">
-            <button onClick={() => setIsYearly(false)} className={`px-6 max-sm:px-4 py-2 rounded-full font-medium transition-all duration-300 ${!isYearly ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}>Monthly</button>
-            <button onClick={() => setIsYearly(true)} className={`px-6 py-2 rounded-full font-medium transition-all duration-300 ${isYearly ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}>Yearly (Save 20%)</button>
+            <button onClick={() => setIsYearly(false)} className={`px-3 sm:px-6 py-4 max-sm:py-2 rounded-full font-medium transition-all duration-300 ${!isYearly ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}>Monthly</button>
+            <button onClick={() => setIsYearly(true)} className={`px-3 sm:px-6 py-4 max-sm:py-2 rounded-full font-medium transition-all duration-300 ${isYearly ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}>Yearly (Save 20%)</button>
           </div>
         </div>
         <div className="grid md:grid-cols-3 gap-12 max-xs:gap-20 max-w-7xl mx-auto items-stretch">
           {plans.map((plan, index) => {
              const prevIsPopular = index > 0 && plans[index - 1].popular;
              return (
-            <div key={index} className={`relative h-full ${plan.popular ? 'mt-12 md:mt-0' : prevIsPopular ? 'mt-14 md:mt-0': 'mt-4 md:mt-0'}`}>
+            <div key={index} className={`relative h-full group ${plan.popular ? 'mt-12 md:mt-0' : prevIsPopular ? 'mt-14 md:mt-0': 'mt-4 md:mt-0'} sm:hover:-translate-y-2 transition-all duration-300`}>
             {plan.popular && (
               <div className="absolute -top-2 md:-top-8 lg:-top-6 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white py-2.5 px-6 rounded-full font-semibold text-sm text-center shadow-lg z-10">
                 Most Popular
@@ -103,15 +103,30 @@ const Services = () => {
                 <div className="text-center mb-8">
                   <h3 className="text-2xl font-bold text-slate-900 mb-4">{plan.title}</h3>
                   <div className="mb-4">
-                  {plan.price === "Custom Pricing" ? (
-                    <span className="text-3xl font-extrabold text-slate-900">{plan.price}</span>
-                  ) : (
-                  <>
-                    <span className="text-5xl font-extrabold text-slate-900">{plan.price}</span>
-                    <span className="text-lg text-slate-600 ml-1 block max-md:inline lg:inline">{plan.period}</span>
-                  </>
-)}
-                  </div>
+                        {plan.price === "Custom Pricing" ? (
+                          <span className="text-4xl font-extrabold text-slate-900">
+                            {plan.price}
+                          </span>
+                        ) : (
+                          <>
+                            <span className="text-5xl font-extrabold text-slate-900">
+                              {plan.price}
+                            </span>
+                            <span className="sm:hidden md:block lg:hidden"><br /></span>
+                            <span className="text-lg text-slate-600 ml-1">
+                              /month
+                            </span>
+                            {isYearly && (
+                              <>
+                                <br />
+                                <span className="text-sm text-slate-500">
+                                  (billed yearly)
+                                </span>
+                              </>
+                            )}
+                          </>
+                        )}
+                      </div>
                   <p className="text-slate-600 leading-relaxed">{plan.description}</p>
                 </div>
                 <ul className="mb-8 space-y-4 flex-grow">

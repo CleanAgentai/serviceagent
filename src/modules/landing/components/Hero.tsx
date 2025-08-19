@@ -87,13 +87,13 @@ const Hero = () => {
                 <div className="text-md text-white/70">AI picks the top performers for you.</div>
               </div>
             </div>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16 animate-fade-in" style={{ animationDelay: '0.4s' }}>
+            <div className="flex flex-row flex-wrap gap-4 items-center justify-center mb-16 animate-fade-in" style={{ animationDelay: '0.4s' }}>
               <Link to="/signup">
-                <Button size="lg" className="w-full sm:w-64 bg-white hover:bg-transparent/30 text-[#0B1C2D] hover:text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full py-8 text-lg font-semibold border border-white/40">
+                <Button size="lg" className="min-w-[250px] sm:w-64 bg-white hover:bg-transparent/30 text-[#0B1C2D] hover:text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full py-8 text-lg font-semibold border border-white/40">
                   Start Free 7-Day Trial
                 </Button>
               </Link>
-              <Button size="lg" className="w-full sm:w-64 bg-white hover:bg-transparent/30 text-[#0B1C2D] hover:text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full py-8 text-lg font-semibold border border-white/40" onClick={() => window.open('https://calendly.com/serviceagent/25min', '_blank')}>
+              <Button size="lg" className="min-w-[250px] sm:w-64 bg-white hover:bg-transparent/30 text-[#0B1C2D] hover:text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full py-8 text-lg font-semibold border border-white/40" onClick={() => window.open('https://calendly.com/serviceagent/25min', '_blank')}>
                 Book a Demo
               </Button>
             </div>

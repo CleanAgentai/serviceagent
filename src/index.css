@@ -57,6 +57,28 @@ body {
   border-radius: 3px;
 }
 
+.no-scrollbar { 
+  -ms-overflow-style: none; 
+  scrollbar-width: none; 
+}
+
+.no-scrollbar::-webkit-scrollbar { 
+  display: none; 
+}
+
+section[aria-live][aria-label^="Notifications"] {
+  position: fixed !important;
+  inset: 0 auto auto 0 !important; /* or just left/top 0 */
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+  z-index: 9999 !important;
+}
+
+
 /* Smooth image rendering */
 img {
   image-rendering: -webkit-optimize-contrast;

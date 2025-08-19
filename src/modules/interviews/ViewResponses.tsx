@@ -25,6 +25,8 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import ProgressBar from "@/components/stripe/ProgressBar";
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 
 interface InterviewAttempt {
   id: string;
@@ -365,11 +367,29 @@ export function ViewResponses() {
     );
   }
 
+  const getColorForScore = (score) => {
+    if (score >= 8) return '#4caf50';       // Green
+    if (score >= 5) return '#ff9800';       // Orange
+    return '#f44336';                       // Red
+  };
+
+  const renderProgress = (rating: number | null | undefined) => {
+    return (
+      <div style={{ width: 50, height: 50 }}>
+        <CircularProgressbar value={rating * 10}
+          styles={buildStyles({
+          pathColor: getColorForScore(rating),
+          pathTransitionDuration: 0.5})} 
+        />
+      </div>
+    )
+  };
+
   return (
-    <div className="container mx-auto px-4 py-6">
-      <div className="flex items-center mb-6">
-        <h1 className="text-3xl font-bold">Candidates</h1>
-        <div className="ml-auto flex items-center space-x-2">
+   <div className="mx-auto w-full px-2 sm:px-4 md:px-6 lg:px-8 sm:max-w-screen-md md:max-w-screen-lg lg:max-w-screen-xl">
+      <div className="flex sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+        <h1 className="text-2xl sm:text-3xl font-bold">Candidates</h1>
+        <div className="flex items-center space-x-2">
           {planLimit != customLimit && (
             <div>
             <p className="text-sm font-medium text-gray-700 whitespace-nowrap">
@@ -381,25 +401,35 @@ export function ViewResponses() {
         </div>
       </div>
 
-      <Card className="p-4 mb-6 shadow-lg hover:shadow-xl transition-all duration-300">
+        <Card className="p-4 mb-6 border-0 shadow-lg hover:shadow-xl transition-all duration-300">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
           <Input
             type="text"
-            placeholder="Search by candidate or interview..."
+            placeholder="Search interviews..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
+            className="pl-10 w-full min-w-0 max-w-full"
           />
-        </div>
+           {searchTerm && (
+              <button 
+                onClick={() => setSearchTerm('')}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            )}
+          </div>
       </Card>
+          
 
-      <div className="bg-white rounded-lg border-0 shadow-lg">
-        <div className="overflow-x-auto max-w-full">
-          <table className="w-full table-fixed divide-y divide-gray-200">
-        <thead className="bg-gray-50">
+
+      <div className="bg-white rounded-lg border-0 shadow-lg overflow-hidden">
+        <div className="w-full max-w-full overflow-x-auto scrollbar-hide">
+          <table className="w-full min-w-max divide-y divide-gray-200">
+          <thead className="bg-gray-50">
           <tr>
-            <th className="w-1/4 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-2 sm:px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               <button
                 onClick={() => handleSort("name")}
                 className="flex items-center gap-2 text-left"
@@ -408,10 +438,10 @@ export function ViewResponses() {
                 <ArrowUpDown className="w-4 h-4" />
               </button>
             </th>
-            <th className="w-1/5 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-2 sm:px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               INTERVIEW
             </th>
-            <th className="w-1/5 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-2 sm:px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               <button
                 onClick={() => handleSort("date")}
                 className="flex items-center gap-2 text-left"
@@ -420,21 +450,21 @@ export function ViewResponses() {
                 <ArrowUpDown className="w-4 h-4" />
               </button>
             </th>
-            <th className="w-1/4 px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-4 sm:px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               QUALIFIED
             </th>
-            <th className="w-1/4 px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-2 sm:px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               RATING
             </th>
-            <th className="w-1/4 px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-2 sm:px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               STATUS
             </th>
-            <th className="w-1/4 px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-2 sm:px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               ACTIONS
             </th>
           </tr>
           </thead>
-          <tbody>
+          <tbody className="bg-white divide-y divide-gray-200">
             {filtered.map((attempt, index) => {
               const lastChar = attempt.id.slice(-1);
               const isQualifiedDemo =
@@ -444,48 +474,50 @@ export function ViewResponses() {
           
             return (
               <tr key={attempt.id} className="hover:bg-gray-50">
-                <td className="px-3 py-4 text-sm font-medium text-gray-900">
+                <td className="px-2 sm:px-4 md:px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500">
+                    <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 shrink-0">
                       {attempt.candidateName.charAt(0)}
                     </div>
                     <span>{attempt.candidateName}</span>
                   </div>
                 </td>
-                <td className="px-3 py-4 text-sm text-gray-500">
+                <td className="px-2 sm:px-4 md:px-6 py-4 text-sm text-gray-500">
                   <div className="flex items-center gap-2">
                     <FileText className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                    <span className="truncate">{attempt.interviewTitle}</span>
+                    <span>{attempt.interviewTitle}</span>
                   </div>
                 </td>
-                <td className="px-3 py-4 text-sm text-gray-500">
+                <td className="px-2 sm:px-4 md:px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
                   <div className="flex items-center gap-2">
                     <Calendar className="w-4 h-4 text-gray-400 flex-shrink-0" />
                     <span>{attempt.createdAt}</span>
                   </div>
                 </td>
-                <td className="px-3 py-4 text-sm text-gray-500">
+                <td className="px-2 sm:px-4 md:px-6 py-4 text-sm text-gray-500">
                   <div className="flex items-center justify-center">
                     <Button
                       variant="default"
                       size="sm"
                       className={cn(
-                        "pointer-events-none h-7 px-2 text-xs",
+                        "pointer-events-none px-3 py-2 text-xs text-center leading-tight",
                         attempt.qualified
                           ? "bg-green-600 text-white"
                           : "bg-red-600 text-white"
                       )}
                     >
-                      {attempt.qualified ? "Qualified" : "Not Qualified"}
+                      {attempt.qualified ? "Qualified" : (
+                        "Not Qualified"
+                      )}
                     </Button>
                   </div>
                 </td>
-                <td className="px-3 py-4 text-center font-bold text-sm">
+                <td className="px-2 sm:px-4 md:px-6 py-4 text-center font-bold text-sm whitespace-nowrap">
                   {attempt.generalScore
                     ? `${attempt.generalScore}/10`
                     : "N/A"}
                 </td>
-                <td className="px-3 py-4 text-sm">
+                <td className="px-2 sm:px-4 md:px-6 py-4 text-sm whitespace-nowrap">
                   <Select
                     value={attempt.status}
                     onValueChange={(value) =>
@@ -504,14 +536,14 @@ export function ViewResponses() {
                     </SelectContent>
                   </Select>
                 </td>
-                <td className="px-3 py-4 text-sm">
-                  <div className="flex items-center justify-center space-x-1">
+                <td className="px-2 sm:px-4 md:px-6 py-4 text-sm whitespace-nowrap">
+                  <div className="flex items-center justify-center space-x-4">
                     <Button
                       variant="default"
                       onClick={() => handleViewAnalysis(attempt)}
-                      className="bg-blue-600 hover:bg-blue-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-lg hover:shadow-xl transition-all duration-300 px-3 py-2 text-xs no-underline"
+                      className="bg-blue-600 hover:bg-blue-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-lg hover:shadow-xl transition-all duration-300 px-2 sm:px-3 md:px-4 py-2 text-xs no-underline"
                     >
-                      View AI Analysis
+                      AI Analysis
                     </Button>
                     <Button
                       variant="ghost"
@@ -571,7 +603,7 @@ export function ViewResponses() {
                       </div>
                       <div className="flex items-center justify-center space-x-1">
                         <Button variant="link" className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3">
-                          View AI Analysis
+                          AI Analysis
                         </Button>
                         <Button
                           variant="ghost"
@@ -599,9 +631,9 @@ export function ViewResponses() {
           </div>
         </td>
       </tr>
-        )}
-        </tbody>
-      </table>
+                  )}
+          </tbody>
+        </table>
         </div>
       </div>
 
@@ -610,9 +642,10 @@ export function ViewResponses() {
       )}
 
       {selectedAttempt && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <div className="flex justify-between items-center mb-6">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 rounded-lg shadow-lg">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+            {/* Fixed Header */}
+            <div className="flex justify-between items-center p-8 pb-4 border-b bg-white rounded-t-lg">
               <h2 className="text-2xl font-bold">
                 AI Analysis: {selectedAttempt.candidateName}
               </h2>
@@ -623,6 +656,9 @@ export function ViewResponses() {
                 <X className="h-6 w-6" />
               </button>
             </div>
+            
+            {/* Scrollable Content */}
+            <div className="flex-1 overflow-y-auto p-8 pt-4 no-scrollbar">
 
             <div className="space-y-6">
               <div>
@@ -661,25 +697,16 @@ export function ViewResponses() {
                 <h3 className="text-lg font-semibold mb-2">
                   Performance Rating
                 </h3>
-                <Card className="p-4 bg-blue-50 border-none">
-                  <div className="flex items-center gap-2">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <Star
-                        key={i}
-                        className={cn(
-                          "w-4 h-4",
-                          selectedAttempt.generalScore !== null &&
-                            selectedAttempt.generalScore / 2 > i
-                            ? "text-yellow-400 fill-current"
-                            : "text-gray-300"
-                        )}
-                      />
-                    ))}
-                    <span className="ml-2 text-sm text-gray-600">
-                      {selectedAttempt.generalScore} / 10
-                    </span>
+                <div className="space-y-6">
+            <Card className="p-4 pl-0 border-0 shadow-none">
+              <div className="flex items-center justify-start max-md:justify-center  gap-4">
+                <div className="flex justify-center items-center">{renderProgress(selectedAttempt.generalScore)}</div>
+                <span className="text-4xl font-bold text-blue-600">
+                  {selectedAttempt.generalScore}/10
+                </span>
+              </div>
+            </Card>
                   </div>
-                </Card>
               </div>
 
               <div>
@@ -749,6 +776,7 @@ export function ViewResponses() {
                   Full Response Details
                 </Button>
               </div>
+            </div>
             </div>
           </div>
         </div>
