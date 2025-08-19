@@ -107,14 +107,14 @@ export default function Settings() {
   };
 
   return (
-    <div className="h-screen flex bg-gray-50">
+    <div className="h-screen flex">
       <div className="flex-1 min-w-0 h-screen overflow-y-auto">
         <div className="max-w-3xl mx-auto py-4 px-6">
           <div className="p-4">
             <div className="max-w-3xl mx-auto">
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between mb-6">
                 <div>
-                  <h1 className="text-2xl font-bold text-gray-900">
+                  <h1 className="text-left text-2xl font-bold text-gray-900">
                     Company Settings
                   </h1>
                   <p className="text-gray-600 mt-1 text-sm leading-tight whitespace-nowrap truncate max-w-xl">

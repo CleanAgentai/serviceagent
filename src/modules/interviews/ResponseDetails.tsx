@@ -12,6 +12,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 
 // interface MetricEvaluation {
 //   title: string;
@@ -183,18 +185,22 @@ export function ResponseDetails() {
     fetchResponse();
   }, [responseId]);
 
-  const renderStars = (rating: number | null | undefined) => {
-    return Array.from({ length: 5 }).map((_, i) => (
-      <Star
-        key={i}
-        className={cn(
-          "w-6 h-6",
-          rating !== null && rating / 2 > i
-            ? "text-yellow-400 fill-current"
-            : "text-gray-300"
-        )}
-      />
-    ));
+  const getColorForScore = (score) => {
+    if (score >= 8) return '#4caf50';       // Green
+    if (score >= 5) return '#ff9800';       // Orange
+    return '#f44336';                       // Red
+  };
+
+  const renderProgress = (rating: number | null | undefined) => {
+    return (
+      <div style={{ width: 50, height: 50 }}>
+        <CircularProgressbar value={rating * 10}
+          styles={buildStyles({
+          pathColor: getColorForScore(rating),
+          pathTransitionDuration: 0.5})} 
+        />
+      </div>
+    )
   };
 
   const downloadPdf = async (type: 'transcript' | 'analysis') => {
@@ -313,17 +319,17 @@ export function ResponseDetails() {
           <div className="space-y-6">
             <Card className="p-6 shadow-lg">
               <h2 className="text-xl font-semibold mb-4">Overall Rating</h2>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center justify-center gap-4">
                 <span className="text-4xl font-bold text-blue-600">
                   {response.overallRating}/10
                 </span>
-                <div className="flex">{renderStars(response.overallRating)}</div>
+                <div className="flex justify-center items-center">{renderProgress(response.overallRating)}</div>
               </div>
             </Card>
 
             <Card className="p-6 shadow-lg">
               <h2 className="text-xl font-semibold mb-4">Ratings</h2>
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto scrollbar-hide">
                 <table className="w-full">
                   <thead>
                     <tr className="border-b">
@@ -470,27 +476,27 @@ export function ResponseDetails() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6">
+    <div className="relative z-0 md:container max-sm:mx-8 max-md:mt-8 md:mx-auto px-2 sm:px-6">
       <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-4">
-          <Button
-            variant="outline"
-            onClick={() => navigate(-1)}
-            size="icon"
-            className="h-8 w-8"
-          >
-            <ArrowLeft className="h-4 w-4" />
-          </Button>
-          <div>
-            <h1 className="text-2xl font-semibold">
-              {passedName || "Candidate"}
-            </h1>
-            <p className="text-gray-600">
-              Applied for{" "}
-              {passedTitle || response?.appliedPosition || "Interview"}
-            </p>
-          </div>
+        <Button
+          variant="outline"
+          onClick={() => navigate(-1)}
+          size="icon"
+          className="h-8 w-8"
+        >
+          <ArrowLeft className="h-4 w-4" />
+        </Button>
+        
+        <div className="flex-1 text-center md:text-left px-4">
+          <h1 className="text-2xl font-semibold">
+            {passedName || "Candidate"}
+          </h1>
+          <p className="text-gray-600">
+            Applied for{" "}
+            {passedTitle || response?.appliedPosition || "Interview"}
+          </p>
         </div>
+        
         <Button
           variant="outline"
           onClick={() => navigate(-1)}
@@ -501,87 +507,92 @@ export function ResponseDetails() {
         </Button>
       </div>
 
-      <div className="flex items-center justify-between border-b mb-6">
-        {/* Left side tabs */}
-        <div className="flex gap-4">
-          <button
-            className={`px-4 py-2 font-medium ${
-              activeTab === "questions"
-                ? "text-blue-500 border-b-2 border-blue-500"
-                : "text-gray-600 hover:text-blue-500"
-            }`}
-            onClick={() => setActiveTab("questions")}
-          >
-            <Video className="w-4 h-4 inline-block mr-2" />
-            Video & Transcripts
-          </button>
+      <div className="border-b mb-6">
+        {/* Scrollable tabs container */}
+        <div className="overflow-x-auto no-scrollbar">
+          <div className="flex items-center min-w-max gap-4 px-4 py-2">
+            {/* Left side tabs */}
+            <div className="flex gap-4">
+              <button
+                className={`px-4 py-2 font-medium whitespace-nowrap ${
+                  activeTab === "questions"
+                    ? "text-blue-500 border-b-2 border-blue-500"
+                    : "text-gray-600 hover:text-blue-500"
+                }`}
+                onClick={() => setActiveTab("questions")}
+              >
+                <Video className="w-4 h-4 inline-block mr-2" />
+                Video & Transcripts
+              </button>
 
-          <button
-            className={`px-4 py-2 font-medium ${
-              activeTab === "reviews"
-                ? "text-purple-500 border-b-2 border-purple-500"
-                : "text-gray-600 hover:text-purple-500"
-            }`}
-            onClick={() => setActiveTab("reviews")}
-          >
-            <Star className="w-4 h-4 inline-block mr-2" />
-            Reviews & Ratings
-          </button>
-        </div>
+              <button
+                className={`px-4 py-2 font-medium whitespace-nowrap ${
+                  activeTab === "reviews"
+                    ? "text-purple-500 border-b-2 border-purple-500"
+                    : "text-gray-600 hover:text-purple-500"
+                }`}
+                onClick={() => setActiveTab("reviews")}
+              >
+                <Star className="w-4 h-4 inline-block mr-2" />
+                Reviews & Ratings
+              </button>
+            </div>
 
-        {/* Right side labels */}
-        <div className="flex gap-4">
-          <button
-            className={cn(
-              "px-4 py-2 font-medium",
-              plan != "Scale" && plan != "Custom"
-                ? "text-gray-400 cursor-not-allowed"
-                : activeTab === "transcript"
-                ? "text-green-500 border-b-2 border-green-500"
-                : "text-gray-600 hover:text-green-500"
-            )}
-            disabled={plan != "Scale" && plan != "Custom"}
-            title={plan != "Scale" && plan != "Custom" ? "Upgrade your plan to access transcript PDF" : ""}
-            onClick={async () => {
-              if (plan != "Scale" && plan != "Custom") return;
-              setActiveTab("transcript");
-              const candidateName = passedName || response?.candidateName || 'Candidate';
-              const position = passedTitle || response?.appliedPosition || 'Interview';
-              const sanitizedName = candidateName.replace(/[^a-zA-Z0-9]/g, '_');
-              const sanitizedPosition = position.replace(/[^a-zA-Z0-9]/g, '_');
-              const customFileName = `${sanitizedName}_${sanitizedPosition}_transcript.pdf`;
-              setFileName(customFileName);
-            }}
-          >
-            <Eye className="w-4 h-4 inline-block mr-2" />
-            View Transcript PDF
-          </button>
+            {/* Right side labels */}
+            <div className="flex gap-4">
+              <button
+                className={cn(
+                  "px-4 py-2 font-medium whitespace-nowrap",
+                  plan != "Scale" && plan != "Custom"
+                    ? "text-gray-400 cursor-not-allowed"
+                    : activeTab === "transcript"
+                    ? "text-green-500 border-b-2 border-green-500"
+                    : "text-gray-600 hover:text-green-500"
+                )}
+                disabled={plan != "Scale" && plan != "Custom"}
+                title={plan != "Scale" && plan != "Custom" ? "Upgrade your plan to access transcript PDF" : ""}
+                onClick={async () => {
+                  if (plan != "Scale" && plan != "Custom") return;
+                  setActiveTab("transcript");
+                  const candidateName = passedName || response?.candidateName || 'Candidate';
+                  const position = passedTitle || response?.appliedPosition || 'Interview';
+                  const sanitizedName = candidateName.replace(/[^a-zA-Z0-9]/g, '_');
+                  const sanitizedPosition = position.replace(/[^a-zA-Z0-9]/g, '_');
+                  const customFileName = `${sanitizedName}_${sanitizedPosition}_transcript.pdf`;
+                  setFileName(customFileName);
+                }}
+              >
+                <Eye className="w-4 h-4 inline-block mr-2" />
+                View Transcript PDF
+              </button>
 
-          <button
-            className={cn(
-              "px-4 py-2 font-medium",
-              plan != "Scale" && plan != "Custom"
-                ? "text-gray-400 cursor-not-allowed"
-                : activeTab === "pdf"
-                ? "text-orange-500 border-b-2 border-orange-500"
-                : "text-gray-600 hover:text-orange-500"
-            )}
-            disabled={plan != "Scale" && plan != "Custom"}
-            title={plan != "Scale" && plan != "Custom" ? "Upgrade your plan to access analysis PDF" : ""}
-            onClick={async () => {
-              if (plan != "Scale" && plan != "Custom") return;
-              setActiveTab("pdf");
-              const candidateName = passedName || response?.candidateName || 'Candidate';
-              const position = passedTitle || response?.appliedPosition || 'Interview';
-              const sanitizedName = candidateName.replace(/[^a-zA-Z0-9]/g, '_');
-              const sanitizedPosition = position.replace(/[^a-zA-Z0-9]/g, '_');
-              const customFileName = `${sanitizedName}_${sanitizedPosition}_analysis.pdf`;
-              setFileName(customFileName);
-            }}
-          >
-            <Eye className="w-4 h-4 inline-block mr-2" />
-            View Analysis PDF
-          </button>
+              <button
+                className={cn(
+                  "px-4 py-2 font-medium whitespace-nowrap",
+                  plan != "Scale" && plan != "Custom"
+                    ? "text-gray-400 cursor-not-allowed"
+                    : activeTab === "pdf"
+                    ? "text-orange-500 border-b-2 border-orange-500"
+                    : "text-gray-600 hover:text-orange-500"
+                )}
+                disabled={plan != "Scale" && plan != "Custom"}
+                title={plan != "Scale" && plan != "Custom" ? "Upgrade your plan to access analysis PDF" : ""}
+                onClick={async () => {
+                  if (plan != "Scale" && plan != "Custom") return;
+                  setActiveTab("pdf");
+                  const candidateName = passedName || response?.candidateName || 'Candidate';
+                  const position = passedTitle || response?.appliedPosition || 'Interview';
+                  const sanitizedName = candidateName.replace(/[^a-zA-Z0-9]/g, '_');
+                  const sanitizedPosition = position.replace(/[^a-zA-Z0-9]/g, '_');
+                  const customFileName = `${sanitizedName}_${sanitizedPosition}_analysis.pdf`;
+                  setFileName(customFileName);
+                }}
+              >
+                <Eye className="w-4 h-4 inline-block mr-2" />
+                View Analysis PDF
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 

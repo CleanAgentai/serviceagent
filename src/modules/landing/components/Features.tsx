@@ -32,7 +32,7 @@ const Features = () => {
         <div className="absolute bottom-1/3 left-1/4 w-80 h-80 bg-gradient-radial from-[#A1E3FF]/30 to-transparent rounded-full blur-2xl opacity-50"></div>
       </div>
 
-      <div className="relative z-0 container mx-auto px-6">
+      <div className="relative z-0 md:container max-sm:mx-8 max-md:mt-8 md:mx-auto px-4 sm:px-6">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-slate-900 mb-4">
             How It Works
@@ -43,12 +43,12 @@ const Features = () => {
         </div>
 
         {/* Visual Flow */}
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col xl:flex-row items-center justify-center gap-8 xl:gap-0">
             {features.map((feature, index) => (
-              <div key={index} className="flex flex-col lg:flex-row items-center">
+              <div key={index} className="flex flex-col xl:flex-row items-center xl:items-stretch">
                 {/* Step Card */}
-                <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group cursor-pointer w-80 h-96">
+                <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group cursor-pointer w-full h-full md:w-80 md:h-96">
                   <CardContent className="p-8 text-center h-full flex flex-col justify-between">
                     {/* Step Number */}
                     <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-6 mx-auto text-blue-600 font-bold text-lg">
@@ -75,9 +75,9 @@ const Features = () => {
 
                 {/* Arrow (except for last item) */}
                 {index < features.length - 1 && (
-                  <div className="flex items-center justify-center lg:mx-4 my-4 lg:my-0">
+                  <div className="lg:flex items-center justify-center px-8 mt-8 xl:mt-0 h-50">
                     <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center shadow-lg animate-pulse">
-                      <ArrowRight className="h-6 w-6 text-white lg:rotate-0 rotate-90" />
+                      <ArrowRight className="h-6 w-6 text-white xl:rotate-0 rotate-90" />
                     </div>
                   </div>
                 )}

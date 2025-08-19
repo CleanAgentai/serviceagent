@@ -120,7 +120,7 @@ const IndustriesSlider = () => {
         <div className="absolute top-1/3 right-1/3 w-96 h-96 bg-gradient-radial from-[#0E7CFF]/10 to-transparent rounded-full blur-3xl opacity-60"></div>
         <div className="absolute bottom-1/4 left-1/3 w-80 h-80 bg-gradient-radial from-[#A1E3FF]/20 to-transparent rounded-full blur-2xl opacity-70"></div>
       </div>
-      <div className="relative z-10 container mx-auto px-6">
+      <div className="relative z-0 md:container max-sm:mx-8 max-md:mt-8 md:mx-auto px-2 sm:px-6">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-slate-900 mb-4">
             See How ServiceAgent Works in Your Industry
@@ -130,15 +130,23 @@ const IndustriesSlider = () => {
           </p>
         </div>
         <div className="max-w-5xl mx-auto">
-          <Carousel className="w-full" opts={{ align: "start", loop: true }}>
-            <CarouselContent>
+          <Carousel 
+            className="w-full" 
+            opts={{ 
+              align: "start", 
+              loop: true,
+              dragFree: true,
+              containScroll: "trimSnaps"
+            }}
+          >
+            <CarouselContent className="-ml-2 md:-ml-4">
               {industries.map((industry, index) => {
                 const Icon = industry.icon;
                 const preview = getPreviewWithFade(industry.overview, 120, 160);
                 return (
-                  <CarouselItem key={index} className="md:basis-1/1 lg:basis-1/1">
+                  <CarouselItem key={index} className="pl-2 md:pl-4 basis-full md:basis-1/1 lg:basis-1/1">
                     <Card className="border-0 shadow-xl hover:shadow-2xl transition-all duration-300 bg-white/80 backdrop-blur-sm">
-                      <CardContent className="p-12 text-center flex flex-col items-center">
+                      <CardContent className="p-6 md:p-12 text-center flex flex-col items-center">
                         <div className="flex flex-col items-center mb-6">
                           <Icon className="h-12 w-12 text-[#0E7CFF] mb-3" />
                           <h3 className="text-2xl font-extrabold bg-gradient-to-r from-[#0E7CFF] to-[#1E529D] bg-clip-text text-transparent tracking-tight uppercase">
@@ -162,8 +170,8 @@ const IndustriesSlider = () => {
                 );
               })}
             </CarouselContent>
-            <CarouselPrevious className="hidden md:flex -left-12" />
-            <CarouselNext className="hidden md:flex -right-12" />
+            <CarouselPrevious className="flex -left-4 md:-left-12" />
+            <CarouselNext className="flex -right-4 md:-right-12" />
           </Carousel>
         </div>
       </div>

@@ -108,7 +108,7 @@ export function Footer() {
 
   return (
     <footer className="bg-slate-900 text-white py-16">
-      <div className="container mx-auto px-6">
+      <div className="mx-auto px-24 lg:px-48">
         <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-8">
           <div className="md:w-1/2">
             <div className="text-2xl font-bold mb-4">ServiceAgent</div>
@@ -126,7 +126,7 @@ export function Footer() {
           </div>
           <div className="md:w-1/2 flex flex-col md:flex-row md:justify-end md:space-x-16 space-y-8 md:space-y-0">
             <div>
-              <h3 className="font-semibold mb-4">Product</h3>
+              <h3 className="max-md:text-left font-semibold mb-4">Product</h3>
               <ul className="space-y-2 text-slate-400">
                 <li><a href="#features" className="hover:text-white transition-colors">Features</a></li>
                 <li><a href="#pricing" className="hover:text-white transition-colors">Pricing</a></li>
@@ -135,7 +135,7 @@ export function Footer() {
               </ul>
             </div>
             <div>
-              <h3 className="font-semibold mb-4">Legal</h3>
+              <h3 className="max-md:text-left font-semibold mb-4">Legal</h3>
               <ul className="space-y-2 text-slate-400">
                 <li><Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
                 <li><Link to="/terms-of-service" className="hover:text-white transition-colors">Terms of Service</Link></li>

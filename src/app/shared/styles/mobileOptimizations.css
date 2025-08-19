@@ -105,4 +105,16 @@
   nav .text-base {
     font-size: 0.875rem !important;
   }
+  
+  /* Optimize scrollable tabs for mobile */
+  .overflow-x-auto {
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    scroll-behavior: smooth;
+  }
+  
+  /* Ensure tab buttons are properly sized for mobile */
+  .overflow-x-auto button {
+    flex-shrink: 0;
+    min-width: max-content;
+  }
 } 

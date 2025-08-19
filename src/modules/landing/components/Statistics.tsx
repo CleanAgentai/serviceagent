@@ -43,7 +43,7 @@ const Statistics = () => {
         <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-radial from-[#A1E3FF]/20 to-transparent rounded-full blur-2xl opacity-60"></div>
       </div>
 
-      <div className="relative z-0 container mx-auto px-6">
+      <div className="relative z-0 md:container max-sm:mx-8 max-md:mt-8 md:mx-auto px-2 sm:px-6">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-slate-900 mb-4">
             Real Results from Real Businesses

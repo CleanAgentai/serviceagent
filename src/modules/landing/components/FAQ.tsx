@@ -28,7 +28,7 @@ const faqs = [
   },
   {
     question: "Can I change the questions or scoring?",
-    answer: "Yes.You can use our proven templates or fully customize your interviews. Add questions about driving, licenses, experience or whatever matters most. The AI will score them based on what you care about."
+    answer: "Yes. You can use our proven templates or fully customize your interviews. Add questions about driving, licenses, experience or whatever matters most. The AI will score them based on what you care about."
   }
 ];
 
@@ -41,7 +41,7 @@ const FAQ = () => {
         <div className="absolute top-0 left-0 w-72 h-72 bg-gradient-radial from-[#A1E3FF]/15 to-transparent rounded-full blur-2xl opacity-50"></div>
       </div>
 
-      <div className="relative z-10 container mx-auto px-6">
+      <div className="relative z-0 md:container max-sm:mx-8 max-md:mt-8 md:mx-auto px-2 sm:px-6">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-slate-900 mb-4">
             Frequently Asked Questions
@@ -52,13 +52,13 @@ const FAQ = () => {
         </div>
 
         <div className="max-w-3xl mx-auto">
-          <Accordion type="single" collapsible className="w-full">
+          <Accordion type="single" collapsible>
             {faqs.map((faq, index) => (
               <AccordionItem key={index} value={`item-${index}`} className="border-b border-slate-200">
-                <AccordionTrigger className="text-left text-slate-900 hover:text-[#0E7CFF] py-6">
+                <AccordionTrigger className="px-4 sm:px-6 text-left text-slate-900 hover:text-[#0E7CFF] py-6">
                   {faq.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-slate-600 pb-6 leading-relaxed">
+                <AccordionContent className="px-4 sm:px-6 text-slate-600 pb-6 leading-relaxed text-left">
                   {faq.answer}
                 </AccordionContent>
               </AccordionItem>

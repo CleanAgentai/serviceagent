@@ -275,7 +275,7 @@ export function CompanyProfileForm({
   };
 
   return (
-    <Card className="w-full max-w-4xl mx-auto">
+    <Card className="w-full max-w-4xl mx-auto border-0 shadow-lg hover:shadow-xl transition-all duration-300">
       <CardHeader>
         <CardTitle>Company Profile</CardTitle>
         <CardDescription>
