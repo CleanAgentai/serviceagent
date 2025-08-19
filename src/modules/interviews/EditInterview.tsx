@@ -333,10 +333,10 @@ export default function EditInterview() {
         </p>
       </div>
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="basic-details">Basic Details</TabsTrigger>
-          <TabsTrigger value="questions">Interview Questions</TabsTrigger>
-          <TabsTrigger value="settings">Settings</TabsTrigger>
+        <TabsList className="grid w-full h-full grid-cols-3 border-0 shadow-lg hover:shadow-xl transition-all duration-300">
+          <TabsTrigger value="basic-details"><p className="max-sm:text-wrap">Basic Details</p></TabsTrigger>
+          <TabsTrigger value="questions"><p className="max-sm:text-wrap">Interview Questions</p></TabsTrigger>
+          <TabsTrigger value="settings"><p className="max-sm:text-wrap">Settings</p></TabsTrigger>
         </TabsList>
         <div className="mt-6">
           {activeTab === "basic-details" && (
@@ -560,7 +560,7 @@ export default function EditInterview() {
                 <Plus className="h-4 w-4 mr-1" />
                 Add Question
               </Button>
-              <div className="flex justify-between items-center mt-4">
+              <div className="flex justify-between items-center mt-4 gap-2">
                 <Button type="button" variant="outline" onClick={prevTab} className="bg-white text-black shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3 border border-gray-200 focus:z-10 relative">
                   <ArrowLeft className="mr-2 h-4 w-4" />
                   Previous
@@ -586,12 +586,31 @@ export default function EditInterview() {
                         Display helpful hints to candidates during the interview
                       </p>
                     </div>
+                    {/* Mobile: Select, Desktop: Switch */}
+                    <div className="md:hidden">
+                      <Select
+                        value={formData.showHints ? "yes" : "no"}
+                        onValueChange={(value) =>
+                          handleBasicDetailsChange("showHints", value === "yes")
+                        }
+                      >
+                        <SelectTrigger className="w-20">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="yes">Yes</SelectItem>
+                          <SelectItem value="no">No</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="hidden md:flex justify-end">
                     <Switch
                       id="showHints"
                       checked={formData.showHints}
                       onCheckedChange={(checked) => handleBasicDetailsChange("showHints", checked)}
                       className="data-[state=checked]:bg-blue-600"
                     />
+                    </div>
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
@@ -602,12 +621,31 @@ export default function EditInterview() {
                         Allow candidates to see when the interview is available
                       </p>
                     </div>
+                    {/* Mobile: Select, Desktop: Switch */}
+                    <div className="md:hidden">
+                      <Select
+                        value={formData.showAvailability ? "yes" : "no"}
+                        onValueChange={(value) =>
+                          handleBasicDetailsChange("showAvailability", value === "yes")
+                        }
+                      >
+                        <SelectTrigger className="w-20">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="yes">Yes</SelectItem>
+                          <SelectItem value="no">No</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="hidden md:flex justify-end">
                     <Switch
                       id="showAvailability"
                       checked={formData.showAvailability}
                       onCheckedChange={(checked) => handleBasicDetailsChange("showAvailability", checked)}
                       className="data-[state=checked]:bg-blue-600"
                     />
+                    </div>
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="deadline" className="text-base font-medium">

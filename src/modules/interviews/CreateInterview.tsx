@@ -780,7 +780,7 @@ export default function CreateInterview() {
               Add Question
             </Button>
 
-            <div className="flex justify-between items-center mt-4">
+            <div className="flex justify-between items-center mt-4 gap-2">
               <Button
                 type="button"
                 variant="outline"
