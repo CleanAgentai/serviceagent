@@ -256,17 +256,43 @@ const Integrations: React.FC = () => {
       console.error("❌ Error saving integration details:", error);
     }
   }, [apiBaseUrl]);
-
-  const handleDeactivate = useCallback((e: CustomEvent) => {
+    
+  const handleDeactivate = useCallback(async (e: CustomEvent) => {
     const details = e.detail.integrationDetails;
     console.log("Knit integration deactivated:", details);
     
-    // Remove the deactivated integration from UI state
-    setConnectedIntegrations(prev => {
-      const updated = new Set(prev);
-      updated.delete(details.appId);
-      return updated;
-    });
+    // // Remove the deactivated integration from UI state
+    // setConnectedIntegrations(prev => {
+    //   const updated = new Set(prev);
+    //   updated.delete(details.appId);
+    //   return updated;
+    // });
+
+    try {
+      const user = await fetchCurrentUser();
+
+      const { error } = await supabase
+        .from("company_profiles")
+        .update({
+          knit_integration_id: null,
+          knit_connected_at: null,
+          knit_app_id: null,
+          knit_category_id: null,
+        })
+        .eq("id", user.companyProfileId);
+
+      if (error) throw error;
+
+      setConnectedIntegrations(prev => {
+        const updated = new Set(prev);
+        updated.delete(details.appId);
+        return updated;
+      });
+
+      console.log("Cleared knit columns in company_profiles");
+    } catch (err) {
+      console.error("Error clearing knit columns:", err);
+    }
   }, []);
 
   const handleClose = useCallback((e: CustomEvent) => {
