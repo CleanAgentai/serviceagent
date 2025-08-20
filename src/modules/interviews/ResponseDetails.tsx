@@ -206,8 +206,8 @@ export function ResponseDetails() {
           value={value}
           styles={buildStyles({
             pathColor: getColorForScore(rating),
-            pathTransitionDuration: 0.9,
-            pathTransition: "stroke-dashoffset 0.6s ease 0.3s"
+            pathTransitionDuration: 0.7,
+            pathTransition: "stroke-dashoffset 0.7s ease 0.3s"
           })}
         />
       </div>
