@@ -80,7 +80,7 @@ export function ForgotPassword() {
               <img
                 src="/ServiceAgent_new.svg"
                 alt="ServiceAgent Logo"
-                className="h-12 w-auto mx-auto"
+                className="h-16 w-16 object-contain"
               />
             </Link>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">

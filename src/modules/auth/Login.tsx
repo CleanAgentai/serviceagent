@@ -76,10 +76,10 @@ export function Login() {
       <Navigation />
       <div className="fixed inset-0 w-full h-full bg-gradient-to-b from-gray-50 to-white -z-10" />
       {/* Logo above header */}
-      <main className="flex-grow pt-0 md:pt-16">
-        <div className="max-w-2xl mx-auto px-4 py-12">
-          <div className="flex justify-center mb-4">
-            <img src="/singularlogo.png" alt="ServiceAgent Icon" className="h-16 w-16 max-w-none object-contain md:h-16 md:w-auto md:max-w-none" />
+      <main className="flex-grow pt-24 md:pt-20">
+        <div className="max-w-2xl mx-auto px-4 py-8 md:py-12">
+          <div className="flex justify-center mb-6">
+            <img src="/singularlogo.png" alt="ServiceAgent Icon" className="h-16 w-16 object-contain" />
           </div>
           {/* Header */}
           <div className="text-center mb-8">
