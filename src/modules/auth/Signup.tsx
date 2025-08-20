@@ -129,11 +129,11 @@ export function Signup() {
     <div className="relative min-h-screen w-full flex flex-col">
       <Navigation />
       <div className="fixed inset-0 w-full h-full bg-gradient-to-b from-gray-50 to-white -z-10" />
-      <main className="flex-grow pt-0 md:pt-16">
-        <div className="max-w-2xl mx-auto px-4 py-12">
+      <main className="flex-grow pt-24 md:pt-20">
+        <div className="max-w-2xl mx-auto px-4 py-8 md:py-12">
           {/* Logo above header */}
-          <div className="flex justify-center mb-4">
-            <img src="/singularlogo.png" alt="ServiceAgent Icon" className="h-16 w-16 max-w-none object-contain md:h-16 md:w-auto md:max-w-none" />
+          <div className="flex justify-center mb-6">
+            <img src="/singularlogo.png" alt="ServiceAgent Icon" className="h-16 w-16 object-contain" />
           </div>
           {/* Header */}
           <div className="text-center mb-8">
@@ -303,7 +303,7 @@ export function Signup() {
               </div>
 
               {/* Terms Checkbox */}
-              <div className="flex items-start">
+              <div className="flex justify-left items-center">
                 <div className="flex items-center h-5">
                   <input
                     id="acceptTerms"
@@ -315,14 +315,14 @@ export function Signup() {
                 </div>
                 <div className="ml-3 text-sm">
                   <label htmlFor="acceptTerms" className="text-gray-600">
-                    I agree to the{" "}
+                    I agree to the
                     <Link
                       to="/terms-of-service"
                       className="text-blue-600 hover:text-blue-700"
                     >
                       Terms of Service
-                    </Link>{" "}
-                    and{" "}
+                    </Link>
+                    and
                     <Link
                       to="/privacy-policy"
                       className="text-blue-600 hover:text-blue-700"
