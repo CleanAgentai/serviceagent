@@ -49,7 +49,7 @@ const atsIntegrations: ATSIntegration[] = [
   { id: 'jobdiva', name: 'JobDiva', category: 'ATS API', logo: '/PlatformJobDiva-thumbnail-144x144.png', isConnected: false },
 ];
 
-// (unchanged) your helper to grab the logged‑in user/profile
+// (unchanged) helper to grab the logged‑in user/profile
 async function fetchCurrentUser(): Promise<CurrentUser> {
   const {
     data: { user },
