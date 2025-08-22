@@ -46,6 +46,7 @@ export function ViewResponses() {
   const [loading, setLoading] = useState(true);
   const [showPdf, setShowPdf] = useState(false);
   const [selectedAttemptPdfUrl, setSelectedAttemptPdfUrl] = useState<string | null>(null);
+  const [toggleEnabled, setToggleEnabled] = useState(false);
   const [planLimit, setPlanLimit] = useState<number | null>(null);
   const launchLimit = 20; //move to config
   const scaleLimit = 100; //move to config
@@ -239,6 +240,12 @@ export function ViewResponses() {
             setCurrentMonthAttempts(monthly);
             console.log("[ViewResponses] Monthly Attempts:", monthly);
 
+            if(toggleEnabled) {
+              setAttempts(currentMonthAttempts);
+            } else {
+              setAttempts(formatted);
+            }
+
           } catch (mapError) {
             console.error(
               "[ViewResponses] Error formatting attempts data:",
@@ -267,7 +274,7 @@ export function ViewResponses() {
     };
 
     fetchAttempts();
-  }, []);
+  }, [toggleEnabled]);
 
   const handleSort = (field: "date" | "name") => {
     if (sortBy === field) {
@@ -433,6 +440,19 @@ export function ViewResponses() {
           <div className="text-left">Status</div>
           <div className="text-center">Actions</div>
         </div>
+
+        <button
+      onClick={() => setToggleEnabled(!toggleEnabled)}
+      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+        toggleEnabled ? "bg-blue-600" : "bg-gray-300"
+      }`}
+    >
+      <span
+        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+          toggleEnabled ? "translate-x-6" : "translate-x-1"
+        }`}
+      />
+    </button>
 
         {filtered.map((attempt, index) => {
           const lastChar = attempt.id.slice(-1);
