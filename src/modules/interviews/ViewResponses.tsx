@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import ProgressBar from "@/components/stripe/ProgressBar";
+import { NorthWest } from "@mui/icons-material";
 
 interface InterviewAttempt {
   id: string;
@@ -42,6 +43,7 @@ interface InterviewAttempt {
 export function ViewResponses() {
   const [attempts, setAttempts] = useState<InterviewAttempt[]>([]);
   const [currentMonthAttempts, setCurrentMonthAttempts] = useState<InterviewAttempt[]>([]);
+  const [freeTrialStatus, setFreeTrialStatus] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
   const [showPdf, setShowPdf] = useState(false);
@@ -188,7 +190,15 @@ export function ViewResponses() {
           (plan.subscription == 'Scale' ? scaleLimit : 
             (plan.subscription == 'Custom' ? plan.custom_interview_limit ?? customLimit : 1))); //default limit set to 1 to avoid /0 error
 
-        const {data: monthData, error: monthError} = await supabase.from("profiles").select("monthly_reset_start").eq("id", user.id).single();
+        const {data: monthData, error: monthError} = await supabase.from("profiles").select("monthly_reset_start, trial_start_date").eq("id", user.id).single();
+
+        const trialStart = new Date(monthData.trial_start_date).getTime();
+        const currentTimestamp = new Date().getTime();
+        const diff = currentTimestamp - trialStart;
+        const daysLeft = diff / (1000 * 60 * 60 * 24);
+
+        daysLeft > 7  ? setFreeTrialStatus(false) : setFreeTrialStatus(true);
+        console.log('[ViewResponses] Free Trial Status: ', freeTrialStatus);
 
         const { data, error } = await supabase
           .from("interview_attempts")
@@ -232,7 +242,8 @@ export function ViewResponses() {
             setAttempts(formatted);
 
             const monthly = formatted.filter((item) => {
-              const resetMonth =  new Date(monthData.monthly_reset_start).getTime();
+              let resetMonth;
+              freeTrialStatus ? resetMonth = new Date(monthData.trial_start_date).getTime() : resetMonth =  new Date(monthData.monthly_reset_start).getTime();
               const itemTimestamp = new Date(item.createdAt).getTime();
               return itemTimestamp >= resetMonth;
             });
@@ -441,18 +452,24 @@ export function ViewResponses() {
           <div className="text-center">Actions</div>
         </div>
 
+        <div className="flex items-center space-x-3">
         <button
-      onClick={() => setToggleEnabled(!toggleEnabled)}
-      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-        toggleEnabled ? "bg-blue-600" : "bg-gray-300"
-      }`}
-    >
-      <span
-        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-          toggleEnabled ? "translate-x-6" : "translate-x-1"
-        }`}
-      />
-    </button>
+          onClick={() => setToggleEnabled(!toggleEnabled)}
+          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+            toggleEnabled ? "bg-blue-600" : "bg-gray-300"
+          }`}
+        >
+          <span
+            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+              toggleEnabled ? "translate-x-6" : "translate-x-1"
+            }`}
+          />
+        </button>
+
+        <span className="text-sm font-medium text-gray-700">
+          {toggleEnabled? "Show All" : "Show Current Month"}
+        </span>
+        </div>
 
         {filtered.map((attempt, index) => {
           const lastChar = attempt.id.slice(-1);
