@@ -429,6 +429,25 @@ export function ViewResponses() {
         </div>
       </Card>
 
+      <div className="flex items-center space-x-3 mb-4">
+        <button
+          onClick={() => setToggleEnabled(!toggleEnabled)}
+          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+            toggleEnabled ? "bg-blue-600" : "bg-gray-300"
+          }`}
+        >
+          <span
+            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+              toggleEnabled ? "translate-x-6" : "translate-x-1"
+            }`}
+          />
+        </button>
+
+        <span className="text-sm font-medium text-gray-700">
+          {toggleEnabled? "Show All" : "Show Current Month"}
+        </span>
+      </div>
+
       <div className="space-y-4 relative">
         <div className="grid grid-cols-7 gap-2 px-4 py-2 bg-gray-100 rounded-lg text-xs font-medium text-gray-500 uppercase tracking-wider">
           <button
@@ -450,25 +469,6 @@ export function ViewResponses() {
           <div className="text-center">Rating</div>
           <div className="text-left">Status</div>
           <div className="text-center">Actions</div>
-        </div>
-
-        <div className="flex items-center space-x-3">
-        <button
-          onClick={() => setToggleEnabled(!toggleEnabled)}
-          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-            toggleEnabled ? "bg-blue-600" : "bg-gray-300"
-          }`}
-        >
-          <span
-            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-              toggleEnabled ? "translate-x-6" : "translate-x-1"
-            }`}
-          />
-        </button>
-
-        <span className="text-sm font-medium text-gray-700">
-          {toggleEnabled? "Show All" : "Show Current Month"}
-        </span>
         </div>
 
         {filtered.map((attempt, index) => {
