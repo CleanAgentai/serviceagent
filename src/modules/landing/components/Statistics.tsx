@@ -1,33 +1,39 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { TrendingUp, Zap, Target, Play, Building, Clock, PiggyBank, Award } from "lucide-react";
+import Clementines from "/Clementines.svg";
 
 const stats = [
   {
     icon: Clock,
+    iconType: "lucide",
     value: "85%",
     label: "Less Time on Hiring",
     description: "Owners went from spending 20 hours a week to just 2."
   },
   {
     icon: Zap,
+    iconType: "lucide",
     value: "100%",
     label: "of Applicants Interviewed in Minutes",
     description: "Every single applicant gets interviewed by AI — right away."
   },
   {
     icon: Target,
+    iconType: "lucide",
     value: "5×",
     label: "More Accurate Than Guesswork",
     description: "No more quick hires that don’t work out. We pick the top talent for you."
   },
   {
     icon: Play,
+    iconType: "lucide",
     value: "10m",
     label: "Live in 10 Minutes",
     description: "No training or tech headaches. Just log in and post."
   },
   {
-    icon: Building,
+    icon: Clementines,
+    iconType: "svg",
     value: "100+",
     label: "Companies Trust Us",
     description: "From growing cleaning teams to national franchises."
@@ -58,7 +64,11 @@ const Statistics = () => {
             <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 bg-gradient-to-br from-white to-slate-50 group">
               <CardContent className="p-6 text-center">
                 <div className="w-12 h-12 bg-[#0E7CFF]/10 rounded-full flex items-center justify-center mb-4 mx-auto group-hover:bg-[#0E7CFF] transition-colors duration-300">
-                  <stat.icon className="h-6 w-6 text-[#0E7CFF] group-hover:text-white transition-colors duration-300" />
+                  {typeof stat.icon === 'string' ? (
+                    <img src={stat.icon} alt="" className="h-8 w-8 text-[#0E7CFF] group-hover:brightness-0 group-hover:invert transition-colors duration-300" />
+                  ) : (
+                    <stat.icon className="h-6 w-6 text-[#0E7CFF] group-hover:text-white transition-colors duration-300" />
+                  )}
                 </div>
                 <div className="text-3xl font-bold text-slate-900 mb-2">
                   {stat.value}

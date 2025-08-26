@@ -18,7 +18,9 @@ const CTA = () => {
             Want to Stop Wasting Time on Hiring?
           </h2>
           <p className="text-xl text-[#A1E3FF]/90 mb-8 max-w-2xl mx-auto">
-            Join 100+ service businesses using AI to interview every applicant 24/7. 
+            Join 100+ service businesses using AI to 
+            <span className="block md:hidden"></span>
+            interview every applicant 24/7. 
             <br />
             No more ghosting. No more bad hires.
           </p>
@@ -27,18 +29,11 @@ const CTA = () => {
             <Link to="/signup">
               <Button 
                 size="lg" 
-                className="min-w-[300px] bg-white hover:bg-transparent/30 text-[#0B1C2D] hover:text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-12 py-8 text-lg font-semibold border border-white/40 whitespace-nowrap"
+                className="min-w-[300px] bg-white hover:bg-purple-400 text-[#0B1C2D] hover:text-white shadow-xl hover:shadow-2xl transition-all duration-300 rounded-full px-12 py-8 text-lg font-semibold whitespace-nowrap"
               >
                 Start Free 7 Day Trial
               </Button>
             </Link>
-            <Button 
-              size="lg" 
-              className="min-w-[300px] bg-white hover:bg-transparent/30 text-[#0B1C2D] hover:text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-12 py-8 text-lg font-semibold border border-white/40 whitespace-nowrap"
-              onClick={() => window.open('https://calendly.com/serviceagent/25min', '_blank')}
-            >
-              Book a Demo
-            </Button>
           </div>
 
           <div className="flex items-center justify-center gap-3 md:gap-6 text-[#A1E3FF]/90 text-xs md:text-sm [@media(max-width:548px)]:flex-col">

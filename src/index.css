@@ -84,6 +84,12 @@ img {
   image-rendering: -webkit-optimize-contrast;
   max-width: 100%;
   height: auto;
+  -webkit-user-drag: none;
+}
+
+/* Custom shadow for diagonal green effect */
+.shadow-green-diagonal {
+  box-shadow: 10px 10px 0 0 #7DE295, 20px 20px 0 0 oklch(71.4% 0.203 305.504);
 }
 
 /* Responsive font size adjustments */
