@@ -46,7 +46,7 @@ const FAQ = () => {
           <h2 className="text-4xl font-bold text-slate-900 mb-4">
             Frequently Asked Questions
           </h2>
-          <p className="text-xl text-slate-600 max-w-2xl mx-auto">
+          <p className="text-xl text-slate-600 max-w-2xl mx-auto hyphens-none break-words">
             All you need to know about ServiceAgent's AI hiring assistant.
           </p>
         </div>
