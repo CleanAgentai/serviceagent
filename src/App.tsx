@@ -47,6 +47,7 @@ import ManageSubscriptions from "./modules/payment/ManageSubscriptions";
 import Integrations from "./pages/integrations";
 import GettingStarted from "./components/onboarding/GettingStarted";
 import WelcomePopupController from "@/components/onboarding/PopupController";
+import LoggedInConfetti from "./components/onboarding/Confetti";
 
 // Sales Routes
 const SalesRoutes = React.lazy(() => import("@/pages/sales/setup"));
@@ -166,6 +167,7 @@ const App = () => {
                   path="/dashboard"
                   element={
                     <ProtectedRoute>
+                      <LoggedInConfetti />
                       <WelcomePopupController />
                       <DashboardLayout />
                     </ProtectedRoute>
@@ -195,6 +197,8 @@ const App = () => {
                   path="/interviews"
                   element={
                     <ProtectedRoute>
+                      <LoggedInConfetti />
+                      <WelcomePopupController />
                       <DashboardLayout />
                     </ProtectedRoute>
                   }
