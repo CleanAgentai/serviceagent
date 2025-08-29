@@ -98,7 +98,6 @@ const App = () => {
             fallback={<LoadingState variant="full" message="Loading page..." />}
           >
             <ErrorBoundary>
-              <WelcomePopupController />
               <Routes>
                 {/* Auth Callback Route - Must be outside AppLayout */}
                 <Route path="/auth/callback" element={<AuthCallback />} />
@@ -167,6 +166,7 @@ const App = () => {
                   path="/dashboard"
                   element={
                     <ProtectedRoute>
+                      <WelcomePopupController />
                       <DashboardLayout />
                     </ProtectedRoute>
                   }

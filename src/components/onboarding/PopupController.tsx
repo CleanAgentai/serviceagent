@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/app/lib/supabase";
 import { useAuth } from "@/app/providers/AuthContext";
-import { GlobalPopup } from "./Popup"; // <- adjust path if needed
+import { GlobalPopup } from "./Popup";
+
+const LS_KEY = "hide_welcome_popup";              // permanent (Do not show again)
+const SS_KEY = "hide_welcome_popup_this_session"; // session-only (X)
 
 export default function WelcomePopupController() {
   const { user } = useAuth();
@@ -10,6 +13,12 @@ export default function WelcomePopupController() {
   useEffect(() => {
     const checkPopupStatus = async () => {
       if (!user) return;
+
+      const dismissedForever = localStorage.getItem(LS_KEY) === "true";
+      if (dismissedForever) return;
+
+      const dismissedThisSession = sessionStorage.getItem(SS_KEY) === "true";
+      if (dismissedThisSession) return;
 
       const { data: profile, error } = await supabase
         .from("company_profiles")
@@ -23,9 +32,7 @@ export default function WelcomePopupController() {
       }
 
       const isComplete = profile?.completion_bitmask === "1111";
-      const dismissed = localStorage.getItem("hide_welcome_popup");
-
-      if (!isComplete && !dismissed) {
+      if (!isComplete) {
         setShowPopup(true);
       }
     };
@@ -33,10 +40,14 @@ export default function WelcomePopupController() {
     checkPopupStatus();
   }, [user]);
 
-  const handlePopupClose = () => setShowPopup(false);
+  const handlePopupClose = () => {
+    sessionStorage.setItem(SS_KEY, "true");
+    setShowPopup(false);
+  };
 
   const handleDismissPermanently = () => {
-    localStorage.setItem("hide_welcome_popup", "true");
+    localStorage.setItem(LS_KEY, "true");
+    sessionStorage.setItem(SS_KEY, "true");
     setShowPopup(false);
   };
 
