@@ -78,9 +78,9 @@ export function ForgotPassword() {
           <div className="text-center mb-8">
             <Link to="/" className="inline-block mb-4">
               <img
-                src="/logos/Brandmark_transparent.png"
+                src="/logos/Brandmark.svg"
                 alt="ServiceAgent Logo"
-                className="h-16 w-16 max-w-none object-contain md:h-16 md:w-auto md:max-w-none"
+                className="h-20 w-20 max-w-none object-contain md:max-w-none"
 
               />
             </Link>

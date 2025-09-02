@@ -97,7 +97,7 @@ export function PostSignupSetup() {
   return (
     <div className="max-w-5xl mx-auto px-6 py-0 md:py-12">
       <div className="flex justify-center mb-4">
-        <img src="/logos/Brandmark_transparent.png" alt="ServiceAgent Icon" className="h-16 w-16 max-w-none object-contain md:h-16 md:w-auto md:max-w-none" />
+        <img src="/logos/Brandmark.svg" alt="ServiceAgent Icon" className="h-20 w-20 max-w-none object-contain" />
       </div>
       <div className="text-center mb-4">
         <h1 className="text-3xl font-bold mb-2">Tell Us About Your Business</h1>

@@ -10,9 +10,9 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         <div className="w-full max-w-md space-y-8">
           <div className="flex flex-col items-center">
             <img 
-              src="/Banner_SA_new.svg" 
+              src="/logos/Logo.svg" 
               alt="ServiceAgent Logo" 
-              className="h-12 w-auto mb-8"
+              className="h-auto w-16 mb-8"
             />
           </div>
           {children}

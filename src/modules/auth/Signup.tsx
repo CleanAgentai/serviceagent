@@ -133,7 +133,7 @@ export function Signup() {
         <div className="max-w-2xl mx-auto px-4 py-12">
           {/* Logo above header */}
           <div className="flex justify-center mb-4">
-            <img src="/logos/Brandmark_transparent.png" alt="ServiceAgent Icon" className="h-16 w-16 max-w-none object-contain md:h-16 md:w-auto md:max-w-none" />
+            <img src="/logos/Brandmark.svg" alt="ServiceAgent Icon" className="h-20 w-20 max-w-none object-contain" />
           </div>
           {/* Header */}
           <div className="text-center mb-8">

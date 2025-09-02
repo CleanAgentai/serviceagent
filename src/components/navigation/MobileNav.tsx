@@ -22,7 +22,7 @@ const MobileNav: React.FC<MobileNavProps> = ({ isTransparent = false }) => {
             {/* Logo */}
             <Link to="/" className="flex items-center space-x-2">
               <img 
-                src="/Banner_SA_new.svg" 
+                src="/logos/Logo.svg" 
                 alt="ServiceAgent Logo" 
                 className="w-8 h-8"
               />

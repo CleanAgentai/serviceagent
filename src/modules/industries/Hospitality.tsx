@@ -21,7 +21,7 @@ export default function Hospitality() {
       {/* Header with logo in top right */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-10">
         <div className="flex justify-start">
-          <img src="/logos/Logo_transparent.png" alt="ServiceAgent Logo" className="h-auto w-48" />
+          <img src="/logos/Logo.svg" alt="ServiceAgent Logo" className="h-auto w-48" />
         </div>
         
         <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
