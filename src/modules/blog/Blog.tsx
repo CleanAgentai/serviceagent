@@ -1,10 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Search, Calendar, Clock, Filter } from "lucide-react";
+
 import { Helmet } from "react-helmet";
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Calendar, Clock, ArrowRight, User, Sparkles, Zap, TrendingUp, BookOpen, Search } from 'lucide-react';
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Navigation } from "../landing/components/Navigation";
+import { Footer } from "../landing/components/Footer";
+import { motion } from 'framer-motion';
 
 interface BlogPost {
-  slug: string;
+  id: string;
+  author: string;
   title: string;
   excerpt: string;
   date: string;
@@ -12,76 +20,72 @@ interface BlogPost {
   category: string;
   image: string;
   tags: string[];
+  featured: boolean;
 }
 
 // Sample blog posts data (replace with real data)
-const blogPosts: BlogPost[] = [
+const blogPosts = [
   {
-    slug: "maximizing-efficiency-with-ai",
-    title: "Maximizing Efficiency with AI: A Guide for Cleaning Businesses",
-    excerpt:
-      "Discover how artificial intelligence is revolutionizing the cleaning industry and learn practical steps to implement AI in your business operations.",
-    date: "February 20, 2025",
-    readTime: "5 min read",
-    category: "AI & Automation",
-    image: "/blog/ai-efficiency.jpg",
-    tags: ["AI", "Automation", "Efficiency", "Business Growth"],
+    id: 'ai-hiring-revolution-2025',
+    title: 'The AI Hiring Revolution: How Technology is Transforming Service Industry Recruitment',
+    excerpt: 'Discover how AI-powered hiring platforms are helping service businesses reduce time-to-hire by 75% while improving candidate quality.',
+    date: '2025-01-15',
+    author: 'Sarah Johnson',
+    readTime: '8 min read',
+    image: '/blog/ai-efficiency.jpg',
+    category: 'AI Hiring',
+    featured: true
   },
   {
-    slug: "ai-hiring-strategies",
-    title: "AI-Powered Hiring Strategies for Cleaning Businesses",
-    excerpt:
-      "Learn how to leverage artificial intelligence to streamline your hiring process and find the best talent for your cleaning business.",
-    date: "February 18, 2025",
-    readTime: "4 min read",
-    category: "HR & Recruitment",
-    image: "/blog/hiring.jpg",
-    tags: ["HR", "Hiring", "AI", "Team Building"],
+    id: 'automated-interviews-guide',
+    title: 'Complete Guide to Automated Interviews: Best Practices for Service Businesses',
+    excerpt: 'Learn how to implement automated interviews that candidates love while maintaining the human touch your business needs.',
+    date: '2025-01-10',
+    author: 'Michael Chen',
+    readTime: '6 min read',
+    image: '/blog/hiring.jpg',
+    category: 'Best Practices'
   },
   {
-    slug: "future-of-cleaning-industry",
-    title: "The Future of the Cleaning Industry: AI and Automation Trends",
-    excerpt:
-      "Explore emerging trends in the cleaning industry and how AI is shaping the future of cleaning services and business operations.",
-    date: "February 15, 2025",
-    readTime: "6 min read",
-    category: "Industry Trends",
-    image: "/blog/ai-efficiency.jpg",
-    tags: ["Industry Trends", "Future", "Technology", "Innovation"],
+    id: 'candidate-scoring-systems',
+    title: 'Building Effective Candidate Scoring Systems: Data-Driven Hiring Decisions',
+    excerpt: 'Explore how modern scoring algorithms help identify top talent while eliminating unconscious bias in the hiring process.',
+    date: '2025-01-05',
+    author: 'Emma Rodriguez',
+    readTime: '7 min read',
+    image: '/blog/ai-efficiency.jpg',
+    category: 'Analytics'
   },
   {
-    slug: "scaling-cleaning-business",
-    title: "How to Scale Your Cleaning Business with AI Automation",
-    excerpt:
-      "A comprehensive guide to using AI automation tools for growing your cleaning business while maintaining quality and customer satisfaction.",
-    date: "February 12, 2025",
-    readTime: "7 min read",
-    category: "Business Growth",
-    image: "/blog/hiring.jpg",
-    tags: ["Scaling", "Growth", "Automation", "Business Strategy"],
+    id: 'service-industry-hiring-trends',
+    title: '2025 Service Industry Hiring Trends: What Business Owners Need to Know',
+    excerpt: 'Stay ahead of the curve with insights into emerging hiring trends, wage expectations, and talent acquisition strategies.',
+    date: '2024-12-28',
+    author: 'David Park',
+    readTime: '9 min read',
+    image: '/blog/hiring.jpg',
+    category: 'Industry Trends'
   },
   {
-    slug: "customer-satisfaction-ai",
-    title: "Improving Customer Satisfaction with AI-Powered Service",
-    excerpt:
-      "Learn how AI can help you deliver better customer service, handle complaints more effectively, and increase client retention rates.",
-    date: "February 10, 2025",
-    readTime: "5 min read",
-    category: "Customer Service",
-    image: "/blog/ai-efficiency.jpg",
-    tags: ["Customer Service", "AI", "Client Retention", "Satisfaction"],
+    id: 'roi-automated-hiring',
+    title: 'Calculating ROI on Automated Hiring: Real Numbers from Service Businesses',
+    excerpt: 'See actual case studies showing how ServiceAgent customers achieved 300% ROI through automated hiring processes.',
+    date: '2024-12-20',
+    author: 'Lisa Thompson',
+    readTime: '5 min read',
+    image: '/blog/ai-efficiency.jpg',
+    category: 'Case Studies'
   },
   {
-    slug: "marketing-automation-cleaning",
-    title: "Marketing Automation for Cleaning Businesses: A Complete Guide",
-    excerpt:
-      "Discover how to automate your marketing efforts to attract more clients, nurture leads, and grow your cleaning business consistently.",
-    date: "February 8, 2025",
-    readTime: "6 min read",
-    category: "Marketing",
-    image: "/blog/hiring.jpg",
-    tags: ["Marketing", "Automation", "Lead Generation", "Growth"],
-  },
+    id: 'interview-questions-guide',
+    title: 'The Ultimate Guide to Service Industry Interview Questions',
+    excerpt: 'Download our comprehensive list of proven interview questions designed specifically for service industry roles.',
+    date: '2024-12-15',
+    author: 'Robert Kim',
+    readTime: '10 min read',
+    image: '/blog/hiring.jpg',
+    category: 'Resources'
+  }
 ];
 
 const categories = [
@@ -93,203 +97,344 @@ const categories = [
   "Best Practices",
 ];
 
-export function Blog() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All Categories");
-  const [currentPage, setCurrentPage] = useState(1);
-  const postsPerPage = 6;
+export const Blog = () => {
+    // Auto-scroll to top when component mounts
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
+  
+    // SEO structured data
+    const structuredData = {
+      "@context": "https://schema.org",
+      "@type": "Blog",
+      "name": "ServiceAgent Blog",
+      "description": "AI hiring insights, product updates, and case studies for service businesses",
+      "url": "https://serviceagent.ai/blog",
+      "publisher": {
+        "@type": "Organization",
+        "name": "ServiceAgent",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://serviceagent.ai/logo.png"
+        }
+      },
+      "blogPost": blogPosts.map(post => ({
+        "@type": "BlogPosting",
+        "headline": post.title,
+        "description": post.excerpt,
+        "image": post.image,
+        "datePublished": post.date,
+        "author": {
+          "@type": "Person",
+          "name": post.author
+        },
+        "url": `https://serviceagent.ai/blog/${post.id}`
+      }))
+    };
 
-  // Scroll to top on mount
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  // Filter posts based on search query and category
-  const filteredPosts = blogPosts.filter((post) => {
-    const matchesSearch =
-      post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.tags.some((tag) =>
-        tag.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-
-    const matchesCategory =
-      selectedCategory === "All Categories" ||
-      post.category === selectedCategory;
-
-    return matchesSearch && matchesCategory;
-  });
-
-  // Calculate pagination
-  const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
-
-  return (
-    <>
-      <Helmet>
-        <title>
-          ServiceAgent Blog - Insights for Modern Cleaning Businesses
-        </title>
-        <meta
-          name="description"
-          content="Expert insights, industry trends, and practical tips for modern cleaning businesses. Learn about AI automation, hiring strategies, and business growth."
-        />
-        <meta
-          property="og:title"
-          content="CleanAgent Blog - Insights for Modern Cleaning Businesses"
-        />
-        <meta
-          property="og:description"
-          content="Expert insights, industry trends, and practical tips for modern cleaning businesses. Learn about AI automation, hiring strategies, and business growth."
-        />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://cleanagent.ai/blog" />
-        <meta
-          property="og:image"
-          content="https://cleanagent.ai/og-image.jpg"
-        />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta
-          name="twitter:title"
-          content="CleanAgent Blog - Insights for Modern Cleaning Businesses"
-        />
-        <meta
-          name="twitter:description"
-          content="Expert insights, industry trends, and practical tips for modern cleaning businesses. Learn about AI automation, hiring strategies, and business growth."
-        />
-        <meta
-          name="twitter:image"
-          content="https://cleanagent.ai/og-image.jpg"
-        />
-      </Helmet>
-
-      <div className="min-h-screen bg-gray-50">
-        {/* Header */}
-        <header className="bg-white border-b border-gray-200">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-            <h1 className="text-4xl font-bold text-gray-900 text-center mb-4">
-              ServiceAgent Blog
-            </h1>
-            <p className="text-xl text-gray-600 text-center max-w-2xl mx-auto">
-              Expert insights, industry trends, and practical tips for modern
-              cleaning businesses.
-            </p>
-          </div>
-        </header>
-
-        {/* Search and Filters */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-            {/* Search */}
-            <div className="relative w-full md:w-96">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search articles..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
+    const fmtDate = (iso: string, opts?: Intl.DateTimeFormatOptions) => {
+      const d = new Date(iso);
+      return Number.isNaN(d.getTime())
+        ? "" // or the raw string
+        : d.toLocaleDateString("en-US", opts);
+  };
+  
+    return (
+      <>
+        <Helmet>
+          {/* SEO Meta Tags */}
+          <title>Blog | ServiceAgent – AI Hiring Insights & Resources</title>
+          <meta 
+            name="description" 
+            content="Explore ServiceAgent's blog for AI hiring tips, product updates, and case studies to help service businesses hire faster and smarter." 
+          />
+          <meta name="keywords" content="AI hiring, automated interviews, service industry recruitment, hiring technology, candidate scoring" />
+          <meta property="og:title" content="Blog | ServiceAgent – AI Hiring Insights & Resources" />
+          <meta property="og:description" content="Explore ServiceAgent's blog for AI hiring tips, product updates, and case studies to help service businesses hire faster and smarter." />
+          <meta property="og:type" content="website" />
+          <meta name="twitter:card" content="summary_large_image" />
+          
+          {/* Structured Data */}
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+          />
+        </Helmet>
+  
+        <Navigation />
+        
+        <div className="min-h-screen mt-16 bg-background">
+          {/* Hero Section */}
+          <section className="relative py-20 overflow-hidden bg-gradient-to-br from-background via-primary/5 to-muted/30">
+            {/* Animated background elements */}
+            <div className="absolute inset-0">
+              <div className="absolute top-20 left-1/4 w-64 h-64 bg-gradient-to-br from-primary/10 to-transparent rounded-full blur-3xl animate-pulse" />
+              <div className="absolute bottom-20 right-1/4 w-80 h-80 bg-gradient-to-br from-gold/10 to-transparent rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-teal/5 to-transparent rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+              
+              {/* Floating particles */}
+              <div className="absolute top-32 left-16 w-2 h-2 bg-primary/30 rounded-full animate-bounce" style={{ animationDelay: '0.5s' }} />
+              <div className="absolute top-40 right-20 w-1 h-1 bg-gold/40 rounded-full animate-bounce" style={{ animationDelay: '1.2s' }} />
+              <div className="absolute bottom-32 left-32 w-1.5 h-1.5 bg-teal/30 rounded-full animate-bounce" style={{ animationDelay: '0.8s' }} />
+              <div className="absolute bottom-48 right-16 w-2 h-2 bg-terracotta/20 rounded-full animate-bounce" style={{ animationDelay: '1.8s' }} />
             </div>
-
-            {/* Category Filter */}
-            <div className="relative w-full md:w-auto">
-              <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-              <select
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full md:w-48 pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white"
-              >
-                {categories.map((category) => (
-                  <option key={category} value={category}>
-                    {category}
-                  </option>
-                ))}
-              </select>
+            
+            <div className="container mx-auto px-6 relative">
+              <div className="max-w-4xl mx-auto text-center space-y-6">
+                {/* Badge */}
+                <motion.div
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                  className="inline-flex"
+                >
+                  <Badge variant="outline" className="px-6 py-2 text-sm font-medium border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 transition-all duration-300">
+                    <BookOpen className="w-4 h-4 mr-2" />
+                    AI Hiring Insights & Resources
+                  </Badge>
+                </motion.div>
+  
+                {/* Main Title */}
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                  className="space-y-4"
+                >
+                  <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent leading-tight">
+                    Blog
+                  </h1>
+                  
+                  {/* Animated underline */}
+                  <div className="flex justify-center">
+                    <div className="w-20 h-1 bg-gradient-to-r from-primary via-gold to-teal rounded-full animate-pulse" />
+                  </div>
+                </motion.div>
+  
+                {/* Description */}
+                <motion.p
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.4 }}
+                  className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed"
+                >
+                  Discover insights, tips, and case studies to help service businesses 
+               
+                </motion.p>
+  
+                
+              </div>
             </div>
-          </div>
-        </div>
-
-        {/* Blog Posts Grid */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {currentPosts.map((post) => (
-              <Link
-                key={post.slug}
-                to={`/blog/${post.slug}`}
-                className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow"
-              >
-                <div className="aspect-w-16 aspect-h-9">
-                  <img
-                    src={post.image}
-                    alt={post.title}
-                    className="object-cover"
-                  />
-                </div>
-                <div className="p-6">
-                  <div className="text-sm text-blue-600 mb-2">
-                    {post.category}
+            
+            {/* Bottom gradient overlay */}
+            <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-background to-transparent" />
+          </section>
+  
+          {/* Featured Post */}
+          {blogPosts.filter(post => post.featured).map((post, index) => (
+            <motion.section 
+              key={post.id} 
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="py-16 border-b border-border/30"
+            >
+              <div className="container mx-auto px-6">
+                <div className="max-w-6xl mx-auto">
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.6, delay: 0.4 }}
+                  >
+                    <Badge variant="secondary" className="mb-6 bg-gradient-to-r from-primary/10 to-gold/10 border-primary/30 text-primary font-semibold px-4 py-2">
+                      <Sparkles className="w-4 h-4 mr-2" />
+                      Featured Article
+                    </Badge>
+                  </motion.div>
+                  
+                  <div className="grid lg:grid-cols-2 gap-12 items-center">
+                    <motion.div 
+                      className="space-y-6"
+                      initial={{ opacity: 0, x: -50 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.8, delay: 0.6 }}
+                    >
+                      <div className="flex items-center gap-6 text-sm text-muted-foreground">
+                        <div className="flex items-center gap-2 group">
+                          <Calendar className="w-4 h-4 group-hover:text-primary transition-colors" />
+                          <span>{fmtDate(post.date, { year: "numeric", month: "long", day: "numeric" })}</span>
+                        </div>
+                        <div className="flex items-center gap-2 group">
+                          <Clock className="w-4 h-4 group-hover:text-gold transition-colors" />
+                          <span>{post.readTime}</span>
+                        </div>
+                        <div className="flex items-center gap-2 group">
+                          <User className="w-4 h-4 group-hover:text-teal transition-colors" />
+                          <span>{post.author}</span>
+                        </div>
+                      </div>
+                      
+                      <h2 className="text-4xl md:text-5xl font-bold text-foreground leading-tight">
+                        {post.title}
+                      </h2>
+                      
+                      <p className="text-lg text-muted-foreground leading-relaxed">
+                        {post.excerpt}
+                      </p>
+                      
+                      <Link 
+                        to={`/blog/${post.id}`}
+                        className="group inline-flex items-center gap-3 bg-gradient-to-r from-primary to-primary/80 hover:from-gold hover:to-gold/80 text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg shadow-primary/30 hover:shadow-gold/40 transition-all duration-300 hover:scale-105"
+                      >
+                        Read Full Article
+                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+                      </Link>
+                    </motion.div>
+                    
+                    <motion.div 
+                      className="relative group"
+                      initial={{ opacity: 0, x: 50 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.8, delay: 0.8 }}
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-gold/20 rounded-2xl blur-2xl group-hover:blur-xl transition-all duration-300" />
+                      <img 
+                        src={post.image} 
+                        alt={post.title}
+                        className="relative w-full h-80 object-cover rounded-2xl shadow-xl group-hover:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent rounded-2xl" />
+                    </motion.div>
                   </div>
-                  <h2 className="text-xl font-semibold text-gray-900 mb-2">
-                    {post.title}
-                  </h2>
-                  <p className="text-gray-600 mb-4">{post.excerpt}</p>
-                  <div className="flex items-center text-gray-500 text-sm">
-                    <Calendar className="h-4 w-4 mr-2" />
-                    {post.date}
-                    <span className="mx-2">·</span>
-                    <Clock className="h-4 w-4 mr-2" />
-                    {post.readTime}
-                  </div>
                 </div>
-              </Link>
-            ))}
-          </div>
-
+              </div>
+            </motion.section>
+          ))}
+  
+          {/* All Posts Grid */}
+          <section className="py-16">
+            <div className="container mx-auto px-6">
+              <div className="max-w-6xl mx-auto">
+                <motion.h2 
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                  className="text-4xl font-bold text-foreground mb-4 text-center"
+                >
+                  Latest Articles
+                </motion.h2>
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                  className="text-lg text-muted-foreground text-center mb-12 max-w-2xl mx-auto"
+                >
+                  Stay updated with the latest trends, strategies, and insights in AI-powered hiring.
+                </motion.p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {blogPosts.filter(post => !post.featured).map((post, index) => (
+                    <motion.div
+                      key={post.id}
+                      initial={{ opacity: 0, y: 50 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: index * 0.1 }}
+                    >
+                      <Card className="group hover:shadow-xl transition-all duration-300 border-border/50 hover:border-primary/30 bg-card/50 backdrop-blur-sm hover:bg-card/80 h-full">
+                        <CardHeader className="p-0">
+                          <div className="relative overflow-hidden rounded-t-lg">
+                            <img 
+                              src={post.image} 
+                              alt={post.title}
+                              className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                              loading="lazy"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                            <div className="absolute top-4 left-4">
+                              <Badge variant="secondary" className="bg-background/90 backdrop-blur-sm border-primary/20 text-primary font-medium">
+                                {post.category}
+                              </Badge>
+                            </div>
+                          </div>
+                        </CardHeader>
+                        
+                        <CardContent className="p-6 space-y-4 flex-grow">
+                          <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                            <div className="flex items-center gap-1 group/date">
+                              <Calendar className="w-3 h-3 group-hover/date:text-primary transition-colors" />
+                              <span>{fmtDate(post.date, { year: "numeric", month: "long", day: "numeric" })}</span>
+                            </div>
+                            <div className="flex items-center gap-1 group/time">
+                              <Clock className="w-3 h-3 group-hover/time:text-gold transition-colors" />
+                              <span>{post.readTime}</span>
+                            </div>
+                          </div>
+                          
+                          <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-tight">
+                            {post.title}
+                          </h3>
+                          
+                          <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3">
+                            {post.excerpt}
+                          </p>
+                          
+                          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                            <User className="w-3 h-3" />
+                            <span>by {post.author}</span>
+                          </div>
+                        </CardContent>
+                        
+                        <CardFooter className="p-6 pt-0">
+                          <Link 
+                            to={`/blog/${post.id}`}
+                            className="inline-flex items-center gap-2 text-primary hover:text-gold font-semibold text-sm transition-all duration-300 group/link hover:scale-105"
+                          >
+                            Read More
+                            <ArrowRight className="w-3 h-3 group-hover/link:translate-x-1 transition-transform duration-300" />
+                          </Link>
+                        </CardFooter>
+                      </Card>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+  
           {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="flex justify-center mt-12">
-              <nav className="flex items-center space-x-2">
-                <button
-                  onClick={() =>
-                    setCurrentPage((page) => Math.max(1, page - 1))
-                  }
-                  disabled={currentPage === 1}
-                  className="px-3 py-1 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+          <motion.section 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="py-8 border-t border-border/30"
+          >
+            <div className="container mx-auto px-6">
+              <div className="flex justify-center items-center gap-4">
+                <Button 
+                  disabled 
+                  variant="outline"
+                  className="px-6 py-2 text-sm border-border text-muted-foreground cursor-not-allowed opacity-50"
                 >
                   Previous
-                </button>
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                  (page) => (
-                    <button
-                      key={page}
-                      onClick={() => setCurrentPage(page)}
-                      className={`px-3 py-1 rounded-lg border ${
-                        currentPage === page
-                          ? "bg-blue-600 text-white border-blue-600"
-                          : "border-gray-300 text-gray-600 hover:bg-gray-50"
-                      }`}
-                    >
-                      {page}
-                    </button>
-                  )
-                )}
-                <button
-                  onClick={() =>
-                    setCurrentPage((page) => Math.min(totalPages, page + 1))
-                  }
-                  disabled={currentPage === totalPages}
-                  className="px-3 py-1 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                </Button>
+                <Button className="px-6 py-2 text-sm bg-gradient-to-r from-primary to-primary/80 text-white font-medium rounded-lg shadow-lg shadow-primary/30">
+                  1
+                </Button>
+                <Button 
+                  variant="outline"
+                  className="px-6 py-2 text-sm border-border hover:border-primary hover:bg-primary/5 transition-all duration-300"
                 >
                   Next
-                </button>
-              </nav>
+                </Button>
+              </div>
             </div>
-          )}
+          </motion.section>
         </div>
-      </div>
-    </>
-  );
-}
+        
+        <Footer />
+      </>
+    );
+  };
+  
+  export default Blog;

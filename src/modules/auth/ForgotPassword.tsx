@@ -78,9 +78,10 @@ export function ForgotPassword() {
           <div className="text-center mb-8">
             <Link to="/" className="inline-block mb-4">
               <img
-                src="/ServiceAgent_new.svg"
+                src="/logos/Brandmark_transparent.png"
                 alt="ServiceAgent Logo"
-                className="h-16 w-16 object-contain"
+                className="h-16 w-16 max-w-none object-contain md:h-16 md:w-auto md:max-w-none"
+
               />
             </Link>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
@@ -133,7 +134,7 @@ export function ForgotPassword() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full flex items-center justify-center bg-blue-600 hover:bg-purple-400 bg-clip-padding text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 border border-white/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full flex items-center justify-center bg-blue-600 hover:bg-blue-700 bg-clip-padding text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 border border-white/20 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isLoading ? (
                   "Sending..."

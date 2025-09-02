@@ -43,7 +43,7 @@ export function ResetPassword() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-white">
-      <main className="flex-grow">
+      <main className="flex-grow pt-16 md:pt-20">
         <div className="max-w-md mx-auto px-4 py-12">
           <h1 className="text-3xl font-bold text-gray-900 text-center mb-8">
             Reset Your Password
