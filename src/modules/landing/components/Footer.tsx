@@ -1,153 +1,180 @@
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Facebook, Twitter, Linkedin, Mail } from "lucide-react";
-import { openCalendly } from "@/app/shared/utils/calendly";
+import React from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Linkedin, Flag } from 'lucide-react';
 
-const footerLinks = {
-  product: [
-    { label: "Features", href: "/#hiring-agent-features-grid" },
-    { label: "Sign up now", href: "/signup" },
-    { label: "Book a Demo", onClick: openCalendly },
-  ],
-  company: [
-    { label: "About Us", href: "/about-us" },
-    // { label: "Blog", href: "/blog" },
-    { label: "Contact", href: "/contact" },
-  ],
-  legal: [
-    { label: "Privacy Policy", href: "/privacy-policy" },
-    { label: "Terms of Service", href: "/terms-of-service" },
-    { label: "Cookie Policy", href: "/cookie-policy" },
-  ],
-};
+const Footer = () => {
+  const navigate = useNavigate()
+  const location = useLocation()
 
-const socialLinks = [
-  {
-    icon: Linkedin,
-    href: "https://www.linkedin.com/company/cleanagent-ai/?viewAsMember=true",
-    label: "LinkedIn",
-  },
-  {
-    icon: Facebook,
-    href: "https://www.facebook.com/profile.php?id=61572125470196",
-    label: "Facebook",
-  },
-  {
-    icon: Twitter,
-    href: "https://x.com/cleanagentai",
-    label: "Twitter",
-  },
-];
-
-export function Footer() {
-  const location = useLocation();
-  const isHomePage = location.pathname === "/";
-
-  const handleLinkClick = (href?: string) => {
-    if (href?.startsWith("/#") && isHomePage) {
-      const sectionId = href.replace("/#", "");
-      const section = document.getElementById(sectionId);
-      if (section) {
-        section.scrollIntoView({ behavior: "smooth" });
-        return;
-      }
+  const handleNavigation = (href: string) => {
+    if (location.pathname !== '/') {
+      // If not on home page, navigate to home first then scroll
+      navigate('/')
+      // Use timeout to allow navigation to complete before scrolling
+      setTimeout(() => {
+        const element = document.querySelector(href)
+        element?.scrollIntoView({ behavior: 'smooth' })
+      }, 100)
+    } else {
+      // If on home page, just scroll
+      const element = document.querySelector(href)
+      element?.scrollIntoView({ behavior: 'smooth' })
     }
-    window.scrollTo(0, 0);
-  };
+  }
 
-  const renderLink = (link: {
-    label: string;
-    href?: string;
-    onClick?: (e: React.MouseEvent) => void;
-  }) => {
-    if (link.onClick) {
-      return (
-        <button
-          onClick={link.onClick}
-          className="text-gray-600 hover:text-gray-900 transition-colors text-sm"
-        >
-          {link.label}
-        </button>
-      );
+  const handleStartForFree = () => {
+    if (location.pathname !== '/') {
+      navigate('/')
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      }, 100)
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     }
-
-    if (link.href?.startsWith("http")) {
-      return (
-        <a
-          href={link.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-gray-600 hover:text-gray-900 transition-colors text-sm"
-        >
-          {link.label}
-        </a>
-      );
-    }
-
-    if (link.href?.startsWith("/#") && isHomePage) {
-      return (
-        <button
-          onClick={() => handleLinkClick(link.href)}
-          className="text-gray-600 hover:text-gray-900 transition-colors text-sm"
-        >
-          {link.label}
-        </button>
-      );
-    }
-
-    return (
-      <Link
-        to={link.href || "/"}
-        onClick={() => handleLinkClick(link.href)}
-        className="text-gray-600 hover:text-gray-900 transition-colors text-sm"
-      >
-        {link.label}
-      </Link>
-    );
-  };
-
+  }
   return (
-    <footer className="bg-slate-900 text-white py-16">
-      <div className="mx-auto px-24 lg:px-48">
-        <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-8">
-          <div className="md:w-1/2">
-            <div className="text-2xl font-bold mb-4">ServiceAgent</div>
-            <p className="text-slate-400 mb-6 max-w-md">
-              ServiceAgent helps you hire faster by doing the interviews for you.
-            </p>
-            <div className="flex space-x-4">
-              <a href="https://x.com/porter2301" className="text-slate-400 hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">
-                <Twitter className="h-5 w-5" />
-              </a>
-              <a href="https://www.linkedin.com/company/cleanagent-ai/?viewAsMember=true" className="text-slate-400 hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">
-                <Linkedin className="h-5 w-5" />
+    <footer className="relative bg-gradient-to-b from-card/30 to-background border-t border-border/30 py-16 overflow-hidden">
+      {/* Subtle background elements */}
+      <div className="absolute top-0 left-1/4 w-64 h-64 bg-teal/2 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-gold/2 rounded-full blur-3xl" />
+      
+      <div className="container mx-auto px-6 relative">
+        {/* Main Footer Content */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
+          {/* Left Side - Brand Section */}
+          <div 
+            className="space-y-6 opacity-0 animate-fade-in"
+            style={{ animationDelay: '0.1s', animationFillMode: 'forwards' }}
+          >
+            <div className="space-y-4">
+              <div className="text-3xl font-bold text-primary">
+                ServiceAgent
+              </div>
+              <p className="text-lg text-muted-foreground leading-relaxed max-w-lg">
+                AI-powered hiring platform that conducts interviews, scores candidates, and saves you hours of time so you can hire the best talent faster.
+              </p>
+            </div>
+            
+            {/* Social */}
+            <div className="flex items-center gap-6">
+              <a 
+                href="https://www.linkedin.com/company/serviceagent-ai/?viewAsMember=true"
+                target="_blank"
+                rel="noopener noreferrer" 
+                className="group flex items-center justify-center w-12 h-12 bg-gradient-to-br from-teal/10 to-gold/10 hover:from-teal/20 hover:to-gold/20 rounded-xl border border-teal/20 hover:border-gold/30 transition-all duration-300 hover:scale-110"
+              >
+                <Linkedin className="w-6 h-6 text-teal group-hover:text-gold transition-colors" />
               </a>
             </div>
           </div>
-          <div className="md:w-1/2 flex flex-col md:flex-row md:justify-end md:space-x-16 space-y-8 md:space-y-0">
-            <div>
-              <h3 className="max-md:text-left font-semibold mb-4">Product</h3>
-              <ul className="space-y-2 text-slate-400">
-                <li><a href="#features" className="hover:text-white transition-colors">Features</a></li>
-                <li><a href="#pricing" className="hover:text-white transition-colors">Pricing</a></li>
-                <li><a href="#testimonials" className="hover:text-white transition-colors">Reviews</a></li>
-                <li><a href="https://calendly.com/serviceagent/25min" className="hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">Book a Demo</a></li>
-              </ul>
+
+          {/* Right Side - Navigation Links */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
+            {/* Navigation */}
+            <div 
+              className="space-y-4 opacity-0 animate-fade-in"
+              style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}
+            >
+              <h4 className="text-lg font-bold text-foreground border-b border-teal/20 pb-2">
+                Platform
+              </h4>
+              <nav className="space-y-3">
+                <button 
+                  className="block text-left text-muted-foreground hover:text-teal transition-all duration-200 hover:translate-x-1"
+                  onClick={() => handleNavigation("#howitworks")}
+                >
+                  How It Works
+                </button>
+                <button 
+                  className="block text-left text-muted-foreground hover:text-teal transition-all duration-200 hover:translate-x-1"
+                  onClick={() => handleNavigation("#stats")}
+                >
+                  Features
+                </button>
+                <button 
+                  className="block text-left text-muted-foreground hover:text-gold transition-all duration-200 hover:translate-x-1"
+                  onClick={() => handleNavigation("#pricing")}
+                >
+                  Pricing
+                </button>
+                <button 
+                  className="block text-left text-muted-foreground hover:text-terracotta transition-all duration-200 hover:translate-x-1"
+                  onClick={() => handleNavigation("#industries")}
+                >
+                  Industries
+                </button>
+              </nav>
             </div>
-            <div>
-              <h3 className="max-md:text-left font-semibold mb-4">Legal</h3>
-              <ul className="space-y-2 text-slate-400">
-                <li><Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
-                <li><Link to="/terms-of-service" className="hover:text-white transition-colors">Terms of Service</Link></li>
-                <li><Link to="/cookie-policy" className="hover:text-white transition-colors">Cookie Policy</Link></li>
-                </ul>
-              </div>
+
+            {/* Company */}
+            <div 
+              className="space-y-4 opacity-0 animate-fade-in"
+              style={{ animationDelay: '0.3s', animationFillMode: 'forwards' }}
+            >
+              <h4 className="text-lg font-bold text-foreground border-b border-gold/20 pb-2">
+                Company
+              </h4>
+              <nav className="space-y-3">
+                <Link to="/blog" className="block text-muted-foreground hover:text-gold transition-all duration-200 hover:translate-x-1">
+                  Blog
+                </Link>
+                <a href="https://calendly.com/serviceagent/25min" target="_blank" rel="noopener noreferrer" className="block text-muted-foreground hover:text-gold transition-all duration-200 hover:translate-x-1">
+                  Get a Demo
+                </a>
+                <button 
+                  className="block text-left text-muted-foreground hover:text-primary transition-all duration-200 hover:translate-x-1"
+                  onClick={handleStartForFree}
+                >
+                  Start for Free
+                </button>
+              </nav>
+            </div>
+
+            {/* Legal & Resources */}
+            <div 
+              className="space-y-4 opacity-0 animate-fade-in"
+              style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}
+            >
+              <h4 className="text-lg font-bold text-foreground border-b border-terracotta/20 pb-2">
+                Legal
+              </h4>
+              <nav className="space-y-3">
+                <Link to="/privacy-policy" className="block text-muted-foreground hover:text-teal transition-all duration-200 hover:translate-x-1">
+                  Privacy Policy
+                </Link>
+                <Link to="/terms-of-service" className="block text-muted-foreground hover:text-gold transition-all duration-200 hover:translate-x-1">
+                  Terms of Service
+                </Link>
+                <Link to="/cookie-policy" className="block text-muted-foreground hover:text-primary transition-all duration-200 hover:translate-x-1">
+                  Cookie Policy
+                </Link>
+              </nav>
+            </div>
           </div>
         </div>
-        <div className="border-t border-slate-800 mt-12 pt-8 text-center text-slate-400">
-          <p>&copy; 2025 ServiceAgent. All rights reserved. | fsagent.com</p>
+        
+        {/* Bottom Section */}
+        <div 
+          className="border-t border-gradient-to-r from-teal/20 via-gold/20 to-terracotta/20 pt-8 opacity-0 animate-fade-in"
+          style={{ animationDelay: '0.5s', animationFillMode: 'forwards' }}
+        >
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <div className="flex flex-col md:flex-row items-center gap-4">
+              <p className="text-muted-foreground text-sm">
+                © 2025 ServiceAgent. All rights reserved.
+              </p>
+              <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                <div className="flex items-center gap-1">
+                  <Flag className="w-3 h-3 text-gold" />
+                  <span>Made in USA</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </footer>
   );
-}
+};
+
+export { Footer };

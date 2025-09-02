@@ -129,11 +129,11 @@ export function Signup() {
     <div className="relative min-h-screen w-full flex flex-col">
       <Navigation />
       <div className="fixed inset-0 w-full h-full bg-gradient-to-b from-gray-50 to-white -z-10" />
-      <main className="flex-grow pt-0 md:pt-16">
+      <main className="flex-grow pt-16 md:pt-20">
         <div className="max-w-2xl mx-auto px-4 py-12">
           {/* Logo above header */}
           <div className="flex justify-center mb-4">
-            <img src="/singularlogo.png" alt="ServiceAgent Icon" className="h-16 w-16 max-w-none object-contain md:h-16 md:w-auto md:max-w-none" />
+            <img src="/logos/Brandmark_transparent.png" alt="ServiceAgent Icon" className="h-16 w-16 max-w-none object-contain md:h-16 md:w-auto md:max-w-none" />
           </div>
           {/* Header */}
           <div className="text-center mb-8">
@@ -147,7 +147,7 @@ export function Signup() {
           </div>
 
           {/* Signup Form */}
-          <div className="bg-white rounded-xl shadow-sm p-8">
+          <div className="bg-white rounded-xl p-8">
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Name Fields */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -303,8 +303,8 @@ export function Signup() {
               </div>
 
               {/* Terms Checkbox */}
-              <div className="flex items-start">
-                <div className="flex items-center h-5">
+              <div className="flex items-center">
+                <div className="flex items-center justify-center h-5">
                   <input
                     id="acceptTerms"
                     name="acceptTerms"
@@ -315,17 +315,17 @@ export function Signup() {
                 </div>
                 <div className="ml-3 text-sm">
                   <label htmlFor="acceptTerms" className="text-gray-600">
-                    I agree to the{" "}
+                    I agree to the
                     <Link
                       to="/terms-of-service"
-                      className="text-blue-600 hover:text-blue-700"
+                      className="text-blue-600 hover:text-blue-700 mx-[.1rem] sm:mx-1"
                     >
                       Terms of Service
-                    </Link>{" "}
-                    and{" "}
+                    </Link>
+                    <span className="mx-1">and</span>
                     <Link
                       to="/privacy-policy"
-                      className="text-blue-600 hover:text-blue-700"
+                      className="text-blue-600 hover:text-blue-700  ml-[.05rem] sm:ml-1"
                     >
                       Privacy Policy
                     </Link>
@@ -335,7 +335,7 @@ export function Signup() {
 
               <button
                 type="submit"
-                className="w-full flex items-center justify-center bg-blue-600 hover:bg-purple-400 bg-clip-padding text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 border border-white/20"
+                className="w-full flex items-center justify-center bg-blue-600 hover:bg-blue-700 bg-clip-padding text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 border border-white/20"
               >
                 Create Account
                 <ArrowRight className="ml-2 h-5 w-5" />
@@ -371,7 +371,7 @@ export function Signup() {
           </div>
 
           {/* Sign in link */}
-          <p className="mt-8 text-center text-sm text-gray-600">
+          <p className="text-center text-sm text-gray-600">
             Already have an account?{" "}
             <Link
               to="/login"
