@@ -399,7 +399,6 @@ export function Navigation({ isNavVisible = true }: { isNavVisible?: boolean }) 
                       transition={{ delay: index * 0.1 + 0.2 }}
                     >
                       <button
-                        href={item.href} 
                         className="w-full flex items-center justify-between p-6 bg-background border-b border-border text-foreground transition-colors duration-200 active:bg-muted"
                         onClick={(e) => {
                           e.preventDefault();
