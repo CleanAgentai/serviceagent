@@ -372,18 +372,33 @@ export function ViewResponses() {
     if (score >= 5) return '#ff9800';       // Orange
     return '#f44336';                       // Red
   };
-
-  const renderProgress = (rating: number | null | undefined) => {
+  
+  function ProgressOnLoad({ rating }: { rating?: number | null }) {
+    const target = Math.max(0, Math.min(100, (rating ?? 0) * 10));
+    const [value, setValue] = useState(0);
+  
+    useEffect(() => {
+      const id = requestAnimationFrame(() => setValue(target));
+      return () => cancelAnimationFrame(id);
+    }, [target]);
+  
     return (
       <div style={{ width: 50, height: 50 }}>
-        <CircularProgressbar value={rating * 10}
+        <CircularProgressbar
+          value={value}
           styles={buildStyles({
-          pathColor: getColorForScore(rating),
-          pathTransitionDuration: 0.5})} 
+            pathColor: getColorForScore(rating),
+            pathTransitionDuration: 0.7,
+            pathTransition: "stroke-dashoffset 0.7s ease 0.3s"
+          })}
         />
       </div>
-    )
-  };
+    );
+  }
+
+  const renderProgress = (rating: number | null | undefined) => (
+    <ProgressOnLoad rating={rating} />
+  );
 
   return (
    <div className="mx-auto w-full px-2 sm:px-4 md:px-6 lg:px-8 sm:max-w-screen-md md:max-w-screen-lg lg:max-w-screen-xl">

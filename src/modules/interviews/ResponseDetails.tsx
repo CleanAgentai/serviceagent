@@ -191,17 +191,32 @@ export function ResponseDetails() {
     return '#f44336';                       // Red
   };
 
-  const renderProgress = (rating: number | null | undefined) => {
+  function ProgressOnLoad({ rating }: { rating?: number | null }) {
+    const target = Math.max(0, Math.min(100, (rating ?? 0) * 10));
+    const [value, setValue] = useState(0);
+  
+    useEffect(() => {
+      const id = requestAnimationFrame(() => setValue(target));
+      return () => cancelAnimationFrame(id);
+    }, [target]);
+  
     return (
       <div style={{ width: 50, height: 50 }}>
-        <CircularProgressbar value={rating * 10}
+        <CircularProgressbar
+          value={value}
           styles={buildStyles({
-          pathColor: getColorForScore(rating),
-          pathTransitionDuration: 0.5})} 
+            pathColor: getColorForScore(rating),
+            pathTransitionDuration: 0.7,
+            pathTransition: "stroke-dashoffset 0.7s ease 0.3s"
+          })}
         />
       </div>
-    )
-  };
+    );
+  }
+
+  const renderProgress = (rating: number | null | undefined) => (
+    <ProgressOnLoad rating={rating} />
+  );
 
   const downloadPdf = async (type: 'transcript' | 'analysis') => {
     if (plan != "Scale" && plan != "Custom") return;

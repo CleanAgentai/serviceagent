@@ -81,6 +81,7 @@ export function ForgotPassword() {
                 src="/logos/Brandmark_transparent.png"
                 alt="ServiceAgent Logo"
                 className="h-16 w-16 max-w-none object-contain md:h-16 md:w-auto md:max-w-none"
+
               />
             </Link>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
