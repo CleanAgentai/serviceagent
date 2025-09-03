@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { UserPreferencesProvider } from "@/app/providers/UserPreferencesContext";
 import { AuthProvider } from "@/app/providers/AuthContext";
@@ -45,6 +45,10 @@ import CheckoutSuccess from "./modules/payment/CheckoutSuccess";
 import CancelSubscription from "./modules/payment/ManageSubscriptions";
 import ManageSubscriptions from "./modules/payment/ManageSubscriptions";
 import Integrations from "./pages/integrations";
+import GettingStarted from "./components/onboarding/GettingStarted";
+import WelcomePopupController from "@/components/onboarding/PopupController";
+import LoggedInConfetti from "./components/onboarding/Confetti";
+
 // Sales Routes
 const SalesRoutes = React.lazy(() => import("@/pages/sales/setup"));
 
@@ -163,12 +167,15 @@ const App = () => {
                   path="/dashboard"
                   element={
                     <ProtectedRoute>
+                      <LoggedInConfetti />
+                      <WelcomePopupController />
                       <DashboardLayout />
                     </ProtectedRoute>
                   }
                 >
                   <Route index element={<Dashboard />} />
                   <Route path="ai-analysis" element={<AIAnalysis />} />
+                  <Route path="onboarding" element={<GettingStarted />} />
                   <Route path="settings" element={<Settings />} />
                 </Route>
 
@@ -190,6 +197,8 @@ const App = () => {
                   path="/interviews"
                   element={
                     <ProtectedRoute>
+                      <LoggedInConfetti />
+                      <WelcomePopupController />
                       <DashboardLayout />
                     </ProtectedRoute>
                   }
