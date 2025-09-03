@@ -87,7 +87,7 @@ const Footer = () => {
                 </button>
                 <button 
                   className="block text-left text-muted-foreground hover:text-teal transition-all duration-200 hover:translate-x-1"
-                  onClick={() => handleNavigation("#stats")}
+                  onClick={() => handleNavigation("#features")}
                 >
                   Features
                 </button>

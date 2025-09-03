@@ -83,7 +83,7 @@ export default function DashboardLayout() {
           <div className="px-4 flex items-center border-b h-16">
             <div className="flex-1 flex justify-center">
               <img
-                src="/logos/Logo_transparent.png"
+                src="/logos/Logo.svg"
                 alt="ServiceAgent Logo"
                 className="h-auto w-48"
                 draggable={false}
