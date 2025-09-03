@@ -4,6 +4,7 @@ import React, {
   useRef,
   useCallback,
 } from "react";
+import { Plug } from "lucide-react";
 import { supabase } from "../lib/supabase";
 
 interface CurrentUser {
@@ -371,9 +372,7 @@ const Integrations: React.FC = () => {
           alignItems: 'center',
           justifyContent: 'center'
         }}>
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-          </svg>
+          <Plug size={40} color="white" />
         </div>
 
         {/* Title and Description */}
