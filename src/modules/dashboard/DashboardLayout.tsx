@@ -11,7 +11,6 @@ import {
   LogOut,
   CreditCard,
   Plug,
-  Play
 } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -56,9 +55,9 @@ export default function DashboardLayout() {
       label: "Candidates",
     },
     {
-      path: "/dashboard/onboarding",
-      icon: <Play size={20} />,
-      label: "Getting Started",
+      path: "/integrations",
+      icon: <Plug size={20} />,
+      label: "Integrations",
     },
     {
       path: "/dashboard/settings",
