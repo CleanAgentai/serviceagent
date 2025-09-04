@@ -367,6 +367,30 @@ export default function CreateInterview() {
         hourly_wage: formData.hourlyRate,
       });
 
+      if (!insertError) {
+        const { data: insertedInterview, error: fetchError } = await supabase
+          .from("interviews")
+          .select("id")
+          .eq("willo_interview_key", willo_interview_key)
+          .eq("user_id", user.id)
+          .single();
+
+        if (!fetchError && insertedInterview?.id) {
+          const { data: profile, error: profileError } = await supabase
+            .from("company_profiles")
+            .select("first_interview_id")
+            .eq("willo_company_key", departmentKey)
+            .single();
+
+          if (!profileError && !profile?.first_interview_id) {
+            const { error: updateError } = await supabase
+              .from("company_profiles")
+              .update({ first_interview_id: insertedInterview.id })
+              .eq("willo_company_key", departmentKey);
+          }
+        }
+      }
+
       if (insertError) {
         console.error("❌ Supabase insert error:", insertError);
         throw new Error(insertError.message);
