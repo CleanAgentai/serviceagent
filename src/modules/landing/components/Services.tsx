@@ -180,7 +180,7 @@ const Services = () => {
               <div className="space-y-3">
                 <Link to="/signup" className="block w-full">
                   <Button 
-                    className="flex w-full bg-gradient-to-r from-teal to-teal/90 hover:from-teal/90 hover:to-teal text-white py-3 text-lg font-bold rounded-xl shadow-xl shadow-teal/40 hover:scale-100 active:scale-95 transition-all duration-300"
+                    className="flex w-full bg-gradient-to-r from-teal to-teal/90 hover:from-teal/90 hover:to-teal text-white py-3 text-lg font-bold rounded-xl shadow-xl shadow-teal/40 hover:scale-105 active:scale-95 transition-all duration-300"
                     aria-label="Start free trial with Launch Plan - 20 AI interviews per month, first 5 candidates free"
                   >
                     <div className="flex items-center gap-2">
@@ -191,10 +191,6 @@ const Services = () => {
                 </Link>
                 <div className="text-center space-y-1">
                   <p className="text-xs text-muted-foreground">First 5 candidates free</p>
-                  <div className="flex items-center justify-center gap-1 text-xs text-muted-foreground">
-                    <Shield className="w-3 h-3" />
-                    <span>Credit card required</span>
-                  </div>
                 </div>
               </div>
             </div>
@@ -284,10 +280,6 @@ const Services = () => {
                 </Link>
                 <div className="text-center space-y-1">
                   <p className="text-xs text-muted-foreground">First 5 candidates free</p>
-                  <div className="flex items-center justify-center gap-1 text-xs text-muted-foreground">
-                    <Shield className="w-3 h-3" />
-                    <span>Credit card required</span>
-                  </div>
                 </div>
               </div>
             </div>

@@ -1,11 +1,45 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ChevronDown, Clock, DollarSign, Users, ChevronsDown, Sparkles, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const Hero = () => {
   const [isNavVisible, setIsNavVisible] = useState(true);
+  const [isNotificationVisible, setIsNotificationVisible] = useState(false);
+  const [hoursCount, setHoursCount] = useState(0);
+  const [showUnderline, setShowUnderline] = useState(false);
   // const [lastScrollY, setLastScrollY] = useState(0);
+  
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsNotificationVisible(true);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (isNotificationVisible) {
+      const countUp = () => {
+        let current = 0;
+        const increment = 15 / 90; // Count to 15 over 90 steps for much smoother animation
+        const timer = setInterval(() => {
+          current += increment;
+          if (current >= 15) {
+            setHoursCount(15);
+            clearInterval(timer);
+            // Show underline animation after counting is complete
+            setTimeout(() => {
+              setShowUnderline(true);
+            }, 200); // Small delay for better visual effect
+          } else {
+            setHoursCount(Math.floor(current));
+          }
+        }, 16); // Update every 16ms (60fps) for ultra-smooth animation
+      };
+      countUp();
+    }
+  }, [isNotificationVisible]);
+  
   return (
   <section className="relative mt-16 py-16 lg:py-20 bg-gradient-to-br from-background via-card/30 to-muted/20 overflow-hidden">
         {/* Animated Background Elements */}
@@ -42,7 +76,7 @@ const Hero = () => {
                     <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-gold to-terracotta rounded-full"></div>
                   </span>
                 </h1>
-                <p className="text-xl lg:text-2xl max-md:text-center max-md:px-8 text-muted-foreground leading-relaxed">
+                <p className="text-xl lg:text-2xl max-md:text-center max-md:px-8 text-muted-foreground leading-relaxed break-words hyphens-none">
                   ServiceAgent uses AI to interview candidates, score them perfectly, and save the videos so you can quickly review and hire only the best talent.
                 </p>
               </div>
@@ -63,8 +97,8 @@ const Hero = () => {
                         Start for Free
                       </Button>
                     </Link>
-                    <p className="text-sm text-muted-foreground text-center">
-                      First 5 candidates free
+                    <p className="text-[10px] font-semibold uppercase text-muted-foreground text-center">
+                    <span className="mr-[2px]">🎁</span> First 5 candidates free
                     </p>
                   </div>
                   
@@ -183,7 +217,8 @@ const Hero = () => {
               <div className="hidden md:block relative">
               {/* <div className="max-md:hidden relative"> */}
                 {/* Main Dashboard - 440px desktop, doubled height */}
-                <div className="relative w-full lg:w-[440px] md:w-[280px] max-w-[320px] sm:max-w-[440px]">
+                <div className="relative w-full lg:w-[440px] md:w-[280px] max-w-[320px] sm:max-w-[440px] hover:scale-105 transition-all duration-300">
+                  <Link to="/signup" className="block">
                   <img 
                     src="/DashboardWorker.png" 
                     alt="ServiceAgent worker with hard hat in active call showing professional hiring assistance" 
@@ -195,14 +230,15 @@ const Hero = () => {
                     }}
                     loading="eager"
                   />
+                  </Link>
                   
                   {/* Notification Card - Enhanced size and styling */}
                   <div 
-                    className="absolute -bottom-10 -left-10 lg:-left-10 md:-left-4 w-[280px] lg:w-[280px] md:w-[200px] sm:w-[200px] bg-white rounded-xl shadow-2xl border border-gray-100 p-4 md:p-5 opacity-0 animate-fade-in"
-                    style={{ 
-                      animationDelay: '1s',
-                      animationFillMode: 'forwards'
-                    }}
+                    className={`absolute -bottom-10 -left-10 lg:-left-10 md:-left-4 w-[280px] lg:w-[280px] md:w-[200px] sm:w-[200px] bg-white rounded-xl shadow-2xl border border-gray-100 p-4 md:p-5 hover:scale-110 transition-all duration-500 ${
+                      isNotificationVisible 
+                        ? 'opacity-100 translate-y-0' 
+                        : 'opacity-0 translate-y-4'
+                    }`}
                   >
                     <div className="flex items-center gap-4">
                       <div 
@@ -216,7 +252,18 @@ const Hero = () => {
                       </div>
                       <div className="flex-1">
                         <p className="text-gray-900 font-bold text-lg leading-tight">
-                          You saved <span className="text-green-600">15 hours</span> this week
+                          You saved <span className="text-green-600 relative inline-block">
+                            {hoursCount} hours
+                            {showUnderline && (
+                              <span 
+                                className="absolute bottom-0 left-0 h-0.5 bg-green-600 rounded-xl"
+                                style={{
+                                  width: '100%',
+                                  animation: 'drawUnderline 1.2s ease-in-out forwards'
+                                }}
+                              ></span>
+                            )}
+                          </span> this week!
                         </p>
                       </div>
                     </div>
@@ -226,6 +273,14 @@ const Hero = () => {
                 {/* Mobile positioning adjustments */}
                 <style dangerouslySetInnerHTML={{
                   __html: `
+                    @keyframes drawUnderline {
+                      from {
+                        width: 0%;
+                      }
+                      to {
+                        width: 100%;
+                      }
+                    }
                     @media (max-width: 640px) {
                       .absolute.-bottom-10.-left-10 {
                         position: relative !important;

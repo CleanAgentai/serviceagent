@@ -73,7 +73,7 @@ const CTA = () => {
               className="space-y-6 opacity-0 animate-fade-in"
               style={{ animationDelay: '0.1s', animationFillMode: 'forwards' }}
             >
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight whitespace-nowrap">
                 Stop wasting hours on interviews.
               </h2>
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-primary leading-tight">
@@ -104,11 +104,9 @@ const CTA = () => {
                   </Button>
                 </div>
                 <div className="space-y-2">
-                  <p className="text-sm font-medium text-primary">First 5 candidates free</p>
-                  <div className="flex items-center justify-center gap-1 text-xs text-muted-foreground">
-                    <Shield className="w-3 h-3" />
-                    <span>Credit card required</span>
-                  </div>
+                <p className="text-[8px] md:text-[10px] font-semibold uppercase text-muted-foreground text-center">
+                <span className="mr-[2px]">🎁</span> First 5 candidates free
+                    </p>
                 </div>
               </div>
 

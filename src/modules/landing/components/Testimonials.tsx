@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/carousel";
 import { useState, useRef, useEffect } from "react";
 import { TestimonialCarousel, Testimonial } from "@/components/ui/testimonial";
+import { Link } from "react-router-dom";
 
 const testimonials = [
   {
@@ -129,7 +130,7 @@ const Testimonials = () => {
            <button
              onClick={() => setCurrentTestimonial(prev => prev === 0 ? testimonials.length - 1 : prev - 1)}
              aria-label="Previous testimonial"
-             className="absolute top-8 left-8 w-14 h-14 rounded-full bg-gradient-to-br from-teal/10 to-teal/5 border border-teal/20 hover:from-teal/20 hover:to-teal/10 hover:border-teal/40 transition-all duration-300 flex items-center justify-center opacity-70 hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-teal hover:scale-110"
+             className="absolute top-8 left-8 w-14 h-14 rounded-full bg-gradient-to-br from-teal/10 to-teal/5 border border-teal/20 hover:from-teal/20 hover:to-teal/10 hover:border-teal/40 transition-all duration-300 flex items-center justify-center opacity-70 hover:opacity-100 focus:outline-none hover:scale-110"
            >
              <ChevronLeft className="w-6 h-6 text-teal" />
            </button>
@@ -137,7 +138,7 @@ const Testimonials = () => {
            <button
              onClick={() => setCurrentTestimonial(prev => (prev + 1) % testimonials.length)}
              aria-label="Next testimonial"
-             className="absolute top-8 right-8 w-14 h-14 rounded-full bg-gradient-to-br from-teal/10 to-teal/5 border border-teal/20 hover:from-teal/20 hover:to-teal/10 hover:border-teal/40 transition-all duration-300 flex items-center justify-center opacity-70 hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-teal hover:scale-110"
+             className="absolute top-8 right-8 w-14 h-14 rounded-full bg-gradient-to-br from-teal/10 to-teal/5 border border-teal/20 hover:from-teal/20 hover:to-teal/10 hover:border-teal/40 transition-all duration-300 flex items-center justify-center opacity-70 hover:opacity-100 focus:outline-none hover:scale-110"
            >
              <ChevronRight className="w-6 h-6 text-teal" />
            </button>
@@ -162,12 +163,12 @@ const Testimonials = () => {
              {/* Customer Info */}
              <div className="space-y-6">
                {/* Avatar */}
-               <div className="flex justify-center">
+               <div className="flex justify-center hover:scale-110 transition-all duration-300">
                  <div className="relative">
                    <img
                      src={testimonials[currentTestimonial].avatar}
                      alt=""
-                     className="w-20 h-20 rounded-full object-cover border-4 border-terracotta/20 shadow-lg hover:scale-110"
+                     className="w-20 h-20 rounded-full object-cover border-4 border-terracotta/20 shadow-lg"
                    />
                    <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-gradient-to-br from-terracotta to-terracotta/80 rounded-full flex items-center justify-center">
                      <Check className="w-4 h-4 text-white" />
@@ -197,7 +198,7 @@ const Testimonials = () => {
                aria-current={index === currentTestimonial ? "true" : "false"}
                aria-label={`Go to testimonial ${index + 1} of ${testimonials.length}`}
                role="tab"
-               className={`transition-all duration-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary ${
+               className={`transition-all duration-300 rounded-full focus:outline-none ${
                  index === currentTestimonial
                    ? 'w-12 h-3 bg-gradient-to-r from-gold to-gold/80'
                    : 'w-3 h-3 bg-muted hover:bg-muted-foreground hover:scale-125'
@@ -233,6 +234,7 @@ const Testimonials = () => {
              {/* CTA Button */}
              <div className="space-y-4">
                <div className="relative group">
+                <Link to="/signup">
                  <Button 
                    size="lg"
                    className="relative bg-gradient-to-r from-gold to-gold/90 hover:from-terracotta hover:to-terracotta/90 text-white px-12 py-6 text-xl font-bold rounded-xl shadow-lg shadow-gold/30 hover:shadow-terracotta/40 hover:scale-105 active:scale-95 transition-all duration-300"
@@ -243,17 +245,14 @@ const Testimonials = () => {
                      <div className="w-2 h-2 bg-white rounded-full animate-pulse opacity-80"></div>
                    </div>
                  </Button>
+                 </Link>
                </div>
 
                {/* Security & Trust Messaging */}
-               <div className="flex items-center justify-center gap-6 text-sm text-muted-foreground flex-wrap">
+               <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground flex-wrap">
                  <div className="flex items-center gap-2">
                    <Check className="w-4 h-4 text-teal" />
                    <span>First 5 candidates free</span>
-                 </div>
-                 <div className="flex items-center gap-2">
-                   <Shield className="w-4 h-4 text-gold" />
-                   <span>Credit card required</span>
                  </div>
                  <div className="flex items-center gap-2">
                    <Zap className="w-4 h-4 text-terracotta" />

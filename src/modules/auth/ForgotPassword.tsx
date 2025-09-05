@@ -93,7 +93,7 @@ export function ForgotPassword() {
           </div>
 
           {/* Forgot Password Form */}
-          <div className="bg-white rounded-xl shadow-sm p-8">
+          <div className="bg-transparent rounded-xl p-8 pt-0">
             <form onSubmit={handleResetPassword} className="space-y-6">
               {message && (
                 <div className="p-3 text-sm text-green-700 bg-green-100 border border-green-200 rounded-lg">

@@ -80,7 +80,7 @@ export const StripeCheckoutBox: React.FC<StripeCheckoutBoxProps> = ({planName, y
   }, []);
   
   return (
-    <div className="max-w-xl mx-auto mt-12 bg-white p-6 rounded-lg shadow">
+    <div className="max-w-6xl mx-auto mt-12 bg-white p-6 rounded-lg">
       <div id="checkout">
         <EmbeddedCheckoutProvider 
           stripe={stripePromise} 

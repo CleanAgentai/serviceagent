@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, ArrowRight } from "lucide-react";
 import { useAuth } from "@/app/providers/AuthContext";
 import { supabase } from "@/app/lib/supabase";
-import { Navigation } from "@/modules/landing/components/Navigation";
 
 export function Login() {
   const navigate = useNavigate();
@@ -73,13 +72,14 @@ export function Login() {
 
   return (
     <div className="relative min-h-screen w-full flex flex-col">
-      <Navigation />
       <div className="fixed inset-0 w-full h-full bg-gradient-to-b from-gray-50 to-white -z-10" />
       {/* Logo above header */}
-      <main className="flex-grow pt-16 md:pt-20">
+      <main className="flex-grow">
         <div className="max-w-2xl mx-auto px-4 py-12">
           <div className="flex justify-center mb-4">
-            <img src="/logos/Brandmark.svg" alt="ServiceAgent Icon" className="h-20 w-20 max-w-none object-contain" />
+            <Link to="/" className="block">
+              <img src="/logos/Brandmark.svg" alt="ServiceAgent Icon" className="h-20 w-20 max-w-none object-contain" />
+            </Link>
           </div>
           {/* Header */}
           <div className="text-center mb-8">
@@ -92,7 +92,7 @@ export function Login() {
           </div>
 
           {/* Login Form */}
-          <div className="bg-white rounded-xl shadow-sm p-8">
+          <div className="bg-transparent rounded-xl p-8 pt-0">
             <form onSubmit={handleSubmit} className="space-y-6">
               {error && (
                 <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg">
@@ -100,6 +100,7 @@ export function Login() {
                 </div>
               )}
 
+              <div className="grid grid-cols-1 gap-6">
               <div>
                 <label
                   htmlFor="email"
@@ -192,6 +193,7 @@ export function Login() {
                   </>
                 )}
               </button>
+              </div>
             </form>
 
             <div className="mt-6">
@@ -224,7 +226,7 @@ export function Login() {
           </div>
 
           {/* Sign in link */}
-          <p className="mt-8 text-center text-sm text-gray-600">
+          <p className="text-center text-sm text-gray-600">
             Don't have an account?{" "}
             <Link
               to="/signup"

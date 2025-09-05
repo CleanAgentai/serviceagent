@@ -20,7 +20,7 @@ export function ResetPasswordHandoff() {
         console.error("Session error:", error);
         navigate("/reset-password?session=error");
       } else {
-        navigate("/reset-password"); // 세션 설정 완료
+        navigate("/reset-password");
       }
     });
   }, [searchParams, navigate]);
