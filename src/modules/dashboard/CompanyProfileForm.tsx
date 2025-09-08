@@ -218,6 +218,16 @@ export function CompanyProfileForm({
         );
       }
 
+      const {data: upsertTrial, error: upsertTrialError} = await supabase
+        .from("customerio")
+        .upsert({"user_id" : user.id});
+
+      if (upsertTrialError) {
+        console.error("Error inserting user:", upsertTrialError.message);
+      } else {
+        console.log("User inserted successfully:", upsertTrial);
+      }
+
       const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
       const endpoint =

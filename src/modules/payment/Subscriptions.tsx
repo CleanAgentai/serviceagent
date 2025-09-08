@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { CheckCircle, ArrowRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/lib/supabase";
 
 export const Subscriptions: React.FC = () => {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
@@ -13,6 +14,25 @@ export const Subscriptions: React.FC = () => {
   function wrapper(plan, yearly) {
     setSelectedPlan(plan);
     setSelectedYearly(yearly);
+  }
+
+  async function handleOnboardingStatus(){
+    try{
+
+      const { data: { user },} = await supabase.auth.getUser();
+
+      const {error: trialStatusError} = await supabase
+      .from('customerio')
+      .update({trial_status: "onboarding"})
+      .eq("user_id", user.id);
+
+      window.open('https://calendly.com/serviceagent/25min', '_blank')
+
+    }
+    catch(err){
+      console.error("Error in trialStatusError:", err);
+    }
+
   }
 
   // Launch and Scale plans for new design
@@ -139,7 +159,7 @@ export const Subscriptions: React.FC = () => {
                 </ul>
                 <Button
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3"
-                  onClick={() => window.open('https://calendly.com/serviceagent/25min', '_blank')}
+                  onClick={handleOnboardingStatus}
                 >
                   Book a Call
                 </Button>
