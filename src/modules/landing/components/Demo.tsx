@@ -2,63 +2,6 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Play } from "lucide-react";
 import { Link } from "react-router-dom";
 
-// const Demo = () => {
-//   return (
-//     <section id="demo" className="relative py-24 bg-gradient-to-bl from-white via-[#A1E3FF]/8 to-[#0E7CFF]/5 overflow-hidden">
-//       {/* Background Gradient Effects */}
-//       <div className="absolute inset-0">
-//         <div className="absolute top-1/4 left-1/4 w-80 h-80 bg-gradient-radial from-[#0E7CFF]/15 to-transparent rounded-full blur-3xl opacity-60"></div>
-//         <div className="absolute bottom-1/4 right-1/4 w-72 h-72 bg-gradient-radial from-[#A1E3FF]/25 to-transparent rounded-full blur-2xl opacity-70"></div>
-//       </div>
-
-//       <div className="relative z-0 md:container max-sm:mx-8 max-md:mt-8 md:mx-auto px-2 sm:px-6">
-//         <div className="text-center mb-16">
-//           <h2 className="text-4xl font-bold text-slate-900 mb-4">
-//             See ServiceAgent in Action
-//           </h2>
-//           <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-//             Watch how our AI transforms your hiring from start to finish.
-//           </p>
-//         </div>
-
-//         <div>
-//           <div className="relative bg-gradient-to-br from-slate-50 to-white rounded-2xl shadow-2xl overflow-hidden border border-slate-200">
-          
-//             <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
-//               <iframe
-//                 src="https://www.loom.com/embed/c6331eb111804e92a20090266c736074?sid=a7df1056-af9a-4c8c-b4f2-561a565e7538&hide_owner=true&hide_share=true&hide_title=true&hideEmbedTopBar=true" 
-//                 frameBorder="0" 
-//                 allowFullScreen
-//                 className="aspect-[16/9] absolute top-0 left-0 w-full h-full border-0"
-//               />
-//             </div>
-//           </div>
-          
-//           <div className="text-center mt-8">
-//             <Link to="/signup">
-//               <Button 
-//                 size="lg" 
-//                 className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 text-lg rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 mb-4"
-//               >
-//                 Try It Free for 7 Days
-//                 <ArrowRight className="ml-2 h-5 w-5" />
-//               </Button>
-//             </Link>
-//             <div className="mt-4">
-//               <button 
-//                 onClick={() => window.open('https://calendly.com/serviceagent/25min', '_blank')}
-//                 className="text-blue-600 hover:text-blue-700 underline transition-colors duration-300"
-//               >
-//                 Prefer a personal touch? Book a live demo.
-//               </button>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </section>
-//   );
-// };
-
 const Demo = () => {
   return (
   <section id="demo" className="py-24 bg-gradient-to-b from-muted/30 to-background relative overflow-hidden">
@@ -106,9 +49,9 @@ const Demo = () => {
     </div>
 
     {/* Video container (has the aspect ratio) */}
-    <div className="relative bg-card border-2 border-primary/20 rounded-3xl shadow-3xl overflow-hidden hover:border-primary/40 hover:shadow-[0_25px_80px_-12px_rgba(0,0,0,0.25)] hover:-translate-y-2 transition-all duration-500" style={{ paddingBottom: '56.25%' }}>
+    <div className="relative bg-card border-2 border-primary/20 rounded-3xl shadow-3xl overflow-hidden hover:border-primary/40 hover:shadow-[0_25px_80px_-12px_rgba(0,0,0,0.25)] hover:-translate-y-2 transition-all duration-500" style={{ paddingBottom: '54.270833333333336%', height: '0' }}>
       <iframe
-        src="https://www.loom.com/embed/c6331eb111804e92a20090266c736074?hide_owner=true&hide_share=true&hide_title=true&hideEmbedTopBar=true"
+        src="https://www.loom.com/embed/9af892b7e11e419e931145daef908ee7?sid=91d863e7-3edf-442b-b165-785e918b153d"
         className="absolute aspect-[16/9] w-full border-0 top-0 left-0 h-full"
         title="ServiceAgent Demo"
         allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"
