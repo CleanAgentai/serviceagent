@@ -6,6 +6,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu"
+import {
   Card,
   CardContent,
   CardDescription,
@@ -29,6 +35,7 @@ export function CompanyProfileForm({
   const [error, setError] = useState<string | null>(null);
   const [companyName, setCompanyName] = useState("");
   const [companyLocation, setCompanyLocation] = useState("");
+  const [companyNiche, setCompanyNiche] = useState("default");
   const [companyWebsite, setCompanyWebsite] = useState("");
   const [companyPrimaryColour, setCompanyPrimaryColour] = useState("#0693e3");
   const [companySecondaryColour, setCompanySecondaryColour] =
@@ -74,6 +81,7 @@ export function CompanyProfileForm({
           // Set state from company_profiles data
           setCompanyLocation(companyProfile.company_location || "");
           setCompanyWebsite(companyProfile.company_website || "");
+          setCompanyNiche(companyProfile.company_niche || "");
           setCompanyPrimaryColour(
             companyProfile.company_primary_colour || "#0693e3"
           );
@@ -219,6 +227,8 @@ export function CompanyProfileForm({
 
       const method = mode === "update" ? "PATCH" : "POST";
 
+      console.log(endpoint);
+
       //  Willow BackendAPI Call
       const departmentRes = await fetch(endpoint, {
         method,
@@ -240,6 +250,16 @@ export function CompanyProfileForm({
         throw new Error(departmentData?.error || "Failed to create department");
       }
 
+      let niche = companyNiche;
+
+      if(companyNiche){
+        niche = niche.toLowerCase();
+        
+        if(companyNiche == "Restaurants and Food"){
+          niche = "food";
+        }
+      }
+
       // ✅ 6. company_profiles update(already the row is existing)
       const { error: companyProfileError } = await supabase
         .from("company_profiles")
@@ -251,6 +271,7 @@ export function CompanyProfileForm({
           company_secondary_colour: companySecondaryColour,
           company_logo_url: logoUrl,
           company_profile_completed: true,
+          company_niche: niche,
         })
         .eq("created_by_user_id", user.id); // 트리거로 만든 row 타겟팅
 
@@ -311,6 +332,48 @@ export function CompanyProfileForm({
                 placeholder="City, Country"
                 required
               />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="companyNiche">Niche *</Label>
+
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button
+                    id="companyNiche"
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    {companyNiche || "Select a niche"}
+                  </button>
+                </DropdownMenuTrigger>
+
+                <DropdownMenuContent className="w-[400px]">
+                  <DropdownMenuItem onClick={() => setCompanyNiche("Cleaning")}>
+                    Cleaning
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setCompanyNiche("Restaurants and Food")}>
+                    Restaurants and Food
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setCompanyNiche("HVAC")}>
+                    HVAC
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setCompanyNiche("Staffing")}>
+                    Staffing
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setCompanyNiche("Franchises")}>
+                    Franchises
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setCompanyNiche("Healthcare")}>
+                    Healthcare
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setCompanyNiche("Manufacturing")}>
+                    Manufacturing
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setCompanyNiche("Warehouses")}>
+                    Warehouses
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
 
             <div className="space-y-2">
