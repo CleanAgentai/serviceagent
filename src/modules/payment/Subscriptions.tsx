@@ -35,6 +35,24 @@ export const Subscriptions: React.FC = () => {
 
   }
 
+  async function handlePayStatus(){
+    try{
+
+      const { data: { user },} = await supabase.auth.getUser();
+
+      const {error: trialStatusError} = await supabase
+      .from('customerio')
+      .update({trial_ends_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() })
+      .eq("user_id", user.id);
+
+    }
+    catch(err){
+      console.error("Error in trialStatusError:", err);
+    }
+
+  }
+
+
   // Launch and Scale plans for new design
   const newPlans = [
     {
@@ -127,11 +145,11 @@ export const Subscriptions: React.FC = () => {
                   </ul>
                   <div className="flex-1 flex flex-col justify-end">
                     {isYearly ? (
-                      <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3" onClick={() => wrapper(plan.title, true)}>
+                      <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3" onClick={() => {wrapper(plan.title, true); handlePayStatus();}}>
                         Choose Plan
                       </Button>
                     ) : (
-                      <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3" onClick={() => wrapper(plan.title, false)}>
+                      <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3" onClick={() => {wrapper(plan.title, false); handlePayStatus();}}>
                         Choose Plan
                       </Button>
                     )}
