@@ -114,27 +114,23 @@ const App = () => {
                 {/* Complete Profile - NO AppLayout (no nav, no footer) */}
                 <Route path="/complete-profile" element={<CompleteProfile />} />
 
-                {/* Public Routes with AppLayout */}
+                {/* Auth Routes - NO AppLayout (no nav, no footer) */}
                 <Route
-                  element={
-                    <AppLayout showNavigation={true} showFooter={false} />
-                  }
-                >
-                  <Route
-                    path="/login"
-                    element={<Navigate to="/signin" replace />}
-                  />
-                  <Route path="/signin" element={<Login />} />
-                  <Route path="/signup" element={<Signup />} />
-                  <Route path="/forgot-password" element={<ForgotPassword />} />
-                  <Route path="/reset-password" element={<ResetPassword />} />
-                  <Route
-                    path="reset-password-handoff"
-                    element={<ResetPasswordHandoff />}
-                  />
-                  <Route path="/oauth-callback" element={<OAuthCallback />} />
-                  <Route path="/checkout/success" element={<CheckoutSuccess />} />
-                </Route>
+                  path="/login"
+                  element={<Navigate to="/signin" replace />}
+                />
+                <Route path="/signin" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
+                <Route
+                  path="reset-password-handoff"
+                  element={<ResetPasswordHandoff />}
+                />
+                <Route path="/oauth-callback" element={<OAuthCallback />} />
+                <Route path="/checkout/success" element={<CheckoutSuccess />} />
+
+                {/* Public Routes with AppLayout */}
                 <Route
                   element={
                     <AppLayout showNavigation={true} showFooter={true} />

@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { User, Mail, Lock, Building2, ArrowRight } from "lucide-react";
 import { useAuth } from "@/app/providers/AuthContext";
 import { supabase } from "@/app/lib/supabase";
-import { Navigation } from "@/modules/landing/components/Navigation";
 
 export function Signup() {
   const navigate = useNavigate();
@@ -20,6 +19,9 @@ export function Signup() {
 
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
+  const [showPasswordRequirements, setShowPasswordRequirements] = useState(false);
+  const [acceptTerms, setAcceptTerms] = useState(false);
   // Set meta title and description
   React.useEffect(() => {
     document.title = "Sign Up - ServiceAgent";
@@ -33,8 +35,45 @@ export function Signup() {
     window.scrollTo(0, 0);
   }, []);
 
+  const validatePassword = (password: string) => {
+    const errors: string[] = [];
+    
+    if (password.length < 8) {
+      errors.push("Password must be at least 8 characters long");
+    }
+    
+    if (!/[A-Z]/.test(password)) {
+      errors.push("At least 1 uppercase letter required");
+    }
+    
+    if (!/[a-z]/.test(password)) {
+      errors.push("At least 1 lowercase letter required");
+    }
+    
+    if (!/[0-9]/.test(password)) {
+      errors.push("At least 1 number (0-9) required");
+    }
+    
+    if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
+      errors.push("At least 1 special character required");
+    }
+    
+    return errors;
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    
+    if (name === "password") {
+      const errors = validatePassword(value);
+      setPasswordErrors(errors);
+      setShowPasswordRequirements(value.length > 0);
+    }
+    
+    if (name === "acceptTerms") {
+      setAcceptTerms((e.target as HTMLInputElement).checked);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -42,6 +81,10 @@ export function Signup() {
 
     setError("");
     setIsLoading(true);
+
+    // Clear any previous HTML5 validation messages
+    const form = e.target as HTMLFormElement;
+    form.classList.remove('was-validated');
 
     const {
       firstName,
@@ -60,15 +103,36 @@ export function Signup() {
       !password ||
       !confirmPassword
     ) {
-      alert("Please fill in all fields");
       setError("Please fill in all fields");
       setIsLoading(false);
       return;
     }
 
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError("Please enter a valid email address");
+      setIsLoading(false);
+      return;
+    }
+
     if (password !== confirmPassword) {
-      alert("Passwords do not match");
       setError("Passwords do not match");
+      setIsLoading(false);
+      return;
+    }
+
+    // Check password requirements
+    const passwordValidationErrors = validatePassword(password);
+    if (passwordValidationErrors.length > 0) {
+      setError("Password does not meet requirements");
+      setIsLoading(false);
+      return;
+    }
+
+    // Check terms acceptance
+    if (!acceptTerms) {
+      setError("Please accept the Terms of Service and Privacy Policy");
       setIsLoading(false);
       return;
     }
@@ -84,7 +148,7 @@ export function Signup() {
 
       if (signUpError) {
         if (signUpError.message.toLowerCase().includes("already registered")) {
-          alert("This email is already registered. Please log in.");
+          setError("This email is already registered. Please log in.");
         } else {
           throw signUpError;
         }
@@ -126,14 +190,15 @@ export function Signup() {
   };
 
   return (
-    <div className="relative min-h-screen w-full flex flex-col">
-      <Navigation />
+    <div className="relative min-h-screen w-full flex flex-col mt-[-2rem]">
       <div className="fixed inset-0 w-full h-full bg-gradient-to-b from-gray-50 to-white -z-10" />
-      <main className="flex-grow pt-16 md:pt-20">
+      <main className="flex-grow">
         <div className="max-w-2xl mx-auto px-4 py-12">
           {/* Logo above header */}
           <div className="flex justify-center mb-4">
-            <img src="/logos/Brandmark.svg" alt="ServiceAgent Icon" className="h-20 w-20 max-w-none object-contain" />
+            <Link to="/" className="block">
+              <img src="/logos/Brandmark.svg" alt="ServiceAgent Icon" className="h-20 w-20 max-w-none object-contain" />
+            </Link>
           </div>
           {/* Header */}
           <div className="text-center mb-8">
@@ -146,9 +211,25 @@ export function Signup() {
             </p>
           </div>
 
+          {/* Error Display */}
+          {error && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+              <div className="flex items-center">
+                <div className="flex-shrink-0">
+                  <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <div className="ml-3">
+                  <p className="text-sm text-red-800">{error}</p>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Signup Form */}
-          <div className="bg-white rounded-xl p-8">
-            <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="bg-transparent rounded-xl p-8 pt-0">
+            <form onSubmit={handleSubmit} className="space-y-6" noValidate>
               {/* Name Fields */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
@@ -168,7 +249,6 @@ export function Signup() {
                       type="text"
                       value={formData.firstName}
                       onChange={handleChange}
-                      required
                       className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="John"
                     />
@@ -192,7 +272,6 @@ export function Signup() {
                       type="text"
                       value={formData.lastName}
                       onChange={handleChange}
-                      required
                       className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="Doe"
                     />
@@ -270,11 +349,56 @@ export function Signup() {
                       type="password"
                       value={formData.password}
                       onChange={handleChange}
+                      onFocus={() => setShowPasswordRequirements(true)}
                       required
-                      className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className={`block w-full pl-10 pr-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+                        passwordErrors.length > 0 && formData.password.length > 0
+                          ? 'border-red-300 focus:ring-red-500 focus:border-red-500'
+                          : 'border-gray-300'
+                      }`}
                       placeholder="••••••••"
                     />
                   </div>
+                  
+                  {/* Password Requirements */}
+                  {showPasswordRequirements && (
+                    <div className="mt-2 bg-gray-50 rounded-lg">
+                      <ul className="space-y-1 transition-all duration-300">
+                        <li className={`text-xs flex items-center transition-colors duration-300 ${
+                          formData.password.length >= 8 
+                            ? 'text-green-600' 
+                            : 'text-red-600'
+                        }`}>
+                          <span className="mr-2 transition-all duration-300">{formData.password.length >= 8 ? '✓' : '✗'}</span>
+                          At least 8 characters long
+                        </li>
+                        <li className={`text-xs flex items-center transition-colors duration-300 ${
+                          /[A-Z]/.test(formData.password) ? 'text-green-600' : 'text-red-600'
+                        }`}>
+                          <span className="mr-2 transition-all duration-300">{/[A-Z]/.test(formData.password) ? '✓' : '✗'}</span>
+                          At least 1 uppercase letter
+                        </li>
+                        <li className={`text-xs flex items-center transition-colors duration-300 ${
+                          /[a-z]/.test(formData.password) ? 'text-green-600' : 'text-red-600'
+                        }`}>
+                          <span className="mr-2 transition-all duration-300">{/[a-z]/.test(formData.password) ? '✓' : '✗'}</span>
+                          At least 1 lowercase letter
+                        </li>
+                        <li className={`text-xs flex items-center transition-colors duration-300 ${
+                          /[0-9]/.test(formData.password) ? 'text-green-600' : 'text-red-600'
+                        }`}>
+                          <span className="mr-2 transition-all duration-300">{/[0-9]/.test(formData.password) ? '✓' : '✗'}</span>
+                          At least 1 number (0-9)
+                        </li>
+                        <li className={`text-xs flex items-center transition-colors duration-300 ${
+                          /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(formData.password) ? 'text-green-600' : 'text-red-600'
+                        }`}>
+                          <span className="mr-2 transition-all duration-300">{/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(formData.password) ? '✓' : '✗'}</span>
+                          At least 1 special character
+                        </li>
+                      </ul>
+                    </div>
+                  )}
                 </div>
 
                 <div>
@@ -295,10 +419,31 @@ export function Signup() {
                       value={formData.confirmPassword}
                       onChange={handleChange}
                       required
-                      className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className={`block w-full pl-10 pr-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+                        formData.confirmPassword.length > 0 && formData.password !== formData.confirmPassword
+                          ? 'border-red-300 focus:ring-red-500 focus:border-red-500'
+                          : formData.confirmPassword.length > 0 && formData.password === formData.confirmPassword
+                          ? 'border-green-300 focus:ring-green-500 focus:border-green-500'
+                          : 'border-gray-300'
+                      }`}
                       placeholder="••••••••"
                     />
                   </div>
+                  {formData.confirmPassword.length > 0 && (
+                    <div className="mt-1 transition-all duration-300">
+                      {formData.password === formData.confirmPassword ? (
+                        <p className="text-xs text-green-600 flex items-center transition-colors duration-300">
+                          <span className="mr-1 transition-all duration-300">✓</span>
+                          Passwords match
+                        </p>
+                      ) : (
+                        <p className="text-xs text-red-600 flex items-center transition-colors duration-300">
+                          <span className="mr-1 transition-all duration-300">✗</span>
+                          Passwords do not match
+                        </p>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -310,22 +455,24 @@ export function Signup() {
                     name="acceptTerms"
                     type="checkbox"
                     required
+                    checked={acceptTerms}
+                    onChange={handleChange}
                     className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                   />
                 </div>
                 <div className="ml-3 text-sm">
                   <label htmlFor="acceptTerms" className="text-gray-600">
-                    I agree to the
+                    I agree to the{" "}
                     <Link
                       to="/terms-of-service"
-                      className="text-blue-600 hover:text-blue-700 mx-[.1rem] sm:mx-1"
+                      className="text-blue-600 hover:text-blue-700"
                     >
                       Terms of Service
                     </Link>
-                    <span className="mx-1">and</span>
+                    {" "}and{" "}
                     <Link
                       to="/privacy-policy"
-                      className="text-blue-600 hover:text-blue-700  ml-[.05rem] sm:ml-1"
+                      className="text-blue-600 hover:text-blue-700"
                     >
                       Privacy Policy
                     </Link>
@@ -371,11 +518,11 @@ export function Signup() {
           </div>
 
           {/* Sign in link */}
-          <p className="text-center text-sm text-gray-600">
-            Already have an account?{" "}
+          <p className="text-center text-sm text-gray-600 -mt-2">
+            Already have an account?
             <Link
               to="/login"
-              className="font-medium text-blue-600 hover:text-blue-700"
+              className="font-medium text-blue-600 hover:text-blue-700 ml-1"
             >
               Sign in
             </Link>

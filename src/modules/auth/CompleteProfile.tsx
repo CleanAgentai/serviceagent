@@ -103,7 +103,7 @@ export function CompleteProfile() {
             </p>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm p-8">
+          <div className="bg-transparent rounded-xl p-8 pt-0">
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Email (Read-Only) */}
               <div>

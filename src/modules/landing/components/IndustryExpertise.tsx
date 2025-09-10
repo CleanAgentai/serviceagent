@@ -115,6 +115,7 @@ const IndustryExpertise = () => {
             >
               <div className="relative bg-gradient-to-br from-card to-gold/5 rounded-3xl overflow-hidden border border-gold/20 shadow-lg hover:shadow-2xl hover:-translate-y-3 hover:border-gold/40 transition-all duration-500">
                 {/* Image */}
+                <Link to="/industries/residential-cleaning" className="block">
                 <div className="relative h-48 overflow-hidden">
                   <img
                     src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
@@ -122,6 +123,7 @@ const IndustryExpertise = () => {
                     className="absolute h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
                     loading="lazy"
                   />
+                  
                   <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-primary/20 to-transparent" />
                   <div className="absolute top-4 left-4">
                     <div className="w-12 h-12 bg-gold/20 backdrop-blur-sm rounded-full flex items-center justify-center">
@@ -129,6 +131,7 @@ const IndustryExpertise = () => {
                     </div>
                   </div>
                 </div>
+                </Link>
                 
                 {/* Content */}
                 <div className="p-6 space-y-4">
@@ -136,9 +139,11 @@ const IndustryExpertise = () => {
                     <div className="w-2 h-2 bg-gold rounded-full animate-pulse" />
                     <span className="text-sm font-medium uppercase tracking-wide">High Volume</span>
                   </div>
-                  <h3 className="text-xl font-bold text-primary group-hover:text-gold transition-colors duration-300">
+                  <Link to="/industries/residential-cleaning" className="block hover:underline group-hover:text-gold transition-colors duration-300">
+                  <h3 className="text-left text-xl font-bold text-primary group-hover:text-gold transition-colors duration-300">
                     Cleaning Services
                   </h3>
+                  </Link>
                   <p className="text-muted-foreground text-sm leading-relaxed">
                     Find reliable house and commercial cleaners with AI screening that tests attention to detail, trustworthiness, and customer service skills.
                   </p>
@@ -165,6 +170,7 @@ const IndustryExpertise = () => {
             >
               <div className="relative bg-gradient-to-br from-card to-teal/5 rounded-3xl overflow-hidden border border-teal/20 shadow-lg hover:shadow-2xl hover:-translate-y-3 hover:border-teal/40 transition-all duration-500">
                 {/* Image */}
+                <Link to="/industries/restaurants" className="block">
                 <div className="relative h-48 overflow-hidden">
                   <img
                     src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
@@ -179,16 +185,19 @@ const IndustryExpertise = () => {
                     </div>
                   </div>
                 </div>
-                
+                </Link>
+
                 {/* Content */}
                 <div className="p-6 space-y-4">
                   <div className="flex items-center gap-2 text-teal">
                     <div className="w-2 h-2 bg-teal rounded-full animate-pulse" style={{ animationDelay: '0.3s' }} />
                     <span className="text-sm font-medium uppercase tracking-wide">Fast Paced</span>
                   </div>
-                  <h3 className="text-xl font-bold text-primary group-hover:text-teal transition-colors duration-300">
+                  <Link to="/industries/restaurants" className="block hover:underline group-hover:text-teal transition-colors duration-300">
+                  <h3 className="text-left text-xl font-bold text-primary group-hover:text-teal transition-colors duration-300">
                     Restaurants & Food Service
                   </h3>
+                  </Link>
                   <p className="text-muted-foreground text-sm leading-relaxed">
                     Hire restaurant staff with AI interviews that test food safety knowledge, customer service skills, and ability to work under pressure.
                   </p>
@@ -215,11 +224,13 @@ const IndustryExpertise = () => {
             >
               <div className="relative bg-gradient-to-br from-card to-terracotta/5 rounded-3xl overflow-hidden border border-terracotta/20 shadow-lg hover:shadow-2xl hover:-translate-y-3 hover:border-terracotta/40 transition-all duration-500">
                 {/* Image */}
+                <Link to="/industries/hvac" className="block">
                 <div className="relative h-48 overflow-hidden">
                   <img
                     src="https://images.unsplash.com/photo-1621905252507-b35492cc74b4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
                     alt="HVAC technician working on air conditioning unit demonstrating technical skills and problem-solving abilities"
                     className="absolute h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
+                    style={{ objectPosition: 'center center' }}
                     loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-primary/20 to-transparent" />
@@ -229,16 +240,19 @@ const IndustryExpertise = () => {
                     </div>
                   </div>
                 </div>
-                
+                </Link>
+
                 {/* Content */}
                 <div className="p-6 space-y-4">
                   <div className="flex items-center gap-2 text-terracotta">
                     <div className="w-2 h-2 bg-terracotta rounded-full animate-pulse" style={{ animationDelay: '0.6s' }} />
                     <span className="text-sm font-medium uppercase tracking-wide">Technical Skills</span>
                   </div>
-                  <h3 className="text-xl font-bold text-primary group-hover:text-terracotta transition-colors duration-300">
+                  <Link to="/industries/hvac" className="block hover:underline group-hover:text-terracotta transition-colors duration-300">
+                  <h3 className="text-left text-xl font-bold text-primary group-hover:text-terracotta transition-colors duration-300">
                     HVAC Services
                   </h3>
+                  </Link>
                   <p className="text-muted-foreground text-sm leading-relaxed">
                     Screen HVAC technicians with technical assessments and safety protocols. AI evaluates problem-solving skills and customer communication.
                   </p>
@@ -265,6 +279,7 @@ const IndustryExpertise = () => {
             >
               <div className="relative bg-gradient-to-br from-card to-gold/5 rounded-3xl overflow-hidden border border-accent/20 shadow-xl hover:shadow-3xl hover:-translate-y-3 hover:border-accent/40 transition-all duration-500">
                 {/* Image */}
+                <Link to="/industries/staffing" className="block">
                 <div className="relative h-48 overflow-hidden">
                   <img
                     src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
@@ -278,6 +293,7 @@ const IndustryExpertise = () => {
                     </div>
                   </div>
                 </div>
+                </Link>
                 
                 {/* Content */}
                 <div className="p-6 space-y-4">
@@ -285,9 +301,11 @@ const IndustryExpertise = () => {
                     <div className="w-2 h-2 bg-accent rounded-full animate-pulse" style={{ animationDelay: '0.9s' }} />
                     <span className="text-sm font-medium uppercase tracking-wide">Scale Focused</span>
                   </div>
-                  <h3 className="text-xl font-bold text-primary group-hover:text-accent transition-colors duration-300">
+                  <Link to="/industries/staffing" className="inline-block hover:underline group-hover:text-accent transition-colors duration-300">
+                  <h3 className="text-left text-xl font-bold text-primary group-hover:text-accent transition-colors duration-300">
                     Staffing Agencies
                   </h3>
+                  </Link>
                   <p className="text-muted-foreground text-sm leading-relaxed">
                     Accelerate candidate screening for staffing agencies with AI interviews that pre-qualify candidates for multiple client requirements.
                   </p>
@@ -314,6 +332,7 @@ const IndustryExpertise = () => {
             >
               <div className="relative bg-gradient-to-br from-card to-primary/5 rounded-3xl overflow-hidden border border-primary/20 shadow-xl hover:shadow-3xl hover:-translate-y-3 hover:border-primary/40 transition-all duration-500">
                 {/* Image */}
+                <Link to="/industries/franchises" className="block">
                 <div className="relative h-48 overflow-hidden">
                   <img
                     src="https://images.unsplash.com/photo-1556761175-b413da4baf72?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
@@ -327,6 +346,7 @@ const IndustryExpertise = () => {
                     </div>
                   </div>
                 </div>
+                </Link>
                 
                 {/* Content */}
                 <div className="p-6 space-y-4">
@@ -334,9 +354,11 @@ const IndustryExpertise = () => {
                     <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '1.2s' }} />
                     <span className="text-sm font-medium uppercase tracking-wide">Multi-Location</span>
                   </div>
-                  <h3 className="text-xl font-bold text-primary group-hover:text-primary/80 transition-colors duration-300">
+                  <Link to="/industries/franchises" className="block hover:underline group-hover:text-primary transition-colors duration-300">
+                  <h3 className="text-left text-xl font-bold text-primary group-hover:text-primary/80 transition-colors duration-300">
                     Franchises
                   </h3>
+                  </Link>
                   <p className="text-muted-foreground text-sm leading-relaxed">
                     Scale hiring across multiple franchise locations with consistent AI screening that maintains brand standards and service quality.
                   </p>
@@ -377,7 +399,7 @@ const IndustryExpertise = () => {
                 
                 {/* Industries List */}
                 <div className="p-6 pt-4 space-y-4">
-                  <div className="flex items-center gap-3 group/item hover:bg-muted/20 rounded-lg p-2 transition-colors duration-300">
+                  <div className="flex items-center justify-center gap-3 group/item hover:bg-muted/20 rounded-lg p-2 transition-colors duration-300">
                     <div className="w-8 h-8 bg-gradient-to-br from-gold/20 to-gold/10 rounded-full flex items-center justify-center group-hover/item:from-gold/30 group-hover/item:to-gold/20 transition-all duration-300">
                       <Users className="w-4 h-4 text-gold" />
                     </div>

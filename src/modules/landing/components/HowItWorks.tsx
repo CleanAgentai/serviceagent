@@ -21,7 +21,8 @@ const HowItWorks = () => {
        How It Works
      </h2>
      <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-       Transform your hiring process in just 3 simple steps. No complex setup, no learning curve.
+       Transform your hiring process in just 3 simple steps. <br />
+       No complex setup, no learning curve.
      </p>
    </div>
    
@@ -61,7 +62,7 @@ const HowItWorks = () => {
              Post to Indeed, Facebook, or anywhere you already get applicants. Our smart tracking starts working immediately.
            </p>
            <div className="pt-2 bottom-0 relative">
-             <span className="inline-flex items-center gap-2 text-gold font-medium text-sm group-hover:gap-3 transition-all duration-300">
+             <span className="inline-flex items-center gap-2 text-gold font-medium text-sm group-hover:scale-105 transition-all duration-300">
                <Clock className="w-4 h-4" />
                Takes 2 minutes
              </span>
@@ -73,7 +74,7 @@ const HowItWorks = () => {
      {/* Animated Arrow 1 */}
      <div className="hidden lg:flex items-center justify-center flex-col gap-4 opacity-0 animate-fade-in" style={{ animationDelay: '0.6s', animationFillMode: 'forwards' }}>
        <div className="relative">
-         <ArrowRight className="w-8 h-8 text-teal animate-pulse" />
+         <ArrowRight className="w-8 h-8 text-teal animate-pulse hover:scale-125 transition-all duration-300" />
        </div>
      </div>
 
@@ -112,7 +113,7 @@ const HowItWorks = () => {
              Our AI conducts personalized interviews with each candidate immediately after they apply. No scheduling, no delays.
            </p>
            <div className="pt-2 mt-auto">
-             <span className="inline-flex items-center gap-2 text-teal font-medium text-sm group-hover:gap-3 transition-all duration-300">
+             <span className="inline-flex items-center gap-2 text-teal font-medium group-hover:scale-105 transition-all duration-300">
                <Zap className="w-4 h-4" />
                100% automated
              </span>
@@ -124,7 +125,7 @@ const HowItWorks = () => {
      {/* Animated Arrow 2 */}
      <div className="hidden lg:flex items-center justify-center flex-col gap-4 opacity-0 animate-fade-in" style={{ animationDelay: '1s', animationFillMode: 'forwards' }}>
        <div className="relative">
-         <ArrowRight className="w-8 h-8 text-terracotta animate-pulse" style={{ animationDelay: '0.3s' }} />
+         <ArrowRight className="w-8 h-8 text-terracotta animate-pulse hover:scale-125 transition-all duration-300" style={{ animationDelay: '0.3s' }} />
        </div>
      </div>
 
@@ -174,7 +175,7 @@ const HowItWorks = () => {
              We analyze every interview and deliver a ranked shortlist of the best candidates, so you only review the cream of the crop.
            </p>
            <div className="pt-2 mt-auto">
-             <span className="inline-flex items-center gap-2 text-terracotta font-medium text-sm group-hover:gap-3 transition-all duration-300">
+             <span className="inline-flex items-center gap-2 text-terracotta font-medium text-sm group-hover:scale-105 transition-all duration-300">
                <Target className="w-4 h-4" />
                5× more accurate
              </span>
