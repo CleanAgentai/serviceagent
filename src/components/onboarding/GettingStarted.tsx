@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
   Rocket,
   CheckCircle,
   ClipboardCopy,
+  Copy,
   User,
   Pencil,
   Plug,
+  Check,
+  ChevronDown,
+  ChevronUp,
+  ChevronRight,
+  ArrowRight,
 } from "lucide-react";
 import { supabase } from "@/app/lib/supabase";
 import { useAuth } from "@/app/providers/AuthContext";
@@ -17,9 +23,23 @@ const steps = [
   { id: "create", title: "Create Interview", icon: Rocket },
   { id: "copy", title: "Copy Interview Link", icon: ClipboardCopy },
   { id: "candidate", title: "First Candidate", icon: User },
-  { id: "edit", title: "Edit Interview Link(Optional)", icon: Pencil },
+  { id: "edit", title: "Edit Interview Link (Optional)", icon: Pencil },
   { id: "connect", title: "Connect ATS (Optional)", icon: Plug },
 ];
+
+function ResponsiveVideo({ src, title }: { src: string; title: string }) {
+  return (
+    <div className="relative min-w-80 max-w-4xl aspect-[16/9] bg-card border-2 border-primary/20 rounded-3xl shadow-3xl overflow-hidden hover:border-primary/40 hover:shadow-[0_25px_80px_-12px_rgba(0,0,0,0.25)] hover:-translate-y-2 transition-all duration-500 max-sm:pb-[56.25%]">
+      <iframe
+        src={src}
+        title={title}
+        className="absolute aspect-[16/9] w-full border-0 top-0 left-0 h-full"
+        allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"
+        allowFullScreen
+      />
+    </div>
+  );
+}
 
 export default function GettingStarted() {
   const { user } = useAuth();
@@ -106,12 +126,12 @@ export default function GettingStarted() {
 
   return (
     <div className="flex h-fill">
-      <aside className="w-64 border-r p-4 bg-gray-50">
-        <h2 className="text-xl font-semibold">Getting Started</h2>
-        <p className="text-[10px] text-gray-500 mb-4 leading-snug">
+      <aside className="w-48 border-r p-4 pl-0 bg-transparent">
+        <h2 className="text-xl text-left font-semibold mb-2 hyphens-none break-words">Getting Started</h2>
+        <p className="text-xs text-gray-500 mb-4 leading-relaxed hyphens-none break-words">
           Follow these quick steps to set up ServiceAgent and start hiring with AI.
         </p>
-        <ul className="space-y-2">
+        <ul className="space-y-4">
           {steps.map(({ id, title, icon: Icon }) => (
             <li
               key={id}
@@ -124,11 +144,15 @@ export default function GettingStarted() {
             >
               <div className="flex items-center space-x-2">
                 <Icon className="w-5 h-5 shrink-0" />
-                <span className="text-sm break-words">{title}</span>
+                <span className="text-sm break-words hyphens-none whitespace-wrap pr-4">{title}</span>
               </div>
-              <div className="w-5 h-5 flex items-center justify-center rounded-sm bg-gray-200 shrink-0">
+              <div className={`w-6 h-6 flex items-center justify-center rounded-xl shrink-0 ${
+                isCompleted[id as keyof typeof isCompleted] 
+                  ? 'bg-green-600' 
+                  : 'bg-gray-200'
+              }`}>
                 {isCompleted[id as keyof typeof isCompleted] && (
-                  <CheckCircle className="w-3.5 h-3.5 text-green-500" />
+                  <Check className="w-4 h-4 text-white" />
                 )}
               </div>
             </li>
@@ -136,8 +160,8 @@ export default function GettingStarted() {
         </ul>
       </aside>
 
-      <main className="flex-1 p-6">
-        {activeStep === "create" && <CreateInterview hasInterview={!!firstInterviewId} />}
+      <main className="flex-1 p-6 min-w-0">
+        {activeStep === "create" && <CreateInterview hasInterview={!!firstInterviewId} setActiveStep={setActiveStep} />}
         {activeStep === "copy" && (
           <CopyInterviewLink
             firstInterviewId={firstInterviewId}
@@ -149,6 +173,7 @@ export default function GettingStarted() {
             hasCandidate={hasCandidate}
             attemptId={attemptId}
             onComplete={() => updateBitmask(1)}
+            setActiveStep={setActiveStep}
           />
         )}
         {activeStep === "edit" && (
@@ -165,107 +190,83 @@ export default function GettingStarted() {
   );
 }
 
-function CreateInterview({ hasInterview }: { hasInterview: boolean }) {
+function CreateInterview({ hasInterview, setActiveStep }: { hasInterview: boolean; setActiveStep: (step: string) => void }) {
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="space-y-6">
-      <h2 className="text-3xl font-semibold">Create Interview</h2>
-      <VideoEmbed src={"https://www.loom.com/embed/dbf03e1878d5497389971199c7b2419d?sid=95f31335-a69f-4861-9d4c-5096515f686c"} />
-      <p>
-        The first step to using ServiceAgent is to create your initial interview. This interview will be used
-        to assess candidates applying for the role you're hiring. You can customize your questions and tailor
-        the experience to fit your company's needs. Follow the steps below to get started.
-      </p>
+    <div className="space-y-4">
+      <h2 className="text-3xl text-left font-semibold hyphens-none break-words">Step 1: Create Your First Interview</h2>
+      <h3 className="text-md text-left text-gray-700 mb-8 hyphens-none break-words">This only takes 3–5 minutes. We’ll guide you through the basics, and you can customize later.</h3>
+      <ResponsiveVideo src="https://www.loom.com/embed/dbf03e1878d5497389971199c7b2419d?sid=95f31335-a69f-4861-9d4c-5096515f686c" title="How To Create An Interview" />
 
-      <div className="space-y-4 text-sm text-gray-700">
-        <div>
-          <h3 className="font-semibold">Interview Details</h3>
-          <ul className="list-disc list-outside pl-6">
-            <li>
-              <strong>Title of Interview / Position:</strong> Enter the job title or position name you are
-              hiring for (e.g., Delivery Driver, House Cleaner).
-            </li>
-            <li>
-              <strong>Language (Optional):</strong> Select the language in which the interview will be
-              conducted. Default: English
-            </li>
-            <li>
-              <strong>Hourly Rate (Optional):</strong> Enter the hourly wage for this position. This will be
-              shown to candidates during the interview.
-            </li>
-          </ul>
+      <div className="space-y-6">
+        <div className="flex items-center space-x-3">
+          <div className="flex-shrink-0 w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-sm font-semibold">
+            1
+          </div>
+          <p className="text-gray-700 hyphens-none break-words"><strong>Add Details</strong> – job title, language (optional), hourly rate (optional).</p>
         </div>
-
-        <div>
-          <h3 className="font-semibold">Interview Questions</h3>
-          <p className="mb-2">
-            You can add one or more questions to assess candidates. Each question can be configured with its
-            own format and constraints. You may remove or reorder questions at any time.
-          </p>
-          <ul className="list-disc list-outside pl-6">
-            <li>
-              <strong>Question Text:</strong> Type your interview question here.
-            </li>
-            <li>
-              <strong>Answer Type:</strong> Choose how candidates will respond. Options include:
-              <ul className="list-disc list-outside pl-6 mt-1">
-                <li>
-                  <strong>Video</strong>
-                  <ul className="list-disc list-outside pl-6 mt-1">
-                    <li>Max Duration (seconds)</li>
-                    <li>Max Retakes</li>
-                    <li>Thinking Time (seconds)</li>
-                  </ul>
-                </li>
-                <li>
-                  <strong>Text</strong>
-                  <ul className="list-disc list-outside pl-6 mt-1">
-                    <li>Max Characters</li>
-                    <li>Max Retakes</li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-            <li>
-              You may add more questions by clicking "Add Question". Each question will appear in order during
-              the interview.
-            </li>
-          </ul>
+        <div className="flex items-center space-x-3">
+          <div className="flex-shrink-0 w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-sm font-semibold">
+            2
+          </div>
+          <p className="text-gray-700 hyphens-none break-words"><strong>Write Questions</strong> – choose text or video, start with 5–7 questions.</p>
         </div>
-
-        <div>
-          <h3 className="font-semibold">Interview Settings</h3>
-          <ul className="list-disc list-outside pl-6">
-            <li>
-              <strong>Show Hints and Tips:</strong> Enables helpful guidance before each question.
-            </li>
-            <li>
-              <strong>Show Availability:</strong> Allows candidates to submit their availability for
-              next-stage interviews.
-            </li>
-            <li>
-              <strong>Interview Deadline:</strong> Set a date/time using the picker by which candidates must
-              complete the interview.
-            </li>
-          </ul>
+        <div className="flex items-center space-x-3">
+          <div className="flex-shrink-0 w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-sm font-semibold">
+            3
+          </div>
+          <p className="text-gray-700 hyphens-none break-words"><strong>Set Options</strong> – deadline, availability, or hints if needed.</p>
         </div>
       </div>
 
+      <div className="space-y-6">
+      <details className="mt-6" onToggle={(e) => setIsOpen((e.target as HTMLDetailsElement).open)}>
+        <summary className="group flex items-center space-x-3 cursor-pointer text-gray-700 font-medium hover:text-blue-600 transition-colors duration-200">
+          <div className="flex-shrink-0 w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-sm font-semibold group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
+            <ChevronRight className={`w-3.5 h-3.5 text-blue-500 group-hover:text-white transition-all duration-200 ${isOpen ? 'rotate-90' : 'rotate-0'}`} />
+          </div>
+          <span className="text-gray-700 font-semibold whitespace-nowrap hyphens-none break-words"><strong>Advanced Settings</strong></span>
+        </summary>
+        <div className="mt-4 ml-8">
+          <ul className="space-y-2 text-sm font-semibold text-gray-700 list-disc list-outside pl-6 whitespace-nowrap hyphens-none break-words">
+            <li>
+             Max Duration (seconds)
+            </li>
+            <li>
+             Max Retakes
+            </li>
+            <li>
+             Thinking Time (seconds)
+            </li>
+          </ul>
+        </div>
+      </details>
+     
+
       {hasInterview ? (
         <div className="space-y-4 max-w-xl">
-          <p className="text-blue-600 text-lg font-semibold">
+          <p className="text-blue-600 text-lg font-semibold hyphens-none break-words">
             First Interview Successfully Created!
           </p>
-          <p className="text-blue-600 text-lg font-semibold">
-            You can now move to the next step.
-          </p>
+          <Button 
+            className="group bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-full
+              border-0 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center" 
+            onClick={() => setActiveStep("copy")}
+          >
+            <p className="text-sm">Go to Next Step</p>
+            <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
+          </Button>
         </div>
       ) : (
-        <Button className="bg-blue-500 text-white" onClick={() => navigate("/interviews/create")}>
-          Go to Create Interview
+        <Button className="group bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-full
+          border-0 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center" onClick={() => navigate("/interviews/create")}>
+        Create My First Interview
+        <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
         </Button>
       )}
+    </div>
     </div>
   );
 }
@@ -277,8 +278,11 @@ function CopyInterviewLink({
   firstInterviewId: string | null;
   onComplete: () => void;
 }) {
+  const navigate = useNavigate();
   const [interviewLink, setInterviewLink] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [copied, setCopied] = useState(false);
+  const [copyTimeout, setCopyTimeout] = useState<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const fetchLink = async () => {
@@ -307,42 +311,103 @@ function CopyInterviewLink({
     if (interviewLink) {
       navigator.clipboard.writeText(interviewLink);
       onComplete();
+      
+      // Clear existing timeout if user clicks again
+      if (copyTimeout) {
+        clearTimeout(copyTimeout);
+      }
+      
+      // Set copied state
+      setCopied(true);
+      
+      // Set new timeout to reset copied state
+      const newTimeout = setTimeout(() => {
+        setCopied(false);
+        setCopyTimeout(null);
+      }, 5000);
+      
+      setCopyTimeout(newTimeout);
     }
   };
 
   return (
-    <div>
-      <h2 className="text-2xl font-semibold mb-4">Copy Interview Link</h2>
-      <VideoEmbed src={"https://www.loom.com/embed/395e38d76853447fb6d673be2e2f36ce?sid=5d9b2bf7-7572-4a34-895e-3fad4d2f86be"} />
-      <p className="mb-4">Copy your interview link and share it with candidates.</p>
-
+    <div className="space-y-4">
+      <h2 className="text-3xl text-left font-semibold hyphens-none break-words">Step 2: Share Your Interview Link</h2>
+      <h3 className="text-md text-left text-gray-700 mb-8 hyphens-none break-words">Copy your link and send it to candidates to start receiving responses.</h3>
+      <ResponsiveVideo src="https://www.loom.com/embed/395e38d76853447fb6d673be2e2f36ce?sid=5d9b2bf7-7572-4a34-895e-3fad4d2f86be" title="How To Share Your Interview Link" />
+      <div className="space-y-4">
       {loading ? (
         <p>Loading...</p>
       ) : interviewLink ? (
         <div className="space-y-4">
-          <p className="text-gray-700 leading-snug">
-            Your interview has been successfully created. Use the link below to share the interview
-            with potential candidates. Once candidates complete the interview, their responses will be
-            available for your review. Click the button to copy the link and begin collecting applications.
-            <br /><br />
-            Interviews can also be deleted in the main Interviews page.
+          <p className="max-w-4xl text-gray-700 leading-relaxed hyphens-none break-words">
+            <strong>Your interview is now ready.</strong>
           </p>
+          <div className="space-y-6">
+        <div className="flex items-center space-x-3">
+          <div className="flex-shrink-0 w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-sm font-semibold">
+            1
+          </div>
+          <p className="text-gray-700 hyphens-none break-words">Copy the link below to share with candidates.</p>
+        </div>
+        <div className="flex items-center space-x-3">
+          <div className="flex-shrink-0 w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-sm font-semibold">
+            2
+          </div>
+          <p className="text-gray-700 hyphens-none break-words">Candidate records and submits their interview.</p>
+        </div>
+        <div className="flex items-center space-x-3">
+          <div className="flex-shrink-0 w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-sm font-semibold">
+            3
+          </div>
+          <p className="text-gray-700 hyphens-none break-words">View their responses in the <Link className="inline-block min-h-0 hyphens-none break-words p-0 m-0 font-semibold text-blue-600 hover:text-blue-700 hover:underline transition-colors duration-200 cursor-pointer" to="/interviews/responses">Candidates</Link> section of the dashboard.</p>
+        </div>
+      </div>
 
           <div className="flex gap-2 items-center">
             <input
               readOnly
               value={interviewLink}
-              className="border rounded px-3 py-1 w-96"
+              className={`border-2 rounded-xl px-3 py-2 w-96 focus:outline-none focus:ring-2 transition-colors duration-300 ${
+                copied 
+                  ? 'border-green-500 bg-green-50 focus:ring-green-500' 
+                  : 'border-blue-600 focus:ring-blue-600'
+              }`}
             />
-            <Button variant="outline" onClick={handleCopy}>
-              Copy Link
+            <Button 
+              variant="outline" 
+              onClick={handleCopy}
+              className={`transition-all duration-300 text-wrap ${
+                copied 
+                  ? "group bg-green-50 border-green-300 text-green-700 hover:bg-green-600" 
+                  : "bg-blue-600 hover:bg-blue-700 text-white"
+              }`}
+            >
+              {copied ? (
+                <>
+                  Copied! <CheckCircle className="min-w-4 min-h-4 ml-2 h-4 w-4 text-green-600 group-hover:text-white transition-all duration-300" />
+                </>
+              ) : (
+                <>
+                  Copy Link <Copy className="min-w-4 min-h-4 ml-2 h-4 w-4" />
+                </>
+              )}
             </Button>
-            <CheckCircle className="text-green-500" />
           </div>
         </div>
       ) : (
-        <p>No Interviews Exist</p>
+        <div className="space-y-4">
+          <p className="text-blue-600 text-lg font-semibold">
+              No Interviews Exist
+          </p>
+          <Button className="group bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-full
+          border-0 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center" onClick={() => navigate("/interviews/create")}>
+            Create My First Interview
+            <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
+          </Button>
+        </div>
       )}
+      </div>
     </div>
   );
 }
@@ -364,22 +429,32 @@ function EditInterview({
   };
 
   return (
-    <div>
-      <h2 className="text-2xl font-semibold mb-2">Edit Interview</h2>
-      <p className="mb-4">Make changes to your interview setup.</p>
+    <div className="space-y-4">
+      <h2 className="text-3xl text-left font-semibold hyphens-none break-words">Step 4: Edit Your Interview Link (Optional)</h2>
+      <h3 className="text-md text-left text-gray-700 mb-8 hyphens-none break-words">Make changes to your interview questions or details anytime.</h3>
+      <ResponsiveVideo src="https://www.loom.com/embed/650a5ef732684cc5a63f72dbb8cfcdd8?sid=c453200f-84ef-427c-ac4e-e7bfa8316150" title="How To Edit Your Interview Link" />
 
       {firstInterviewId ? (
         <div className="space-y-4">
-          <p className="text-gray-700 leading-snug">
-            Need to make changes to your interview? You can update the interview details, questions, or
-            settings at any time before sharing the link with candidates.
-            <br /><br />
-            Click the <strong>Edit</strong> button below to make updates. If no changes are needed, you can skip this step and continue.
+          <p className="text-gray-700 leading-relaxed hyphens-none break-words">
+          Click below if you want to update your interview — otherwise, skip this step and continue.
           </p>
-          <Button onClick={handleEdit}>Edit Interview</Button>
+          <Button className="group bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-full
+            border-0 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center" onClick={handleEdit}>Edit Interview
+            <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
+          </Button>
         </div>
       ) : (
-        <p>No Interviews Exist</p>
+        <div className="space-y-4">
+          <p className="text-blue-600 text-lg font-semibold">
+              No Interviews Exist
+          </p>
+          <Button className="group bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-full
+          border-0 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center" onClick={() => navigate("/interviews/create")}>
+            Create My First Interview
+            <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
+          </Button>
+      </div>
       )}
     </div>
   );
@@ -389,10 +464,12 @@ function FirstCandidate({
   hasCandidate,
   attemptId,
   onComplete,
+  setActiveStep,
 }: {
   hasCandidate: boolean;
   attemptId: string | null;
   onComplete: () => void;
+  setActiveStep: (step: string) => void;
 }) {
   const navigate = useNavigate();
 
@@ -404,31 +481,25 @@ function FirstCandidate({
   };
 
   return (
-    <div>
-      <h2 className="text-2xl font-semibold mb-2">First Candidate</h2>
-      <VideoEmbed src={"https://www.loom.com/embed/650a5ef732684cc5a63f72dbb8cfcdd8?sid=c453200f-84ef-427c-ac4e-e7bfa8316150"} />
-      <p className="mb-4">Review your first candidate's submission.</p>
-
-      {attemptId ? (
-        <div className="space-y-4">
-          <p className="text-gray-700 leading-snug">
-            Your first candidate has submitted their interview. You can now review their responses
-            and analyze how they performed. Click the "View Candidate" button below to view their
-            response and start your evaluation. The AI-powered analysis will provide insights into
-            the candidate's strengths and areas for improvement.
-          </p>
-          <Button className="bg-blue-500 text-white" onClick={handleView}>View Candidate</Button>
-        </div>
-      ) : (
-        <p>
-          No candidates have submitted their interview yet. 
-          Once a candidate completes the interview, you'll be able to 
-          review their responses and see AI-powered analysis of their performance, 
-          including strengths and areas for improvement. Share your interview link to start 
-          receiving submissions.
-        </p>
-      )}
-    </div>
+    <div className="space-y-4">
+      <h2 className="text-3xl text-left font-semibold hyphens-none break-words">Step 3: Review Your First Candidate</h2>
+      <h3 className="text-md text-left text-gray-700 mb-8 hyphens-none break-words">See candidate responses and AI scores as soon as candidates complete your interview.</h3>
+      <ResponsiveVideo src="https://www.loom.com/embed/650a5ef732684cc5a63f72dbb8cfcdd8?sid=c453200f-84ef-427c-ac4e-e7bfa8316150" title="How To View Your First Candidate" />
+      
+      <p className="max-w-4xl text-gray-700 leading-relaxed hyphens-none break-words">Once a candidate submits their interview, you’ll see their responses, AI score, and analysis in the <Link className="inline-block hyphens-none break-words p-0 m-0 font-semibold text-blue-600 hover:text-blue-700 hover:underline transition-colors duration-200 cursor-pointer" to="/interviews/responses">Candidates</Link> tab. <br />Use this to quickly decide who to advance or reject. Click the button below or on the left side of your navigation bar to view your candidates.</p>
+      
+       <button 
+         onClick={() => setActiveStep("copy")}
+         className="p-0 *:text-left text-blue-600 font-semibold hyphens-none break-words hover:text-blue-700 hover:underline transition-colors duration-200 cursor-pointer"
+       >
+         Share your link to start receiving submissions.
+       </button>
+      <Button className="group bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-full
+        border-0 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center" onClick={() => navigate("/interviews/responses")}>
+        View Candidates
+        <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
+      </Button>
+      </div>
   );
 }
 
@@ -439,10 +510,10 @@ function ConnectATS({ onComplete }: { onComplete: () => void }) {
   };
 
   return (
-    <div>
-      <h2 className="text-2xl font-semibold mb-2">Connect ATS</h2>
+    <div className="space-y-4">
+      <h2 className="text-3xl text-left font-semibold hyphens-none break-words">Connect ATS</h2>
 
-      <p className="text-gray-700 leading-snug mb-4">
+      <p className="text-gray-700 leading-relaxed mb-4 hyphens-none break-words">
         Link your existing Applicant Tracking System (ATS) to streamline your hiring workflow.
         Integrating your ATS allows you to automatically sync candidate data, track interview
         progress, and manage applications in one place.
@@ -450,8 +521,10 @@ function ConnectATS({ onComplete }: { onComplete: () => void }) {
         Supported platforms include <strong>Greenhouse</strong>, <strong>Lever</strong>, <strong>Workable</strong>, and more. Click the button below to connect your ATS account.
       </p>
 
-      <Button className="bg-blue-500 text-white" onClick={handleConnect}>
+      <Button className="group bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-full
+      border-0 shadow-lg hover:shadow-xl transition-all duration-300" onClick={handleConnect}>
         Connect
+        <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
       </Button>
     </div>
   );
