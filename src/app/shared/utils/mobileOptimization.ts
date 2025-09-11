@@ -8,7 +8,7 @@
  */
 export const isMobileDevice = (): boolean => {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-    navigator.userAgent
+    navigator.userAgent,
   );
 };
 
@@ -17,7 +17,10 @@ export const isMobileDevice = (): boolean => {
  * @param {Function} fn - Function to execute
  * @param {number} delay - Delay in milliseconds
  */
-export const deferNonCriticalForMobile = (fn: () => void, delay = 1000): void => {
+export const deferNonCriticalForMobile = (
+  fn: () => void,
+  delay = 1000,
+): void => {
   if (isMobileDevice()) {
     setTimeout(fn, delay);
   } else {
@@ -34,7 +37,7 @@ export const deferNonCriticalForMobile = (fn: () => void, delay = 1000): void =>
 export const addPassiveEventListener = (
   eventType: string,
   handler: EventListener,
-  element: HTMLElement | Window = window
+  element: HTMLElement | Window = window,
 ): void => {
   element.addEventListener(eventType, handler, { passive: true });
 };
@@ -48,14 +51,14 @@ export const addPassiveEventListener = (
 export const optimizeImageLoading = (
   imgElement: HTMLImageElement,
   src: string,
-  lowResSrc?: string
+  lowResSrc?: string,
 ): void => {
   if (isMobileDevice() && lowResSrc) {
     imgElement.src = lowResSrc;
   } else {
     imgElement.src = src;
   }
-  
+
   // Add loading="lazy" attribute for non-critical images
   imgElement.loading = 'lazy';
 };
@@ -69,11 +72,11 @@ export const optimizeImageLoading = (
 export const applyReducedAnimations = (
   element: HTMLElement,
   desktopClass: string,
-  mobileClass: string
+  mobileClass: string,
 ): void => {
   if (isMobileDevice()) {
     element.classList.add(mobileClass);
   } else {
     element.classList.add(desktopClass);
   }
-}; 
+};

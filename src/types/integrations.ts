@@ -1,5 +1,15 @@
-export type IntegrationType = 'CRM' | 'EMAIL' | 'CALENDAR' | 'SOCIAL' | 'ATS' | 'ANALYTICS';
-export type IntegrationStatus = 'CONNECTED' | 'DISCONNECTED' | 'ERROR' | 'PENDING';
+export type IntegrationType =
+  | 'CRM'
+  | 'EMAIL'
+  | 'CALENDAR'
+  | 'SOCIAL'
+  | 'ATS'
+  | 'ANALYTICS';
+export type IntegrationStatus =
+  | 'CONNECTED'
+  | 'DISCONNECTED'
+  | 'ERROR'
+  | 'PENDING';
 
 export interface IntegrationConfig {
   apiKey?: string;
@@ -69,4 +79,4 @@ export interface IntegrationConnection {
   credentials: IntegrationCredentials;
   status: IntegrationStatus;
   error?: string;
-} 
+}

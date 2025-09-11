@@ -1,6 +1,6 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { Brain, Target, Zap, Users, Rocket, ExternalLink } from "lucide-react";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Brain, Target, Zap, Users, Rocket, ExternalLink } from 'lucide-react';
 
 interface ValueCardProps {
   title: string;
@@ -22,12 +22,12 @@ export function AboutUs() {
   // Set meta title and description and scroll to top
   React.useEffect(() => {
     window.scrollTo(0, 0);
-    document.title = "About Us - ServiceAgent";
+    document.title = 'About Us - ServiceAgent';
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute(
-        "content",
-        "Learn about ServiceAgent, our mission to revolutionize service businesses with AI-powered automation."
+        'content',
+        'Learn about ServiceAgent, our mission to revolutionize service businesses with AI-powered automation.',
       );
     }
   }, []);
@@ -38,7 +38,7 @@ export function AboutUs() {
       <div className="bg-gradient-to-b from-gray-50 to-white py-16 sm:py-24">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl font-bold text-gray-900 mb-6">
-            Revolutionizing the Field Service Industry with{" "}
+            Revolutionizing the Field Service Industry with{' '}
             <span className="bg-gradient-to-r from-[#4FC3DC] to-[#1E529D] bg-clip-text text-transparent">
               AI-Powered Automation
             </span>

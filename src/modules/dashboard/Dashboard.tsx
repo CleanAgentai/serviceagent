@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   BarChart3,
   Users,
@@ -16,10 +16,10 @@ import {
   UserPlus,
   MapPin,
   Languages,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { supabase } from "@/app/lib/supabase";
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { supabase } from '@/app/lib/supabase';
 
 interface Interview {
   id: string;
@@ -42,23 +42,23 @@ const Dashboard = () => {
   const fetchRecentInterviews = async () => {
     try {
       const { data, error } = await supabase
-        .from("interviews")
-        .select("id, title, created_at, deadline, language")
-        .order("created_at", { ascending: false })
+        .from('interviews')
+        .select('id, title, created_at, deadline, language')
+        .order('created_at', { ascending: false })
         .limit(3);
 
       if (error) {
-        console.error("Error fetching interviews:", error);
+        console.error('Error fetching interviews:', error);
         setRecentInterviews([]);
       } else if (data && data.length > 0) {
         const formattedInterviews = data.map((interview) => ({
           id: interview.id,
           title: interview.title,
-          location: interview.language || "Remote",
+          location: interview.language || 'Remote',
           deadline: interview.deadline
-            ? new Date(interview.deadline).toLocaleDateString("en-US")
-            : "No deadline",
-          createdAt: new Date(interview.created_at).toLocaleDateString("en-US"),
+            ? new Date(interview.deadline).toLocaleDateString('en-US')
+            : 'No deadline',
+          createdAt: new Date(interview.created_at).toLocaleDateString('en-US'),
         }));
 
         setRecentInterviews(formattedInterviews);
@@ -66,7 +66,7 @@ const Dashboard = () => {
         setRecentInterviews([]);
       }
     } catch (error) {
-      console.error("Error fetching interviews:", error);
+      console.error('Error fetching interviews:', error);
       setRecentInterviews([]);
     } finally {
       setIsLoading(false);
@@ -80,26 +80,26 @@ const Dashboard = () => {
     if (!user) return;
 
     const { data: profile, error: profileError } = await supabase
-      .from("company_profiles")
-      .select("willo_company_key")
-      .eq("created_by_user_id", user.id)
+      .from('company_profiles')
+      .select('willo_company_key')
+      .eq('created_by_user_id', user.id)
       .single();
 
     if (profileError || !profile) {
-      console.error("Error fetching company key:", profileError);
+      console.error('Error fetching company key:', profileError);
       return;
     }
 
     const companyKey = profile.willo_company_key;
     // 1. Fetch all attempts for the company
     const { data: attempts, error: attemptsError } = await supabase
-      .from("interview_attempts")
-      .select("candidate_id, qualified, status")
-      .eq("department_key", companyKey)
-      .not("candidate_id", "is", null); // remove nulls
+      .from('interview_attempts')
+      .select('candidate_id, qualified, status')
+      .eq('department_key', companyKey)
+      .not('candidate_id', 'is', null); // remove nulls
 
     if (attemptsError || !attempts) {
-      console.error("Error fetching attempts:", attemptsError);
+      console.error('Error fetching attempts:', attemptsError);
       return;
     }
 
@@ -114,23 +114,24 @@ const Dashboard = () => {
 
     const appC = uniqueCandidates.size;
     const qualifiedCount = [...uniqueCandidates.values()].filter(
-      (c) => c.qualified === true
+      (c) => c.qualified === true,
     ).length;
     const hiredCount = [...uniqueCandidates.values()].filter(
-      (c) => c.status === "Hired"
+      (c) => c.status === 'Hired',
     ).length;
 
     const { data, error } = await supabase
-      .from("company_analytics")
-      .select("total_days_to_hire, total_hired_cases")
-      .eq("department_key", companyKey)
+      .from('company_analytics')
+      .select('total_days_to_hire, total_hired_cases')
+      .eq('department_key', companyKey)
       .single();
     if (error || !data || data.total_hired_cases === 0) {
-      console.error("Error fetching average time to hire:", error);
+      console.error('Error fetching average time to hire:', error);
       setAverageTimeToHire(0);
     } else {
       const avg =
-        Math.round((data.total_days_to_hire / data.total_hired_cases) * 10) / 10;
+        Math.round((data.total_days_to_hire / data.total_hired_cases) * 10) /
+        10;
       setAverageTimeToHire(avg);
     }
 
@@ -141,12 +142,12 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    document.title = "dashboard.fsagent.com";
+    document.title = 'dashboard.fsagent.com';
     const fetchAll = async () => {
       try {
         await Promise.all([fetchRecentInterviews(), fetchCandidatesApplied()]);
       } catch (err) {
-        console.error("Dashboard fetch error:", err);
+        console.error('Dashboard fetch error:', err);
       } finally {
         setLoading(false);
       }
@@ -156,67 +157,67 @@ const Dashboard = () => {
 
   const metrics = [
     {
-      title: "Candidates Applied",
+      title: 'Candidates Applied',
       value: appliedCount.toString(),
-      change: "",
+      change: '',
       icon: UserPlus,
-      description: "Total applications received",
-      color: "text-blue-500",
-      bgColor: "bg-blue-50",
+      description: 'Total applications received',
+      color: 'text-blue-500',
+      bgColor: 'bg-blue-50',
     },
     {
-      title: "Qualified Candidates",
+      title: 'Qualified Candidates',
       value: qualifiedCount.toString(),
-      change: "",
+      change: '',
       icon: Users,
-      description: "Candidates with a 7+ rating",
-      color: "text-purple-500",
-      bgColor: "bg-purple-50",
+      description: 'Candidates with a 7+ rating',
+      color: 'text-purple-500',
+      bgColor: 'bg-purple-50',
     },
     {
-      title: "Candidates Hired",
+      title: 'Candidates Hired',
       value: hiredCount.toString(),
-      change: "",
+      change: '',
       icon: UserCheck,
-      description: "Successfully hired candidates",
-      color: "text-green-500",
-      bgColor: "bg-green-50",
+      description: 'Successfully hired candidates',
+      color: 'text-green-500',
+      bgColor: 'bg-green-50',
     },
     {
-      title: "Average Time to Hire",
+      title: 'Average Time to Hire',
       value: averageTimeToHire.toString(),
-      change: "",
+      change: '',
       icon: Clock,
-      description: "Average days to complete hire",
-      color: "text-orange-500",
-      bgColor: "bg-orange-50",
+      description: 'Average days to complete hire',
+      color: 'text-orange-500',
+      bgColor: 'bg-orange-50',
     },
   ];
 
   const quickActions = [
     {
-      title: "Create Interview",
-      description: "Set up a new interview session",
+      title: 'Create Interview',
+      description: 'Set up a new interview session',
       icon: <Plus className="h-5 w-5 text-blue-600" />,
-      action: () => navigate("/interviews/create"),
+      action: () => navigate('/interviews/create'),
       color:
-        "bg-gradient-to-br from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200",
+        'bg-gradient-to-br from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200',
     },
     {
-      title: "View Interviews",
-      description: "Review past interview sessions",
+      title: 'View Interviews',
+      description: 'Review past interview sessions',
       icon: <Calendar className="h-5 w-5 text-green-600" />,
-      action: () => navigate("/interviews"),
+      action: () => navigate('/interviews'),
       color:
-        "bg-gradient-to-br from-green-50 to-green-100 hover:from-green-100 hover:to-green-200",
+        'bg-gradient-to-br from-green-50 to-green-100 hover:from-green-100 hover:to-green-200',
     },
     {
-      title: "View Candidates",
-      description: "Review candidate responses",
+      title: 'View Candidates',
+      description: 'Review candidate responses',
       icon: <Users className="h-5 w-5 text-violet-600" />,
-      action: () => navigate("/interviews/responses"),
+      action: () => navigate('/interviews/responses'),
       color:
-        "bg-gradient-to-br from-violet-50 to-violet-100 hover:from-violet-100 hover:to-violet-200",
+        'bg-gradient-to-br from-violet-50 to-violet-100 hover:from-violet-100 hover:to-violet-200',
     },
   ];
 
@@ -233,8 +234,12 @@ const Dashboard = () => {
       <div className="flex flex-col gap-6">
         {/* Header */}
         <div>
-          <h1 className="text-left text-2xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-left text-gray-500 mt-1">Welcome to ServiceAgent!</p>
+          <h1 className="text-left text-2xl font-bold text-gray-900">
+            Dashboard
+          </h1>
+          <p className="text-left text-gray-500 mt-1">
+            Welcome to ServiceAgent!
+          </p>
         </div>
 
         {/* Metrics Grid */}
@@ -242,10 +247,15 @@ const Dashboard = () => {
           {metrics.map((metric) => {
             const Icon = metric.icon;
             return (
-              <Card key={metric.title} className="p-6 shadow-lg border-0 bg-white hover:shadow-xl transition-all duration-300">
+              <Card
+                key={metric.title}
+                className="p-6 shadow-lg border-0 bg-white hover:shadow-xl transition-all duration-300"
+              >
                 <div className="flex flex-row lg:flex-col xl:flex-row items-center lg:justify-start lg:items-start xl:items-center xl:justify-center gap-4">
-                    <div className={`${metric.bgColor} p-3 rounded-lg shadow-md ring-2 ring-white/50`}>
-                      <Icon className={`h-6 w-6 ${metric.color}`} />
+                  <div
+                    className={`${metric.bgColor} p-3 rounded-lg shadow-md ring-2 ring-white/50`}
+                  >
+                    <Icon className={`h-6 w-6 ${metric.color}`} />
                   </div>
                   <div>
                     <p className="text-sm font-medium text-gray-600">
@@ -257,9 +267,9 @@ const Dashboard = () => {
                       </p>
                       <span
                         className={
-                          metric.change.startsWith("+")
-                            ? "text-green-600 text-sm"
-                            : "text-red-600 text-sm"
+                          metric.change.startsWith('+')
+                            ? 'text-green-600 text-sm'
+                            : 'text-red-600 text-sm'
                         }
                       >
                         {metric.change}
@@ -277,12 +287,14 @@ const Dashboard = () => {
 
         {/* Quick Actions */}
         <div className="mt-6">
-          <h2 className="text-left text-lg font-semibold mb-4">Quick Actions</h2>
+          <h2 className="text-left text-lg font-semibold mb-4">
+            Quick Actions
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Create Interview Card */}
             <Card
               className="p-6 cursor-pointer hover:bg-gray-50 transition-all duration-300 shadow-lg border-0 bg-white hover:shadow-xl hover:scale-105"
-              onClick={() => navigate("/interviews/create")}
+              onClick={() => navigate('/interviews/create')}
             >
               <div className="flex items-center gap-4">
                 <div className="bg-blue-50 p-3 rounded-lg shadow-md ring-2 ring-blue-100">
@@ -300,7 +312,7 @@ const Dashboard = () => {
             {/* View Responses Card */}
             <Card
               className="p-6 cursor-pointer hover:bg-gray-50 transition-all duration-300 shadow-lg border-0 bg-white hover:shadow-xl hover:scale-105"
-              onClick={() => navigate("/interviews/responses")}
+              onClick={() => navigate('/interviews/responses')}
             >
               <div className="flex items-center gap-4">
                 <div className="bg-purple-50 p-3 rounded-lg shadow-md ring-2 ring-purple-100">
@@ -319,19 +331,19 @@ const Dashboard = () => {
 
         {/* Recent Interviews */}
         <div className="bg-white rounded-xl shadow-lg border-0 overflow-hidden hover:shadow-xl transition-all duration-300">
-            <div className="p-6 border-b border-gray-200 flex justify-between items-center">
-             <div>
-               <h2 className="text-left text-lg font-semibold text-gray-900">
-                 Recent Interviews
-               </h2>
-               <p className="text-sm text-gray-600 mt-1">
-                 Your latest interviews
-               </p>
-             </div>
-             <button
-               onClick={() => navigate("/interviews")}
-               className="group text-right text-sm pl-4 text-blue-500 font-medium flex items-center hover:text-blue-500/90 transition-colors"
-             >
+          <div className="p-6 border-b border-gray-200 flex justify-between items-center">
+            <div>
+              <h2 className="text-left text-lg font-semibold text-gray-900">
+                Recent Interviews
+              </h2>
+              <p className="text-sm text-gray-600 mt-1">
+                Your latest interviews
+              </p>
+            </div>
+            <button
+              onClick={() => navigate('/interviews')}
+              className="group text-right text-sm pl-4 text-blue-500 font-medium flex items-center hover:text-blue-500/90 transition-colors"
+            >
               View All
               <ChevronRight className="h-4 w-4 ml-1 transition-transform duration-200 group-hover:translate-x-1" />
             </button>
@@ -354,7 +366,7 @@ const Dashboard = () => {
                 Create your first interview to get started
               </p>
               <button
-                onClick={() => navigate("/interviews/create")}
+                onClick={() => navigate('/interviews/create')}
                 className="inline-flex items-center px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <Plus className="h-4 w-4 mr-2" />
@@ -363,8 +375,8 @@ const Dashboard = () => {
             </div>
           ) : (
             <div className="w-full overflow-hidden">
-                <div className="w-full max-w-full overflow-x-auto">
-              <div className="w-full min-w-max divide-y divide-gray-100">
+              <div className="w-full max-w-full overflow-x-auto">
+                <div className="w-full min-w-max divide-y divide-gray-100">
                   {recentInterviews.map((interview, index) => (
                     <div
                       key={index}

@@ -1,5 +1,20 @@
-export type LeadStatus = 'New' | 'Contacted' | 'Qualified' | 'Proposal' | 'Negotiation' | 'Converted' | 'Lost';
-export type LeadSource = 'Website' | 'LinkedIn' | 'Referral' | 'Trade Show' | 'Webinar' | 'Social Media' | 'Email Campaign' | 'Event';
+export type LeadStatus =
+  | 'New'
+  | 'Contacted'
+  | 'Qualified'
+  | 'Proposal'
+  | 'Negotiation'
+  | 'Converted'
+  | 'Lost';
+export type LeadSource =
+  | 'Website'
+  | 'LinkedIn'
+  | 'Referral'
+  | 'Trade Show'
+  | 'Webinar'
+  | 'Social Media'
+  | 'Email Campaign'
+  | 'Event';
 export type LeadPriority = 'Low' | 'Medium' | 'High';
 
 export interface Lead {
@@ -40,21 +55,21 @@ export interface CSVMapping {
   [key: string]: keyof LeadFormData | null;
 }
 
-export type ScoreOperator = 
-  | 'equals' 
-  | 'contains' 
-  | 'greater_than' 
-  | 'less_than' 
-  | 'exists' 
+export type ScoreOperator =
+  | 'equals'
+  | 'contains'
+  | 'greater_than'
+  | 'less_than'
+  | 'exists'
   | 'not_exists';
 
-export type ScoreFieldType = 
-  | 'source' 
-  | 'status' 
-  | 'tags' 
-  | 'budget' 
-  | 'company' 
-  | 'interactionCount' 
+export type ScoreFieldType =
+  | 'source'
+  | 'status'
+  | 'tags'
+  | 'budget'
+  | 'company'
+  | 'interactionCount'
   | 'lastInteraction';
 
 export interface ScoreRule {
@@ -132,4 +147,4 @@ export interface SalesAnalyticsProps {
   leads: Lead[];
   marketingSpend: Record<LeadSource, number>;
   pipelineStages: PipelineStage[];
-} 
+}

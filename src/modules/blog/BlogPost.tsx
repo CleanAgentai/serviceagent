@@ -10,8 +10,10 @@ import { Footer } from '../landing/components/Footer';
 // Sample blog post content - in a real app, this would come from a CMS or API
 const blogPostContent = {
   'ai-hiring-revolution-2025': {
-    title: 'The AI Hiring Revolution: How Technology is Transforming Service Industry Recruitment',
-    excerpt: 'Discover how AI-powered hiring platforms are helping service businesses reduce time-to-hire by 75% while improving candidate quality.',
+    title:
+      'The AI Hiring Revolution: How Technology is Transforming Service Industry Recruitment',
+    excerpt:
+      'Discover how AI-powered hiring platforms are helping service businesses reduce time-to-hire by 75% while improving candidate quality.',
     date: '2025-01-15',
     author: 'Sarah Johnson',
     readTime: '8 min read',
@@ -51,11 +53,13 @@ const blogPostContent = {
       <p>As AI technology continues to evolve, we can expect even more sophisticated hiring tools that will further streamline the recruitment process while ensuring fairness and reducing bias.</p>
 
       <p>The businesses that embrace these technologies today will have a significant competitive advantage in attracting and retaining top talent in the service industry.</p>
-    `
+    `,
   },
   'automated-interviews-guide': {
-    title: 'Complete Guide to Automated Interviews: Best Practices for Service Businesses',
-    excerpt: 'Learn how to implement automated interviews that candidates love while maintaining the human touch your business needs.',
+    title:
+      'Complete Guide to Automated Interviews: Best Practices for Service Businesses',
+    excerpt:
+      'Learn how to implement automated interviews that candidates love while maintaining the human touch your business needs.',
     date: '2025-01-10',
     author: 'Michael Chen',
     readTime: '6 min read',
@@ -87,11 +91,13 @@ const blogPostContent = {
 
       <h2>Measuring Success</h2>
       <p>Track key metrics like completion rates, candidate feedback scores, and quality of hire to continuously improve your automated interview process.</p>
-    `
+    `,
   },
   'candidate-scoring-systems': {
-    title: 'Building Effective Candidate Scoring Systems: Data-Driven Hiring Decisions',
-    excerpt: 'Explore how modern scoring algorithms help identify top talent while eliminating unconscious bias in the hiring process.',
+    title:
+      'Building Effective Candidate Scoring Systems: Data-Driven Hiring Decisions',
+    excerpt:
+      'Explore how modern scoring algorithms help identify top talent while eliminating unconscious bias in the hiring process.',
     date: '2025-01-05',
     author: 'Emma Rodriguez',
     readTime: '7 min read',
@@ -150,11 +156,13 @@ const blogPostContent = {
       </ul>
 
       <p>By implementing a robust candidate scoring system, service businesses can make more confident hiring decisions that lead to better outcomes for both employees and customers.</p>
-    `
+    `,
   },
   'service-industry-hiring-trends': {
-    title: '2025 Service Industry Hiring Trends: What Business Owners Need to Know',
-    excerpt: 'Stay ahead of the curve with insights into emerging hiring trends, wage expectations, and talent acquisition strategies.',
+    title:
+      '2025 Service Industry Hiring Trends: What Business Owners Need to Know',
+    excerpt:
+      'Stay ahead of the curve with insights into emerging hiring trends, wage expectations, and talent acquisition strategies.',
     date: '2024-12-28',
     author: 'David Park',
     readTime: '9 min read',
@@ -266,11 +274,13 @@ const blogPostContent = {
       </ul>
 
       <p>The service industry businesses that adapt to these trends will not only survive but thrive in 2025 and beyond. The key is staying agile and putting employee experience at the center of your hiring strategy.</p>
-    `
+    `,
   },
   'roi-automated-hiring': {
-    title: 'Calculating ROI on Automated Hiring: Real Numbers from Service Businesses',
-    excerpt: 'See actual case studies showing how ServiceAgent customers achieved 300% ROI through automated hiring processes.',
+    title:
+      'Calculating ROI on Automated Hiring: Real Numbers from Service Businesses',
+    excerpt:
+      'See actual case studies showing how ServiceAgent customers achieved 300% ROI through automated hiring processes.',
     date: '2024-12-20',
     author: 'Lisa Thompson',
     readTime: '5 min read',
@@ -394,11 +404,12 @@ const blogPostContent = {
       </ul>
 
       <p>The data consistently shows that automated hiring pays for itself within 30-60 days, with ongoing returns that compound over time. For service businesses hiring regularly, the question isn't whether to automate—it's how quickly you can implement.</p>
-    `
+    `,
   },
   'interview-questions-guide': {
     title: 'The Ultimate Guide to Service Industry Interview Questions',
-    excerpt: 'Download our comprehensive list of proven interview questions designed specifically for service industry roles.',
+    excerpt:
+      'Download our comprehensive list of proven interview questions designed specifically for service industry roles.',
     date: '2024-12-15',
     author: 'Robert Kim',
     readTime: '10 min read',
@@ -570,31 +581,33 @@ const blogPostContent = {
       </ul>
 
       <p>Remember: The best interview questions not only help you evaluate candidates but also give applicants insight into your company culture and expectations. Use this guide as a foundation, then customize questions based on your specific needs and company values.</p>
-    `
-  }
+    `,
+  },
 };
 
 const relatedPosts = [
   {
     id: 'candidate-scoring-systems',
     title: 'Building Effective Candidate Scoring Systems',
-    image: '/blog/ai-efficiency.jpg'
+    image: '/blog/ai-efficiency.jpg',
   },
   {
     id: 'service-industry-hiring-trends',
     title: '2025 Service Industry Hiring Trends',
-    image: '/blog/hiring.jpg'
+    image: '/blog/hiring.jpg',
   },
   {
     id: 'roi-automated-hiring',
     title: 'Calculating ROI on Automated Hiring',
-    image: '/blog/ai-efficiency.jpg'
-  }
+    image: '/blog/ai-efficiency.jpg',
+  },
 ];
 
 export const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
-  const post = slug ? blogPostContent[slug as keyof typeof blogPostContent] : null;
+  const post = slug
+    ? blogPostContent[slug as keyof typeof blogPostContent]
+    : null;
 
   // Auto-scroll to top when component mounts or slug changes
   useEffect(() => {
@@ -607,8 +620,12 @@ export const BlogPost = () => {
         <Navigation />
         <div className="min-h-screen bg-background flex items-center justify-center">
           <div className="text-center space-y-4">
-            <h1 className="text-4xl font-bold text-foreground">Post Not Found</h1>
-            <p className="text-muted-foreground">The blog post you're looking for doesn't exist.</p>
+            <h1 className="text-4xl font-bold text-foreground">
+              Post Not Found
+            </h1>
+            <p className="text-muted-foreground">
+              The blog post you're looking for doesn't exist.
+            </p>
             <Link to="/blog">
               <Button>Back to Blog</Button>
             </Link>
@@ -620,25 +637,25 @@ export const BlogPost = () => {
 
   // SEO structured data for the blog post
   const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "headline": post.title,
-    "description": post.excerpt,
-    "image": post.image,
-    "datePublished": post.date,
-    "author": {
-      "@type": "Person",
-      "name": post.author
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.excerpt,
+    image: post.image,
+    datePublished: post.date,
+    author: {
+      '@type': 'Person',
+      name: post.author,
     },
-    "publisher": {
-      "@type": "Organization",
-      "name": "ServiceAgent",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://serviceagent.ai/logo.png"
-      }
+    publisher: {
+      '@type': 'Organization',
+      name: 'ServiceAgent',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://serviceagent.ai/logo.png',
+      },
     },
-    "url": `https://serviceagent.ai/blog/${slug}`
+    url: `https://serviceagent.ai/blog/${slug}`,
   };
 
   return (
@@ -651,11 +668,13 @@ export const BlogPost = () => {
       <meta property="og:image" content={post.image} />
       <meta property="og:type" content="article" />
       <meta name="twitter:card" content="summary_large_image" />
-      
+
       {/* Structured Data */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData),
+        }}
       />
 
       <Navigation />
@@ -664,7 +683,7 @@ export const BlogPost = () => {
         {/* Navigation */}
         <div className="sticky top-0 bg-background/80 backdrop-blur-sm border-b border-border z-10">
           <div className="container mx-auto px-6 py-4">
-            <Link 
+            <Link
               to="/blog"
               className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
             >
@@ -677,8 +696,8 @@ export const BlogPost = () => {
         {/* Hero Image */}
         <section className="relative">
           <div className="h-96 bg-gradient-to-b from-muted/50 to-background overflow-hidden">
-            <img 
-              src={post.image} 
+            <img
+              src={post.image}
               alt={post.title}
               className="w-full h-full object-cover"
               loading="eager"
@@ -694,11 +713,11 @@ export const BlogPost = () => {
               {/* Article Header */}
               <header className="space-y-6 mb-12">
                 <Badge variant="secondary">{post.category}</Badge>
-                
+
                 <h1 className="text-4xl md:text-5xl font-bold text-foreground leading-tight">
                   {post.title}
                 </h1>
-                
+
                 <div className="flex flex-wrap items-center gap-6 text-muted-foreground">
                   <div className="flex items-center gap-2">
                     <User className="w-4 h-4" />
@@ -706,11 +725,13 @@ export const BlogPost = () => {
                   </div>
                   <div className="flex items-center gap-2">
                     <Calendar className="w-4 h-4" />
-                    <span>{new Date(post.date).toLocaleDateString('en-US', { 
-                      year: 'numeric', 
-                      month: 'long', 
-                      day: 'numeric' 
-                    })}</span>
+                    <span>
+                      {new Date(post.date).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                      })}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Clock className="w-4 h-4" />
@@ -720,7 +741,7 @@ export const BlogPost = () => {
               </header>
 
               {/* Article Body */}
-              <div 
+              <div
                 className="prose prose-lg max-w-none 
                 prose-headings:text-foreground prose-headings:font-bold prose-headings:tracking-tight
                 prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6 prose-h2:border-b prose-h2:border-border prose-h2:pb-2
@@ -733,7 +754,9 @@ export const BlogPost = () => {
                 prose-blockquote:border-l-4 prose-blockquote:border-primary/20 prose-blockquote:bg-muted/30 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:my-8
                 prose-em:italic prose-em:text-muted-foreground/80
                 [&>*:first-child]:mt-0 [&>*:last-child]:mb-0"
-                dangerouslySetInnerHTML={{ __html: post.content }}
+                dangerouslySetInnerHTML={{
+                  __html: post.content,
+                }}
               />
             </div>
           </div>
@@ -746,27 +769,30 @@ export const BlogPost = () => {
               <h2 className="text-3xl font-bold text-foreground mb-12 text-center">
                 Related Articles
               </h2>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {relatedPosts.map(relatedPost => (
-                  <Card key={relatedPost.id} className="group hover:shadow-lg transition-all duration-300">
+                {relatedPosts.map((relatedPost) => (
+                  <Card
+                    key={relatedPost.id}
+                    className="group hover:shadow-lg transition-all duration-300"
+                  >
                     <CardHeader className="p-0">
                       <div className="relative overflow-hidden rounded-t-lg">
-                        <img 
-                          src={relatedPost.image} 
+                        <img
+                          src={relatedPost.image}
                           alt={relatedPost.title}
                           className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                           loading="lazy"
                         />
                       </div>
                     </CardHeader>
-                    
+
                     <CardContent className="p-6">
                       <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors mb-4">
                         {relatedPost.title}
                       </h3>
-                      
-                      <Link 
+
+                      <Link
                         to={`/blog/${relatedPost.id}`}
                         className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium text-sm transition-colors group/link"
                       >
@@ -781,7 +807,6 @@ export const BlogPost = () => {
           </div>
         </section>
       </div>
-
     </>
   );
 };

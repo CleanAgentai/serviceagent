@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
 import {
   Menu,
   X,
@@ -11,20 +11,20 @@ import {
   LogOut,
   CreditCard,
   Plug,
-  Play
-} from "lucide-react";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+  Play,
+} from 'lucide-react';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { SheetContent, SheetTrigger, Sheet } from "@/components/ui/sheet";
-import { useAuth } from "@/app/providers/AuthContext";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import SidebarItem from "./SidebarItem";
+} from '@/components/ui/tooltip';
+import { SheetContent, SheetTrigger, Sheet } from '@/components/ui/sheet';
+import { useAuth } from '@/app/providers/AuthContext';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import SidebarItem from './SidebarItem';
 
 export default function DashboardLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -33,7 +33,7 @@ export default function DashboardLayout() {
 
   // Get initials or first letter of user's name/email for avatar
   const getInitials = () => {
-    if (!user) return "?";
+    if (!user) return '?';
 
     if (user.user_metadata?.firstName && user.user_metadata?.lastName) {
       return `${user.user_metadata.firstName[0]}${user.user_metadata.lastName[0]}`;
@@ -43,32 +43,36 @@ export default function DashboardLayout() {
       return user.email[0].toUpperCase();
     }
 
-    return "?";
+    return '?';
   };
 
   // Navigation items
   const navItems = [
-    { path: "/dashboard", icon: <Home size={20} />, label: "Dashboard" },
-    { path: "/interviews", icon: <Clipboard size={20} />, label: "Interviews" },
+    { path: '/dashboard', icon: <Home size={20} />, label: 'Dashboard' },
     {
-      path: "/interviews/responses",
+      path: '/interviews',
+      icon: <Clipboard size={20} />,
+      label: 'Interviews',
+    },
+    {
+      path: '/interviews/responses',
       icon: <Users size={20} />,
-      label: "Candidates",
+      label: 'Candidates',
     },
     {
-      path: "/integrations",
+      path: '/integrations',
       icon: <Plug size={20} />,
-      label: "Integrations",
+      label: 'Integrations',
     },
     {
-      path: "/dashboard/onboarding",
+      path: '/dashboard/onboarding',
       icon: <Play size={20} />,
-      label: "Getting Started",
+      label: 'Getting Started',
     },
     {
-      path: "/dashboard/settings",
+      path: '/dashboard/settings',
       icon: <Settings size={20} />,
-      label: "Settings",
+      label: 'Settings',
     },
   ];
 
@@ -78,7 +82,7 @@ export default function DashboardLayout() {
 
   const handleLogout = async () => {
     await logout();
-    navigate("/");
+    navigate('/');
   };
 
   return (
@@ -187,7 +191,7 @@ export default function DashboardLayout() {
                   <Button
                     variant="ghost"
                     size="icon"
-                    onClick={() => navigate("/dashboard/settings")}
+                    onClick={() => navigate('/dashboard/settings')}
                   >
                     <User size={20} />
                   </Button>

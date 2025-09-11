@@ -7,38 +7,42 @@ export default function Integrations() {
     {
       id: 1,
       name: 'Gmail',
-      description: 'Connect your Gmail account for email automation and management.',
+      description:
+        'Connect your Gmail account for email automation and management.',
       status: 'Available',
       logo: 'https://cdn.svgporn.com/logos/google-gmail.svg',
     },
     {
       id: 2,
       name: 'Outlook',
-      description: 'Integrate with Microsoft Outlook for email synchronization.',
+      description:
+        'Integrate with Microsoft Outlook for email synchronization.',
       status: 'Available',
       logo: 'https://cdn.svgporn.com/logos/microsoft-office.svg',
     },
     {
       id: 3,
       name: 'Salesforce',
-      description: 'Sync your Salesforce data with CleanAgent AI for enhanced customer insights.',
+      description:
+        'Sync your Salesforce data with CleanAgent AI for enhanced customer insights.',
       status: 'Available',
       logo: 'https://cdn.svgporn.com/logos/salesforce.svg',
     },
     {
       id: 4,
       name: 'HubSpot',
-      description: 'Connect your HubSpot CRM to streamline marketing and sales processes.',
+      description:
+        'Connect your HubSpot CRM to streamline marketing and sales processes.',
       status: 'Available',
       logo: 'https://cdn.svgporn.com/logos/hubspot.svg',
-    }
+    },
   ]);
 
   const handleContactSales = (integrationName?: string) => {
-    const subject = integrationName 
+    const subject = integrationName
       ? `Integration Request: ${integrationName}`
       : 'Integration Support Request';
-    
+
     const body = integrationName
       ? `Hi,\n\nI'm interested in setting up the ${integrationName} integration with CleanAgent AI. Please provide more information about the integration process and requirements.\n\nBest regards`
       : `Hi,\n\nI'd like to learn more about CleanAgent AI's integration capabilities. Please provide information about the setup process and available options.\n\nBest regards`;
@@ -52,13 +56,18 @@ export default function Integrations() {
       <div className="sm:flex sm:items-center sm:justify-between mb-8">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Integrations</h1>
-          <p className="mt-2 text-sm text-gray-600">Connect your essential business tools with CleanAgent AI</p>
+          <p className="mt-2 text-sm text-gray-600">
+            Connect your essential business tools with CleanAgent AI
+          </p>
         </div>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {integrations.map((integration) => (
-          <div key={integration.id} className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-6 border border-gray-100">
+          <div
+            key={integration.id}
+            className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-6 border border-gray-100"
+          >
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center">
                 <img
@@ -98,11 +107,14 @@ export default function Integrations() {
 
       <div className="mt-12 bg-gradient-to-r from-blue-50 to-teal-50 rounded-xl p-8">
         <div className="max-w-3xl">
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">Need Help Setting Up?</h2>
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">
+            Need Help Setting Up?
+          </h2>
           <p className="text-gray-600 mb-6">
-            Get in touch with our sales team to learn more about our integrations and how we can help streamline your business processes.
+            Get in touch with our sales team to learn more about our
+            integrations and how we can help streamline your business processes.
           </p>
-          <button 
+          <button
             onClick={() => handleContactSales()}
             className="inline-flex items-center px-6 py-3 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-teal-500 hover:opacity-90 transition-opacity"
           >
@@ -112,4 +124,4 @@ export default function Integrations() {
       </div>
     </div>
   );
-} 
+}

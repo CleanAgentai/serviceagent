@@ -1,11 +1,11 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { User, AuthError } from "@supabase/supabase-js";
-import { supabase } from "@/app/lib/supabase";
+import { createContext, useContext, useEffect, useState } from 'react';
+import { User, AuthError } from '@supabase/supabase-js';
+import { supabase } from '@/app/lib/supabase';
 
 // Get the site URL from environment or window location
 const getSiteUrl = () => {
   const url = import.meta.env.VITE_SITE_URL || window.location.origin;
-  return url.replace(/\/$/, ""); // Remove trailing slash if present
+  return url.replace(/\/$/, ''); // Remove trailing slash if present
 };
 
 interface AuthContextType {
@@ -17,11 +17,11 @@ interface AuthContextType {
     password: string,
     firstName: string,
     lastName: string,
-    companyName: string
+    companyName: string,
   ) => Promise<{ error: AuthError | null }>;
   signIn: (
     email: string,
-    password: string
+    password: string,
   ) => Promise<{ error: AuthError | null }>;
   signInWithGoogle: () => Promise<{ error: AuthError | null }>;
   signInWithFacebook: () => Promise<{ error: AuthError | null }>;
@@ -61,9 +61,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     password: string,
     firstName: string,
     lastName: string,
-    companyName: string
+    companyName: string,
   ) => {
-    console.log("Starting sign up process...", {
+    console.log('Starting sign up process...', {
       email,
       firstName,
       lastName,
@@ -86,26 +86,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (error) throw error;
 
       const user = data.user;
-      if (!user) throw new Error("User creation failed.");
+      if (!user) throw new Error('User creation failed.');
 
       const userId = user.id; // `auth.users.id`
 
-      console.log("Updating profiles table for user:", userId);
+      console.log('Updating profiles table for user:', userId);
 
-      // 2️⃣ `profiles` 
+      // 2️⃣ `profiles`
       const { error: profileError } = await supabase
-        .from("profiles")
+        .from('profiles')
         .update({
           first_name: firstName,
           last_name: lastName,
           company_name: companyName,
-          email: email, // 
+          email: email, //
         })
-        .eq("id", userId); // `auth.users.id`와 동일한 row 업데이트
+        .eq('id', userId); // `auth.users.id`와 동일한 row 업데이트
 
       if (profileError) throw profileError;
 
-      console.log("Profile updated successfully!");
+      console.log('Profile updated successfully!');
 
       // If signup successful, immediately sign in
 
@@ -114,7 +114,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       return { error: null };
     } catch (err) {
-      console.error("Sign up error:", err);
+      console.error('Sign up error:', err);
       return { error: err as AuthError };
     }
   };
@@ -128,60 +128,60 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const signInWithGoogle = async () => {
-    console.log("Starting Google OAuth sign-in...");
+    console.log('Starting Google OAuth sign-in...');
     try {
       const redirectTo = `${window.location.origin}/auth/callback`;
-      console.log("Redirect URL:", redirectTo);
+      console.log('Redirect URL:', redirectTo);
 
       const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
+        provider: 'google',
         options: {
           redirectTo,
           queryParams: {
-            access_type: "offline",
-            prompt: "consent",
+            access_type: 'offline',
+            prompt: 'consent',
           },
         },
       });
 
       if (error) {
-        console.error("Google OAuth error:", error);
+        console.error('Google OAuth error:', error);
         throw error;
       }
 
       if (data?.url) {
-        console.log("Redirecting to:", data.url);
+        console.log('Redirecting to:', data.url);
         window.location.href = data.url;
       }
 
       return { error: null };
     } catch (err) {
-      console.error("Google OAuth error:", err);
+      console.error('Google OAuth error:', err);
       return { error: err as AuthError };
     }
   };
 
   const signInWithFacebook = async () => {
-    console.log("Starting Facebook OAuth sign-in...");
+    console.log('Starting Facebook OAuth sign-in...');
     try {
       const redirectTo = `${getSiteUrl()}/auth/callback`;
-      console.log("Redirect URL:", redirectTo);
+      console.log('Redirect URL:', redirectTo);
 
       const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: "facebook",
+        provider: 'facebook',
         options: {
           redirectTo,
           queryParams: {
-            display: "popup",
+            display: 'popup',
           },
           skipBrowserRedirect: false,
         },
       });
 
-      console.log("Facebook OAuth response:", { data, error });
+      console.log('Facebook OAuth response:', { data, error });
       return { error };
     } catch (err) {
-      console.error("Facebook OAuth error:", err);
+      console.error('Facebook OAuth error:', err);
       return { error: err as AuthError };
     }
   };
@@ -224,7 +224,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
 }

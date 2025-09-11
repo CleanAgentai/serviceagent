@@ -1,5 +1,12 @@
 import React from 'react';
-import { ArrowLeft, Clock, Settings, Shield, Building2, Bell } from 'lucide-react';
+import {
+  ArrowLeft,
+  Clock,
+  Settings,
+  Shield,
+  Building2,
+  Bell,
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function InitialSetup() {
@@ -29,7 +36,9 @@ export default function InitialSetup() {
             <span>10 min read</span>
           </div>
           <p className="text-lg text-gray-600">
-            A comprehensive guide to configuring your CleanAgent.AI account for optimal performance. Learn how to set up your business profile, security settings, and notification preferences.
+            A comprehensive guide to configuring your CleanAgent.AI account for
+            optimal performance. Learn how to set up your business profile,
+            security settings, and notification preferences.
           </p>
         </div>
 
@@ -41,11 +50,15 @@ export default function InitialSetup() {
               <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center mr-4">
                 <Building2 className="h-6 w-6 text-blue-600" />
               </div>
-              <h2 className="text-2xl font-semibold text-gray-900">Business Profile Setup</h2>
+              <h2 className="text-2xl font-semibold text-gray-900">
+                Business Profile Setup
+              </h2>
             </div>
             <div className="space-y-6">
               <div className="bg-gray-50 rounded-lg p-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Company Information</h3>
+                <h3 className="text-lg font-medium text-gray-900 mb-4">
+                  Company Information
+                </h3>
                 <ul className="space-y-4 text-gray-600">
                   <li>• Business name and legal structure</li>
                   <li>• Service area and coverage</li>
@@ -54,7 +67,9 @@ export default function InitialSetup() {
                 </ul>
               </div>
               <div className="bg-gray-50 rounded-lg p-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Service Configuration</h3>
+                <h3 className="text-lg font-medium text-gray-900 mb-4">
+                  Service Configuration
+                </h3>
                 <ul className="space-y-4 text-gray-600">
                   <li>• Define cleaning service types</li>
                   <li>• Set pricing structures</li>
@@ -71,11 +86,15 @@ export default function InitialSetup() {
               <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center mr-4">
                 <Shield className="h-6 w-6 text-green-600" />
               </div>
-              <h2 className="text-2xl font-semibold text-gray-900">Security Configuration</h2>
+              <h2 className="text-2xl font-semibold text-gray-900">
+                Security Configuration
+              </h2>
             </div>
             <div className="space-y-6">
               <div className="bg-gray-50 rounded-lg p-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Account Security</h3>
+                <h3 className="text-lg font-medium text-gray-900 mb-4">
+                  Account Security
+                </h3>
                 <ul className="space-y-4 text-gray-600">
                   <li>• Enable two-factor authentication</li>
                   <li>• Set up password requirements</li>
@@ -84,7 +103,9 @@ export default function InitialSetup() {
                 </ul>
               </div>
               <div className="bg-gray-50 rounded-lg p-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Data Protection</h3>
+                <h3 className="text-lg font-medium text-gray-900 mb-4">
+                  Data Protection
+                </h3>
                 <ul className="space-y-4 text-gray-600">
                   <li>• Data backup preferences</li>
                   <li>• Privacy settings configuration</li>
@@ -97,9 +118,12 @@ export default function InitialSetup() {
 
           {/* Additional Resources */}
           <section className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Additional Resources</h2>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">
+              Additional Resources
+            </h2>
             <p className="text-gray-600 mb-4">
-              Explore these resources to further optimize your CleanAgent.AI setup:
+              Explore these resources to further optimize your CleanAgent.AI
+              setup:
             </p>
             <div className="space-y-3">
               <Link
@@ -126,4 +150,4 @@ export default function InitialSetup() {
       </div>
     </div>
   );
-} 
+}

@@ -1,16 +1,16 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { supabase } from "@/app/lib/supabase";
-import { User, Building2, ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/app/lib/supabase';
+import { User, Building2, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export function CompleteProfile() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    companyName: "",
-    email: "",
+    firstName: '',
+    lastName: '',
+    companyName: '',
+    email: '',
     acceptTerms: false,
   });
 
@@ -18,7 +18,7 @@ export function CompleteProfile() {
     const fetchUser = async () => {
       const { data: sessionData, error } = await supabase.auth.getUser();
       if (error) {
-        console.error("Failed to get user:", error);
+        console.error('Failed to get user:', error);
         return;
       }
 
@@ -27,9 +27,9 @@ export function CompleteProfile() {
           ...prev,
           email: sessionData.user.email, // ✅ 이메일 저장
           firstName:
-            sessionData.user.user_metadata?.full_name?.split(" ")[0] || "",
+            sessionData.user.user_metadata?.full_name?.split(' ')[0] || '',
           lastName:
-            sessionData.user.user_metadata?.full_name?.split(" ")[1] || "",
+            sessionData.user.user_metadata?.full_name?.split(' ')[1] || '',
         }));
       }
     };
@@ -41,7 +41,7 @@ export function CompleteProfile() {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: type === 'checkbox' ? checked : value,
     }));
   };
 
@@ -54,39 +54,39 @@ export function CompleteProfile() {
       !formData.companyName ||
       !formData.email
     ) {
-      alert("All fields are required!");
+      alert('All fields are required!');
       return;
     }
 
     if (!formData.acceptTerms) {
-      alert("You must agree to the Terms of Service and Privacy Policy.");
+      alert('You must agree to the Terms of Service and Privacy Policy.');
       return;
     }
 
     const { data: sessionData, error: sessionError } =
       await supabase.auth.getUser();
     if (sessionError) {
-      alert("User not found. Please try logging in again.");
+      alert('User not found. Please try logging in again.');
       return;
     }
 
     const userId = sessionData.user.id;
 
     const { error } = await supabase
-      .from("profiles")
+      .from('profiles')
       .update({
         first_name: formData.firstName,
         last_name: formData.lastName,
         company_name: formData.companyName,
         email: formData.email,
       })
-      .eq("id", userId);
+      .eq('id', userId);
 
     if (error) {
-      alert("Error updating profile. Please try again.");
+      alert('Error updating profile. Please try again.');
       console.error(error);
     } else {
-      navigate("/post-signup");
+      navigate('/post-signup');
     }
   };
 
@@ -197,14 +197,14 @@ export function CompleteProfile() {
                 />
                 <div className="ml-3 text-sm">
                   <label htmlFor="acceptTerms" className="text-gray-600">
-                    I agree to the{" "}
+                    I agree to the{' '}
                     <Link
                       to="/terms-of-service"
                       className="text-blue-600 hover:text-blue-700"
                     >
                       Terms of Service
-                    </Link>{" "}
-                    and{" "}
+                    </Link>{' '}
+                    and{' '}
                     <Link
                       to="/privacy-policy"
                       className="text-blue-600 hover:text-blue-700"

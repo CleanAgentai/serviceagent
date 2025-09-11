@@ -1,19 +1,19 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { supabase } from "@/app/lib/supabase";
-import { Mail, ArrowRight } from "lucide-react";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { supabase } from '@/app/lib/supabase';
+import { Mail, ArrowRight } from 'lucide-react';
 
 export function ForgotPassword() {
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setMessage("");
-    setError("");
+    setMessage('');
+    setError('');
     //To fix the sender, change the configuration in supabse
 
     try {
@@ -60,10 +60,10 @@ export function ForgotPassword() {
 
       if (error) throw error;
 
-      setMessage("Reset link sent! Please check your email.");
+      setMessage('Reset link sent! Please check your email.');
     } catch (err: any) {
       console.error(err);
-      setError(err.message || "Something went wrong. Please try again.");
+      setError(err.message || 'Something went wrong. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -81,7 +81,6 @@ export function ForgotPassword() {
                 src="/logos/Brandmark.svg"
                 alt="ServiceAgent Logo"
                 className="h-20 w-20 max-w-none object-contain md:max-w-none"
-
               />
             </Link>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
@@ -137,7 +136,7 @@ export function ForgotPassword() {
                 className="w-full flex items-center justify-center bg-blue-600 hover:bg-blue-700 bg-clip-padding text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 border border-white/20 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isLoading ? (
-                  "Sending..."
+                  'Sending...'
                 ) : (
                   <>
                     Send Reset Link

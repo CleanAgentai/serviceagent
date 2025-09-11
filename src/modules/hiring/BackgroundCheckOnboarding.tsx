@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { 
+import {
   Box,
   Stepper,
   Step,
@@ -9,7 +9,7 @@ import {
   TextField,
   FormControlLabel,
   Checkbox,
-  Paper
+  Paper,
 } from '@mui/material';
 import { Candidate } from '../../types/hiring';
 
@@ -22,12 +22,12 @@ const steps = [
   'Personal Information',
   'Employment History',
   'Education Verification',
-  'Consent & Authorization'
+  'Consent & Authorization',
 ];
 
 const BackgroundCheckOnboarding: React.FC<BackgroundCheckOnboardingProps> = ({
   candidate,
-  onComplete
+  onComplete,
 }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [formData, setFormData] = useState({
@@ -37,27 +37,27 @@ const BackgroundCheckOnboarding: React.FC<BackgroundCheckOnboardingProps> = ({
       phone: candidate.phone,
       address: '',
       ssn: '',
-      dob: ''
+      dob: '',
     },
     employmentHistory: {
       currentEmployer: candidate.experience[0]?.company || '',
       position: candidate.experience[0]?.title || '',
       startDate: candidate.experience[0]?.startDate || '',
       endDate: candidate.experience[0]?.endDate || '',
-      experience: `${candidate.experience.length} years`
+      experience: `${candidate.experience.length} years`,
     },
     education: {
       institution: candidate.education[0]?.institution || '',
       degree: candidate.education[0]?.degree || '',
       graduationYear: candidate.education[0]?.graduationYear?.toString() || '',
-      verificationConsent: false
+      verificationConsent: false,
     },
     consent: {
       backgroundCheck: false,
       creditCheck: false,
       criminalRecord: false,
-      termsAccepted: false
-    }
+      termsAccepted: false,
+    },
   });
 
   const handleNext = () => {
@@ -72,13 +72,17 @@ const BackgroundCheckOnboarding: React.FC<BackgroundCheckOnboardingProps> = ({
     setActiveStep((prevStep) => prevStep - 1);
   };
 
-  const handleInputChange = (section: string, field: string, value: string | boolean) => {
+  const handleInputChange = (
+    section: string,
+    field: string,
+    value: string | boolean,
+  ) => {
     setFormData((prev) => ({
       ...prev,
       [section]: {
         ...prev[section as keyof typeof prev],
-        [field]: value
-      }
+        [field]: value,
+      },
     }));
   };
 
@@ -94,28 +98,36 @@ const BackgroundCheckOnboarding: React.FC<BackgroundCheckOnboardingProps> = ({
               fullWidth
               label="Full Name"
               value={formData.personalInfo.fullName}
-              onChange={(e) => handleInputChange('personalInfo', 'fullName', e.target.value)}
+              onChange={(e) =>
+                handleInputChange('personalInfo', 'fullName', e.target.value)
+              }
               margin="normal"
             />
             <TextField
               fullWidth
               label="Email"
               value={formData.personalInfo.email}
-              onChange={(e) => handleInputChange('personalInfo', 'email', e.target.value)}
+              onChange={(e) =>
+                handleInputChange('personalInfo', 'email', e.target.value)
+              }
               margin="normal"
             />
             <TextField
               fullWidth
               label="Phone"
               value={formData.personalInfo.phone}
-              onChange={(e) => handleInputChange('personalInfo', 'phone', e.target.value)}
+              onChange={(e) =>
+                handleInputChange('personalInfo', 'phone', e.target.value)
+              }
               margin="normal"
             />
             <TextField
               fullWidth
               label="Address"
               value={formData.personalInfo.address}
-              onChange={(e) => handleInputChange('personalInfo', 'address', e.target.value)}
+              onChange={(e) =>
+                handleInputChange('personalInfo', 'address', e.target.value)
+              }
               margin="normal"
             />
           </Box>
@@ -130,21 +142,39 @@ const BackgroundCheckOnboarding: React.FC<BackgroundCheckOnboardingProps> = ({
               fullWidth
               label="Current Employer"
               value={formData.employmentHistory.currentEmployer}
-              onChange={(e) => handleInputChange('employmentHistory', 'currentEmployer', e.target.value)}
+              onChange={(e) =>
+                handleInputChange(
+                  'employmentHistory',
+                  'currentEmployer',
+                  e.target.value,
+                )
+              }
               margin="normal"
             />
             <TextField
               fullWidth
               label="Position"
               value={formData.employmentHistory.position}
-              onChange={(e) => handleInputChange('employmentHistory', 'position', e.target.value)}
+              onChange={(e) =>
+                handleInputChange(
+                  'employmentHistory',
+                  'position',
+                  e.target.value,
+                )
+              }
               margin="normal"
             />
             <TextField
               fullWidth
               label="Experience"
               value={formData.employmentHistory.experience}
-              onChange={(e) => handleInputChange('employmentHistory', 'experience', e.target.value)}
+              onChange={(e) =>
+                handleInputChange(
+                  'employmentHistory',
+                  'experience',
+                  e.target.value,
+                )
+              }
               margin="normal"
             />
           </Box>
@@ -159,28 +189,40 @@ const BackgroundCheckOnboarding: React.FC<BackgroundCheckOnboardingProps> = ({
               fullWidth
               label="Institution"
               value={formData.education.institution}
-              onChange={(e) => handleInputChange('education', 'institution', e.target.value)}
+              onChange={(e) =>
+                handleInputChange('education', 'institution', e.target.value)
+              }
               margin="normal"
             />
             <TextField
               fullWidth
               label="Degree"
               value={formData.education.degree}
-              onChange={(e) => handleInputChange('education', 'degree', e.target.value)}
+              onChange={(e) =>
+                handleInputChange('education', 'degree', e.target.value)
+              }
               margin="normal"
             />
             <TextField
               fullWidth
               label="Graduation Year"
               value={formData.education.graduationYear}
-              onChange={(e) => handleInputChange('education', 'graduationYear', e.target.value)}
+              onChange={(e) =>
+                handleInputChange('education', 'graduationYear', e.target.value)
+              }
               margin="normal"
             />
             <FormControlLabel
               control={
                 <Checkbox
                   checked={formData.education.verificationConsent}
-                  onChange={(e) => handleInputChange('education', 'verificationConsent', e.target.checked)}
+                  onChange={(e) =>
+                    handleInputChange(
+                      'education',
+                      'verificationConsent',
+                      e.target.checked,
+                    )
+                  }
                 />
               }
               label="I authorize verification of my educational background"
@@ -188,7 +230,7 @@ const BackgroundCheckOnboarding: React.FC<BackgroundCheckOnboardingProps> = ({
           </Box>
         );
       case 3:
-    return (
+        return (
           <Box sx={{ p: 3 }}>
             <Typography variant="h6" gutterBottom>
               Consent & Authorization
@@ -197,7 +239,13 @@ const BackgroundCheckOnboarding: React.FC<BackgroundCheckOnboardingProps> = ({
               control={
                 <Checkbox
                   checked={formData.consent.backgroundCheck}
-                  onChange={(e) => handleInputChange('consent', 'backgroundCheck', e.target.checked)}
+                  onChange={(e) =>
+                    handleInputChange(
+                      'consent',
+                      'backgroundCheck',
+                      e.target.checked,
+                    )
+                  }
                 />
               }
               label="I authorize a background check"
@@ -206,7 +254,13 @@ const BackgroundCheckOnboarding: React.FC<BackgroundCheckOnboardingProps> = ({
               control={
                 <Checkbox
                   checked={formData.consent.creditCheck}
-                  onChange={(e) => handleInputChange('consent', 'creditCheck', e.target.checked)}
+                  onChange={(e) =>
+                    handleInputChange(
+                      'consent',
+                      'creditCheck',
+                      e.target.checked,
+                    )
+                  }
                 />
               }
               label="I authorize a credit check"
@@ -215,7 +269,13 @@ const BackgroundCheckOnboarding: React.FC<BackgroundCheckOnboardingProps> = ({
               control={
                 <Checkbox
                   checked={formData.consent.criminalRecord}
-                  onChange={(e) => handleInputChange('consent', 'criminalRecord', e.target.checked)}
+                  onChange={(e) =>
+                    handleInputChange(
+                      'consent',
+                      'criminalRecord',
+                      e.target.checked,
+                    )
+                  }
                 />
               }
               label="I authorize a criminal record check"
@@ -224,7 +284,13 @@ const BackgroundCheckOnboarding: React.FC<BackgroundCheckOnboardingProps> = ({
               control={
                 <Checkbox
                   checked={formData.consent.termsAccepted}
-                  onChange={(e) => handleInputChange('consent', 'termsAccepted', e.target.checked)}
+                  onChange={(e) =>
+                    handleInputChange(
+                      'consent',
+                      'termsAccepted',
+                      e.target.checked,
+                    )
+                  }
                 />
               }
               label="I accept the terms and conditions"
@@ -258,4 +324,4 @@ const BackgroundCheckOnboarding: React.FC<BackgroundCheckOnboardingProps> = ({
   );
 };
 
-export default BackgroundCheckOnboarding; 
+export default BackgroundCheckOnboarding;

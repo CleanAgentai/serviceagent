@@ -1,25 +1,29 @@
 import React, { useState } from 'react';
 import { Card } from '../Card';
 import { Modal } from '../Modal';
-import { IntegrationModal, IntegrationConfig, ConnectionStatus } from '../integrations/IntegrationModal';
-import { 
-  Form, 
-  TextField, 
-  SelectDropdown, 
-  DatePicker, 
-  CheckBox, 
-  RadioGroup, 
-  FileUpload 
+import {
+  IntegrationModal,
+  IntegrationConfig,
+  ConnectionStatus,
+} from '../integrations/IntegrationModal';
+import {
+  Form,
+  TextField,
+  SelectDropdown,
+  DatePicker,
+  CheckBox,
+  RadioGroup,
+  FileUpload,
 } from '../form';
 import { LineChart, BarChart, PieChart } from '../charts';
-import { 
-  Calendar, 
-  Mail, 
-  User, 
-  Lock, 
-  Save, 
+import {
+  Calendar,
+  Mail,
+  User,
+  Lock,
+  Save,
   ArrowLeft,
-  ExternalLink
+  ExternalLink,
 } from 'lucide-react';
 import { primaryGradientClass } from '@/app/shared/styles/theme';
 
@@ -38,10 +42,11 @@ const ComponentExamples: React.FC = () => {
 
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
+
   // Integration Modal state
   const [isIntegrationModalOpen, setIsIntegrationModalOpen] = useState(false);
-  const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>('disconnected');
+  const [connectionStatus, setConnectionStatus] =
+    useState<ConnectionStatus>('disconnected');
   const [connectionError, setConnectionError] = useState<string>('');
 
   // Sample data for charts
@@ -73,7 +78,8 @@ const ComponentExamples: React.FC = () => {
   const sampleIntegration: IntegrationConfig = {
     name: 'HubSpot CRM',
     logo: 'https://cdn.worldvectorlogo.com/logos/hubspot-2.svg',
-    description: 'Connect to your HubSpot account to sync contacts, companies, and deals.',
+    description:
+      'Connect to your HubSpot account to sync contacts, companies, and deals.',
     fields: [
       {
         id: 'apiKey',
@@ -81,31 +87,34 @@ const ComponentExamples: React.FC = () => {
         placeholder: 'Enter your HubSpot API key',
         type: 'password',
         required: true,
-        helperText: 'You can find your API key in your HubSpot account settings.'
+        helperText:
+          'You can find your API key in your HubSpot account settings.',
       },
       {
         id: 'syncContacts',
         label: 'Sync contacts',
         type: 'checkbox',
-        helperText: 'Allow CleanAgent to sync contact data with HubSpot'
+        helperText: 'Allow CleanAgent to sync contact data with HubSpot',
       },
       {
         id: 'syncCompanies',
         label: 'Sync companies',
         type: 'checkbox',
-        helperText: 'Allow CleanAgent to sync company data with HubSpot'
-      }
+        helperText: 'Allow CleanAgent to sync company data with HubSpot',
+      },
     ],
     isOAuth: false,
     learnMoreUrl: 'https://hubspot.com/api',
-    documentationUrl: 'https://developers.hubspot.com/docs/api/overview'
+    documentationUrl: 'https://developers.hubspot.com/docs/api/overview',
   };
 
   // Handle form input change
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
     const { id, value, type } = e.target;
     const checked = (e.target as HTMLInputElement).checked;
-    
+
     setFormValues({
       ...formValues,
       [id]: type === 'checkbox' ? checked : value,
@@ -122,7 +131,7 @@ const ComponentExamples: React.FC = () => {
   const handleConnect = async (formData: Record<string, any>) => {
     console.log('Connecting with:', formData);
     setConnectionStatus('connecting');
-    
+
     // Simulate API call
     return new Promise<boolean>((resolve) => {
       setTimeout(() => {
@@ -147,13 +156,13 @@ const ComponentExamples: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto p-6 space-y-12">
       <h1 className="text-3xl font-bold">Component Examples</h1>
-      
+
       {/* Form Components */}
       <section className="space-y-6">
         <h2 className="text-2xl font-semibold">Form Components</h2>
-        
-        <Card 
-          title="Registration Form" 
+
+        <Card
+          title="Registration Form"
           description="Complete this form to create your account"
           shadow="md"
           rounded="lg"
@@ -176,16 +185,18 @@ const ComponentExamples: React.FC = () => {
             resetButton={
               <button
                 type="button"
-                onClick={() => setFormValues({
-                  name: '',
-                  email: '',
-                  password: '',
-                  confirmPassword: '',
-                  birthDate: '',
-                  gender: '',
-                  subscribe: false,
-                  agreeToTerms: false,
-                })}
+                onClick={() =>
+                  setFormValues({
+                    name: '',
+                    email: '',
+                    password: '',
+                    confirmPassword: '',
+                    birthDate: '',
+                    gender: '',
+                    subscribe: false,
+                    agreeToTerms: false,
+                  })
+                }
                 className="text-sm font-medium text-gray-700 hover:text-gray-900"
               >
                 Reset
@@ -202,10 +213,10 @@ const ComponentExamples: React.FC = () => {
                 onChange={handleInputChange}
                 validation={{
                   minLength: 3,
-                  maxLength: 50
+                  maxLength: 50,
                 }}
               />
-              
+
               <TextField
                 id="email"
                 label="Email Address"
@@ -215,11 +226,11 @@ const ComponentExamples: React.FC = () => {
                 value={formValues.email}
                 onChange={handleInputChange}
                 validation={{
-                  pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+                  pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                 }}
                 helperText="We'll never share your email."
               />
-              
+
               <TextField
                 id="password"
                 label="Password"
@@ -238,10 +249,10 @@ const ComponentExamples: React.FC = () => {
                       return 'Password must contain at least one uppercase letter';
                     }
                     return undefined;
-                  }
+                  },
                 }}
               />
-              
+
               <TextField
                 id="confirmPassword"
                 label="Confirm Password"
@@ -251,10 +262,13 @@ const ComponentExamples: React.FC = () => {
                 value={formValues.confirmPassword}
                 onChange={handleInputChange}
                 validation={{
-                  validate: (value) => value === formValues.password ? undefined : 'Passwords do not match'
+                  validate: (value) =>
+                    value === formValues.password
+                      ? undefined
+                      : 'Passwords do not match',
                 }}
               />
-              
+
               <DatePicker
                 id="birthDate"
                 label="Date of Birth"
@@ -263,21 +277,27 @@ const ComponentExamples: React.FC = () => {
                 onChange={handleInputChange}
                 maxDate={new Date().toISOString().split('T')[0]}
               />
-              
+
               <SelectDropdown
                 id="gender"
                 label="Gender"
                 options={[
                   { value: 'male', label: 'Male' },
                   { value: 'female', label: 'Female' },
-                  { value: 'non-binary', label: 'Non-binary' },
-                  { value: 'prefer-not-to-say', label: 'Prefer not to say' }
+                  {
+                    value: 'non-binary',
+                    label: 'Non-binary',
+                  },
+                  {
+                    value: 'prefer-not-to-say',
+                    label: 'Prefer not to say',
+                  },
                 ]}
                 value={formValues.gender}
                 onChange={handleInputChange}
               />
             </div>
-            
+
             <RadioGroup
               id="notification-preference"
               name="notification-preference"
@@ -286,11 +306,11 @@ const ComponentExamples: React.FC = () => {
                 { value: 'email', label: 'Email' },
                 { value: 'sms', label: 'SMS' },
                 { value: 'push', label: 'Push Notifications' },
-                { value: 'none', label: 'None' }
+                { value: 'none', label: 'None' },
               ]}
               direction="horizontal"
             />
-            
+
             <FileUpload
               id="profilePicture"
               label="Profile Picture (Optional)"
@@ -298,7 +318,7 @@ const ComponentExamples: React.FC = () => {
               maxFileSize={5 * 1024 * 1024} // 5MB
               helperText="Maximum file size: 5MB"
             />
-            
+
             <CheckBox
               id="subscribe"
               label="Subscribe to newsletter"
@@ -306,7 +326,7 @@ const ComponentExamples: React.FC = () => {
               checked={formValues.subscribe}
               onChange={handleInputChange}
             />
-            
+
             <CheckBox
               id="agreeToTerms"
               label="I agree to the Terms of Service and Privacy Policy"
@@ -317,37 +337,43 @@ const ComponentExamples: React.FC = () => {
           </Form>
         </Card>
       </section>
-      
+
       {/* Charts */}
       <section className="space-y-6">
         <h2 className="text-2xl font-semibold">Charts & Graphs</h2>
-        
+
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           <LineChart
             title="Sales vs Revenue"
             subtitle="Monthly comparison"
             data={lineChartData}
             series={[
-              { dataKey: 'sales', name: 'Sales', color: '#3b82f6' },
-              { dataKey: 'revenue', name: 'Revenue', color: '#14b8a6' }
+              {
+                dataKey: 'sales',
+                name: 'Sales',
+                color: '#3b82f6',
+              },
+              {
+                dataKey: 'revenue',
+                name: 'Revenue',
+                color: '#14b8a6',
+              },
             ]}
             xAxisDataKey="name"
             xAxisLabel="Month"
             yAxisLabel="Amount ($)"
             height={300}
           />
-          
+
           <BarChart
             title="Group Comparison"
             subtitle="Value by group"
             data={barChartData}
-            series={[
-              { dataKey: 'value', name: 'Value' }
-            ]}
+            series={[{ dataKey: 'value', name: 'Value' }]}
             xAxisDataKey="name"
             height={300}
           />
-          
+
           <PieChart
             title="Task Status"
             subtitle="Distribution of tasks by status"
@@ -359,11 +385,11 @@ const ComponentExamples: React.FC = () => {
           />
         </div>
       </section>
-      
+
       {/* Cards & Modals */}
       <section className="space-y-6">
         <h2 className="text-2xl font-semibold">Cards & Modals</h2>
-        
+
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           <Card
             title="Basic Card"
@@ -375,7 +401,7 @@ const ComponentExamples: React.FC = () => {
               This is the content of a basic card. You can put any content here.
             </p>
           </Card>
-          
+
           <Card
             title="Card with Actions"
             description="A card with header actions and footer."
@@ -413,7 +439,7 @@ const ComponentExamples: React.FC = () => {
               This card demonstrates header actions and a footer with buttons.
             </p>
           </Card>
-          
+
           <Card
             title="Modal Example"
             description="Click the button to open a modal dialog."
@@ -430,7 +456,7 @@ const ComponentExamples: React.FC = () => {
                 Open Modal
               </button>
             </div>
-            
+
             <Modal
               isOpen={isModalOpen}
               onClose={() => setIsModalOpen(false)}
@@ -459,7 +485,8 @@ const ComponentExamples: React.FC = () => {
               }
             >
               <p className="text-gray-600">
-                This is a modal dialog. It can be used for various purposes like confirmation, forms, or displaying information.
+                This is a modal dialog. It can be used for various purposes like
+                confirmation, forms, or displaying information.
               </p>
               <p className="mt-4 text-gray-600">
                 Click the "Confirm" or "Cancel" button to close the modal.
@@ -468,11 +495,11 @@ const ComponentExamples: React.FC = () => {
           </Card>
         </div>
       </section>
-      
+
       {/* Integration Modal */}
       <section className="space-y-6">
         <h2 className="text-2xl font-semibold">Integration Modal</h2>
-        
+
         <Card
           title="Third-Party Integrations"
           description="Connect your CleanAgent account to other services."
@@ -488,14 +515,15 @@ const ComponentExamples: React.FC = () => {
             >
               Connect to HubSpot
             </button>
-            
+
             <div className="mt-2 text-sm text-gray-500">
               <p>
-                For testing, use "valid-key" as the API key to simulate a successful connection.
+                For testing, use "valid-key" as the API key to simulate a
+                successful connection.
               </p>
             </div>
           </div>
-          
+
           <IntegrationModal
             isOpen={isIntegrationModalOpen}
             onClose={() => setIsIntegrationModalOpen(false)}
@@ -511,4 +539,4 @@ const ComponentExamples: React.FC = () => {
   );
 };
 
-export default ComponentExamples; 
+export default ComponentExamples;

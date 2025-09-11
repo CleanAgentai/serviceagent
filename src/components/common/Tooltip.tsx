@@ -60,15 +60,18 @@ const Tooltip: React.FC<TooltipProps> = ({
   };
 
   return (
-    <div 
+    <div
       className={`inline-flex items-center relative ${className}`}
       ref={triggerRef}
       onMouseEnter={() => !interactive && setIsVisible(true)}
       onMouseLeave={() => !interactive && setIsVisible(false)}
       onClick={handleInteraction}
     >
-      {children || (showIcon && <Info className="h-5 w-5 text-gray-500 hover:text-gray-700 cursor-help" />)}
-      
+      {children ||
+        (showIcon && (
+          <Info className="h-5 w-5 text-gray-500 hover:text-gray-700 cursor-help" />
+        ))}
+
       {isVisible && (
         <div
           ref={tooltipRef}
@@ -82,7 +85,7 @@ const Tooltip: React.FC<TooltipProps> = ({
           role="tooltip"
         >
           {content}
-          <div 
+          <div
             className={`
               absolute w-3 h-3 
               transform rotate-45 
@@ -96,4 +99,4 @@ const Tooltip: React.FC<TooltipProps> = ({
   );
 };
 
-export default Tooltip; 
+export default Tooltip;

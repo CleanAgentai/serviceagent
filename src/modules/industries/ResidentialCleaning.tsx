@@ -1,17 +1,15 @@
-import React from "react";
+import React from 'react';
 
 const tableClass =
-  "w-full border-collapse my-6 text-sm md:text-base shadow-sm rounded-lg overflow-hidden";
+  'w-full border-collapse my-6 text-sm md:text-base shadow-sm rounded-lg overflow-hidden';
 const thClass =
-  "bg-blue-50 text-blue-900 font-semibold px-4 py-2 border border-blue-100 text-left";
-const tdClass =
-  "px-4 py-2 border border-blue-100 text-slate-800";
+  'bg-blue-50 text-blue-900 font-semibold px-4 py-2 border border-blue-100 text-left';
+const tdClass = 'px-4 py-2 border border-blue-100 text-slate-800';
 const sectionTitle =
-  "text-2xl md:text-3xl font-bold text-slate-900 mb-2 mt-8 border-b-2 border-blue-200 pb-1";
-const subTitle =
-  "text-lg md:text-xl font-semibold text-blue-700 mb-2 mt-6";
-const bullet = "list-disc ml-6 mb-2 text-slate-700";
-const highlight = "font-bold text-blue-700";
+  'text-2xl md:text-3xl font-bold text-slate-900 mb-2 mt-8 border-b-2 border-blue-200 pb-1';
+const subTitle = 'text-lg md:text-xl font-semibold text-blue-700 mb-2 mt-6';
+const bullet = 'list-disc ml-6 mb-2 text-slate-700';
+const highlight = 'font-bold text-blue-700';
 
 export default function ResidentialCleaning() {
   return (
@@ -22,33 +20,48 @@ export default function ResidentialCleaning() {
         <div className="absolute bottom-0 right-0 w-72 h-72 bg-gradient-radial from-[#A1E3FF]/30 to-transparent rounded-full blur-2xl opacity-40"></div>
         <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#0E7CFF] to-[#A1E3FF] opacity-80"></div>
       </div>
-      
+
       {/* Header with logo in top right */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-10">
         <div className="flex justify-start">
-          <img src="/logos/Logo.svg" alt="ServiceAgent Logo" className="w-48 h-auto" />
+          <img
+            src="/logos/Logo.svg"
+            alt="ServiceAgent Logo"
+            className="w-48 h-auto"
+          />
         </div>
-        
+
         <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
-          How This 6-Location Cleaning Franchise Filled Every Open Role in 30 Days
+          How This 6-Location Cleaning Franchise Filled Every Open Role in 30
+          Days
         </h1>
         <p className="text-lg text-slate-700 mb-6">
-          Automating interviews, qualification, and follow-up saved over 50 hours a month and kept every branch fully staffed—all for under $750.
+          Automating interviews, qualification, and follow-up saved over 50
+          hours a month and kept every branch fully staffed—all for under $750.
         </p>
       </div>
 
       {/* Article content */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
         <hr className="my-8 border-blue-200" />
-        <span className="text-blue-700 font-semibold underline mb-2 block">Overview</span>
+        <span className="text-blue-700 font-semibold underline mb-2 block">
+          Overview
+        </span>
         <p className="mb-2 text-slate-800">
-          A growing residential cleaning franchise with 6 locations was struggling to keep up with hiring demand. Each branch needed 2-3 new cleaners monthly, but manual screening was taking too long and missing qualified candidates.
+          A growing residential cleaning franchise with 6 locations was
+          struggling to keep up with hiring demand. Each branch needed 2-3 new
+          cleaners monthly, but manual screening was taking too long and missing
+          qualified candidates.
         </p>
         <p className="mb-2 text-slate-800">
-          After implementing ServiceAgent, they filled every open role within 30 days, reduced time-to-hire by 65%, and saved over 50 hours of administrative work per month.
+          After implementing ServiceAgent, they filled every open role within 30
+          days, reduced time-to-hire by 65%, and saved over 50 hours of
+          administrative work per month.
         </p>
         <hr className="my-8 border-blue-200" />
-        <span className="text-blue-700 font-semibold underline mb-2 block">The Problem</span>
+        <span className="text-blue-700 font-semibold underline mb-2 block">
+          The Problem
+        </span>
         <p className="mb-2 text-slate-800">
           The franchise was facing several hiring challenges:
         </p>
@@ -60,12 +73,17 @@ export default function ResidentialCleaning() {
           <li>Delayed start dates due to slow hiring process</li>
         </ul>
         <p className="mb-2 text-slate-800">
-          They needed a <span className={highlight}>faster, more efficient way</span> to screen and hire reliable cleaning staff.
+          They needed a{' '}
+          <span className={highlight}>faster, more efficient way</span> to
+          screen and hire reliable cleaning staff.
         </p>
         <hr className="my-8 border-blue-200" />
-        <span className="text-blue-700 font-semibold underline mb-2 block">The ServiceAgent Solution</span>
+        <span className="text-blue-700 font-semibold underline mb-2 block">
+          The ServiceAgent Solution
+        </span>
         <p className="mb-2 text-slate-800">
-          ServiceAgent was implemented across all 6 locations with customized screening for residential cleaning roles:
+          ServiceAgent was implemented across all 6 locations with customized
+          screening for residential cleaning roles:
         </p>
         <ul className={bullet}>
           <li>Automated video interviews for all applicants</li>
@@ -74,7 +92,9 @@ export default function ResidentialCleaning() {
           <li>Instant follow-up with qualified candidates</li>
           <li>Integration with existing HR systems</li>
         </ul>
-        <span className="text-blue-700 font-semibold underline mb-2 block">30-Day Results</span>
+        <span className="text-blue-700 font-semibold underline mb-2 block">
+          30-Day Results
+        </span>
         <table className={tableClass}>
           <thead>
             <tr>
@@ -111,7 +131,9 @@ export default function ResidentialCleaning() {
             </tr>
           </tbody>
         </table>
-        <span className="text-blue-700 font-semibold underline mb-2 block">Monthly Impact</span>
+        <span className="text-blue-700 font-semibold underline mb-2 block">
+          Monthly Impact
+        </span>
         <table className={tableClass}>
           <thead>
             <tr>
@@ -159,20 +181,37 @@ export default function ResidentialCleaning() {
               <td className={tdClass}>$210</td>
             </tr>
             <tr>
-              <td className={tdClass}><strong>Total</strong></td>
-              <td className={tdClass}><strong>14</strong></td>
-              <td className={tdClass}><strong>56 hours</strong></td>
-              <td className={tdClass}><strong>$1,470</strong></td>
+              <td className={tdClass}>
+                <strong>Total</strong>
+              </td>
+              <td className={tdClass}>
+                <strong>14</strong>
+              </td>
+              <td className={tdClass}>
+                <strong>56 hours</strong>
+              </td>
+              <td className={tdClass}>
+                <strong>$1,470</strong>
+              </td>
             </tr>
           </tbody>
         </table>
-        <span className="text-blue-700 font-semibold underline mb-2 block">Franchise Owner Feedback</span>
+        <span className="text-blue-700 font-semibold underline mb-2 block">
+          Franchise Owner Feedback
+        </span>
         <blockquote className="italic text-slate-700 border-l-4 border-blue-300 pl-4 my-4">
-          "ServiceAgent transformed our hiring process. We went from spending hours on phone screens to having qualified candidates ready for final interviews in minutes. The consistency across all our locations is incredible."
+          "ServiceAgent transformed our hiring process. We went from spending
+          hours on phone screens to having qualified candidates ready for final
+          interviews in minutes. The consistency across all our locations is
+          incredible."
           <br />
-          <span className="block mt-2 text-right font-semibold">— Sarah Johnson, Franchise Owner</span>
+          <span className="block mt-2 text-right font-semibold">
+            — Sarah Johnson, Franchise Owner
+          </span>
         </blockquote>
-        <span className="text-blue-700 font-semibold underline mb-2 block">Key Benefits</span>
+        <span className="text-blue-700 font-semibold underline mb-2 block">
+          Key Benefits
+        </span>
         <ul className={bullet}>
           <li>All 14 open roles filled within 30 days</li>
           <li>56 hours of administrative time saved monthly</li>
@@ -181,7 +220,9 @@ export default function ResidentialCleaning() {
           <li>Reduced turnover through better candidate matching</li>
           <li>Scalable process for future growth</li>
         </ul>
-        <span className="text-blue-700 font-semibold underline mb-2 block">ROI Analysis</span>
+        <span className="text-blue-700 font-semibold underline mb-2 block">
+          ROI Analysis
+        </span>
         <table className={tableClass}>
           <thead>
             <tr>
@@ -208,11 +249,16 @@ export default function ResidentialCleaning() {
             </tr>
           </tbody>
         </table>
-        <span className="text-blue-700 font-semibold underline mb-2 block">The Bottom Line</span>
+        <span className="text-blue-700 font-semibold underline mb-2 block">
+          The Bottom Line
+        </span>
         <p className="mb-2 text-slate-800">
-          For residential cleaning franchises, efficient hiring is crucial for maintaining service quality and growth. ServiceAgent provided this franchise with a scalable, cost-effective solution that improved hiring outcomes while dramatically reducing administrative burden.
+          For residential cleaning franchises, efficient hiring is crucial for
+          maintaining service quality and growth. ServiceAgent provided this
+          franchise with a scalable, cost-effective solution that improved
+          hiring outcomes while dramatically reducing administrative burden.
         </p>
       </div>
     </div>
   );
-} 
+}

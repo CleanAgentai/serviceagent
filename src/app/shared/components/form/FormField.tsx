@@ -34,17 +34,21 @@ export const FormField: React.FC<FormFieldProps> = ({
         <label
           htmlFor={id}
           className={`block text-sm font-medium mb-1 ${
-            error ? 'text-red-500' : success ? 'text-green-600' : 'text-gray-700'
+            error
+              ? 'text-red-500'
+              : success
+                ? 'text-green-600'
+                : 'text-gray-700'
           } ${disabled ? 'opacity-60' : ''}`}
         >
           {label}
           {required && <span className="text-red-500 ml-1">*</span>}
         </label>
       )}
-      
+
       {/* Form Control */}
       {children}
-      
+
       {/* Helper Text or Error Message */}
       {(helperText || error) && (
         <div className="mt-1">
@@ -55,7 +59,7 @@ export const FormField: React.FC<FormFieldProps> = ({
           ) : null}
         </div>
       )}
-      
+
       {/* Success Indicator */}
       {success && !error && (
         <div className="mt-1">
@@ -64,4 +68,4 @@ export const FormField: React.FC<FormFieldProps> = ({
       )}
     </div>
   );
-}; 
+};

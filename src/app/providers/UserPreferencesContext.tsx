@@ -31,12 +31,18 @@ const UserPreferencesContext = createContext<UserPreferencesContextType>({
 export function useUserPreferences() {
   const context = useContext(UserPreferencesContext);
   if (context === undefined) {
-    throw new Error('useUserPreferences must be used within a UserPreferencesProvider');
+    throw new Error(
+      'useUserPreferences must be used within a UserPreferencesProvider',
+    );
   }
   return context;
 }
 
-export function UserPreferencesProvider({ children }: { children: React.ReactNode }) {
+export function UserPreferencesProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [preferences, setPreferences] = useState<UserPreferences>(() => {
     try {
       const savedPreferences = localStorage.getItem('userPreferences');
@@ -57,19 +63,22 @@ export function UserPreferencesProvider({ children }: { children: React.ReactNod
     }
   }, [preferences]);
 
-  const updatePreferences = React.useCallback((newPreferences: Partial<UserPreferences>) => {
-    setPreferences(prev => ({
-      ...prev,
-      ...newPreferences,
-    }));
-  }, []);
+  const updatePreferences = React.useCallback(
+    (newPreferences: Partial<UserPreferences>) => {
+      setPreferences((prev) => ({
+        ...prev,
+        ...newPreferences,
+      }));
+    },
+    [],
+  );
 
   const value = React.useMemo(
     () => ({
       preferences,
       updatePreferences,
     }),
-    [preferences, updatePreferences]
+    [preferences, updatePreferences],
   );
 
   return (
@@ -77,4 +86,4 @@ export function UserPreferencesProvider({ children }: { children: React.ReactNod
       {children}
     </UserPreferencesContext.Provider>
   );
-} 
+}

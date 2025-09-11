@@ -6,17 +6,17 @@ import {
   Typography,
   ButtonGroup,
   Button,
-  Grid
+  Grid,
 } from '@mui/material';
-import { 
-  BarChart, 
-  Bar, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
   Legend,
-  ResponsiveContainer
+  ResponsiveContainer,
 } from 'recharts';
 import { CandidateStatus } from '@/types/hiring';
 
@@ -45,48 +45,48 @@ interface HiringMetricsDashboardProps {
 const HiringMetricsDashboard: React.FC<HiringMetricsDashboardProps> = ({
   metrics,
   dateRange,
-  onDateRangeChange
+  onDateRangeChange,
 }) => {
-    const funnelData = [
-      {
+  const funnelData = [
+    {
       name: 'Applications',
       count: metrics.funnel.totalApplications,
-      color: '#2196F3'
+      color: '#2196F3',
     },
     {
       name: 'Screenings',
       count: metrics.funnel.totalScreenings,
-      color: '#4CAF50'
+      color: '#4CAF50',
     },
     {
       name: 'Interviews',
       count: metrics.funnel.totalInterviews,
-      color: '#FFC107'
+      color: '#FFC107',
     },
     {
       name: 'Offers',
       count: metrics.funnel.totalOffers,
-      color: '#9C27B0'
+      color: '#9C27B0',
     },
     {
       name: 'Rejections',
       count: metrics.funnel.totalRejections,
-      color: '#F44336'
-    }
+      color: '#F44336',
+    },
   ];
 
-  const stageData = metrics.funnel.stages.map(stage => ({
+  const stageData = metrics.funnel.stages.map((stage) => ({
     name: stage.stage,
     count: stage.count,
     dropOffRate: stage.dropOffRate,
-    averageDuration: stage.averageDuration
+    averageDuration: stage.averageDuration,
   }));
 
   const calculatePercentage = (count: number) => {
     return ((count / metrics.funnel.totalApplications) * 100).toFixed(1);
   };
 
-    return (
+  return (
     <Box sx={{ p: 3 }}>
       <Box sx={{ mb: 4 }}>
         <Typography variant="h5" gutterBottom>
@@ -128,9 +128,7 @@ const HiringMetricsDashboard: React.FC<HiringMetricsDashboardProps> = ({
                 <Typography color="textSecondary" gutterBottom>
                   {item.name}
                 </Typography>
-                <Typography variant="h4">
-                  {item.count}
-                </Typography>
+                <Typography variant="h4">{item.count}</Typography>
                 <Typography variant="body2" color="textSecondary">
                   {calculatePercentage(item.count)}% of total
                 </Typography>
@@ -152,7 +150,11 @@ const HiringMetricsDashboard: React.FC<HiringMetricsDashboardProps> = ({
             <Tooltip />
             <Legend />
             <Bar dataKey="count" fill="#2196F3" name="Count" />
-            <Bar dataKey="dropOffRate" fill="#F44336" name="Drop-off Rate (%)" />
+            <Bar
+              dataKey="dropOffRate"
+              fill="#F44336"
+              name="Drop-off Rate (%)"
+            />
           </BarChart>
         </ResponsiveContainer>
       </Box>
@@ -160,4 +162,4 @@ const HiringMetricsDashboard: React.FC<HiringMetricsDashboardProps> = ({
   );
 };
 
-export default HiringMetricsDashboard; 
+export default HiringMetricsDashboard;

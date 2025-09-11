@@ -22,7 +22,7 @@ export const industries = [
   'Telecommunications',
   'Pharmaceuticals',
   'Insurance',
-  'Other'
+  'Other',
 ];
 
 /**
@@ -37,7 +37,7 @@ export const routes = {
   login: '/login',
   signup: '/signup',
   postSignup: '/post-signup',
-  planOnboarding: '/plan-onboarding'
+  planOnboarding: '/plan-onboarding',
 };
 
 /**
@@ -47,7 +47,7 @@ export const apiEndpoints = {
   interviews: '/api/interviews',
   responses: '/api/responses',
   users: '/api/users',
-  profiles: '/api/profiles'
+  profiles: '/api/profiles',
 };
 
 /**
@@ -55,5 +55,5 @@ export const apiEndpoints = {
  */
 export const storageBuckets = {
   companyAssets: 'company-assets',
-  userUploads: 'user-uploads'
-}; 
+  userUploads: 'user-uploads',
+};

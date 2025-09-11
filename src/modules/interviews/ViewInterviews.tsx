@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Copy, Check, Trash2, Pencil } from "lucide-react";
-import { toast } from "sonner";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Copy, Check, Trash2, Pencil } from 'lucide-react';
+import { toast } from 'sonner';
 
 import {
   Search,
@@ -12,8 +12,8 @@ import {
   ArrowUpDown,
   Link as LinkIcon,
   Plus,
-} from "lucide-react";
-import { supabase } from "@/app/lib/supabase";
+} from 'lucide-react';
+import { supabase } from '@/app/lib/supabase';
 
 interface Interview {
   id: string;
@@ -26,11 +26,11 @@ interface Interview {
 
 export function ViewInterviews() {
   const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [interviews, setInterviews] = useState<Interview[]>([]); // Initialize with empty array
   const [loading, setLoading] = useState(true);
-  const [sortBy, setSortBy] = useState<"date" | "title">("date");
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+  const [sortBy, setSortBy] = useState<'date' | 'title'>('date');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [error, setError] = useState<string | null>(null);
   const [copiedLinkId, setCopiedLinkId] = useState<string | null>(null);
   const [deleteConfirmation, setDeleteConfirmation] = useState<{
@@ -39,8 +39,8 @@ export function ViewInterviews() {
     interviewTitle: string;
   }>({
     show: false,
-    interviewId: "",
-    interviewTitle: "",
+    interviewId: '',
+    interviewTitle: '',
   });
 
   const handleEdit = (interviewId: string) => {
@@ -58,21 +58,27 @@ export function ViewInterviews() {
   const confirmDelete = async () => {
     try {
       const { error } = await supabase
-        .from("interviews")
+        .from('interviews')
         .delete()
-        .eq("id", deleteConfirmation.interviewId);
+        .eq('id', deleteConfirmation.interviewId);
 
       if (error) throw error;
 
       setInterviews((prevInterviews) =>
-        prevInterviews.filter((interview) => interview.id !== deleteConfirmation.interviewId)
+        prevInterviews.filter(
+          (interview) => interview.id !== deleteConfirmation.interviewId,
+        ),
       );
-      toast.success("Interview deleted successfully");
+      toast.success('Interview deleted successfully');
     } catch (error) {
-      console.error("Error deleting interview:", error);
-      toast.error("Failed to delete interview");
+      console.error('Error deleting interview:', error);
+      toast.error('Failed to delete interview');
     } finally {
-      setDeleteConfirmation({ show: false, interviewId: "", interviewTitle: "" });
+      setDeleteConfirmation({
+        show: false,
+        interviewId: '',
+        interviewTitle: '',
+      });
     }
   };
 
@@ -81,42 +87,42 @@ export function ViewInterviews() {
       setLoading(true); // Start loading
       setError(null); // Reset error
       try {
-        console.log("Fetching interviews...");
+        console.log('Fetching interviews...');
         const { data, error } = await supabase
-          .from("interviews")
-          .select("*")
-          .order("created_at", { ascending: false });
+          .from('interviews')
+          .select('*')
+          .order('created_at', { ascending: false });
 
-        console.log("Supabase response:", { data, error });
+        console.log('Supabase response:', { data, error });
 
         if (error) {
-          console.error("Error fetching interviews:", error);
+          console.error('Error fetching interviews:', error);
           setError(error.message);
           setInterviews([]); // Set to empty array on error
         } else if (data && data.length > 0) {
-          console.log("Successfully fetched interviews:", data);
+          console.log('Successfully fetched interviews:', data);
           const formattedInterviews = data.map((interview) => ({
             id: interview.id,
             title: interview.title,
             createdAt: new Date(interview.created_at).toLocaleDateString(
-              "en-US"
+              'en-US',
             ),
             //.toISOString()
             //.split("T")[0],
             deadline: interview.deadline
-              ? new Date(interview.deadline).toLocaleDateString("en-US")
-              : "No deadline",
+              ? new Date(interview.deadline).toLocaleDateString('en-US')
+              : 'No deadline',
 
-            interviewLink: interview.interview_link || "",
+            interviewLink: interview.interview_link || '',
           }));
           setInterviews(formattedInterviews);
         } else {
-          console.log("No interviews found in database.");
+          console.log('No interviews found in database.');
           setInterviews([]); // Set to empty array if no data found
         }
       } catch (err) {
-        console.error("Error fetching interviews catch block:", err);
-        setError(err instanceof Error ? err.message : "Unknown error");
+        console.error('Error fetching interviews catch block:', err);
+        setError(err instanceof Error ? err.message : 'Unknown error');
         setInterviews([]); // Set to empty array on catch
       } finally {
         setLoading(false);
@@ -126,12 +132,12 @@ export function ViewInterviews() {
     fetchInterviews();
   }, []);
 
-  const handleSort = (field: "date" | "title") => {
+  const handleSort = (field: 'date' | 'title') => {
     if (sortBy === field) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
     } else {
       setSortBy(field);
-      setSortOrder("asc");
+      setSortOrder('asc');
     }
   };
   const copyToClipboard = (link: string, id: string) => {
@@ -139,25 +145,25 @@ export function ViewInterviews() {
       .writeText(link)
       .then(() => {
         setCopiedLinkId(id);
-        toast.success("Link copied!");
+        toast.success('Link copied!');
         setTimeout(() => setCopiedLinkId(null), 2000);
       })
       .catch(() => {
-        toast.error("Failed to copy");
+        toast.error('Failed to copy');
       });
   };
 
   const filteredInterviews = interviews
     .filter((interview) =>
-      interview.title.toLowerCase().includes(searchTerm.toLowerCase())
+      interview.title.toLowerCase().includes(searchTerm.toLowerCase()),
     )
     .sort((a, b) => {
-      if (sortBy === "date") {
-        return sortOrder === "asc"
+      if (sortBy === 'date') {
+        return sortOrder === 'asc'
           ? new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
           : new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
       } else {
-        return sortOrder === "asc"
+        return sortOrder === 'asc'
           ? a.title.localeCompare(b.title)
           : b.title.localeCompare(a.title);
       }
@@ -176,16 +182,15 @@ export function ViewInterviews() {
       <div className="flex sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <h1 className="text-2xl sm:text-3xl font-bold">Interviews</h1>
         <div className="flex items-center space-x-2">
-        <Button
-          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 px-4 sm:px-6 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          onClick={() => navigate("/interviews/create")}
-        >
-          <Plus className="w-4 h-4" />
-          Create Interview
-        </Button>
+          <Button
+            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 px-4 sm:px-6 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            onClick={() => navigate('/interviews/create')}
+          >
+            <Plus className="w-4 h-4" />
+            Create Interview
+          </Button>
+        </div>
       </div>
-      </div>
-
 
       <Card className="p-4 mb-6 border-0 shadow-lg hover:shadow-xl transition-all duration-300">
         <div className="relative">
@@ -202,120 +207,123 @@ export function ViewInterviews() {
 
       <div className="bg-white rounded-lg border-0 shadow-lg overflow-hidden">
         <div className="w-full max-w-full overflow-x-auto scrollbar-hide">
-        <table className="w-full min-w-max divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-2 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                <button
-                  onClick={() => handleSort("title")}
-                  className="flex items-center gap-2"
-                >
-                  TITLE
-                  <ArrowUpDown className="w-4 h-4" />
-                </button>
-              </th>
-              <th className="px-2 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                <button
-                  onClick={() => handleSort("date")}
-                  className="flex items-center gap-2"
-                >
-                  CREATED DATE
-                  <ArrowUpDown className="w-4 h-4" />
-                </button>
-              </th>
-              <th className="px-0 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Deadline
-              </th>
-              <th className="px-0 sm:px-7 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Link
-              </th>
-              <th className="px-6 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {filteredInterviews.map((interview) => (
-              <tr key={interview.id} className="hover:bg-gray-50">
-                <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm font-medium text-gray-900 whitespace-nowrap">
-                    {interview.title}
-                  </div>
-                </td>
-                <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {interview.createdAt}
-                </td>
-                <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {interview.deadline}
-                </td>
-                <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm">
-                  {interview.interviewLink ? (
-                    <a
-                      href={interview.interviewLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={(e) => e.stopPropagation()}
-                      className="inline-flex items-center px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-md shadow-sm hover:shadow-md transform hover:scale-101 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    >
-                      <LinkIcon className="w-3 h-3 mr-1" />
-                      Open Link
-                    </a>
-                  ) : (
-                    <span className="inline-flex items-center px-3 py-1.5 bg-gray-100 text-gray-500 text-xs font-medium rounded-md">
-                      No Link
-                    </span>
-                  )}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  <div className="flex items-center space-x-2">
-                    {interview.interviewLink && (
+          <table className="w-full min-w-max divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-2 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <button
+                    onClick={() => handleSort('title')}
+                    className="flex items-center gap-2"
+                  >
+                    TITLE
+                    <ArrowUpDown className="w-4 h-4" />
+                  </button>
+                </th>
+                <th className="px-2 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <button
+                    onClick={() => handleSort('date')}
+                    className="flex items-center gap-2"
+                  >
+                    CREATED DATE
+                    <ArrowUpDown className="w-4 h-4" />
+                  </button>
+                </th>
+                <th className="px-0 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Deadline
+                </th>
+                <th className="px-0 sm:px-7 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Link
+                </th>
+                <th className="px-6 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {filteredInterviews.map((interview) => (
+                <tr key={interview.id} className="hover:bg-gray-50">
+                  <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm font-medium text-gray-900 whitespace-nowrap">
+                      {interview.title}
+                    </div>
+                  </td>
+                  <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {interview.createdAt}
+                  </td>
+                  <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {interview.deadline}
+                  </td>
+                  <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm">
+                    {interview.interviewLink ? (
+                      <a
+                        href={interview.interviewLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="inline-flex items-center px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-md shadow-sm hover:shadow-md transform hover:scale-101 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      >
+                        <LinkIcon className="w-3 h-3 mr-1" />
+                        Open Link
+                      </a>
+                    ) : (
+                      <span className="inline-flex items-center px-3 py-1.5 bg-gray-100 text-gray-500 text-xs font-medium rounded-md">
+                        No Link
+                      </span>
+                    )}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <div className="flex items-center space-x-2">
+                      {interview.interviewLink && (
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            copyToClipboard(
+                              interview.interviewLink!,
+                              interview.id,
+                            );
+                          }}
+                          aria-label="Copy link"
+                          className="hover:bg-green-50"
+                        >
+                          {copiedLinkId === interview.id ? (
+                            <Check className="h-4 w-4 text-green-600" />
+                          ) : (
+                            <Copy className="h-4 w-4 text-green-600" />
+                          )}
+                        </Button>
+                      )}
                       <Button
                         variant="ghost"
                         size="icon"
                         onClick={(e) => {
                           e.stopPropagation();
-                          copyToClipboard(interview.interviewLink!, interview.id);
+                          handleEdit(interview.id);
                         }}
-                        aria-label="Copy link"
-                        className="hover:bg-green-50"
+                        aria-label="Edit interview"
+                        className="hover:bg-blue-50"
                       >
-                        {copiedLinkId === interview.id ? (
-                          <Check className="h-4 w-4 text-green-600" />
-                        ) : (
-                          <Copy className="h-4 w-4 text-green-600" />
-                        )}
+                        <Pencil className="h-4 w-4 text-blue-600" />
                       </Button>
-                    )}
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleEdit(interview.id);
-                      }}
-                      aria-label="Edit interview"
-                      className="hover:bg-blue-50"
-                    >
-                      <Pencil className="h-4 w-4 text-blue-600" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={(e) => {
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={(e) => {
                           e.stopPropagation();
                           handleDelete(interview.id, interview.title);
-                      }}
-                      aria-label="Delete interview"
-                      className="hover:bg-red-50"
-                    >
-                      <Trash2 className="h-4 w-4 text-red-600" />
-                    </Button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                        }}
+                        aria-label="Delete interview"
+                        className="hover:bg-red-50"
+                      >
+                        <Trash2 className="h-4 w-4 text-red-600" />
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
 
@@ -337,13 +345,20 @@ export function ViewInterviews() {
                 Delete Interview
               </h3>
               <p className="text-gray-600 mb-8">
-                Are you sure you want to delete this interview?<br />
+                Are you sure you want to delete this interview?
+                <br />
                 All responses associated with this interview will be deleted.
               </p>
               <div className="flex justify-center space-x-4">
                 <Button
                   variant="outline"
-                  onClick={() => setDeleteConfirmation({ show: false, interviewId: "", interviewTitle: "" })}
+                  onClick={() =>
+                    setDeleteConfirmation({
+                      show: false,
+                      interviewId: '',
+                      interviewTitle: '',
+                    })
+                  }
                   className="px-6 hover:bg-gray-50"
                 >
                   Cancel

@@ -1,5 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Edit, RefreshCw, Check, X, Sparkles, Copy, ArrowLeft, ArrowRight, Loader2 } from 'lucide-react';
+import {
+  Edit,
+  RefreshCw,
+  Check,
+  X,
+  Sparkles,
+  Copy,
+  ArrowLeft,
+  ArrowRight,
+  Loader2,
+} from 'lucide-react';
 import { Card } from '../Card';
 
 export interface AIEditableContentProps {
@@ -43,7 +53,9 @@ export const AIEditableContent: React.FC<AIEditableContentProps> = ({
 }) => {
   const [content, setContent] = useState(initialContent);
   const [isEditing, setIsEditing] = useState(false);
-  const [contentHistory, setContentHistory] = useState<string[]>([initialContent]);
+  const [contentHistory, setContentHistory] = useState<string[]>([
+    initialContent,
+  ]);
   const [currentVersionIndex, setCurrentVersionIndex] = useState(0);
   const [isRegenerating, setIsRegenerating] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -79,10 +91,13 @@ export const AIEditableContent: React.FC<AIEditableContentProps> = ({
   const handleSaveEdit = () => {
     setIsEditing(false);
     onEdit?.(content);
-    
+
     // Add to history if different from current version
     if (content !== contentHistory[currentVersionIndex]) {
-      const newHistory = [...contentHistory.slice(0, currentVersionIndex + 1), content];
+      const newHistory = [
+        ...contentHistory.slice(0, currentVersionIndex + 1),
+        content,
+      ];
       setContentHistory(newHistory);
       setCurrentVersionIndex(newHistory.length - 1);
     }
@@ -97,12 +112,12 @@ export const AIEditableContent: React.FC<AIEditableContentProps> = ({
   // Regenerate content
   const handleRegenerate = async () => {
     if (!onRegenerate) return;
-    
+
     setIsRegenerating(true);
     try {
       const newContent = await onRegenerate();
       setContent(newContent);
-      
+
       // Add to history
       const newHistory = [...contentHistory, newContent];
       setContentHistory(newHistory);
@@ -127,10 +142,11 @@ export const AIEditableContent: React.FC<AIEditableContentProps> = ({
 
   // Navigate through content versions
   const navigateHistory = (direction: 'prev' | 'next') => {
-    const newIndex = direction === 'prev' 
-      ? Math.max(0, currentVersionIndex - 1)
-      : Math.min(contentHistory.length - 1, currentVersionIndex + 1);
-    
+    const newIndex =
+      direction === 'prev'
+        ? Math.max(0, currentVersionIndex - 1)
+        : Math.min(contentHistory.length - 1, currentVersionIndex + 1);
+
     setCurrentVersionIndex(newIndex);
     setContent(contentHistory[newIndex]);
   };
@@ -165,7 +181,11 @@ export const AIEditableContent: React.FC<AIEditableContentProps> = ({
             <button
               type="button"
               onClick={() => navigateHistory('next')}
-              disabled={currentVersionIndex === contentHistory.length - 1 || loading || isRegenerating}
+              disabled={
+                currentVersionIndex === contentHistory.length - 1 ||
+                loading ||
+                isRegenerating
+              }
               className="p-1 rounded-md hover:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed"
               aria-label="Next version"
               title="Next version"
@@ -182,7 +202,9 @@ export const AIEditableContent: React.FC<AIEditableContentProps> = ({
           <div className="flex flex-col items-center justify-center">
             <Loader2 className="h-8 w-8 animate-spin text-blue-500 mb-2" />
             <p className="text-sm text-gray-600">
-              {isRegenerating ? 'Regenerating content...' : 'Loading content...'}
+              {isRegenerating
+                ? 'Regenerating content...'
+                : 'Loading content...'}
             </p>
           </div>
         </div>
@@ -283,7 +305,7 @@ export const AIEditableContent: React.FC<AIEditableContentProps> = ({
               </>
             )}
           </div>
-          
+
           {onAccept && !isEditing && (
             <button
               type="button"
@@ -299,4 +321,4 @@ export const AIEditableContent: React.FC<AIEditableContentProps> = ({
       )}
     </Card>
   );
-}; 
+};

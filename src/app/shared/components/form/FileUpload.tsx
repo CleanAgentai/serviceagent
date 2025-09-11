@@ -46,7 +46,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
 }) => {
   const [dragActive, setDragActive] = useState(false);
   const [files, setFiles] = useState<File[]>(
-    value ? (Array.isArray(value) ? value : [value]) : []
+    value ? (Array.isArray(value) ? value : [value]) : [],
   );
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -63,10 +63,10 @@ export const FileUpload: React.FC<FileUploadProps> = ({
   const validateFiles = (fileList: FileList | File[]): File[] => {
     const validFiles: File[] = [];
     const currentFiles = files.length;
-    
+
     // Create array from FileList
     const newFiles = Array.from(fileList);
-    
+
     // Check max files limit
     if (!multiple && newFiles.length > 0) {
       // If not multiple, just take the first file
@@ -75,16 +75,16 @@ export const FileUpload: React.FC<FileUploadProps> = ({
       onError?.(`You can upload a maximum of ${maxFiles} files`);
       newFiles.splice(0, maxFiles - currentFiles);
     }
-    
+
     // Validate each file
     for (const file of newFiles) {
       // Check file type if accept is specified
       if (accept) {
-        const acceptedTypes = accept.split(',').map(type => type.trim());
+        const acceptedTypes = accept.split(',').map((type) => type.trim());
         const fileType = file.type;
-        
+
         // Check if the file type is accepted
-        const isAccepted = acceptedTypes.some(type => {
+        const isAccepted = acceptedTypes.some((type) => {
           if (type.startsWith('.')) {
             // Check file extension
             return file.name.toLowerCase().endsWith(type.toLowerCase());
@@ -96,39 +96,41 @@ export const FileUpload: React.FC<FileUploadProps> = ({
             return fileType === type;
           }
         });
-        
+
         if (!isAccepted) {
           onError?.(`File type not accepted: ${file.name}`);
           continue;
         }
       }
-      
+
       // Check file size if maxFileSize is specified
       if (maxFileSize && file.size > maxFileSize) {
-        onError?.(`File too large: ${file.name} (${formatFileSize(file.size)})`);
+        onError?.(
+          `File too large: ${file.name} (${formatFileSize(file.size)})`,
+        );
         continue;
       }
-      
+
       validFiles.push(file);
     }
-    
+
     return validFiles;
   };
 
   // Handle file changes
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    
+
     if (e.target.files && e.target.files.length > 0) {
       const validFiles = validateFiles(e.target.files);
-      
+
       if (validFiles.length > 0) {
         const newFiles = multiple ? [...files, ...validFiles] : validFiles;
         setFiles(newFiles);
         onChange?.(multiple ? newFiles : newFiles[0]);
       }
     }
-    
+
     // Reset the input value to allow uploading the same file again
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
@@ -139,9 +141,9 @@ export const FileUpload: React.FC<FileUploadProps> = ({
   const handleDrag = (e: DragEvent<HTMLDivElement | HTMLFormElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     if (disabled) return;
-    
+
     if (e.type === 'dragenter' || e.type === 'dragover') {
       setDragActive(true);
     } else if (e.type === 'dragleave') {
@@ -153,14 +155,14 @@ export const FileUpload: React.FC<FileUploadProps> = ({
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     if (disabled) return;
-    
+
     setDragActive(false);
-    
+
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
       const validFiles = validateFiles(e.dataTransfer.files);
-      
+
       if (validFiles.length > 0) {
         const newFiles = multiple ? [...files, ...validFiles] : validFiles;
         setFiles(newFiles);
@@ -206,7 +208,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
         required={required && files.length === 0}
         aria-hidden="true"
       />
-      
+
       {/* Dropzone */}
       <div
         onDragEnter={handleDrag}
@@ -226,27 +228,29 @@ export const FileUpload: React.FC<FileUploadProps> = ({
         `}
       >
         <div className="flex flex-col items-center justify-center text-center">
-          <Upload 
-            className={`mb-2 h-10 w-10 ${error ? 'text-red-500' : dragActive ? 'text-blue-500' : 'text-gray-400'}`} 
+          <Upload
+            className={`mb-2 h-10 w-10 ${error ? 'text-red-500' : dragActive ? 'text-blue-500' : 'text-gray-400'}`}
           />
           <p className="text-sm font-medium text-gray-700">
-            {dragActive ? 'Drop files here' : 'Drag and drop files here or click to browse'}
+            {dragActive
+              ? 'Drop files here'
+              : 'Drag and drop files here or click to browse'}
           </p>
           <p className="mt-1 text-xs text-gray-500">
-            {multiple 
-              ? `Upload up to ${maxFiles} file${maxFiles !== 1 ? 's' : ''}` 
+            {multiple
+              ? `Upload up to ${maxFiles} file${maxFiles !== 1 ? 's' : ''}`
               : 'Upload a file'}
             {accept && ` (${accept.replace(/,/g, ', ')})`}
             {maxFileSize && ` up to ${formatFileSize(maxFileSize)}`}
           </p>
         </div>
       </div>
-      
+
       {/* File List */}
       {files.length > 0 && (
         <ul className="mt-3 divide-y divide-gray-200 border border-gray-200 rounded-md">
           {files.map((file, index) => (
-            <li 
+            <li
               key={`${file.name}-${index}`}
               className="flex items-center justify-between py-2 px-3 text-sm"
             >
@@ -261,7 +265,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
                   </span>
                 </div>
               </div>
-              
+
               {!disabled && (
                 <button
                   type="button"
@@ -281,4 +285,4 @@ export const FileUpload: React.FC<FileUploadProps> = ({
       )}
     </FormField>
   );
-}; 
+};

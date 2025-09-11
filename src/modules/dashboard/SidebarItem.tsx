@@ -10,29 +10,29 @@ interface SidebarItemProps {
   onClick?: () => void;
 }
 
-const SidebarItem: React.FC<SidebarItemProps> = ({ 
-  icon, 
-  label, 
-  path, 
-  onClick 
+const SidebarItem: React.FC<SidebarItemProps> = ({
+  icon,
+  label,
+  path,
+  onClick,
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const isActive = location.pathname === path;
-  
+
   const handleClick = () => {
     navigate(path);
     if (onClick) onClick();
   };
-  
+
   return (
     <Button
-      variant={isActive ? "secondary" : "ghost"}
+      variant={isActive ? 'secondary' : 'ghost'}
       className={cn(
-        "w-full justify-start text-sm font-medium rounded-none",
-        isActive 
-          ? "bg-secondary text-secondary-foreground"
-          : "text-foreground hover:text-foreground hover:bg-muted"
+        'w-full justify-start text-sm font-medium rounded-none',
+        isActive
+          ? 'bg-secondary text-secondary-foreground'
+          : 'text-foreground hover:text-foreground hover:bg-muted',
       )}
       onClick={handleClick}
     >
@@ -42,4 +42,4 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
   );
 };
 
-export default SidebarItem; 
+export default SidebarItem;

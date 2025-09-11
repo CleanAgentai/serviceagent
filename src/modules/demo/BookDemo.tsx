@@ -1,55 +1,69 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Clock, Users, MessageSquare, CheckCircle2 } from 'lucide-react';
+import {
+  ArrowLeft,
+  ArrowRight,
+  Clock,
+  Users,
+  MessageSquare,
+  CheckCircle2,
+} from 'lucide-react';
 
 const demoFAQs = [
   {
-    question: "What will I learn in the demo?",
-    answer: "We'll show you how CleanAgent.AI automates your hiring, sales, and operations. You'll see real examples of AI handling tasks like candidate screening, lead follow-up, and scheduling optimization."
+    question: 'What will I learn in the demo?',
+    answer:
+      "We'll show you how CleanAgent.AI automates your hiring, sales, and operations. You'll see real examples of AI handling tasks like candidate screening, lead follow-up, and scheduling optimization.",
   },
   {
-    question: "How long is the demo?",
-    answer: "The demo typically takes 30 minutes, with additional time for Q&A. We'll customize the presentation to focus on the features most relevant to your business."
+    question: 'How long is the demo?',
+    answer:
+      "The demo typically takes 30 minutes, with additional time for Q&A. We'll customize the presentation to focus on the features most relevant to your business.",
   },
   {
-    question: "Who should attend the demo?",
-    answer: "The demo is perfect for cleaning business owners, operations managers, or anyone involved in hiring and growth decisions. Feel free to invite team members who would benefit."
+    question: 'Who should attend the demo?',
+    answer:
+      'The demo is perfect for cleaning business owners, operations managers, or anyone involved in hiring and growth decisions. Feel free to invite team members who would benefit.',
   },
   {
-    question: "What do I need to prepare?",
-    answer: "Just come with your questions! We recommend having a basic understanding of your current processes for hiring, sales, and operations to make the most of the session."
-  }
+    question: 'What do I need to prepare?',
+    answer:
+      'Just come with your questions! We recommend having a basic understanding of your current processes for hiring, sales, and operations to make the most of the session.',
+  },
 ];
 
 const benefits = [
   {
     icon: Clock,
-    title: "See AI in Action",
-    description: "Watch how our AI handles hiring, sales, and operations in real-time"
+    title: 'See AI in Action',
+    description:
+      'Watch how our AI handles hiring, sales, and operations in real-time',
   },
   {
     icon: Users,
-    title: "Personalized Walkthrough",
-    description: "Get answers specific to your business needs and challenges"
+    title: 'Personalized Walkthrough',
+    description: 'Get answers specific to your business needs and challenges',
   },
   {
     icon: MessageSquare,
-    title: "Expert Guidance",
-    description: "Chat with our team about implementation and best practices"
-  }
+    title: 'Expert Guidance',
+    description: 'Chat with our team about implementation and best practices',
+  },
 ];
 
 const testimonials = [
   {
-    quote: "The demo showed me exactly how much time I could save. I signed up right after.",
-    author: "Sarah Martinez",
-    role: "CEO, Pristine Cleaning"
+    quote:
+      'The demo showed me exactly how much time I could save. I signed up right after.',
+    author: 'Sarah Martinez',
+    role: 'CEO, Pristine Cleaning',
   },
   {
-    quote: "Seeing the AI in action was eye-opening. It's exactly what my business needed.",
-    author: "Michael Chen",
-    role: "Owner, Elite Clean Co"
-  }
+    quote:
+      "Seeing the AI in action was eye-opening. It's exactly what my business needed.",
+    author: 'Michael Chen',
+    role: 'Owner, Elite Clean Co',
+  },
 ];
 
 export function BookDemo() {
@@ -96,7 +110,8 @@ export function BookDemo() {
             </span>
           </h1>
           <p className="text-lg sm:text-xl text-gray-600">
-            Schedule a live demo with our team to see how CleanAgent.AI can automate your cleaning business and save you time.
+            Schedule a live demo with our team to see how CleanAgent.AI can
+            automate your cleaning business and save you time.
           </p>
         </div>
 
@@ -105,7 +120,9 @@ export function BookDemo() {
           <div className="order-2 lg:order-1">
             {/* Benefits */}
             <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6 mb-6 sm:mb-8">
-              <h2 className="text-xl font-semibold text-gray-900 mb-6">What You'll Get</h2>
+              <h2 className="text-xl font-semibold text-gray-900 mb-6">
+                What You'll Get
+              </h2>
               <div className="space-y-4 sm:space-y-6">
                 {benefits.map((benefit) => (
                   <div key={benefit.title} className="flex items-start">
@@ -115,8 +132,12 @@ export function BookDemo() {
                       </div>
                     </div>
                     <div className="ml-4">
-                      <h3 className="text-base sm:text-lg font-medium text-gray-900">{benefit.title}</h3>
-                      <p className="text-sm sm:text-base text-gray-600">{benefit.description}</p>
+                      <h3 className="text-base sm:text-lg font-medium text-gray-900">
+                        {benefit.title}
+                      </h3>
+                      <p className="text-sm sm:text-base text-gray-600">
+                        {benefit.description}
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -125,10 +146,14 @@ export function BookDemo() {
 
             {/* Calendly Embed */}
             <div className="bg-white rounded-xl shadow-sm overflow-hidden h-[500px] sm:h-[600px]">
-              <div 
-                className="calendly-inline-widget" 
+              <div
+                className="calendly-inline-widget"
                 data-url="https://calendly.com/serviceagent/25min"
-                style={{ width: '100%', height: '100%', minWidth: '320px' }}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  minWidth: '320px',
+                }}
               />
             </div>
           </div>
@@ -137,12 +162,21 @@ export function BookDemo() {
           <div className="order-1 lg:order-2 space-y-6 sm:space-y-8">
             {/* FAQ Section */}
             <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-6">Common Questions</h2>
+              <h2 className="text-xl font-semibold text-gray-900 mb-6">
+                Common Questions
+              </h2>
               <div className="space-y-4 sm:space-y-6">
                 {demoFAQs.map((faq, index) => (
-                  <div key={index} className="border-b border-gray-100 last:border-0 pb-4 last:pb-0">
-                    <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-2">{faq.question}</h3>
-                    <p className="text-sm sm:text-base text-gray-600">{faq.answer}</p>
+                  <div
+                    key={index}
+                    className="border-b border-gray-100 last:border-0 pb-4 last:pb-0"
+                  >
+                    <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-2">
+                      {faq.question}
+                    </h3>
+                    <p className="text-sm sm:text-base text-gray-600">
+                      {faq.answer}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -150,18 +184,26 @@ export function BookDemo() {
 
             {/* Testimonials */}
             <div className="bg-gradient-to-r from-blue-50 to-teal-50 rounded-xl shadow-sm p-4 sm:p-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-6">What Others Say</h2>
+              <h2 className="text-xl font-semibold text-gray-900 mb-6">
+                What Others Say
+              </h2>
               <div className="space-y-4 sm:space-y-6">
                 {testimonials.map((testimonial, index) => (
                   <div key={index} className="bg-white rounded-lg p-4">
-                    <p className="text-sm sm:text-base text-gray-600 mb-4">"{testimonial.quote}"</p>
+                    <p className="text-sm sm:text-base text-gray-600 mb-4">
+                      "{testimonial.quote}"
+                    </p>
                     <div className="flex items-center">
                       <div className="h-10 w-10 rounded-full bg-gradient-to-r from-blue-600 to-teal-500 flex items-center justify-center text-white font-bold">
                         {testimonial.author[0]}
                       </div>
                       <div className="ml-3">
-                        <p className="text-sm font-medium text-gray-900">{testimonial.author}</p>
-                        <p className="text-xs sm:text-sm text-gray-500">{testimonial.role}</p>
+                        <p className="text-sm font-medium text-gray-900">
+                          {testimonial.author}
+                        </p>
+                        <p className="text-xs sm:text-sm text-gray-500">
+                          {testimonial.role}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -171,12 +213,16 @@ export function BookDemo() {
 
             {/* Trust Indicators */}
             <div className="text-center py-4">
-              <p className="text-sm text-gray-500 mb-4">Trusted by 500+ cleaning businesses</p>
+              <p className="text-sm text-gray-500 mb-4">
+                Trusted by 500+ cleaning businesses
+              </p>
             </div>
 
             {/* Fallback CTA */}
             <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6 text-center">
-              <h3 className="text-lg font-medium text-gray-900 mb-2">Not ready for a demo?</h3>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">
+                Not ready for a demo?
+              </h3>
               <p className="text-sm sm:text-base text-gray-600 mb-4">
                 Try CleanAgent.AI on your own with our 7-day free trial.
               </p>
@@ -193,4 +239,4 @@ export function BookDemo() {
       </div>
     </div>
   );
-} 
+}

@@ -20,4 +20,4 @@ export interface VideoCallControls {
   toggleVideo: () => void;
   shareScreen: () => void;
   endCall: () => void;
-} 
+}

@@ -8,7 +8,7 @@ import {
   Typography,
   Box,
   IconButton,
-  Chip
+  Chip,
 } from '@mui/material';
 import { Close } from '@mui/icons-material';
 import { Candidate } from '../../../types/hiring';
@@ -22,7 +22,7 @@ interface CandidateDetailModalProps {
 const CandidateDetailModal: React.FC<CandidateDetailModalProps> = ({
   open,
   onClose,
-  selectedCandidate
+  selectedCandidate,
 }) => {
   if (!selectedCandidate) {
     return null;
@@ -43,11 +43,17 @@ const CandidateDetailModal: React.FC<CandidateDetailModalProps> = ({
       PaperProps={{
         sx: {
           borderRadius: 2,
-          boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
-        }
+          boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+        },
       }}
     >
-      <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <DialogTitle
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
         <Typography variant="h6">Candidate Details</Typography>
         <IconButton onClick={onClose} size="small">
           <Close />
@@ -66,7 +72,9 @@ const CandidateDetailModal: React.FC<CandidateDetailModalProps> = ({
           <Typography variant="subtitle1" color="text.secondary" gutterBottom>
             Position
           </Typography>
-          <Typography variant="body1">{selectedCandidate.appliedFor}</Typography>
+          <Typography variant="body1">
+            {selectedCandidate.appliedFor}
+          </Typography>
         </Box>
 
         <Box sx={{ mb: 3 }}>
@@ -130,7 +138,9 @@ const CandidateDetailModal: React.FC<CandidateDetailModalProps> = ({
             {selectedCandidate.interviews.map((interview, index) => (
               <Box key={index} sx={{ mb: 2 }}>
                 <Typography variant="body1" fontWeight="medium">
-                  {interview.type.charAt(0).toUpperCase() + interview.type.slice(1)} Interview
+                  {interview.type.charAt(0).toUpperCase() +
+                    interview.type.slice(1)}{' '}
+                  Interview
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   {new Date(interview.scheduledAt).toLocaleDateString()}
@@ -143,7 +153,9 @@ const CandidateDetailModal: React.FC<CandidateDetailModalProps> = ({
                       size="small"
                       sx={{ mr: 1 }}
                     />
-                    <Typography variant="body2">{interview.feedback.notes}</Typography>
+                    <Typography variant="body2">
+                      {interview.feedback.notes}
+                    </Typography>
                   </Box>
                 )}
               </Box>
@@ -160,7 +172,8 @@ const CandidateDetailModal: React.FC<CandidateDetailModalProps> = ({
               <Box key={index} sx={{ mb: 2 }}>
                 <Typography variant="body2">{note.content}</Typography>
                 <Typography variant="caption" color="text.secondary">
-                  {new Date(note.createdAt).toLocaleDateString()} by {note.createdBy}
+                  {new Date(note.createdAt).toLocaleDateString()} by{' '}
+                  {note.createdBy}
                 </Typography>
               </Box>
             ))}
@@ -171,4 +184,4 @@ const CandidateDetailModal: React.FC<CandidateDetailModalProps> = ({
   );
 };
 
-export default CandidateDetailModal; 
+export default CandidateDetailModal;

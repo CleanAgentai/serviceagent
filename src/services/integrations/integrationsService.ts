@@ -1,8 +1,8 @@
-import { 
-  Integration, 
-  IntegrationConnection, 
-  IntegrationCredentials, 
-  IntegrationStatus 
+import {
+  Integration,
+  IntegrationConnection,
+  IntegrationCredentials,
+  IntegrationStatus,
 } from '../../types/integrations';
 
 class IntegrationsService {
@@ -22,7 +22,7 @@ class IntegrationsService {
 
   public async connectIntegration(
     integration: Integration,
-    credentials: IntegrationCredentials
+    credentials: IntegrationCredentials,
   ): Promise<IntegrationConnection> {
     try {
       // Validate credentials
@@ -34,10 +34,10 @@ class IntegrationsService {
           ...integration,
           status: 'CONNECTED',
           connectedAt: new Date(),
-          lastSynced: new Date()
+          lastSynced: new Date(),
         },
         credentials,
-        status: 'CONNECTED'
+        status: 'CONNECTED',
       };
 
       // Store connection
@@ -52,11 +52,15 @@ class IntegrationsService {
         integration: {
           ...integration,
           status: 'ERROR',
-          error: error instanceof Error ? error.message : 'An unknown error occurred'
+          error:
+            error instanceof Error
+              ? error.message
+              : 'An unknown error occurred',
         },
         credentials,
         status: 'ERROR',
-        error: error instanceof Error ? error.message : 'An unknown error occurred'
+        error:
+          error instanceof Error ? error.message : 'An unknown error occurred',
       };
 
       this.connections.set(integration.id, failedConnection);
@@ -84,7 +88,9 @@ class IntegrationsService {
 
       this.connections.set(integrationId, connection);
     } catch (error: unknown) {
-      throw new Error(`Failed to disconnect integration: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to disconnect integration: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      );
     }
   }
 
@@ -110,7 +116,9 @@ class IntegrationsService {
           break;
         // Add other integration types here
         default:
-          throw new Error(`Unsupported integration type: ${connection.integration.type}`);
+          throw new Error(
+            `Unsupported integration type: ${connection.integration.type}`,
+          );
       }
 
       // Update last synced timestamp
@@ -118,7 +126,8 @@ class IntegrationsService {
       this.connections.set(integrationId, connection);
     } catch (error: unknown) {
       connection.status = 'ERROR';
-      connection.error = error instanceof Error ? error.message : 'An unknown error occurred';
+      connection.error =
+        error instanceof Error ? error.message : 'An unknown error occurred';
       this.connections.set(integrationId, connection);
       throw error;
     }
@@ -129,7 +138,9 @@ class IntegrationsService {
     return connection?.status || 'DISCONNECTED';
   }
 
-  public getConnection(integrationId: string): IntegrationConnection | undefined {
+  public getConnection(
+    integrationId: string,
+  ): IntegrationConnection | undefined {
     return this.connections.get(integrationId);
   }
 
@@ -139,7 +150,7 @@ class IntegrationsService {
 
   private async validateCredentials(
     integration: Integration,
-    credentials: IntegrationCredentials
+    credentials: IntegrationCredentials,
   ): Promise<void> {
     // Implement validation logic based on integration type
     switch (integration.type) {
@@ -150,7 +161,9 @@ class IntegrationsService {
         break;
       case 'CRM':
         if (!credentials.clientId || !credentials.clientSecret) {
-          throw new Error('Client ID and secret are required for CRM integration');
+          throw new Error(
+            'Client ID and secret are required for CRM integration',
+          );
         }
         break;
       // Add validation for other integration types
@@ -160,7 +173,9 @@ class IntegrationsService {
   private shouldRefreshToken(credentials: IntegrationCredentials): boolean {
     if (!credentials.expiresAt) return false;
     const expirationBuffer = 5 * 60 * 1000; // 5 minutes
-    return new Date(credentials.expiresAt).getTime() - expirationBuffer < Date.now();
+    return (
+      new Date(credentials.expiresAt).getTime() - expirationBuffer < Date.now()
+    );
   }
 
   private async refreshToken(connection: IntegrationConnection): Promise<void> {
@@ -170,12 +185,12 @@ class IntegrationsService {
       const response = await fetch('/api/refresh-token', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           refreshToken: connection.credentials.refreshToken,
-          integrationId: connection.integration.id
-        })
+          integrationId: connection.integration.id,
+        }),
       });
 
       if (!response.ok) {
@@ -187,10 +202,12 @@ class IntegrationsService {
         ...connection.credentials,
         accessToken,
         refreshToken,
-        expiresAt: new Date(expiresAt)
+        expiresAt: new Date(expiresAt),
       };
     } catch (error: unknown) {
-      throw new Error(`Token refresh failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Token refresh failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      );
     }
   }
 
@@ -201,31 +218,37 @@ class IntegrationsService {
       const response = await fetch('/api/revoke-access', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           accessToken: connection.credentials.accessToken,
-          integrationId: connection.integration.id
-        })
+          integrationId: connection.integration.id,
+        }),
       });
 
       if (!response.ok) {
         throw new Error('Failed to revoke access');
       }
     } catch (error: unknown) {
-      throw new Error(`Failed to revoke access: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to revoke access: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      );
     }
   }
 
-  private async syncEmailIntegration(connection: IntegrationConnection): Promise<void> {
+  private async syncEmailIntegration(
+    connection: IntegrationConnection,
+  ): Promise<void> {
     // Implement email integration sync logic
     console.log('Syncing email integration...', connection);
   }
 
-  private async syncCRMIntegration(connection: IntegrationConnection): Promise<void> {
+  private async syncCRMIntegration(
+    connection: IntegrationConnection,
+  ): Promise<void> {
     // Implement CRM integration sync logic
     console.log('Syncing CRM integration...', connection);
   }
 }
 
-export const integrationsService = IntegrationsService.getInstance(); 
+export const integrationsService = IntegrationsService.getInstance();

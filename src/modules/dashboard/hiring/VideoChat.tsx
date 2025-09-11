@@ -8,7 +8,7 @@ import {
   Videocam,
   VideocamOff,
   ScreenShare,
-  CallEnd
+  CallEnd,
 } from '@mui/icons-material';
 
 interface VideoChatProps {
@@ -23,7 +23,8 @@ const VideoChat: React.FC<VideoChatProps> = ({ roomId, onEndCall }) => {
   const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
   const [audioEnabled, setAudioEnabled] = useState(true);
   const [videoEnabled, setVideoEnabled] = useState(true);
-  const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>('connecting');
+  const [connectionStatus, setConnectionStatus] =
+    useState<ConnectionStatus>('connecting');
 
   useEffect(() => {
     const initializeCall = async () => {
@@ -89,7 +90,11 @@ const VideoChat: React.FC<VideoChatProps> = ({ roomId, onEndCall }) => {
               ref={(video) => {
                 if (video && localStream) video.srcObject = localStream;
               }}
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+              }}
             />
           )}
         </Box>
@@ -103,7 +108,11 @@ const VideoChat: React.FC<VideoChatProps> = ({ roomId, onEndCall }) => {
               ref={(video) => {
                 if (video && remoteStream) video.srcObject = remoteStream;
               }}
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+              }}
             />
           )}
         </Box>
@@ -120,7 +129,7 @@ const VideoChat: React.FC<VideoChatProps> = ({ roomId, onEndCall }) => {
           gap: 2,
           bgcolor: 'rgba(0,0,0,0.5)',
           padding: 2,
-          borderRadius: 2
+          borderRadius: 2,
         }}
       >
         <IconButton onClick={handleToggleAudio} color="primary">
@@ -146,7 +155,7 @@ const VideoChat: React.FC<VideoChatProps> = ({ roomId, onEndCall }) => {
             color: 'white',
             bgcolor: 'rgba(0,0,0,0.5)',
             padding: 1,
-            borderRadius: 1
+            borderRadius: 1,
           }}
         >
           {connectionStatus === 'connecting' ? 'Connecting...' : 'Disconnected'}
@@ -156,4 +165,4 @@ const VideoChat: React.FC<VideoChatProps> = ({ roomId, onEndCall }) => {
   );
 };
 
-export default VideoChat; 
+export default VideoChat;

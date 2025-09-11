@@ -3,9 +3,26 @@ import { ReactNode } from 'react';
 export type JobType = 'FULL_TIME' | 'PART_TIME' | 'CONTRACT';
 export type JobPlatform = 'INDEED' | 'FACEBOOK' | 'CRAIGSLIST' | 'LINKEDIN';
 export type InterviewType = 'VIDEO';
-export type CandidateStatus = 'APPLIED' | 'SCREENING' | 'INTERVIEWED' | 'OFFERED' | 'ACCEPTED' | 'REJECTED' | 'HIRED';
-export type PostingStatus = 'DRAFT' | 'ACTIVE' | 'PAUSED' | 'EXPIRED' | 'FILLED';
-export type BackgroundCheckStatus = 'NOT_STARTED' | 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'FAILED';
+export type CandidateStatus =
+  | 'APPLIED'
+  | 'SCREENING'
+  | 'INTERVIEWED'
+  | 'OFFERED'
+  | 'ACCEPTED'
+  | 'REJECTED'
+  | 'HIRED';
+export type PostingStatus =
+  | 'DRAFT'
+  | 'ACTIVE'
+  | 'PAUSED'
+  | 'EXPIRED'
+  | 'FILLED';
+export type BackgroundCheckStatus =
+  | 'NOT_STARTED'
+  | 'PENDING'
+  | 'IN_PROGRESS'
+  | 'COMPLETED'
+  | 'FAILED';
 export type DocumentStatus = 'SIGNED' | 'VIEWED' | 'SENT' | 'EXPIRED';
 
 export interface SalaryRange {
@@ -316,4 +333,4 @@ export interface VideoChatProps {
   jobTitle: string;
   interviewerName: string;
   onClose: () => void;
-} 
+}

@@ -38,86 +38,86 @@ interface Job {
 const mockCandidates: Candidate[] = [
   {
     id: '1',
-    name: "John Doe",
-    email: "john@example.com",
-    phone: "+1234567890",
-    location: "New York, NY",
-    resumeUrl: "https://example.com/resume.pdf",
-    appliedFor: "Software Engineer",
-    currentStatus: "SCREENING" as CandidateStatus,
+    name: 'John Doe',
+    email: 'john@example.com',
+    phone: '+1234567890',
+    location: 'New York, NY',
+    resumeUrl: 'https://example.com/resume.pdf',
+    appliedFor: 'Software Engineer',
+    currentStatus: 'SCREENING' as CandidateStatus,
     experience: [
       {
-        company: "Tech Corp",
-        title: "Senior Developer",
-        startDate: "2019-01",
-        endDate: "2024-02",
-        description: "5 years of full-stack development experience"
-      }
+        company: 'Tech Corp',
+        title: 'Senior Developer',
+        startDate: '2019-01',
+        endDate: '2024-02',
+        description: '5 years of full-stack development experience',
+      },
     ],
-    skills: ["JavaScript", "React", "Node.js"],
+    skills: ['JavaScript', 'React', 'Node.js'],
     education: [
       {
-        institution: "University of California",
-        degree: "Bachelor of Science",
-        field: "Computer Science",
-        graduationYear: 2019
-      }
+        institution: 'University of California',
+        degree: 'Bachelor of Science',
+        field: 'Computer Science',
+        graduationYear: 2019,
+      },
     ],
     interviews: [],
     aiScore: 85,
-    tags: ["Frontend", "Senior"],
+    tags: ['Frontend', 'Senior'],
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
     notes: [
       {
         id: 'note1',
-        content: "Strong frontend experience",
+        content: 'Strong frontend experience',
         createdAt: new Date().toISOString(),
-        createdBy: "recruiter1"
-      }
-    ]
+        createdBy: 'recruiter1',
+      },
+    ],
   },
   {
     id: '2',
-    name: "Jane Smith",
-    email: "jane@example.com",
-    phone: "+1987654321",
-    location: "San Francisco, CA",
-    resumeUrl: "https://example.com/resume2.pdf",
-    appliedFor: "Product Manager",
-    currentStatus: "INTERVIEWED" as CandidateStatus,
+    name: 'Jane Smith',
+    email: 'jane@example.com',
+    phone: '+1987654321',
+    location: 'San Francisco, CA',
+    resumeUrl: 'https://example.com/resume2.pdf',
+    appliedFor: 'Product Manager',
+    currentStatus: 'INTERVIEWED' as CandidateStatus,
     experience: [
       {
-        company: "Product Inc",
-        title: "Product Manager",
-        startDate: "2017-01",
-        endDate: "2024-02",
-        description: "7 years of product management experience"
-      }
+        company: 'Product Inc',
+        title: 'Product Manager',
+        startDate: '2017-01',
+        endDate: '2024-02',
+        description: '7 years of product management experience',
+      },
     ],
-    skills: ["Product Strategy", "Agile", "User Research"],
+    skills: ['Product Strategy', 'Agile', 'User Research'],
     education: [
       {
-        institution: "Harvard Business School",
-        degree: "Master of Business Administration",
-        field: "Product Management",
-        graduationYear: 2017
-      }
+        institution: 'Harvard Business School',
+        degree: 'Master of Business Administration',
+        field: 'Product Management',
+        graduationYear: 2017,
+      },
     ],
     interviews: [],
     aiScore: 92,
-    tags: ["Product", "Senior"],
+    tags: ['Product', 'Senior'],
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
     notes: [
       {
         id: 'note2',
-        content: "Great product vision",
+        content: 'Great product vision',
         createdAt: new Date().toISOString(),
-        createdBy: "recruiter1"
-      }
-    ]
-  }
+        createdBy: 'recruiter1',
+      },
+    ],
+  },
 ];
 
 export default function Hiring() {
@@ -129,7 +129,9 @@ export default function Hiring() {
   const [candidates, setCandidates] = useState<Candidate[]>(mockCandidates);
   const [activeJobId, setActiveJobId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(null);
+  const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(
+    null,
+  );
   const [formData, setFormData] = useState({
     title: '',
     department: '',
@@ -141,42 +143,46 @@ export default function Hiring() {
         min: 0,
         max: 0,
         currency: 'USD',
-        period: 'YEARLY'
+        period: 'YEARLY',
       },
       benefits: [],
-      additionalPerks: []
-    }
+      additionalPerks: [],
+    },
   });
   const [error, setError] = useState<string | null>(null);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleCompensationChange = (field: string, value: any) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       compensation: {
         ...prev.compensation,
-        [field]: value
-      }
+        [field]: value,
+      },
     }));
   };
 
   const handleSalaryChange = (field: string, value: any) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       compensation: {
         ...prev.compensation,
         salary: {
           ...prev.compensation.salary,
-          [field]: value
-        }
-      }
+          [field]: value,
+        },
+      },
     }));
   };
 
@@ -185,68 +191,73 @@ export default function Hiring() {
       id: Date.now().toString(),
       name: '',
       description: '',
-      category: 'OTHER' as const
+      category: 'OTHER' as const,
     };
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       compensation: {
         ...prev.compensation,
-        benefits: [...prev.compensation.benefits, newBenefit]
-      }
+        benefits: [...prev.compensation.benefits, newBenefit],
+      },
     }));
   };
 
   const handleBenefitChange = (id: string, field: string, value: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       compensation: {
         ...prev.compensation,
-        benefits: prev.compensation.benefits.map(benefit =>
-          benefit.id === id ? { ...benefit, [field]: value } : benefit
-        )
-      }
+        benefits: prev.compensation.benefits.map((benefit) =>
+          benefit.id === id ? { ...benefit, [field]: value } : benefit,
+        ),
+      },
     }));
   };
 
   const handleRemoveBenefit = (id: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       compensation: {
         ...prev.compensation,
-        benefits: prev.compensation.benefits.filter(benefit => benefit.id !== id)
-      }
+        benefits: prev.compensation.benefits.filter(
+          (benefit) => benefit.id !== id,
+        ),
+      },
     }));
   };
 
   const handleAddPerk = () => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       compensation: {
         ...prev.compensation,
-        additionalPerks: [...(prev.compensation.additionalPerks || []), '']
-      }
+        additionalPerks: [...(prev.compensation.additionalPerks || []), ''],
+      },
     }));
   };
 
   const handlePerkChange = (index: number, value: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       compensation: {
         ...prev.compensation,
-        additionalPerks: prev.compensation.additionalPerks?.map((perk, i) =>
-          i === index ? value : perk
-        ) || []
-      }
+        additionalPerks:
+          prev.compensation.additionalPerks?.map((perk, i) =>
+            i === index ? value : perk,
+          ) || [],
+      },
     }));
   };
 
   const handleRemovePerk = (index: number) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       compensation: {
         ...prev.compensation,
-        additionalPerks: prev.compensation.additionalPerks?.filter((_, i) => i !== index) || []
-      }
+        additionalPerks:
+          prev.compensation.additionalPerks?.filter((_, i) => i !== index) ||
+          [],
+      },
     }));
   };
 
@@ -267,14 +278,14 @@ export default function Hiring() {
           min: 0,
           max: 0,
           currency: 'USD',
-          period: 'YEARLY'
+          period: 'YEARLY',
         },
         benefits: [],
-        additionalPerks: []
-      }
+        additionalPerks: [],
+      },
     };
-    setJobs(prev => [newJob, ...prev]);
-    
+    setJobs((prev) => [newJob, ...prev]);
+
     // Reset form and close modal
     setFormData({
       title: '',
@@ -287,11 +298,11 @@ export default function Hiring() {
           min: 0,
           max: 0,
           currency: 'USD',
-          period: 'YEARLY'
+          period: 'YEARLY',
         },
         benefits: [],
-        additionalPerks: []
-      }
+        additionalPerks: [],
+      },
     });
     setShowNewJobModal(false);
   };
@@ -299,44 +310,44 @@ export default function Hiring() {
   const handleAddCandidate = () => {
     const newCandidate: Candidate = {
       id: '3',
-      name: "New Candidate",
-      email: "new@example.com",
-      phone: "+1555555555",
-      location: "Remote",
-      resumeUrl: "https://example.com/resume3.pdf",
-      appliedFor: "Software Engineer",
-      currentStatus: "APPLIED" as CandidateStatus,
+      name: 'New Candidate',
+      email: 'new@example.com',
+      phone: '+1555555555',
+      location: 'Remote',
+      resumeUrl: 'https://example.com/resume3.pdf',
+      appliedFor: 'Software Engineer',
+      currentStatus: 'APPLIED' as CandidateStatus,
       experience: [
         {
-          company: "Previous Company",
-          title: "Developer",
-          startDate: "2020-01",
-          endDate: "2024-02",
-          description: "Full-stack development"
-        }
+          company: 'Previous Company',
+          title: 'Developer',
+          startDate: '2020-01',
+          endDate: '2024-02',
+          description: 'Full-stack development',
+        },
       ],
-      skills: ["TypeScript", "React", "Node.js"],
+      skills: ['TypeScript', 'React', 'Node.js'],
       education: [
         {
-          institution: "Tech University",
-          degree: "Bachelor of Science",
-          field: "Computer Science",
-          graduationYear: 2020
-        }
+          institution: 'Tech University',
+          degree: 'Bachelor of Science',
+          field: 'Computer Science',
+          graduationYear: 2020,
+        },
       ],
       interviews: [],
       aiScore: 80,
-      tags: ["Frontend", "Junior"],
+      tags: ['Frontend', 'Junior'],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       notes: [
         {
           id: 'note3',
-          content: "New candidate with potential",
+          content: 'New candidate with potential',
           createdAt: new Date().toISOString(),
-          createdBy: "recruiter1"
-        }
-      ]
+          createdBy: 'recruiter1',
+        },
+      ],
     };
     setCandidates([...candidates, newCandidate]);
   };
@@ -345,32 +356,32 @@ export default function Hiring() {
     const filteredCandidates: Candidate[] = [
       {
         id: '1',
-        name: "John Doe",
-        email: "john@example.com",
-        phone: "+1234567890",
-        resumeUrl: "https://example.com/resume.pdf",
-        appliedFor: "Software Engineer",
-        currentStatus: "SCREENING" as CandidateStatus,
-        location: "New York, NY",
-        tags: ["Frontend", "Senior"],
+        name: 'John Doe',
+        email: 'john@example.com',
+        phone: '+1234567890',
+        resumeUrl: 'https://example.com/resume.pdf',
+        appliedFor: 'Software Engineer',
+        currentStatus: 'SCREENING' as CandidateStatus,
+        location: 'New York, NY',
+        tags: ['Frontend', 'Senior'],
         aiScore: 85,
         experience: [
           {
-            company: "Tech Corp",
-            title: "Senior Developer",
-            startDate: "2019-01",
-            endDate: "2024-02",
-            description: "5 years of full-stack development experience"
-          }
+            company: 'Tech Corp',
+            title: 'Senior Developer',
+            startDate: '2019-01',
+            endDate: '2024-02',
+            description: '5 years of full-stack development experience',
+          },
         ],
-        skills: ["JavaScript", "React", "Node.js"],
+        skills: ['JavaScript', 'React', 'Node.js'],
         education: [
           {
-            institution: "University of California",
-            degree: "Bachelor of Science",
-            field: "Computer Science",
-            graduationYear: 2019
-          }
+            institution: 'University of California',
+            degree: 'Bachelor of Science',
+            field: 'Computer Science',
+            graduationYear: 2019,
+          },
         ],
         interviews: [],
         createdAt: new Date().toISOString(),
@@ -378,40 +389,40 @@ export default function Hiring() {
         notes: [
           {
             id: 'note1',
-            content: "Strong frontend experience",
+            content: 'Strong frontend experience',
             createdAt: new Date().toISOString(),
-            createdBy: "recruiter1"
-          }
-        ]
+            createdBy: 'recruiter1',
+          },
+        ],
       },
       {
         id: '2',
-        name: "Jane Smith",
-        email: "jane@example.com",
-        phone: "+1987654321",
-        resumeUrl: "https://example.com/resume2.pdf",
-        appliedFor: "Product Manager",
-        currentStatus: "INTERVIEWED" as CandidateStatus,
-        location: "San Francisco, CA",
-        tags: ["Product", "Senior"],
+        name: 'Jane Smith',
+        email: 'jane@example.com',
+        phone: '+1987654321',
+        resumeUrl: 'https://example.com/resume2.pdf',
+        appliedFor: 'Product Manager',
+        currentStatus: 'INTERVIEWED' as CandidateStatus,
+        location: 'San Francisco, CA',
+        tags: ['Product', 'Senior'],
         aiScore: 92,
         experience: [
           {
-            company: "Product Inc",
-            title: "Product Manager",
-            startDate: "2017-01",
-            endDate: "2024-02",
-            description: "7 years of product management experience"
-          }
+            company: 'Product Inc',
+            title: 'Product Manager',
+            startDate: '2017-01',
+            endDate: '2024-02',
+            description: '7 years of product management experience',
+          },
         ],
-        skills: ["Product Strategy", "Agile", "User Research"],
+        skills: ['Product Strategy', 'Agile', 'User Research'],
         education: [
           {
-            institution: "Harvard Business School",
-            degree: "Master of Business Administration",
-            field: "Product Management",
-            graduationYear: 2017
-          }
+            institution: 'Harvard Business School',
+            degree: 'Master of Business Administration',
+            field: 'Product Management',
+            graduationYear: 2017,
+          },
         ],
         interviews: [],
         createdAt: new Date().toISOString(),
@@ -419,12 +430,12 @@ export default function Hiring() {
         notes: [
           {
             id: 'note2',
-            content: "Great product vision",
+            content: 'Great product vision',
             createdAt: new Date().toISOString(),
-            createdBy: "recruiter1"
-          }
-        ]
-      }
+            createdBy: 'recruiter1',
+          },
+        ],
+      },
     ];
     setCandidates(filteredCandidates);
   };
@@ -433,32 +444,32 @@ export default function Hiring() {
     const initialCandidates: Candidate[] = [
       {
         id: '1',
-        name: "John Doe",
-        email: "john@example.com",
-        phone: "+1234567890",
-        resumeUrl: "https://example.com/resume.pdf",
-        appliedFor: "Software Engineer",
-        currentStatus: "SCREENING" as CandidateStatus,
-        location: "New York, NY",
-        tags: ["Frontend", "Senior"],
+        name: 'John Doe',
+        email: 'john@example.com',
+        phone: '+1234567890',
+        resumeUrl: 'https://example.com/resume.pdf',
+        appliedFor: 'Software Engineer',
+        currentStatus: 'SCREENING' as CandidateStatus,
+        location: 'New York, NY',
+        tags: ['Frontend', 'Senior'],
         aiScore: 85,
         experience: [
           {
-            company: "Tech Corp",
-            title: "Senior Developer",
-            startDate: "2019-01",
-            endDate: "2024-02",
-            description: "5 years of full-stack development experience"
-          }
+            company: 'Tech Corp',
+            title: 'Senior Developer',
+            startDate: '2019-01',
+            endDate: '2024-02',
+            description: '5 years of full-stack development experience',
+          },
         ],
-        skills: ["JavaScript", "React", "Node.js"],
+        skills: ['JavaScript', 'React', 'Node.js'],
         education: [
           {
-            institution: "University of California",
-            degree: "Bachelor of Science",
-            field: "Computer Science",
-            graduationYear: 2019
-          }
+            institution: 'University of California',
+            degree: 'Bachelor of Science',
+            field: 'Computer Science',
+            graduationYear: 2019,
+          },
         ],
         interviews: [],
         createdAt: new Date().toISOString(),
@@ -466,40 +477,40 @@ export default function Hiring() {
         notes: [
           {
             id: 'note1',
-            content: "Strong frontend experience",
+            content: 'Strong frontend experience',
             createdAt: new Date().toISOString(),
-            createdBy: "recruiter1"
-          }
-        ]
+            createdBy: 'recruiter1',
+          },
+        ],
       },
       {
         id: '2',
-        name: "Jane Smith",
-        email: "jane@example.com",
-        phone: "+1987654321",
-        resumeUrl: "https://example.com/resume2.pdf",
-        appliedFor: "Product Manager",
-        currentStatus: "INTERVIEWED" as CandidateStatus,
-        location: "San Francisco, CA",
-        tags: ["Product", "Senior"],
+        name: 'Jane Smith',
+        email: 'jane@example.com',
+        phone: '+1987654321',
+        resumeUrl: 'https://example.com/resume2.pdf',
+        appliedFor: 'Product Manager',
+        currentStatus: 'INTERVIEWED' as CandidateStatus,
+        location: 'San Francisco, CA',
+        tags: ['Product', 'Senior'],
         aiScore: 92,
         experience: [
           {
-            company: "Product Inc",
-            title: "Product Manager",
-            startDate: "2017-01",
-            endDate: "2024-02",
-            description: "7 years of product management experience"
-          }
+            company: 'Product Inc',
+            title: 'Product Manager',
+            startDate: '2017-01',
+            endDate: '2024-02',
+            description: '7 years of product management experience',
+          },
         ],
-        skills: ["Product Strategy", "Agile", "User Research"],
+        skills: ['Product Strategy', 'Agile', 'User Research'],
         education: [
           {
-            institution: "Harvard Business School",
-            degree: "Master of Business Administration",
-            field: "Product Management",
-            graduationYear: 2017
-          }
+            institution: 'Harvard Business School',
+            degree: 'Master of Business Administration',
+            field: 'Product Management',
+            graduationYear: 2017,
+          },
         ],
         interviews: [],
         createdAt: new Date().toISOString(),
@@ -507,12 +518,12 @@ export default function Hiring() {
         notes: [
           {
             id: 'note2',
-            content: "Great product vision",
+            content: 'Great product vision',
             createdAt: new Date().toISOString(),
-            createdBy: "recruiter1"
-          }
-        ]
-      }
+            createdBy: 'recruiter1',
+          },
+        ],
+      },
     ];
     setCandidates(initialCandidates);
   }, []);
@@ -524,8 +535,12 @@ export default function Hiring() {
         <div className="bg-white rounded-xl p-6 shadow-sm">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Hiring Dashboard</h1>
-              <p className="text-gray-600">Manage job postings and track candidates</p>
+              <h1 className="text-2xl font-bold text-gray-900">
+                Hiring Dashboard
+              </h1>
+              <p className="text-gray-600">
+                Manage job postings and track candidates
+              </p>
             </div>
             <div className="flex items-center space-x-4">
               <Button onClick={() => setShowNewJobModal(true)}>
@@ -541,8 +556,12 @@ export default function Hiring() {
           <div className="p-6 border-b border-gray-200">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <h2 className="text-lg font-semibold text-gray-900">Job Postings</h2>
-                <p className="text-sm text-gray-600">Manage and create job listings</p>
+                <h2 className="text-lg font-semibold text-gray-900">
+                  Job Postings
+                </h2>
+                <p className="text-sm text-gray-600">
+                  Manage and create job listings
+                </p>
               </div>
               <div className="flex items-center space-x-4">
                 <div className="relative">
@@ -566,42 +585,77 @@ export default function Hiring() {
                 <table className="min-w-full divide-y divide-gray-200 table-fixed">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="w-1/4 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Position</th>
-                      <th className="w-1/6 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
-                      <th className="w-1/6 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
-                      <th className="w-1/8 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                      <th className="w-1/8 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Experience</th>
-                      <th className="w-1/8 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                      <th className="w-1/8 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Applicants</th>
+                      <th className="w-1/4 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Position
+                      </th>
+                      <th className="w-1/6 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Department
+                      </th>
+                      <th className="w-1/6 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Location
+                      </th>
+                      <th className="w-1/8 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Type
+                      </th>
+                      <th className="w-1/8 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Experience
+                      </th>
+                      <th className="w-1/8 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Status
+                      </th>
+                      <th className="w-1/8 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Applicants
+                      </th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
                     {jobs.length === 0 ? (
                       <tr>
-                        <td colSpan={7} className="px-6 py-8 text-center text-gray-500 text-sm">
+                        <td
+                          colSpan={7}
+                          className="px-6 py-8 text-center text-gray-500 text-sm"
+                        >
                           No job postings found
                         </td>
                       </tr>
                     ) : (
                       jobs
-                        .filter(job => selectedDepartment === 'all' ? true : job.department === selectedDepartment)
+                        .filter((job) =>
+                          selectedDepartment === 'all'
+                            ? true
+                            : job.department === selectedDepartment,
+                        )
                         .map((job) => (
                           <tr key={job.id}>
-                            <td className="px-6 py-4 text-sm text-gray-900">{job.title}</td>
-                            <td className="px-6 py-4 text-sm text-gray-500">{job.department}</td>
-                            <td className="px-6 py-4 text-sm text-gray-500">{job.location}</td>
-                            <td className="px-6 py-4 text-sm text-gray-500">{job.type}</td>
-                            <td className="px-6 py-4 text-sm text-gray-500">Not specified</td>
-                            <td className="px-6 py-4 text-sm">
-                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                job.status === 'active' 
-                                  ? 'bg-green-100 text-green-800'
-                                  : 'bg-yellow-100 text-yellow-800'
-                              }`}>
-                                {job.status}
-                  </span>
+                            <td className="px-6 py-4 text-sm text-gray-900">
+                              {job.title}
                             </td>
-                            <td className="px-6 py-4 text-sm text-gray-500">{job.applicants.length}</td>
+                            <td className="px-6 py-4 text-sm text-gray-500">
+                              {job.department}
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-500">
+                              {job.location}
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-500">
+                              {job.type}
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-500">
+                              Not specified
+                            </td>
+                            <td className="px-6 py-4 text-sm">
+                              <span
+                                className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                  job.status === 'active'
+                                    ? 'bg-green-100 text-green-800'
+                                    : 'bg-yellow-100 text-yellow-800'
+                                }`}
+                              >
+                                {job.status}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-500">
+                              {job.applicants.length}
+                            </td>
                           </tr>
                         ))
                     )}
@@ -617,14 +671,20 @@ export default function Hiring() {
           <div className="p-6 border-b border-gray-200">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <h2 className="text-lg font-semibold text-gray-900">Candidates</h2>
-                <p className="text-sm text-gray-600">Track and manage job applicants</p>
+                <h2 className="text-lg font-semibold text-gray-900">
+                  Candidates
+                </h2>
+                <p className="text-sm text-gray-600">
+                  Track and manage job applicants
+                </p>
               </div>
               <div className="flex items-center space-x-4">
                 {/* Filters */}
                 <select
                   className="bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  onChange={(e) => {/* Handle role filter */}}
+                  onChange={(e) => {
+                    /* Handle role filter */
+                  }}
                 >
                   <option value="">All Roles</option>
                   <option value="cleaning">Cleaning</option>
@@ -632,7 +692,9 @@ export default function Hiring() {
                 </select>
                 <select
                   className="bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  onChange={(e) => {/* Handle location filter */}}
+                  onChange={(e) => {
+                    /* Handle location filter */
+                  }}
                 >
                   <option value="">All Locations</option>
                   <option value="nyc">New York</option>
@@ -641,7 +703,9 @@ export default function Hiring() {
                 </select>
                 <select
                   className="bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  onChange={(e) => {/* Handle date filter */}}
+                  onChange={(e) => {
+                    /* Handle date filter */
+                  }}
                 >
                   <option value="">All Dates</option>
                   <option value="today">Today</option>
@@ -651,7 +715,9 @@ export default function Hiring() {
                 {/* Sort */}
                 <select
                   className="bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  onChange={(e) => {/* Handle sort */}}
+                  onChange={(e) => {
+                    /* Handle sort */
+                  }}
                 >
                   <option value="newest">Newest</option>
                   <option value="oldest">Oldest</option>
@@ -664,30 +730,51 @@ export default function Hiring() {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Applied Date</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Overall Rating</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Information</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Name
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Location
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Applied Date
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Status
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Overall Rating
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Information
+                  </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {isLoading ? (
                   <tr>
-                    <td colSpan={6} className="px-6 py-4 text-center text-gray-500">
+                    <td
+                      colSpan={6}
+                      className="px-6 py-4 text-center text-gray-500"
+                    >
                       Loading candidates...
                     </td>
                   </tr>
                 ) : error ? (
                   <tr>
-                    <td colSpan={6} className="px-6 py-4 text-center text-red-500">
+                    <td
+                      colSpan={6}
+                      className="px-6 py-4 text-center text-red-500"
+                    >
                       {error}
                     </td>
                   </tr>
                 ) : !candidates || candidates.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="px-6 py-4 text-center text-gray-500">
+                    <td
+                      colSpan={6}
+                      className="px-6 py-4 text-center text-gray-500"
+                    >
                       No candidates found
                     </td>
                   </tr>
@@ -699,10 +786,14 @@ export default function Hiring() {
                       onClick={() => setSelectedCandidate(candidate)}
                     >
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-900">{candidate.name}</div>
+                        <div className="text-sm font-medium text-gray-900">
+                          {candidate.name}
+                        </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-500">{candidate.location}</div>
+                        <div className="text-sm text-gray-500">
+                          {candidate.location}
+                        </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-500">
@@ -710,14 +801,21 @@ export default function Hiring() {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                          candidate.currentStatus === 'ACCEPTED' ? 'bg-green-100 text-green-800' :
-                          candidate.currentStatus === 'REJECTED' ? 'bg-red-100 text-red-800' :
-                          candidate.currentStatus === 'OFFERED' ? 'bg-purple-100 text-purple-800' :
-                          candidate.currentStatus === 'INTERVIEWED' ? 'bg-blue-100 text-blue-800' :
-                          candidate.currentStatus === 'SCREENING' ? 'bg-yellow-100 text-yellow-800' :
-                          'bg-gray-100 text-gray-800'
-                        }`}>
+                        <span
+                          className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                            candidate.currentStatus === 'ACCEPTED'
+                              ? 'bg-green-100 text-green-800'
+                              : candidate.currentStatus === 'REJECTED'
+                                ? 'bg-red-100 text-red-800'
+                                : candidate.currentStatus === 'OFFERED'
+                                  ? 'bg-purple-100 text-purple-800'
+                                  : candidate.currentStatus === 'INTERVIEWED'
+                                    ? 'bg-blue-100 text-blue-800'
+                                    : candidate.currentStatus === 'SCREENING'
+                                      ? 'bg-yellow-100 text-yellow-800'
+                                      : 'bg-gray-100 text-gray-800'
+                          }`}
+                        >
                           {candidate.currentStatus}
                         </span>
                       </td>
@@ -741,18 +839,28 @@ export default function Hiring() {
                       <div className="hidden group-hover:block absolute left-0 top-full mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-10 p-4">
                         <div className="space-y-2">
                           <div>
-                            <span className="text-xs font-medium text-gray-500">Applied Job:</span>
-                            <span className="text-sm text-gray-900 ml-2">{candidate.appliedFor}</span>
+                            <span className="text-xs font-medium text-gray-500">
+                              Applied Job:
+                            </span>
+                            <span className="text-sm text-gray-900 ml-2">
+                              {candidate.appliedFor}
+                            </span>
                           </div>
                           <div>
-                            <span className="text-xs font-medium text-gray-500">Last Activity:</span>
+                            <span className="text-xs font-medium text-gray-500">
+                              Last Activity:
+                            </span>
                             <span className="text-sm text-gray-900 ml-2">
-                              {new Date(candidate.updatedAt || Date.now()).toLocaleDateString()}
+                              {new Date(
+                                candidate.updatedAt || Date.now(),
+                              ).toLocaleDateString()}
                             </span>
                           </div>
                           {candidate.notes && candidate.notes.length > 0 && (
                             <div>
-                              <span className="text-xs font-medium text-gray-500">Latest Note:</span>
+                              <span className="text-xs font-medium text-gray-500">
+                                Latest Note:
+                              </span>
                               <p className="text-sm text-gray-900 mt-1">
                                 {candidate.notes[0].content}
                               </p>
@@ -768,7 +876,7 @@ export default function Hiring() {
           </div>
         </div>
       </div>
-      
+
       {/* New Job Modal */}
       {showNewJobModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -776,7 +884,7 @@ export default function Hiring() {
             <div className="p-6">
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold">Create New Job Posting</h2>
-                <button 
+                <button
                   className="text-gray-400 hover:text-gray-600"
                   onClick={() => setShowNewJobModal(false)}
                 >
@@ -802,7 +910,9 @@ export default function Hiring() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium mb-2">Department</label>
+                    <label className="block text-sm font-medium mb-2">
+                      Department
+                    </label>
                     <select
                       name="department"
                       value={formData.department}
@@ -816,7 +926,9 @@ export default function Hiring() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium mb-2">Location</label>
+                    <label className="block text-sm font-medium mb-2">
+                      Location
+                    </label>
                     <input
                       type="text"
                       name="location"
@@ -828,7 +940,9 @@ export default function Hiring() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium mb-2">Employment Type</label>
+                    <label className="block text-sm font-medium mb-2">
+                      Employment Type
+                    </label>
                     <select
                       name="type"
                       value={formData.type}
@@ -844,16 +958,25 @@ export default function Hiring() {
 
                   {/* Compensation Section */}
                   <div className="col-span-2">
-                    <h3 className="text-lg font-medium text-gray-900 mb-4">Compensation</h3>
+                    <h3 className="text-lg font-medium text-gray-900 mb-4">
+                      Compensation
+                    </h3>
                     <div className="grid grid-cols-2 gap-6">
                       <div>
-                        <label className="block text-sm font-medium mb-2">Salary Range</label>
+                        <label className="block text-sm font-medium mb-2">
+                          Salary Range
+                        </label>
                         <div className="grid grid-cols-2 gap-4">
                           <div>
                             <input
                               type="number"
                               value={formData.compensation.salary.min}
-                              onChange={(e) => handleSalaryChange('min', parseInt(e.target.value))}
+                              onChange={(e) =>
+                                handleSalaryChange(
+                                  'min',
+                                  parseInt(e.target.value),
+                                )
+                              }
                               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                               placeholder="Min"
                             />
@@ -862,7 +985,12 @@ export default function Hiring() {
                             <input
                               type="number"
                               value={formData.compensation.salary.max}
-                              onChange={(e) => handleSalaryChange('max', parseInt(e.target.value))}
+                              onChange={(e) =>
+                                handleSalaryChange(
+                                  'max',
+                                  parseInt(e.target.value),
+                                )
+                              }
                               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                               placeholder="Max"
                             />
@@ -870,10 +998,14 @@ export default function Hiring() {
                         </div>
                       </div>
                       <div>
-                        <label className="block text-sm font-medium mb-2">Pay Period</label>
+                        <label className="block text-sm font-medium mb-2">
+                          Pay Period
+                        </label>
                         <select
                           value={formData.compensation.salary.period}
-                          onChange={(e) => handleSalaryChange('period', e.target.value)}
+                          onChange={(e) =>
+                            handleSalaryChange('period', e.target.value)
+                          }
                           className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         >
                           <option value="HOURLY">Per Hour</option>
@@ -886,15 +1018,26 @@ export default function Hiring() {
 
                   {/* Benefits Section */}
                   <div className="col-span-2">
-                    <h3 className="text-lg font-medium text-gray-900 mb-4">Benefits</h3>
+                    <h3 className="text-lg font-medium text-gray-900 mb-4">
+                      Benefits
+                    </h3>
                     <div className="space-y-4">
                       {formData.compensation.benefits.map((benefit) => (
-                        <div key={benefit.id} className="grid grid-cols-3 gap-4">
+                        <div
+                          key={benefit.id}
+                          className="grid grid-cols-3 gap-4"
+                        >
                           <div>
                             <input
                               type="text"
                               value={benefit.name}
-                              onChange={(e) => handleBenefitChange(benefit.id, 'name', e.target.value)}
+                              onChange={(e) =>
+                                handleBenefitChange(
+                                  benefit.id,
+                                  'name',
+                                  e.target.value,
+                                )
+                              }
                               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                               placeholder="Benefit Name"
                             />
@@ -902,7 +1045,13 @@ export default function Hiring() {
                           <div>
                             <select
                               value={benefit.category}
-                              onChange={(e) => handleBenefitChange(benefit.id, 'category', e.target.value)}
+                              onChange={(e) =>
+                                handleBenefitChange(
+                                  benefit.id,
+                                  'category',
+                                  e.target.value,
+                                )
+                              }
                               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             >
                               <option value="HEALTH">Health</option>
@@ -915,7 +1064,13 @@ export default function Hiring() {
                             <input
                               type="text"
                               value={benefit.description}
-                              onChange={(e) => handleBenefitChange(benefit.id, 'description', e.target.value)}
+                              onChange={(e) =>
+                                handleBenefitChange(
+                                  benefit.id,
+                                  'description',
+                                  e.target.value,
+                                )
+                              }
                               className="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                               placeholder="Description"
                             />
@@ -942,26 +1097,32 @@ export default function Hiring() {
 
                   {/* Additional Perks Section */}
                   <div className="col-span-2">
-                    <h3 className="text-lg font-medium text-gray-900 mb-4">Additional Perks</h3>
+                    <h3 className="text-lg font-medium text-gray-900 mb-4">
+                      Additional Perks
+                    </h3>
                     <div className="space-y-4">
-                      {formData.compensation.additionalPerks?.map((perk, index) => (
-                        <div key={index} className="flex items-center gap-2">
-                          <input
-                            type="text"
-                            value={perk}
-                            onChange={(e) => handlePerkChange(index, e.target.value)}
-                            className="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Enter perk"
-                          />
-                          <button
-                            type="button"
-                            onClick={() => handleRemovePerk(index)}
-                            className="text-red-600 hover:text-red-800"
-                          >
-                            <Trash2 className="h-5 w-5" />
-                          </button>
-                        </div>
-                      ))}
+                      {formData.compensation.additionalPerks?.map(
+                        (perk, index) => (
+                          <div key={index} className="flex items-center gap-2">
+                            <input
+                              type="text"
+                              value={perk}
+                              onChange={(e) =>
+                                handlePerkChange(index, e.target.value)
+                              }
+                              className="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              placeholder="Enter perk"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => handleRemovePerk(index)}
+                              className="text-red-600 hover:text-red-800"
+                            >
+                              <Trash2 className="h-5 w-5" />
+                            </button>
+                          </div>
+                        ),
+                      )}
                       <button
                         type="button"
                         onClick={handleAddPerk}
@@ -975,7 +1136,9 @@ export default function Hiring() {
                 </div>
 
                 <div className="mt-6">
-                  <label className="block text-sm font-medium mb-2">Job Description</label>
+                  <label className="block text-sm font-medium mb-2">
+                    Job Description
+                  </label>
                   <textarea
                     name="description"
                     value={formData.description}
@@ -1002,7 +1165,7 @@ export default function Hiring() {
                   </button>
                 </div>
               </form>
-              </div>
+            </div>
           </div>
         </div>
       )}
@@ -1017,4 +1180,4 @@ export default function Hiring() {
       )}
     </div>
   );
-} 
+}

@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Brain, 
-  MessageSquare, 
-  Code, 
-  Sparkles, 
-  ArrowRight, 
-  X, 
-  Search, 
-  Filter, 
-  Download, 
-  Calendar, 
-  ChevronDown, 
-  ChevronUp, 
+import {
+  Brain,
+  MessageSquare,
+  Code,
+  Sparkles,
+  ArrowRight,
+  X,
+  Search,
+  Filter,
+  Download,
+  Calendar,
+  ChevronDown,
+  ChevronUp,
   Info,
-  RefreshCw
+  RefreshCw,
 } from 'lucide-react';
 
 interface AnalysisDetailModalProps {
@@ -36,23 +36,34 @@ interface AnalysisDetailModalProps {
   };
 }
 
-const AnalysisDetailModal: React.FC<AnalysisDetailModalProps> = ({ isOpen, onClose, analysis }) => {
+const AnalysisDetailModal: React.FC<AnalysisDetailModalProps> = ({
+  isOpen,
+  onClose,
+  analysis,
+}) => {
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
       <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-        <div className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75 backdrop-blur-sm" onClick={onClose} />
+        <div
+          className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75 backdrop-blur-sm"
+          onClick={onClose}
+        />
 
         <div className="inline-block w-full max-w-2xl p-0 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
           {/* Header */}
-          <div className={`flex items-center justify-between p-6 border-b border-gray-100 ${analysis.color}`}>
+          <div
+            className={`flex items-center justify-between p-6 border-b border-gray-100 ${analysis.color}`}
+          >
             <div className="flex items-center gap-3">
               <div className="p-3 rounded-xl bg-white/90 shadow-sm">
                 {analysis.icon}
               </div>
               <div>
-                <h3 className="text-xl font-semibold text-gray-900">{analysis.title}</h3>
+                <h3 className="text-xl font-semibold text-gray-900">
+                  {analysis.title}
+                </h3>
                 <p className="text-sm text-gray-600">{analysis.description}</p>
               </div>
             </div>
@@ -74,24 +85,36 @@ const AnalysisDetailModal: React.FC<AnalysisDetailModalProps> = ({ isOpen, onClo
                     <div className="ml-2 group relative">
                       <Info className="h-4 w-4 text-gray-400" />
                       <div className="absolute left-0 bottom-full mb-2 hidden group-hover:block bg-gray-800 text-white text-xs p-2 rounded w-48">
-                        Scores are calculated based on AI analysis of interview data
+                        Scores are calculated based on AI analysis of interview
+                        data
                       </div>
                     </div>
                   </h4>
                   <div className="space-y-5">
                     {analysis.details.scores.map((score, index) => (
-                      <div key={index} className="bg-white rounded-xl p-4 border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                      <div
+                        key={index}
+                        className="bg-white rounded-xl p-4 border border-gray-100 shadow-sm hover:shadow-md transition-shadow"
+                      >
                         <div className="flex items-center justify-between mb-2">
-                          <span className="text-sm font-medium text-gray-900">{score.label}</span>
-                          <span className="text-sm font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded-full">{score.value}/10</span>
+                          <span className="text-sm font-medium text-gray-900">
+                            {score.label}
+                          </span>
+                          <span className="text-sm font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded-full">
+                            {score.value}/10
+                          </span>
                         </div>
                         <div className="w-full h-2 bg-gray-100 rounded-full mb-2">
-                          <div 
-                            className="h-full rounded-full bg-gradient-to-r from-blue-500 to-blue-600" 
-                            style={{ width: `${score.value * 10}%` }}
+                          <div
+                            className="h-full rounded-full bg-gradient-to-r from-blue-500 to-blue-600"
+                            style={{
+                              width: `${score.value * 10}%`,
+                            }}
                           />
                         </div>
-                        <p className="text-sm text-gray-600">{score.description}</p>
+                        <p className="text-sm text-gray-600">
+                          {score.description}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -100,11 +123,16 @@ const AnalysisDetailModal: React.FC<AnalysisDetailModalProps> = ({ isOpen, onClo
 
               {analysis.details.insights && (
                 <div>
-                  <h4 className="text-base font-medium text-gray-900 mb-4">Key Insights</h4>
+                  <h4 className="text-base font-medium text-gray-900 mb-4">
+                    Key Insights
+                  </h4>
                   <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
                     <ul className="divide-y divide-gray-100">
                       {analysis.details.insights.map((insight, index) => (
-                        <li key={index} className="p-4 hover:bg-gray-50 transition-colors">
+                        <li
+                          key={index}
+                          className="p-4 hover:bg-gray-50 transition-colors"
+                        >
                           <div className="flex items-start gap-3">
                             <div className="min-w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center mt-0.5">
                               <div className="w-1.5 h-1.5 rounded-full bg-blue-600" />
@@ -120,29 +148,38 @@ const AnalysisDetailModal: React.FC<AnalysisDetailModalProps> = ({ isOpen, onClo
 
               {analysis.details.recommendations && (
                 <div>
-                  <h4 className="text-base font-medium text-gray-900 mb-4">Recommendations</h4>
+                  <h4 className="text-base font-medium text-gray-900 mb-4">
+                    Recommendations
+                  </h4>
                   <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
                     <ul className="divide-y divide-gray-100">
-                      {analysis.details.recommendations.map((recommendation, index) => (
-                        <li key={index} className="p-4 hover:bg-gray-50 transition-colors">
-                          <div className="flex items-start gap-3">
-                            <div className="min-w-5 h-5 rounded-full bg-green-100 flex items-center justify-center mt-0.5">
-                              <div className="w-1.5 h-1.5 rounded-full bg-green-600" />
+                      {analysis.details.recommendations.map(
+                        (recommendation, index) => (
+                          <li
+                            key={index}
+                            className="p-4 hover:bg-gray-50 transition-colors"
+                          >
+                            <div className="flex items-start gap-3">
+                              <div className="min-w-5 h-5 rounded-full bg-green-100 flex items-center justify-center mt-0.5">
+                                <div className="w-1.5 h-1.5 rounded-full bg-green-600" />
+                              </div>
+                              <p className="text-sm text-gray-700">
+                                {recommendation}
+                              </p>
                             </div>
-                            <p className="text-sm text-gray-700">{recommendation}</p>
-                          </div>
-                        </li>
-                      ))}
+                          </li>
+                        ),
+                      )}
                     </ul>
                   </div>
                 </div>
               )}
             </div>
           </div>
-          
+
           {/* Footer */}
           <div className="p-4 bg-gray-50 border-t border-gray-100 flex justify-end">
-            <button 
+            <button
               onClick={onClose}
               className="px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors mr-2"
             >
@@ -191,30 +228,33 @@ const AIAnalysis = () => {
           {
             label: 'Response Quality',
             value: 8.5,
-            description: 'Measures the clarity, relevance, and depth of candidate responses'
+            description:
+              'Measures the clarity, relevance, and depth of candidate responses',
           },
           {
             label: 'Behavioral Indicators',
             value: 7.8,
-            description: 'Analysis of non-verbal cues and communication patterns'
+            description:
+              'Analysis of non-verbal cues and communication patterns',
           },
           {
             label: 'Problem-Solving',
             value: 8.2,
-            description: 'Evaluation of analytical and critical thinking skills'
-          }
+            description:
+              'Evaluation of analytical and critical thinking skills',
+          },
         ],
         insights: [
           'Strong ability to articulate complex ideas clearly',
           'Demonstrates active listening and thoughtful responses',
-          'Shows consistent engagement throughout the interview'
+          'Shows consistent engagement throughout the interview',
         ],
         recommendations: [
           'Consider follow-up questions on project management experience',
           'Explore scenarios involving team conflict resolution',
-          'Assess adaptability with more situational questions'
-        ]
-      }
+          'Assess adaptability with more situational questions',
+        ],
+      },
     },
     {
       title: 'Communication Skills',
@@ -228,30 +268,31 @@ const AIAnalysis = () => {
           {
             label: 'Verbal Communication',
             value: 8.7,
-            description: 'Clarity, articulation, and effectiveness of verbal expression'
+            description:
+              'Clarity, articulation, and effectiveness of verbal expression',
           },
           {
             label: 'Non-verbal Communication',
             value: 7.9,
-            description: 'Body language, facial expressions, and gestures'
+            description: 'Body language, facial expressions, and gestures',
           },
           {
             label: 'Active Listening',
             value: 8.4,
-            description: 'Engagement and responsiveness during conversations'
-          }
+            description: 'Engagement and responsiveness during conversations',
+          },
         ],
         insights: [
           'Excellent vocabulary and professional language use',
           'Maintains good eye contact and positive body language',
-          'Effectively uses pauses for emphasis and clarity'
+          'Effectively uses pauses for emphasis and clarity',
         ],
         recommendations: [
           'Practice more concise responses for technical questions',
           'Work on maintaining consistent energy levels',
-          'Consider incorporating more examples in responses'
-        ]
-      }
+          'Consider incorporating more examples in responses',
+        ],
+      },
     },
     {
       title: 'Technical Competency',
@@ -265,37 +306,40 @@ const AIAnalysis = () => {
           {
             label: 'Technical Knowledge',
             value: 8.9,
-            description: 'Understanding of required technical concepts and tools'
+            description:
+              'Understanding of required technical concepts and tools',
           },
           {
             label: 'Problem-Solving',
             value: 8.6,
-            description: 'Ability to analyze and solve technical challenges'
+            description: 'Ability to analyze and solve technical challenges',
           },
           {
             label: 'Best Practices',
             value: 8.3,
-            description: 'Adherence to coding standards and industry best practices'
-          }
+            description:
+              'Adherence to coding standards and industry best practices',
+          },
         ],
         insights: [
           'Strong foundation in core technical concepts',
           'Demonstrates systematic problem-solving approach',
-          'Shows awareness of current industry trends'
+          'Shows awareness of current industry trends',
         ],
         recommendations: [
           'Deep dive into system design experience',
           'Explore knowledge of testing methodologies',
-          'Assess experience with specific tech stack requirements'
-        ]
-      }
-    }
+          'Assess experience with specific tech stack requirements',
+        ],
+      },
+    },
   ];
 
   // Filter cards based on search term
-  const filteredCards = analysisCards.filter(card => 
-    card.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    card.description.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredCards = analysisCards.filter(
+    (card) =>
+      card.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      card.description.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   return (
@@ -305,33 +349,43 @@ const AIAnalysis = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="text-white">
             <h1 className="text-2xl font-bold">AI Analysis Dashboard</h1>
-            <p className="text-blue-100 mt-1">Gain data-driven insights from your interviews</p>
+            <p className="text-blue-100 mt-1">
+              Gain data-driven insights from your interviews
+            </p>
           </div>
           <div className="flex items-center gap-2">
-            <button 
+            <button
               onClick={handleRefresh}
               className="px-3 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg flex items-center transition-colors"
             >
-              <RefreshCw className={`h-4 w-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
+              <RefreshCw
+                className={`h-4 w-4 mr-2 ${isLoading ? 'animate-spin' : ''}`}
+              />
               Refresh
             </button>
-            <button 
+            <button
               onClick={() => setFilterOpen(!filterOpen)}
               className="px-3 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg flex items-center transition-colors"
             >
               <Filter className="h-4 w-4 mr-2" />
               Filter
-              {filterOpen ? <ChevronUp className="h-4 w-4 ml-2" /> : <ChevronDown className="h-4 w-4 ml-2" />}
+              {filterOpen ? (
+                <ChevronUp className="h-4 w-4 ml-2" />
+              ) : (
+                <ChevronDown className="h-4 w-4 ml-2" />
+              )}
             </button>
           </div>
         </div>
-        
+
         {/* Filter Panel */}
         {filterOpen && (
           <div className="mt-4 p-4 bg-white rounded-lg shadow-md">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Search</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Search
+                </label>
                 <div className="relative">
                   <input
                     type="text"
@@ -344,7 +398,9 @@ const AIAnalysis = () => {
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Time Range</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Time Range
+                </label>
                 <select
                   value={timeRange}
                   onChange={(e) => setTimeRange(e.target.value)}
@@ -380,15 +436,21 @@ const AIAnalysis = () => {
                   {card.icon}
                 </div>
                 <div className="flex flex-col items-end">
-                  <div className="text-lg font-bold text-gray-900">{card.value}</div>
+                  <div className="text-lg font-bold text-gray-900">
+                    {card.value}
+                  </div>
                   <div className="text-xs font-medium text-green-600">
                     {card.trend}
                   </div>
                 </div>
               </div>
-              <h3 className="text-base font-medium text-gray-900">{card.title}</h3>
-              <p className="text-sm text-gray-600 mt-1 mb-4">{card.description}</p>
-              
+              <h3 className="text-base font-medium text-gray-900">
+                {card.title}
+              </h3>
+              <p className="text-sm text-gray-600 mt-1 mb-4">
+                {card.description}
+              </p>
+
               {/* Score Visualization */}
               <div className="mt-4 mb-6">
                 <div className="flex items-center justify-between text-xs text-gray-500 mb-1">
@@ -396,14 +458,16 @@ const AIAnalysis = () => {
                   <span>10</span>
                 </div>
                 <div className="w-full h-2 bg-gray-100 rounded-full">
-                  <div 
-                    className="h-full rounded-full bg-gradient-to-r from-blue-500 to-blue-600" 
-                    style={{ width: `${parseFloat(card.value) * 10}%` }}
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-blue-500 to-blue-600"
+                    style={{
+                      width: `${parseFloat(card.value) * 10}%`,
+                    }}
                   />
                 </div>
               </div>
             </div>
-            
+
             <div className="bg-white p-4 border-t border-gray-100">
               <button
                 onClick={() => setSelectedAnalysis(index)}
@@ -423,13 +487,15 @@ const AIAnalysis = () => {
           <div className="p-3 rounded-xl bg-white shadow-sm">
             <Sparkles className="h-5 w-5 text-blue-600" />
           </div>
-          <h2 className="text-lg font-semibold text-gray-900">About AI Analysis</h2>
+          <h2 className="text-lg font-semibold text-gray-900">
+            About AI Analysis
+          </h2>
         </div>
         <p className="text-gray-600 mb-4">
-          Our AI-powered analysis provides deep insights into interview performance,
-          helping you make data-driven hiring decisions. The system evaluates multiple
-          aspects of each interview, including communication skills, technical competency,
-          and overall candidate fit.
+          Our AI-powered analysis provides deep insights into interview
+          performance, helping you make data-driven hiring decisions. The system
+          evaluates multiple aspects of each interview, including communication
+          skills, technical competency, and overall candidate fit.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
           <div className="bg-white p-4 rounded-lg border border-gray-100">
@@ -438,22 +504,28 @@ const AIAnalysis = () => {
               <h3 className="text-sm font-medium text-gray-900">Advanced AI</h3>
             </div>
             <p className="text-xs text-gray-600">
-              Powered by state-of-the-art machine learning models trained on thousands of interviews
+              Powered by state-of-the-art machine learning models trained on
+              thousands of interviews
             </p>
           </div>
           <div className="bg-white p-4 rounded-lg border border-gray-100">
             <div className="flex items-center gap-2 mb-2">
               <MessageSquare className="h-4 w-4 text-green-600" />
-              <h3 className="text-sm font-medium text-gray-900">Comprehensive Analysis</h3>
+              <h3 className="text-sm font-medium text-gray-900">
+                Comprehensive Analysis
+              </h3>
             </div>
             <p className="text-xs text-gray-600">
-              Evaluates verbal, non-verbal, and technical aspects of candidate performance
+              Evaluates verbal, non-verbal, and technical aspects of candidate
+              performance
             </p>
           </div>
           <div className="bg-white p-4 rounded-lg border border-gray-100">
             <div className="flex items-center gap-2 mb-2">
               <Code className="h-4 w-4 text-violet-600" />
-              <h3 className="text-sm font-medium text-gray-900">Actionable Insights</h3>
+              <h3 className="text-sm font-medium text-gray-900">
+                Actionable Insights
+              </h3>
             </div>
             <p className="text-xs text-gray-600">
               Provides specific recommendations to improve your hiring process
@@ -474,4 +546,4 @@ const AIAnalysis = () => {
   );
 };
 
-export default AIAnalysis; 
+export default AIAnalysis;

@@ -1,38 +1,38 @@
-import React from "react";
+import React from 'react';
 
 const logoFilenames = [
-  "Untitled design.svg",
-  "Untitled design (1).svg",
-  "Untitled design (2).svg",
-  "Untitled design (3).svg",
-  "Untitled design (4).svg",
-  "Untitled design (5).svg",
-  "Untitled design (6).svg",
-  "Untitled design (7).svg",
-  "Untitled design (8).svg",
-  "Untitled design (9).svg",
-  "Untitled design (10).svg",
-  "Untitled design (11).svg",
-  "Untitled design (12).svg",
-  "Untitled design (13).svg",
-  "Untitled design (14).svg",
-  "Untitled design (15).svg",
-  "Untitled design (16).svg",
-  "Untitled design (17).svg",
-  "Untitled design (18).svg",
-  "Untitled design (19).svg",
-  "Untitled design (20).svg",
-  "Untitled design (21).svg",
-  "Untitled design (22).svg",
-  "Untitled design (23).svg",
-  "Untitled design (24).svg",
-  "Untitled design (25).svg",
-  "Untitled design (26).svg",
-  "Untitled design (27).svg",
-  "Untitled design (28).svg",
-  "Untitled design (29).svg",
-  "Untitled design (30).svg",
-  "Untitled design (31).svg",
+  'Untitled design.svg',
+  'Untitled design (1).svg',
+  'Untitled design (2).svg',
+  'Untitled design (3).svg',
+  'Untitled design (4).svg',
+  'Untitled design (5).svg',
+  'Untitled design (6).svg',
+  'Untitled design (7).svg',
+  'Untitled design (8).svg',
+  'Untitled design (9).svg',
+  'Untitled design (10).svg',
+  'Untitled design (11).svg',
+  'Untitled design (12).svg',
+  'Untitled design (13).svg',
+  'Untitled design (14).svg',
+  'Untitled design (15).svg',
+  'Untitled design (16).svg',
+  'Untitled design (17).svg',
+  'Untitled design (18).svg',
+  'Untitled design (19).svg',
+  'Untitled design (20).svg',
+  'Untitled design (21).svg',
+  'Untitled design (22).svg',
+  'Untitled design (23).svg',
+  'Untitled design (24).svg',
+  'Untitled design (25).svg',
+  'Untitled design (26).svg',
+  'Untitled design (27).svg',
+  'Untitled design (28).svg',
+  'Untitled design (29).svg',
+  'Untitled design (30).svg',
+  'Untitled design (31).svg',
 ];
 
 const LogoCarousel: React.FC = () => {
@@ -42,8 +42,7 @@ const LogoCarousel: React.FC = () => {
         <div className="mb-6 text-center">
           <span className="text-black text-lg font-medium">
             Seamlessly integrates with
-            <br className="sm:hidden" />
-            {" "}popular ATS platforms.
+            <br className="sm:hidden" /> popular ATS platforms.
           </span>
         </div>
 
@@ -52,9 +51,9 @@ const LogoCarousel: React.FC = () => {
           className="relative h-24 overflow-hidden"
           style={{
             maskImage:
-              "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
+              'linear-gradient(to right, transparent, black 10%, black 90%, transparent)',
             WebkitMaskImage:
-              "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
+              'linear-gradient(to right, transparent, black 10%, black 90%, transparent)',
           }}
         >
           <div className="logo-carousel-track flex gap-12">
@@ -68,7 +67,10 @@ const LogoCarousel: React.FC = () => {
                   alt="Logo"
                   className="max-h-16 max-w-[120px] object-contain"
                   draggable="false"
-                  style={{ width: "auto", height: "64px" }}
+                  style={{
+                    width: 'auto',
+                    height: '64px',
+                  }}
                 />
               </div>
             ))}

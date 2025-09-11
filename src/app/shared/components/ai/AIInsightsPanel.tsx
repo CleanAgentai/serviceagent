@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Card } from '../Card';
-import { Sparkles, Loader2, AlertCircle, ChevronDown, ChevronUp, ThumbsUp, ThumbsDown } from 'lucide-react';
+import {
+  Sparkles,
+  Loader2,
+  AlertCircle,
+  ChevronDown,
+  ChevronUp,
+  ThumbsUp,
+  ThumbsDown,
+} from 'lucide-react';
 import { tokens } from '@/app/shared/styles/tokens';
 
 export interface InsightItem {
@@ -48,7 +56,7 @@ export const AIInsightsPanel: React.FC<AIInsightsPanelProps> = ({
   refreshInterval,
   collapsible = true,
   initiallyCollapsed = false,
-  emptyMessage = 'No insights available at this time.'
+  emptyMessage = 'No insights available at this time.',
 }) => {
   const [insights, setInsights] = useState<InsightItem[]>(propInsights || []);
   const [loading, setLoading] = useState<boolean>(propLoading);
@@ -67,12 +75,14 @@ export const AIInsightsPanel: React.FC<AIInsightsPanelProps> = ({
     const fetchInsights = async () => {
       setLoading(true);
       setError(undefined);
-      
+
       try {
         const newInsights = await onGenerateInsights(data);
         setInsights(newInsights);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to generate insights');
+        setError(
+          err instanceof Error ? err.message : 'Failed to generate insights',
+        );
       } finally {
         setLoading(false);
       }
@@ -183,20 +193,28 @@ export const AIInsightsPanel: React.FC<AIInsightsPanelProps> = ({
                     {/* Insight Content */}
                     <div className="space-y-2">
                       <div className="flex items-center">
-                        <h4 className="font-medium text-gray-900">{insight.title}</h4>
+                        <h4 className="font-medium text-gray-900">
+                          {insight.title}
+                        </h4>
                         {insight.category && (
                           <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800">
                             {insight.category}
                           </span>
                         )}
                         {insight.priority && (
-                          <span className={`ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${getPriorityColor(insight.priority)}`}>
-                            {insight.priority.charAt(0).toUpperCase() + insight.priority.slice(1)} Priority
+                          <span
+                            className={`ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${getPriorityColor(insight.priority)}`}
+                          >
+                            {insight.priority.charAt(0).toUpperCase() +
+                              insight.priority.slice(1)}{' '}
+                            Priority
                           </span>
                         )}
                       </div>
-                      <p className="text-sm text-gray-600">{insight.description}</p>
-                      
+                      <p className="text-sm text-gray-600">
+                        {insight.description}
+                      </p>
+
                       {/* Action Button */}
                       {insight.actionable && insight.action && (
                         <div className="mt-2">
@@ -209,7 +227,7 @@ export const AIInsightsPanel: React.FC<AIInsightsPanelProps> = ({
                         </div>
                       )}
                     </div>
-                    
+
                     {/* Feedback buttons */}
                     {onFeedback && (
                       <div className="flex items-start space-x-1 ml-2">
@@ -240,4 +258,4 @@ export const AIInsightsPanel: React.FC<AIInsightsPanelProps> = ({
       )}
     </Card>
   );
-}; 
+};

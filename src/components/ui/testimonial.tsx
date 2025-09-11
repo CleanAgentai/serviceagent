@@ -1,19 +1,19 @@
-import * as React from "react"
-import { motion, PanInfo } from "framer-motion"
-import { cn } from "@/lib/utils"
+import * as React from 'react';
+import { motion, PanInfo } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 interface Testimonial {
-  id: number | string
-  name: string
-  avatar: string
-  description: string
+  id: number | string;
+  name: string;
+  avatar: string;
+  description: string;
 }
 
 interface TestimonialCarouselProps
   extends React.HTMLAttributes<HTMLDivElement> {
-  testimonials: Testimonial[]
-  showArrows?: boolean
-  showDots?: boolean
+  testimonials: Testimonial[];
+  showArrows?: boolean;
+  showDots?: boolean;
 }
 
 const TestimonialCarousel = React.forwardRef<
@@ -24,53 +24,53 @@ const TestimonialCarousel = React.forwardRef<
     { className, testimonials, showArrows = true, showDots = true, ...props },
     ref,
   ) => {
-    const [currentIndex, setCurrentIndex] = React.useState(0)
-    const [exitX, setExitX] = React.useState<number>(0)
+    const [currentIndex, setCurrentIndex] = React.useState(0);
+    const [exitX, setExitX] = React.useState<number>(0);
 
     const handleDragEnd = (
       event: MouseEvent | TouchEvent | PointerEvent,
       info: PanInfo,
     ) => {
       if (Math.abs(info.offset.x) > 100) {
-        setExitX(info.offset.x)
+        setExitX(info.offset.x);
         setTimeout(() => {
-          setCurrentIndex((prev) => (prev + 1) % testimonials.length)
-          setExitX(0)
-        }, 200)
+          setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+          setExitX(0);
+        }, 200);
       }
-    }
+    };
 
     return (
       <div
         ref={ref}
         className={cn(
-          "h-72 w-full flex items-center justify-center",
-          className
+          'h-72 w-full flex items-center justify-center',
+          className,
         )}
         {...props}
       >
         <div className="relative w-80 h-64">
           {testimonials.map((testimonial, index) => {
-            const isCurrentCard = index === currentIndex
+            const isCurrentCard = index === currentIndex;
             const isPrevCard =
-              index === (currentIndex + 1) % testimonials.length
+              index === (currentIndex + 1) % testimonials.length;
             const isNextCard =
-              index === (currentIndex + 2) % testimonials.length
+              index === (currentIndex + 2) % testimonials.length;
 
-            if (!isCurrentCard && !isPrevCard && !isNextCard) return null
+            if (!isCurrentCard && !isPrevCard && !isNextCard) return null;
 
             return (
               <motion.div
                 key={testimonial.id}
                 className={cn(
-                  "absolute w-full h-full rounded-2xl cursor-grab active:cursor-grabbing",
-                  "bg-white shadow-xl",
-                  "dark:bg-card dark:shadow-[2px_2px_4px_rgba(0,0,0,0.4),-1px_-1px_3px_rgba(255,255,255,0.1)]",
+                  'absolute w-full h-full rounded-2xl cursor-grab active:cursor-grabbing',
+                  'bg-white shadow-xl',
+                  'dark:bg-card dark:shadow-[2px_2px_4px_rgba(0,0,0,0.4),-1px_-1px_3px_rgba(255,255,255,0.1)]',
                 )}
                 style={{
                   zIndex: isCurrentCard ? 3 : isPrevCard ? 2 : 1,
                 }}
-                drag={isCurrentCard ? "x" : false}
+                drag={isCurrentCard ? 'x' : false}
                 dragConstraints={{ left: 0, right: 0 }}
                 dragElastic={0.7}
                 onDragEnd={isCurrentCard ? handleDragEnd : undefined}
@@ -88,7 +88,7 @@ const TestimonialCarousel = React.forwardRef<
                   rotate: isCurrentCard ? exitX / 20 : isPrevCard ? -2 : -4,
                 }}
                 transition={{
-                  type: "spring",
+                  type: 'spring',
                   stiffness: 300,
                   damping: 20,
                 }}
@@ -118,7 +118,7 @@ const TestimonialCarousel = React.forwardRef<
                   </p>
                 </div>
               </motion.div>
-            )
+            );
           })}
           {showDots && (
             <div className="absolute -bottom-8 left-0 right-0 flex justify-center gap-2">
@@ -126,10 +126,10 @@ const TestimonialCarousel = React.forwardRef<
                 <div
                   key={index}
                   className={cn(
-                    "w-2 h-2 rounded-full transition-colors",
+                    'w-2 h-2 rounded-full transition-colors',
                     index === currentIndex
-                      ? "bg-blue-500 dark:bg-primary"
-                      : "bg-gray-300 dark:bg-muted-foreground/30",
+                      ? 'bg-blue-500 dark:bg-primary'
+                      : 'bg-gray-300 dark:bg-muted-foreground/30',
                   )}
                 />
               ))}
@@ -137,9 +137,9 @@ const TestimonialCarousel = React.forwardRef<
           )}
         </div>
       </div>
-    )
+    );
   },
-)
-TestimonialCarousel.displayName = "TestimonialCarousel"
+);
+TestimonialCarousel.displayName = 'TestimonialCarousel';
 
-export { TestimonialCarousel, type Testimonial }
+export { TestimonialCarousel, type Testimonial };

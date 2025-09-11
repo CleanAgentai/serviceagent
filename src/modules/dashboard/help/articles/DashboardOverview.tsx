@@ -1,5 +1,12 @@
 import React from 'react';
-import { ArrowLeft, Clock, LayoutDashboard, BarChart, Users, Calendar } from 'lucide-react';
+import {
+  ArrowLeft,
+  Clock,
+  LayoutDashboard,
+  BarChart,
+  Users,
+  Calendar,
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function DashboardOverview() {
@@ -29,7 +36,9 @@ export default function DashboardOverview() {
             <span>8 min read</span>
           </div>
           <p className="text-lg text-gray-600">
-            Learn how to navigate and make the most of your CleanAgent.AI dashboard. Discover key features, analytics, and tools that will help you manage your cleaning business efficiently.
+            Learn how to navigate and make the most of your CleanAgent.AI
+            dashboard. Discover key features, analytics, and tools that will
+            help you manage your cleaning business efficiently.
           </p>
         </div>
 
@@ -41,11 +50,15 @@ export default function DashboardOverview() {
               <div className="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center mr-4">
                 <LayoutDashboard className="h-6 w-6 text-indigo-600" />
               </div>
-              <h2 className="text-2xl font-semibold text-gray-900">Dashboard Layout</h2>
+              <h2 className="text-2xl font-semibold text-gray-900">
+                Dashboard Layout
+              </h2>
             </div>
             <div className="space-y-6">
               <div className="bg-gray-50 rounded-lg p-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Navigation</h3>
+                <h3 className="text-lg font-medium text-gray-900 mb-4">
+                  Navigation
+                </h3>
                 <ul className="space-y-4 text-gray-600">
                   <li>• Main navigation menu overview</li>
                   <li>• Quick access toolbar</li>
@@ -54,7 +67,9 @@ export default function DashboardOverview() {
                 </ul>
               </div>
               <div className="bg-gray-50 rounded-lg p-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Key Sections</h3>
+                <h3 className="text-lg font-medium text-gray-900 mb-4">
+                  Key Sections
+                </h3>
                 <ul className="space-y-4 text-gray-600">
                   <li>• Overview and summary cards</li>
                   <li>• Activity feed and notifications</li>
@@ -71,11 +86,15 @@ export default function DashboardOverview() {
               <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center mr-4">
                 <BarChart className="h-6 w-6 text-blue-600" />
               </div>
-              <h2 className="text-2xl font-semibold text-gray-900">Analytics & Reports</h2>
+              <h2 className="text-2xl font-semibold text-gray-900">
+                Analytics & Reports
+              </h2>
             </div>
             <div className="space-y-6">
               <div className="bg-gray-50 rounded-lg p-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Performance Metrics</h3>
+                <h3 className="text-lg font-medium text-gray-900 mb-4">
+                  Performance Metrics
+                </h3>
                 <ul className="space-y-4 text-gray-600">
                   <li>• Revenue and growth tracking</li>
                   <li>• Customer satisfaction scores</li>
@@ -84,7 +103,9 @@ export default function DashboardOverview() {
                 </ul>
               </div>
               <div className="bg-gray-50 rounded-lg p-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Custom Reports</h3>
+                <h3 className="text-lg font-medium text-gray-900 mb-4">
+                  Custom Reports
+                </h3>
                 <ul className="space-y-4 text-gray-600">
                   <li>• Report generation tools</li>
                   <li>• Data visualization options</li>
@@ -101,11 +122,15 @@ export default function DashboardOverview() {
               <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center mr-4">
                 <Users className="h-6 w-6 text-green-600" />
               </div>
-              <h2 className="text-2xl font-semibold text-gray-900">Team Management</h2>
+              <h2 className="text-2xl font-semibold text-gray-900">
+                Team Management
+              </h2>
             </div>
             <div className="space-y-6">
               <div className="bg-gray-50 rounded-lg p-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Team Overview</h3>
+                <h3 className="text-lg font-medium text-gray-900 mb-4">
+                  Team Overview
+                </h3>
                 <ul className="space-y-4 text-gray-600">
                   <li>• Team member directory</li>
                   <li>• Role assignments</li>
@@ -114,7 +139,9 @@ export default function DashboardOverview() {
                 </ul>
               </div>
               <div className="bg-gray-50 rounded-lg p-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Task Management</h3>
+                <h3 className="text-lg font-medium text-gray-900 mb-4">
+                  Task Management
+                </h3>
                 <ul className="space-y-4 text-gray-600">
                   <li>• Task assignment tools</li>
                   <li>• Progress tracking</li>
@@ -131,11 +158,15 @@ export default function DashboardOverview() {
               <div className="h-10 w-10 rounded-full bg-yellow-100 flex items-center justify-center mr-4">
                 <Calendar className="h-6 w-6 text-yellow-600" />
               </div>
-              <h2 className="text-2xl font-semibold text-gray-900">Calendar & Scheduling</h2>
+              <h2 className="text-2xl font-semibold text-gray-900">
+                Calendar & Scheduling
+              </h2>
             </div>
             <div className="space-y-6">
               <div className="bg-gray-50 rounded-lg p-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Calendar Features</h3>
+                <h3 className="text-lg font-medium text-gray-900 mb-4">
+                  Calendar Features
+                </h3>
                 <ul className="space-y-4 text-gray-600">
                   <li>• Calendar views and navigation</li>
                   <li>• Appointment scheduling</li>
@@ -144,7 +175,9 @@ export default function DashboardOverview() {
                 </ul>
               </div>
               <div className="bg-gray-50 rounded-lg p-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Scheduling Tools</h3>
+                <h3 className="text-lg font-medium text-gray-900 mb-4">
+                  Scheduling Tools
+                </h3>
                 <ul className="space-y-4 text-gray-600">
                   <li>• Automated scheduling</li>
                   <li>• Resource allocation</li>
@@ -157,7 +190,9 @@ export default function DashboardOverview() {
 
           {/* Additional Resources */}
           <section className="bg-gradient-to-r from-indigo-50 to-blue-50 rounded-xl p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Additional Resources</h2>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">
+              Additional Resources
+            </h2>
             <p className="text-gray-600 mb-4">
               Explore these resources to master your CleanAgent.AI dashboard:
             </p>
@@ -186,4 +221,4 @@ export default function DashboardOverview() {
       </div>
     </div>
   );
-} 
+}

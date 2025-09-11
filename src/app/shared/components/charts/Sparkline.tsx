@@ -21,19 +21,19 @@ export const Sparkline: React.FC<SparklineProps> = ({
   width = '100%',
   strokeWidth = 2,
   className = '',
-  trend = 'neutral'
+  trend = 'neutral',
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Set color based on trend if not explicitly provided
-  const lineColor = color || 
-    (trend === 'up' 
+  const lineColor =
+    color ||
+    (trend === 'up'
       ? '#10B981' // green
-      : trend === 'down' 
+      : trend === 'down'
         ? '#EF4444' // red
-        : '#3B82F6' // blue
-    );
+        : '#3B82F6'); // blue
 
   useEffect(() => {
     if (!canvasRef.current || !containerRef.current || data.length < 2) return;
@@ -55,7 +55,7 @@ export const Sparkline: React.FC<SparklineProps> = ({
     const max = Math.max(...data);
     const min = Math.min(...data);
     const range = max - min || 1; // Avoid division by zero
-    
+
     // Draw line
     ctx.beginPath();
     ctx.strokeStyle = lineColor;
@@ -68,8 +68,10 @@ export const Sparkline: React.FC<SparklineProps> = ({
       // Normalize value between 0 and 1, then scale to canvas height
       // Leave 10% padding at top and bottom
       const normalizedValue = (value - min) / range;
-      const y = canvas.height - (normalizedValue * (canvas.height * 0.8) + canvas.height * 0.1);
-      
+      const y =
+        canvas.height -
+        (normalizedValue * (canvas.height * 0.8) + canvas.height * 0.1);
+
       if (i === 0) {
         ctx.moveTo(x, y);
       } else {
@@ -81,15 +83,15 @@ export const Sparkline: React.FC<SparklineProps> = ({
   }, [data, height, lineColor, strokeWidth]);
 
   return (
-    <div 
-      ref={containerRef} 
-      className={className} 
-      style={{ 
+    <div
+      ref={containerRef}
+      className={className}
+      style={{
         width: typeof width === 'number' ? `${width}px` : width,
-        height: typeof height === 'number' ? `${height}px` : height
+        height: typeof height === 'number' ? `${height}px` : height,
       }}
     >
       <canvas ref={canvasRef} style={{ width: '100%', height: '100%' }} />
     </div>
   );
-}; 
+};

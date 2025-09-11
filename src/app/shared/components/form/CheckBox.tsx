@@ -1,6 +1,7 @@
 import React, { InputHTMLAttributes } from 'react';
 
-export interface CheckBoxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'id' | 'type'> {
+export interface CheckBoxProps
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'id' | 'type'> {
   id: string;
   label: string;
   helperText?: string;
@@ -43,14 +44,16 @@ export const CheckBox: React.FC<CheckBoxProps> = ({
               ${className}
             `}
             aria-invalid={!!error}
-            aria-describedby={helperText || error ? `${id}-description` : undefined}
+            aria-describedby={
+              helperText || error ? `${id}-description` : undefined
+            }
             required={required}
             {...rest}
           />
         </div>
         <div className="ml-3 text-sm">
-          <label 
-            htmlFor={id} 
+          <label
+            htmlFor={id}
             className={`
               font-medium 
               ${error ? 'text-red-500' : 'text-gray-700'}
@@ -61,11 +64,11 @@ export const CheckBox: React.FC<CheckBoxProps> = ({
             {label}
             {required && <span className="text-red-500 ml-1">*</span>}
           </label>
-          
+
           {/* Helper Text or Error Message */}
           {(helperText || error) && (
-            <p 
-              id={`${id}-description`} 
+            <p
+              id={`${id}-description`}
               className={`mt-1 text-xs ${error ? 'text-red-500' : 'text-gray-500'}`}
             >
               {error || helperText}
@@ -75,4 +78,4 @@ export const CheckBox: React.FC<CheckBoxProps> = ({
       </div>
     </div>
   );
-}; 
+};

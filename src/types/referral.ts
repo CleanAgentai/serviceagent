@@ -1,4 +1,9 @@
-export type ReferralStatus = 'pending' | 'contacted' | 'qualified' | 'converted' | 'rejected';
+export type ReferralStatus =
+  | 'pending'
+  | 'contacted'
+  | 'qualified'
+  | 'converted'
+  | 'rejected';
 
 export interface Referral {
   id: string;
@@ -138,4 +143,4 @@ export interface ReferralCampaign {
     conversions: number;
     totalRewards: number;
   };
-} 
+}

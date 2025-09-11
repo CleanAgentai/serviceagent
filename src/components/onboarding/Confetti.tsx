@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
-import Confetti from "react-confetti";
-import { useWindowSize } from "react-use";
-import { useAuth } from "@/app/providers/AuthContext";
-import { supabase } from "@/app/lib/supabase";
-import { useLocation } from "react-router-dom";
+import React, { useEffect, useRef, useState } from 'react';
+import Confetti from 'react-confetti';
+import { useWindowSize } from 'react-use';
+import { useAuth } from '@/app/providers/AuthContext';
+import { supabase } from '@/app/lib/supabase';
+import { useLocation } from 'react-router-dom';
 
 export default function LoggedInConfetti({
   durationMs = 6000,
@@ -27,22 +27,22 @@ export default function LoggedInConfetti({
   async function maybeCelebrate() {
     if (!user) return;
     const KEY = `confetti_firstTwoDone:${user.id}`;
-    if (localStorage.getItem(KEY) === "true") return;
+    if (localStorage.getItem(KEY) === 'true') return;
 
     const { data, error } = await supabase
-      .from("company_profiles")
-      .select("completion_bitmask")
-      .eq("created_by_user_id", user.id)
+      .from('company_profiles')
+      .select('completion_bitmask')
+      .eq('created_by_user_id', user.id)
       .single();
 
     if (error) {
-      console.error("confetti bitmask fetch error:", error);
+      console.error('confetti bitmask fetch error:', error);
       return;
     }
 
-    const bm = String(data?.completion_bitmask ?? "");
-    if (bm.startsWith("11")) {
-      localStorage.setItem(KEY, "true");
+    const bm = String(data?.completion_bitmask ?? '');
+    if (bm.startsWith('11')) {
+      localStorage.setItem(KEY, 'true');
       setPieces(startPieces);
       setShow(true);
 
@@ -81,17 +81,17 @@ export default function LoggedInConfetti({
       />
       <div
         style={{
-          position: "fixed",
-          top: "20%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          textAlign: "center",
-          background: "rgba(255,255,255,0.95)",
-          padding: "1.25rem 2rem",
-          borderRadius: "10px",
-          boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
+          position: 'fixed',
+          top: '20%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          textAlign: 'center',
+          background: 'rgba(255,255,255,0.95)',
+          padding: '1.25rem 2rem',
+          borderRadius: '10px',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
           zIndex: 9999,
-          animation: "fadeInOut 9s ease forwards",
+          animation: 'fadeInOut 9s ease forwards',
         }}
       >
         <p className="text-sm text-gray-700 mb-4 leading-relaxed">

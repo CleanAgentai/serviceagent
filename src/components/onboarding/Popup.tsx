@@ -1,14 +1,17 @@
-import React, { useState } from "react";
-import { X, ArrowRight, Check } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import { Button } from "../ui/button";
+import React, { useState } from 'react';
+import { X, ArrowRight, Check } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Button } from '../ui/button';
 
 interface GlobalPopupProps {
   onClose: () => void;
   onDismissPermanently: () => void;
 }
 
-export function GlobalPopup({ onClose, onDismissPermanently }: GlobalPopupProps) {
+export function GlobalPopup({
+  onClose,
+  onDismissPermanently,
+}: GlobalPopupProps) {
   const [dontShowAgain, setDontShowAgain] = useState(false);
   const navigate = useNavigate();
 
@@ -26,7 +29,7 @@ export function GlobalPopup({ onClose, onDismissPermanently }: GlobalPopupProps)
     } else {
       onClose();
     }
-    navigate("/dashboard/onboarding");
+    navigate('/dashboard/onboarding');
   };
 
   return (
@@ -45,7 +48,7 @@ export function GlobalPopup({ onClose, onDismissPermanently }: GlobalPopupProps)
           Welcome to ServiceAgent!
         </h2>
         <h4 className="text-sm text-gray-700 leading-relaxed mb-4">
-            Let's get your first interview live in a few minutes.
+          Let's get your first interview live in a few minutes.
         </h4>
 
         {/* Body Text */}
@@ -61,17 +64,15 @@ export function GlobalPopup({ onClose, onDismissPermanently }: GlobalPopupProps)
             type="button"
             onClick={() => setDontShowAgain(!dontShowAgain)}
             className={`w-6 h-6 flex items-center justify-center rounded-xl shrink-0 transition-colors duration-200 ${
-              dontShowAgain 
-                ? 'bg-blue-600 hover:bg-blue-700' 
+              dontShowAgain
+                ? 'bg-blue-600 hover:bg-blue-700'
                 : 'bg-gray-200 hover:bg-gray-300'
             }`}
           >
-            {dontShowAgain && (
-              <Check className="w-4 h-4 text-white" />
-            )}
+            {dontShowAgain && <Check className="w-4 h-4 text-white" />}
           </button>
-          <label 
-            htmlFor="dont-show-again" 
+          <label
+            htmlFor="dont-show-again"
             className="text-sm text-gray-600 cursor-pointer"
             onClick={() => setDontShowAgain(!dontShowAgain)}
           >
@@ -80,9 +81,11 @@ export function GlobalPopup({ onClose, onDismissPermanently }: GlobalPopupProps)
         </div>
 
         {/* CTA */}
-        <Button className="group w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-full
-          border-0 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center" 
-          onClick={handleGetStarted}>
+        <Button
+          className="group w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-full
+          border-0 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center"
+          onClick={handleGetStarted}
+        >
           Get Started
           <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
         </Button>

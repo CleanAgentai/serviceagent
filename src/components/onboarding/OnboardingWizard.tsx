@@ -31,13 +31,13 @@ const OnboardingWizard: React.FC<OnboardingWizardProps> = ({
     if (isLastStep) {
       onComplete();
     } else {
-      setCompletedSteps(prev => new Set([...prev, currentStep.id]));
-      setCurrentStepIndex(prev => prev + 1);
+      setCompletedSteps((prev) => new Set([...prev, currentStep.id]));
+      setCurrentStepIndex((prev) => prev + 1);
     }
   };
 
   const handleBack = () => {
-    setCurrentStepIndex(prev => prev - 1);
+    setCurrentStepIndex((prev) => prev - 1);
   };
 
   const handleSkip = () => {
@@ -63,8 +63,8 @@ const OnboardingWizard: React.FC<OnboardingWizardProps> = ({
                       completedSteps.has(step.id)
                         ? 'bg-green-500 text-white'
                         : index === currentStepIndex
-                        ? 'bg-blue-500 text-white'
-                        : 'bg-gray-200 text-gray-500'
+                          ? 'bg-blue-500 text-white'
+                          : 'bg-gray-200 text-gray-500'
                     }
                   `}
                 >
@@ -138,4 +138,4 @@ const OnboardingWizard: React.FC<OnboardingWizardProps> = ({
   );
 };
 
-export default OnboardingWizard; 
+export default OnboardingWizard;

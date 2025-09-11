@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Calendar,
   Clock,
@@ -15,30 +15,30 @@ import {
   CheckCircle2,
   AlertCircle,
   Brain,
-} from "lucide-react";
-import { useNavigate } from "react-router-dom";
+} from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const CreateInterview = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [skills, setSkills] = useState<string[]>([]);
-  const [newSkill, setNewSkill] = useState("");
+  const [newSkill, setNewSkill] = useState('');
   const [questions, setQuestions] = useState<string[]>([]);
-  const [newQuestion, setNewQuestion] = useState("");
+  const [newQuestion, setNewQuestion] = useState('');
 
   // Form data state
   const [formData, setFormData] = useState({
-    candidateName: "",
-    position: "",
-    date: "",
-    time: "",
-    department: "",
-    experienceLevel: "",
-    jobDescription: "",
-    keyResponsibilities: "",
-    aiStyle: "conversational",
-    duration: "30",
-    aiPersonality: "professional",
+    candidateName: '',
+    position: '',
+    date: '',
+    time: '',
+    department: '',
+    experienceLevel: '',
+    jobDescription: '',
+    keyResponsibilities: '',
+    aiStyle: 'conversational',
+    duration: '30',
+    aiPersonality: 'professional',
     followUpDepth: 3,
     settings: {
       realTimeFeedback: false,
@@ -50,27 +50,27 @@ const CreateInterview = () => {
   const steps = [
     {
       number: 1,
-      title: "Basic Details",
+      title: 'Basic Details',
       icon: <User />,
-      description: "Enter candidate and scheduling information",
+      description: 'Enter candidate and scheduling information',
     },
     {
       number: 2,
-      title: "Job Requirements",
+      title: 'Job Requirements',
       icon: <Briefcase />,
-      description: "Define position requirements and responsibilities",
+      description: 'Define position requirements and responsibilities',
     },
     {
       number: 3,
-      title: "Interview Questions",
+      title: 'Interview Questions',
       icon: <MessageSquare />,
-      description: "Prepare interview questions and topics",
+      description: 'Prepare interview questions and topics',
     },
     {
       number: 4,
-      title: "AI Configuration",
+      title: 'AI Configuration',
       icon: <Settings />,
-      description: "Configure AI interviewer settings",
+      description: 'Configure AI interviewer settings',
     },
   ];
 
@@ -78,7 +78,7 @@ const CreateInterview = () => {
   const handleInputChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    >,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -110,35 +110,35 @@ const CreateInterview = () => {
       const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
       const response = await fetch(`${apiBaseUrl}/api/interviews`, {
-        method: "Post",
+        method: 'Post',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(interviewData),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to create interview");
+        throw new Error('Failed to create interview');
       }
 
       const result = await response.json();
-      console.log("Willow response:", result);
+      console.log('Willow response:', result);
 
       // Show success message
-      alert("Interview created successfully!");
+      alert('Interview created successfully!');
 
       // Navigate back to interviews list
-      navigate("/dashboard/view-interviews");
+      navigate('/dashboard/view-interviews');
     } catch (error) {
-      console.error("Error creating interview:", error);
-      alert("Failed to create interview. Please try again.");
+      console.error('Error creating interview:', error);
+      alert('Failed to create interview. Please try again.');
     }
   };
 
   const handleAddSkill = () => {
     if (newSkill.trim() && !skills.includes(newSkill.trim())) {
       setSkills([...skills, newSkill.trim()]);
-      setNewSkill("");
+      setNewSkill('');
     }
   };
 
@@ -147,7 +147,7 @@ const CreateInterview = () => {
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       e.preventDefault();
       handleAddSkill();
     }
@@ -156,7 +156,7 @@ const CreateInterview = () => {
   const handleAddQuestion = () => {
     if (newQuestion.trim() && !questions.includes(newQuestion.trim())) {
       setQuestions([...questions, newQuestion.trim()]);
-      setNewQuestion("");
+      setNewQuestion('');
     }
   };
 
@@ -165,7 +165,7 @@ const CreateInterview = () => {
   };
 
   const handleQuestionKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       e.preventDefault();
       handleAddQuestion();
     }
@@ -178,7 +178,7 @@ const CreateInterview = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="text-white">
             <button
-              onClick={() => navigate("/dashboard")}
+              onClick={() => navigate('/dashboard')}
               className="flex items-center text-blue-100 hover:text-white mb-4 transition-colors"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
@@ -194,8 +194,8 @@ const CreateInterview = () => {
               onClick={() => setStep(Math.max(1, step - 1))}
               className={`px-5 py-2.5 text-sm font-medium rounded-lg transition-colors ${
                 step === 1
-                  ? "bg-white/10 text-white/40 cursor-not-allowed"
-                  : "bg-white/20 text-white hover:bg-white/30"
+                  ? 'bg-white/10 text-white/40 cursor-not-allowed'
+                  : 'bg-white/20 text-white hover:bg-white/30'
               }`}
               disabled={step === 1}
             >
@@ -209,7 +209,7 @@ const CreateInterview = () => {
               }
               className="px-5 py-2.5 bg-white text-blue-700 text-sm font-medium rounded-lg hover:bg-blue-500 transition-colors shadow-sm"
             >
-              {step === 4 ? "Create Interview" : "Next"}
+              {step === 4 ? 'Create Interview' : 'Next'}
             </button>
           </div>
         </div>
@@ -222,16 +222,16 @@ const CreateInterview = () => {
             <div
               key={index}
               className={`flex items-center ${
-                index < steps.length - 1 ? "flex-1" : ""
+                index < steps.length - 1 ? 'flex-1' : ''
               }`}
             >
               <div
                 className={`flex items-center justify-center w-12 h-12 rounded-xl ${
                   step > s.number
-                    ? "bg-green-50 text-green-600"
+                    ? 'bg-green-50 text-green-600'
                     : step === s.number
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-50 text-gray-400"
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-50 text-gray-400'
                 }`}
               >
                 {step > s.number ? (
@@ -243,7 +243,7 @@ const CreateInterview = () => {
               <div className="ml-4 flex-1">
                 <p
                   className={`text-sm font-medium ${
-                    step >= s.number ? "text-gray-900" : "text-gray-500"
+                    step >= s.number ? 'text-gray-900' : 'text-gray-500'
                   }`}
                 >
                   Step {s.number} - {s.title}
@@ -514,7 +514,7 @@ const CreateInterview = () => {
                       <button
                         onClick={() =>
                           setNewQuestion(
-                            "Can you describe a challenging project you've worked on and how you handled it?"
+                            "Can you describe a challenging project you've worked on and how you handled it?",
                           )
                         }
                         className="w-full text-left p-3 text-sm text-blue-700 hover:bg-blue-100/50 rounded-lg transition-colors"
@@ -525,7 +525,7 @@ const CreateInterview = () => {
                       <button
                         onClick={() =>
                           setNewQuestion(
-                            "How do you approach problem-solving in your work?"
+                            'How do you approach problem-solving in your work?',
                           )
                         }
                         className="w-full text-left p-3 text-sm text-blue-700 hover:bg-blue-100/50 rounded-lg transition-colors"
@@ -535,7 +535,7 @@ const CreateInterview = () => {
                       <button
                         onClick={() =>
                           setNewQuestion(
-                            "What are your career goals and how does this position align with them?"
+                            'What are your career goals and how does this position align with them?',
                           )
                         }
                         className="w-full text-left p-3 text-sm text-blue-700 hover:bg-blue-100/50 rounded-lg transition-colors"
@@ -642,23 +642,23 @@ const CreateInterview = () => {
                             type="checkbox"
                             checked={formData.settings.realTimeFeedback}
                             onChange={() =>
-                              handleSettingToggle("realTimeFeedback")
+                              handleSettingToggle('realTimeFeedback')
                             }
                             className="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-transform duration-200 ease-in-out"
                             style={{
                               transform: formData.settings.realTimeFeedback
-                                ? "translateX(100%)"
-                                : "translateX(0)",
+                                ? 'translateX(100%)'
+                                : 'translateX(0)',
                               borderColor: formData.settings.realTimeFeedback
-                                ? "#2563eb"
-                                : "#d1d5db",
+                                ? '#2563eb'
+                                : '#d1d5db',
                             }}
                           />
                           <label
                             className={`toggle-label block h-6 rounded-full cursor-pointer transition-colors duration-200 ease-in-out ${
                               formData.settings.realTimeFeedback
-                                ? "bg-blue-600"
-                                : "bg-gray-300"
+                                ? 'bg-blue-600'
+                                : 'bg-gray-300'
                             }`}
                           ></label>
                         </div>
@@ -678,23 +678,23 @@ const CreateInterview = () => {
                             type="checkbox"
                             checked={formData.settings.adaptiveQuestioning}
                             onChange={() =>
-                              handleSettingToggle("adaptiveQuestioning")
+                              handleSettingToggle('adaptiveQuestioning')
                             }
                             className="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-transform duration-200 ease-in-out"
                             style={{
                               transform: formData.settings.adaptiveQuestioning
-                                ? "translateX(100%)"
-                                : "translateX(0)",
+                                ? 'translateX(100%)'
+                                : 'translateX(0)',
                               borderColor: formData.settings.adaptiveQuestioning
-                                ? "#2563eb"
-                                : "#d1d5db",
+                                ? '#2563eb'
+                                : '#d1d5db',
                             }}
                           />
                           <label
                             className={`toggle-label block h-6 rounded-full cursor-pointer transition-colors duration-200 ease-in-out ${
                               formData.settings.adaptiveQuestioning
-                                ? "bg-blue-600"
-                                : "bg-gray-300"
+                                ? 'bg-blue-600'
+                                : 'bg-gray-300'
                             }`}
                           ></label>
                         </div>
@@ -714,23 +714,23 @@ const CreateInterview = () => {
                             type="checkbox"
                             checked={formData.settings.sentimentAnalysis}
                             onChange={() =>
-                              handleSettingToggle("sentimentAnalysis")
+                              handleSettingToggle('sentimentAnalysis')
                             }
                             className="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-transform duration-200 ease-in-out"
                             style={{
                               transform: formData.settings.sentimentAnalysis
-                                ? "translateX(100%)"
-                                : "translateX(0)",
+                                ? 'translateX(100%)'
+                                : 'translateX(0)',
                               borderColor: formData.settings.sentimentAnalysis
-                                ? "#2563eb"
-                                : "#d1d5db",
+                                ? '#2563eb'
+                                : '#d1d5db',
                             }}
                           />
                           <label
                             className={`toggle-label block h-6 rounded-full cursor-pointer transition-colors duration-200 ease-in-out ${
                               formData.settings.sentimentAnalysis
-                                ? "bg-blue-600"
-                                : "bg-gray-300"
+                                ? 'bg-blue-600'
+                                : 'bg-gray-300'
                             }`}
                           ></label>
                         </div>
@@ -763,8 +763,8 @@ const CreateInterview = () => {
                 onClick={() => setStep(Math.max(1, step - 1))}
                 className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
                   step === 1
-                    ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                    : "bg-white text-gray-600 hover:bg-gray-50 border border-gray-200"
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-200'
                 }`}
                 disabled={step === 1}
               >
@@ -778,7 +778,7 @@ const CreateInterview = () => {
                 }
                 className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
               >
-                {step === 4 ? "Create Interview" : "Next"}
+                {step === 4 ? 'Create Interview' : 'Next'}
               </button>
             </div>
           </div>

@@ -8,7 +8,7 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-  TooltipProps
+  TooltipProps,
 } from 'recharts';
 import { ChartContainer, ChartContainerProps } from './ChartContainer';
 import { tokens } from '@/app/shared/styles/tokens';
@@ -76,7 +76,7 @@ export const LineChart: React.FC<LineChartProps> = ({
 }) => {
   // Generate a set of default colors from our design tokens
   const defaultColors = [
-    tokens.colors.primary.blue, 
+    tokens.colors.primary.blue,
     tokens.colors.primary.teal,
     tokens.colors.status.success,
     tokens.colors.status.error,
@@ -92,9 +92,9 @@ export const LineChart: React.FC<LineChartProps> = ({
     if (typeof value === 'number') {
       return [
         new Intl.NumberFormat('en-US', {
-          maximumFractionDigits: 2
+          maximumFractionDigits: 2,
         }).format(value),
-        name
+        name,
       ];
     }
     return [value, name];
@@ -117,59 +117,85 @@ export const LineChart: React.FC<LineChartProps> = ({
         margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
       >
         {grid && <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />}
-        
-        <XAxis 
-          dataKey={xAxisDataKey} 
+
+        <XAxis
+          dataKey={xAxisDataKey}
           stroke="#6b7280"
-          label={xAxisLabel ? { value: xAxisLabel, position: 'insideBottom', offset: -5 } : undefined}
+          label={
+            xAxisLabel
+              ? {
+                  value: xAxisLabel,
+                  position: 'insideBottom',
+                  offset: -5,
+                }
+              : undefined
+          }
           tick={{ fontSize: 12 }}
         />
-        
-        <YAxis 
+
+        <YAxis
           stroke="#6b7280"
-          label={yAxisLabel ? { value: yAxisLabel, angle: -90, position: 'insideLeft' } : undefined}
+          label={
+            yAxisLabel
+              ? {
+                  value: yAxisLabel,
+                  angle: -90,
+                  position: 'insideLeft',
+                }
+              : undefined
+          }
           tick={{ fontSize: 12 }}
         />
-        
+
         {showTooltip && (
-          <Tooltip 
-            formatter={tooltipFormatter || defaultTooltipFormatter} 
-            contentStyle={{ 
-              backgroundColor: 'white', 
+          <Tooltip
+            formatter={tooltipFormatter || defaultTooltipFormatter}
+            contentStyle={{
+              backgroundColor: 'white',
               borderColor: '#e5e7eb',
               borderRadius: '4px',
-              boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)'
+              boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
             }}
             itemStyle={{ padding: '4px 0' }}
           />
         )}
-        
+
         {showLegend && (
-          <Legend 
-            wrapperStyle={{ paddingTop: 10 }} 
+          <Legend
+            wrapperStyle={{ paddingTop: 10 }}
             verticalAlign="bottom"
             height={36}
           />
         )}
-        
-        {series.filter(s => !s.hidden).map((serie, index) => (
-          <Line
-            key={serie.dataKey}
-            type={serie.type || 'monotone'}
-            dataKey={serie.dataKey}
-            name={serie.name || serie.dataKey}
-            stroke={serie.color || defaultColors[index % defaultColors.length]}
-            strokeWidth={serie.strokeWidth || 2}
-            dot={serie.dot !== undefined ? serie.dot : { r: 3 }}
-            activeDot={serie.activeDot !== undefined ? serie.activeDot : { r: 7 }}
-            isAnimationActive={serie.isAnimationActive !== undefined ? serie.isAnimationActive : true}
-            animationDuration={serie.animationDuration || animationDuration}
-            connectNulls={connectNulls}
-            strokeLinecap={roundedCorners ? 'round' : undefined}
-            strokeLinejoin={roundedCorners ? 'round' : undefined}
-          />
-        ))}
+
+        {series
+          .filter((s) => !s.hidden)
+          .map((serie, index) => (
+            <Line
+              key={serie.dataKey}
+              type={serie.type || 'monotone'}
+              dataKey={serie.dataKey}
+              name={serie.name || serie.dataKey}
+              stroke={
+                serie.color || defaultColors[index % defaultColors.length]
+              }
+              strokeWidth={serie.strokeWidth || 2}
+              dot={serie.dot !== undefined ? serie.dot : { r: 3 }}
+              activeDot={
+                serie.activeDot !== undefined ? serie.activeDot : { r: 7 }
+              }
+              isAnimationActive={
+                serie.isAnimationActive !== undefined
+                  ? serie.isAnimationActive
+                  : true
+              }
+              animationDuration={serie.animationDuration || animationDuration}
+              connectNulls={connectNulls}
+              strokeLinecap={roundedCorners ? 'round' : undefined}
+              strokeLinejoin={roundedCorners ? 'round' : undefined}
+            />
+          ))}
       </RechartsLineChart>
     </ChartContainer>
   );
-}; 
+};

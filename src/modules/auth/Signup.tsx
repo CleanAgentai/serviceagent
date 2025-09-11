@@ -1,35 +1,36 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { User, Mail, Lock, Building2, ArrowRight } from "lucide-react";
-import { useAuth } from "@/app/providers/AuthContext";
-import { supabase } from "@/app/lib/supabase";
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { User, Mail, Lock, Building2, ArrowRight } from 'lucide-react';
+import { useAuth } from '@/app/providers/AuthContext';
+import { supabase } from '@/app/lib/supabase';
 
 export function Signup() {
   const navigate = useNavigate();
   const { signUp } = useAuth();
 
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    companyName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
+    firstName: '',
+    lastName: '',
+    companyName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
   });
 
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
-  const [showPasswordRequirements, setShowPasswordRequirements] = useState(false);
+  const [showPasswordRequirements, setShowPasswordRequirements] =
+    useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
   // Set meta title and description
   React.useEffect(() => {
-    document.title = "Sign Up - ServiceAgent";
+    document.title = 'Sign Up - ServiceAgent';
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute(
-        "content",
-        "Create your ServiceAgent account to start automating and growing your business."
+        'content',
+        'Create your ServiceAgent account to start automating and growing your business.',
       );
     }
     window.scrollTo(0, 0);
@@ -37,41 +38,41 @@ export function Signup() {
 
   const validatePassword = (password: string) => {
     const errors: string[] = [];
-    
+
     if (password.length < 8) {
-      errors.push("Password must be at least 8 characters long");
+      errors.push('Password must be at least 8 characters long');
     }
-    
+
     if (!/[A-Z]/.test(password)) {
-      errors.push("At least 1 uppercase letter required");
+      errors.push('At least 1 uppercase letter required');
     }
-    
+
     if (!/[a-z]/.test(password)) {
-      errors.push("At least 1 lowercase letter required");
+      errors.push('At least 1 lowercase letter required');
     }
-    
+
     if (!/[0-9]/.test(password)) {
-      errors.push("At least 1 number (0-9) required");
+      errors.push('At least 1 number (0-9) required');
     }
-    
+
     if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
-      errors.push("At least 1 special character required");
+      errors.push('At least 1 special character required');
     }
-    
+
     return errors;
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    
-    if (name === "password") {
+
+    if (name === 'password') {
       const errors = validatePassword(value);
       setPasswordErrors(errors);
       setShowPasswordRequirements(value.length > 0);
     }
-    
-    if (name === "acceptTerms") {
+
+    if (name === 'acceptTerms') {
       setAcceptTerms((e.target as HTMLInputElement).checked);
     }
   };
@@ -79,7 +80,7 @@ export function Signup() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    setError("");
+    setError('');
     setIsLoading(true);
 
     // Clear any previous HTML5 validation messages
@@ -103,7 +104,7 @@ export function Signup() {
       !password ||
       !confirmPassword
     ) {
-      setError("Please fill in all fields");
+      setError('Please fill in all fields');
       setIsLoading(false);
       return;
     }
@@ -111,13 +112,13 @@ export function Signup() {
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      setError("Please enter a valid email address");
+      setError('Please enter a valid email address');
       setIsLoading(false);
       return;
     }
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      setError('Passwords do not match');
       setIsLoading(false);
       return;
     }
@@ -125,14 +126,14 @@ export function Signup() {
     // Check password requirements
     const passwordValidationErrors = validatePassword(password);
     if (passwordValidationErrors.length > 0) {
-      setError("Password does not meet requirements");
+      setError('Password does not meet requirements');
       setIsLoading(false);
       return;
     }
 
     // Check terms acceptance
     if (!acceptTerms) {
-      setError("Please accept the Terms of Service and Privacy Policy");
+      setError('Please accept the Terms of Service and Privacy Policy');
       setIsLoading(false);
       return;
     }
@@ -143,21 +144,21 @@ export function Signup() {
         password,
         firstName,
         lastName,
-        companyName
+        companyName,
       );
 
       if (signUpError) {
-        if (signUpError.message.toLowerCase().includes("already registered")) {
-          setError("This email is already registered. Please log in.");
+        if (signUpError.message.toLowerCase().includes('already registered')) {
+          setError('This email is already registered. Please log in.');
         } else {
           throw signUpError;
         }
       } else {
         // Navigate to setup page upon successful signup
-        navigate("/post-signup");
+        navigate('/post-signup');
       }
     } catch (err: any) {
-      setError(err.message || "회원가입 중 오류가 발생했습니다.");
+      setError(err.message || '회원가입 중 오류가 발생했습니다.');
     } finally {
       setIsLoading(false);
     }
@@ -169,11 +170,11 @@ export function Signup() {
     setIsLoading(true);
     try {
       const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
+        provider: 'google',
         options: {
           redirectTo: `${window.location.origin}/auth/callback`,
           queryParams: {
-            prompt: "select_account",
+            prompt: 'select_account',
           },
           skipBrowserRedirect: false,
         },
@@ -183,8 +184,8 @@ export function Signup() {
 
       // The redirect will happen automatically, so we don't need to handle the response here
     } catch (error: any) {
-      setError("Google signup failed. Please try again.");
-      console.error("Google signup failed:", error);
+      setError('Google signup failed. Please try again.');
+      console.error('Google signup failed:', error);
       setIsLoading(false);
     }
   };
@@ -197,7 +198,11 @@ export function Signup() {
           {/* Logo above header */}
           <div className="flex justify-center mb-4">
             <Link to="/" className="block">
-              <img src="/logos/Brandmark.svg" alt="ServiceAgent Icon" className="h-20 w-20 max-w-none object-contain" />
+              <img
+                src="/logos/Brandmark.svg"
+                alt="ServiceAgent Icon"
+                className="h-20 w-20 max-w-none object-contain"
+              />
             </Link>
           </div>
           {/* Header */}
@@ -206,7 +211,8 @@ export function Signup() {
               Start Your Free 7-Day Trial
             </h1>
             <p className="text-gray-600">
-              Create your account in seconds.<br />
+              Create your account in seconds.
+              <br />
               No payment required up front, and no commitment cancel anytime.
             </p>
           </div>
@@ -216,8 +222,16 @@ export function Signup() {
             <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                  <svg
+                    className="h-5 w-5 text-red-400"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                 </div>
                 <div className="ml-3">
@@ -352,48 +366,83 @@ export function Signup() {
                       onFocus={() => setShowPasswordRequirements(true)}
                       required
                       className={`block w-full pl-10 pr-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                        passwordErrors.length > 0 && formData.password.length > 0
+                        passwordErrors.length > 0 &&
+                        formData.password.length > 0
                           ? 'border-red-300 focus:ring-red-500 focus:border-red-500'
                           : 'border-gray-300'
                       }`}
                       placeholder="••••••••"
                     />
                   </div>
-                  
+
                   {/* Password Requirements */}
                   {showPasswordRequirements && (
                     <div className="mt-2 bg-gray-50 rounded-lg">
                       <ul className="space-y-1 transition-all duration-300">
-                        <li className={`text-xs flex items-center transition-colors duration-300 ${
-                          formData.password.length >= 8 
-                            ? 'text-green-600' 
-                            : 'text-red-600'
-                        }`}>
-                          <span className="mr-2 transition-all duration-300">{formData.password.length >= 8 ? '✓' : '✗'}</span>
+                        <li
+                          className={`text-xs flex items-center transition-colors duration-300 ${
+                            formData.password.length >= 8
+                              ? 'text-green-600'
+                              : 'text-red-600'
+                          }`}
+                        >
+                          <span className="mr-2 transition-all duration-300">
+                            {formData.password.length >= 8 ? '✓' : '✗'}
+                          </span>
                           At least 8 characters long
                         </li>
-                        <li className={`text-xs flex items-center transition-colors duration-300 ${
-                          /[A-Z]/.test(formData.password) ? 'text-green-600' : 'text-red-600'
-                        }`}>
-                          <span className="mr-2 transition-all duration-300">{/[A-Z]/.test(formData.password) ? '✓' : '✗'}</span>
+                        <li
+                          className={`text-xs flex items-center transition-colors duration-300 ${
+                            /[A-Z]/.test(formData.password)
+                              ? 'text-green-600'
+                              : 'text-red-600'
+                          }`}
+                        >
+                          <span className="mr-2 transition-all duration-300">
+                            {/[A-Z]/.test(formData.password) ? '✓' : '✗'}
+                          </span>
                           At least 1 uppercase letter
                         </li>
-                        <li className={`text-xs flex items-center transition-colors duration-300 ${
-                          /[a-z]/.test(formData.password) ? 'text-green-600' : 'text-red-600'
-                        }`}>
-                          <span className="mr-2 transition-all duration-300">{/[a-z]/.test(formData.password) ? '✓' : '✗'}</span>
+                        <li
+                          className={`text-xs flex items-center transition-colors duration-300 ${
+                            /[a-z]/.test(formData.password)
+                              ? 'text-green-600'
+                              : 'text-red-600'
+                          }`}
+                        >
+                          <span className="mr-2 transition-all duration-300">
+                            {/[a-z]/.test(formData.password) ? '✓' : '✗'}
+                          </span>
                           At least 1 lowercase letter
                         </li>
-                        <li className={`text-xs flex items-center transition-colors duration-300 ${
-                          /[0-9]/.test(formData.password) ? 'text-green-600' : 'text-red-600'
-                        }`}>
-                          <span className="mr-2 transition-all duration-300">{/[0-9]/.test(formData.password) ? '✓' : '✗'}</span>
+                        <li
+                          className={`text-xs flex items-center transition-colors duration-300 ${
+                            /[0-9]/.test(formData.password)
+                              ? 'text-green-600'
+                              : 'text-red-600'
+                          }`}
+                        >
+                          <span className="mr-2 transition-all duration-300">
+                            {/[0-9]/.test(formData.password) ? '✓' : '✗'}
+                          </span>
                           At least 1 number (0-9)
                         </li>
-                        <li className={`text-xs flex items-center transition-colors duration-300 ${
-                          /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(formData.password) ? 'text-green-600' : 'text-red-600'
-                        }`}>
-                          <span className="mr-2 transition-all duration-300">{/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(formData.password) ? '✓' : '✗'}</span>
+                        <li
+                          className={`text-xs flex items-center transition-colors duration-300 ${
+                            /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(
+                              formData.password,
+                            )
+                              ? 'text-green-600'
+                              : 'text-red-600'
+                          }`}
+                        >
+                          <span className="mr-2 transition-all duration-300">
+                            {/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(
+                              formData.password,
+                            )
+                              ? '✓'
+                              : '✗'}
+                          </span>
                           At least 1 special character
                         </li>
                       </ul>
@@ -420,11 +469,13 @@ export function Signup() {
                       onChange={handleChange}
                       required
                       className={`block w-full pl-10 pr-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                        formData.confirmPassword.length > 0 && formData.password !== formData.confirmPassword
+                        formData.confirmPassword.length > 0 &&
+                        formData.password !== formData.confirmPassword
                           ? 'border-red-300 focus:ring-red-500 focus:border-red-500'
-                          : formData.confirmPassword.length > 0 && formData.password === formData.confirmPassword
-                          ? 'border-green-300 focus:ring-green-500 focus:border-green-500'
-                          : 'border-gray-300'
+                          : formData.confirmPassword.length > 0 &&
+                              formData.password === formData.confirmPassword
+                            ? 'border-green-300 focus:ring-green-500 focus:border-green-500'
+                            : 'border-gray-300'
                       }`}
                       placeholder="••••••••"
                     />
@@ -433,12 +484,16 @@ export function Signup() {
                     <div className="mt-1 transition-all duration-300">
                       {formData.password === formData.confirmPassword ? (
                         <p className="text-xs text-green-600 flex items-center transition-colors duration-300">
-                          <span className="mr-1 transition-all duration-300">✓</span>
+                          <span className="mr-1 transition-all duration-300">
+                            ✓
+                          </span>
                           Passwords match
                         </p>
                       ) : (
                         <p className="text-xs text-red-600 flex items-center transition-colors duration-300">
-                          <span className="mr-1 transition-all duration-300">✗</span>
+                          <span className="mr-1 transition-all duration-300">
+                            ✗
+                          </span>
                           Passwords do not match
                         </p>
                       )}
@@ -462,14 +517,14 @@ export function Signup() {
                 </div>
                 <div className="ml-3 text-sm">
                   <label htmlFor="acceptTerms" className="text-gray-600">
-                    I agree to the{" "}
+                    I agree to the{' '}
                     <Link
                       to="/terms-of-service"
                       className="text-blue-600 hover:text-blue-700"
                     >
                       Terms of Service
-                    </Link>
-                    {" "}and{" "}
+                    </Link>{' '}
+                    and{' '}
                     <Link
                       to="/privacy-policy"
                       className="text-blue-600 hover:text-blue-700"

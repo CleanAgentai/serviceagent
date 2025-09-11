@@ -85,9 +85,9 @@ export const Card: React.FC<CardProps> = ({
   const getContentPaddingClasses = () => {
     const hasHeader = title || description;
     const hasFooter = footer;
-    
+
     if (padding === 'none') return 'p-0';
-    
+
     if (hasHeader && hasFooter) {
       return {
         sm: 'px-3 py-2',
@@ -126,11 +126,13 @@ export const Card: React.FC<CardProps> = ({
     >
       {/* Card Header */}
       {(title || description) && (
-        <div className={`
+        <div
+          className={`
           ${headerPaddingClasses[padding]}
           border-b border-gray-200
           ${headerClassName}
-        `}>
+        `}
+        >
           <div className="flex items-center justify-between">
             <div>
               {typeof title === 'string' ? (
@@ -144,9 +146,7 @@ export const Card: React.FC<CardProps> = ({
                 description
               )}
             </div>
-            {headerActions && (
-              <div>{headerActions}</div>
-            )}
+            {headerActions && <div>{headerActions}</div>}
           </div>
         </div>
       )}
@@ -158,14 +158,16 @@ export const Card: React.FC<CardProps> = ({
 
       {/* Card Footer */}
       {footer && (
-        <div className={`
+        <div
+          className={`
           ${footerPaddingClasses[padding]}
           border-t border-gray-200
           ${footerClassName}
-        `}>
+        `}
+        >
           {footer}
         </div>
       )}
     </div>
   );
-}; 
+};

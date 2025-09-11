@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Download, FileText } from 'lucide-react';
+import {
+  ChevronDown,
+  ChevronUp,
+  ChevronLeft,
+  ChevronRight,
+  Download,
+  FileText,
+} from 'lucide-react';
 
 export interface DataTableColumn {
   key: string;
@@ -46,22 +53,26 @@ export const DataTable: React.FC<DataTableProps> = ({
   // Export to CSV
   const exportToCSV = () => {
     // Create CSV header row
-    const headers = columns.map(col => `"${col.header}"`).join(',');
-    
+    const headers = columns.map((col) => `"${col.header}"`).join(',');
+
     // Create CSV data rows
-    const csvRows = data.map(row => {
-      return columns.map(col => {
-        const value = row[col.key];
-        // Handle strings with commas by wrapping in quotes
-        return typeof value === 'string' ? `"${value}"` : value;
-      }).join(',');
+    const csvRows = data.map((row) => {
+      return columns
+        .map((col) => {
+          const value = row[col.key];
+          // Handle strings with commas by wrapping in quotes
+          return typeof value === 'string' ? `"${value}"` : value;
+        })
+        .join(',');
     });
-    
+
     // Combine header and rows
     const csvContent = [headers, ...csvRows].join('\n');
-    
+
     // Create and download the file
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const blob = new Blob([csvContent], {
+      type: 'text/csv;charset=utf-8;',
+    });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.setAttribute('href', url);
@@ -96,7 +107,9 @@ export const DataTable: React.FC<DataTableProps> = ({
   }
 
   return (
-    <div className={`mt-4 bg-white rounded-lg border border-gray-200 overflow-hidden ${className}`}>
+    <div
+      className={`mt-4 bg-white rounded-lg border border-gray-200 overflow-hidden ${className}`}
+    >
       <div className="flex items-center justify-between p-4 border-b border-gray-200">
         <div className="flex items-center">
           <button
@@ -107,7 +120,7 @@ export const DataTable: React.FC<DataTableProps> = ({
           </button>
           <h3 className="text-lg font-medium text-gray-900">{title}</h3>
         </div>
-        
+
         <div className="flex items-center space-x-2">
           <button
             onClick={exportToCSV}
@@ -127,7 +140,7 @@ export const DataTable: React.FC<DataTableProps> = ({
           </button>
         </div>
       </div>
-      
+
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
@@ -144,10 +157,18 @@ export const DataTable: React.FC<DataTableProps> = ({
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {currentData.map((row, rowIndex) => (
-              <tr key={rowIndex} className={rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+              <tr
+                key={rowIndex}
+                className={rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
+              >
                 {columns.map((column) => (
-                  <td key={`${rowIndex}-${column.key}`} className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                    {column.format ? column.format(row[column.key]) : row[column.key]}
+                  <td
+                    key={`${rowIndex}-${column.key}`}
+                    className="px-6 py-4 whitespace-nowrap text-sm text-gray-600"
+                  >
+                    {column.format
+                      ? column.format(row[column.key])
+                      : row[column.key]}
                   </td>
                 ))}
               </tr>
@@ -155,7 +176,7 @@ export const DataTable: React.FC<DataTableProps> = ({
           </tbody>
         </table>
       </div>
-      
+
       {/* Pagination */}
       {totalPages > 1 && (
         <div className="px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
@@ -192,7 +213,10 @@ export const DataTable: React.FC<DataTableProps> = ({
               </p>
             </div>
             <div>
-              <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+              <nav
+                className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
+                aria-label="Pagination"
+              >
                 <button
                   onClick={() => goToPage(currentPage - 1)}
                   disabled={currentPage === 1}
@@ -205,9 +229,11 @@ export const DataTable: React.FC<DataTableProps> = ({
                   <span className="sr-only">Previous</span>
                   <ChevronLeft className="h-5 w-5" />
                 </button>
-                
+
                 {/* Page numbers */}
-                {Array.from({ length: Math.min(5, totalPages) }).map((_, i) => {
+                {Array.from({
+                  length: Math.min(5, totalPages),
+                }).map((_, i) => {
                   // Show pages around current page
                   let pageNum;
                   if (totalPages <= 5) {
@@ -219,7 +245,7 @@ export const DataTable: React.FC<DataTableProps> = ({
                   } else {
                     pageNum = currentPage - 2 + i;
                   }
-                  
+
                   return (
                     <button
                       key={pageNum}
@@ -234,7 +260,7 @@ export const DataTable: React.FC<DataTableProps> = ({
                     </button>
                   );
                 })}
-                
+
                 <button
                   onClick={() => goToPage(currentPage + 1)}
                   disabled={currentPage === totalPages}
@@ -254,4 +280,4 @@ export const DataTable: React.FC<DataTableProps> = ({
       )}
     </div>
   );
-}; 
+};

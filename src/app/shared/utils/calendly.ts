@@ -6,11 +6,11 @@ const loadCalendlyScript = (): Promise<void> => {
       return;
     }
 
-    const script = document.createElement("script");
-    script.src = "https://assets.calendly.com/assets/external/widget.js";
+    const script = document.createElement('script');
+    script.src = 'https://assets.calendly.com/assets/external/widget.js';
     script.async = true;
     script.onload = () => resolve();
-    script.onerror = () => reject(new Error("Failed to load Calendly"));
+    script.onerror = () => reject(new Error('Failed to load Calendly'));
     document.body.appendChild(script);
   });
 };
@@ -19,5 +19,5 @@ export const openCalendly = (e?: React.MouseEvent) => {
   if (e) {
     e.preventDefault();
   }
-  window.location.href = "https://calendly.com/serviceagent/25min";
+  window.location.href = 'https://calendly.com/serviceagent/25min';
 };

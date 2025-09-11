@@ -15,34 +15,38 @@ export default function MessagingIntegrations() {
     {
       id: 'facebook-messenger',
       name: 'Facebook Messenger',
-      description: 'Connect your Facebook pages to manage Messenger conversations',
+      description:
+        'Connect your Facebook pages to manage Messenger conversations',
       icon: 'https://cdn.svgporn.com/logos/facebook-messenger.svg',
       status: 'available',
-      color: '#0084FF'
+      color: '#0084FF',
     },
     {
       id: 'slack',
       name: 'Slack',
-      description: 'Integrate with Slack to send and receive messages from your workspace',
+      description:
+        'Integrate with Slack to send and receive messages from your workspace',
       icon: 'https://cdn.svgporn.com/logos/slack-icon.svg',
       status: 'connected',
-      color: '#4A154B'
+      color: '#4A154B',
     },
     {
       id: 'whatsapp',
       name: 'WhatsApp',
-      description: 'Connect with the WhatsApp Business API to manage customer conversations',
+      description:
+        'Connect with the WhatsApp Business API to manage customer conversations',
       icon: 'https://cdn.svgporn.com/logos/whatsapp.svg',
       status: 'available',
-      color: '#25D366'
+      color: '#25D366',
     },
     {
       id: 'website-chat',
       name: 'Website Live Chat',
-      description: 'Add a live chat widget to your website to talk with visitors',
+      description:
+        'Add a live chat widget to your website to talk with visitors',
       icon: 'https://cdn.svgporn.com/logos/livechat.svg',
       status: 'connected',
-      color: '#FF5A00'
+      color: '#FF5A00',
     },
     {
       id: 'telegram',
@@ -50,7 +54,7 @@ export default function MessagingIntegrations() {
       description: 'Integrate with Telegram to manage bot conversations',
       icon: 'https://cdn.svgporn.com/logos/telegram.svg',
       status: 'available',
-      color: '#0088CC'
+      color: '#0088CC',
     },
     {
       id: 'discord',
@@ -58,17 +62,20 @@ export default function MessagingIntegrations() {
       description: 'Connect your Discord server to manage conversations',
       icon: 'https://cdn.svgporn.com/logos/discord.svg',
       status: 'available',
-      color: '#5865F2'
-    }
+      color: '#5865F2',
+    },
   ]);
 
   const [showConnectModal, setShowConnectModal] = useState(false);
-  const [selectedPlatform, setSelectedPlatform] = useState<MessagingPlatform | null>(null);
-  const [connectionStep, setConnectionStep] = useState<'initial' | 'auth' | 'configure' | 'success'>('initial');
+  const [selectedPlatform, setSelectedPlatform] =
+    useState<MessagingPlatform | null>(null);
+  const [connectionStep, setConnectionStep] = useState<
+    'initial' | 'auth' | 'configure' | 'success'
+  >('initial');
   const [notificationPreferences, setNotificationPreferences] = useState({
     newMessage: true,
     mention: true,
-    systemAlert: true
+    systemAlert: true,
   });
 
   const handleConnectPlatform = (platform: MessagingPlatform) => {
@@ -79,7 +86,9 @@ export default function MessagingIntegrations() {
 
   const handleDisconnectPlatform = (platform: MessagingPlatform) => {
     setPlatforms(
-      platforms.map(p => p.id === platform.id ? { ...p, status: 'available' } : p)
+      platforms.map((p) =>
+        p.id === platform.id ? { ...p, status: 'available' } : p,
+      ),
     );
   };
 
@@ -93,7 +102,9 @@ export default function MessagingIntegrations() {
       setConnectionStep('initial');
       if (selectedPlatform) {
         setPlatforms(
-          platforms.map(p => p.id === selectedPlatform.id ? { ...p, status: 'connected' } : p)
+          platforms.map((p) =>
+            p.id === selectedPlatform.id ? { ...p, status: 'connected' } : p,
+          ),
         );
       }
     } else {
@@ -101,10 +112,12 @@ export default function MessagingIntegrations() {
     }
   };
 
-  const toggleNotificationPreference = (key: keyof typeof notificationPreferences) => {
+  const toggleNotificationPreference = (
+    key: keyof typeof notificationPreferences,
+  ) => {
     setNotificationPreferences({
       ...notificationPreferences,
-      [key]: !notificationPreferences[key]
+      [key]: !notificationPreferences[key],
     });
   };
 
@@ -112,17 +125,29 @@ export default function MessagingIntegrations() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="sm:flex sm:items-center sm:justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Messaging Integrations</h1>
-          <p className="mt-2 text-sm text-gray-600">Connect your messaging platforms to streamline communication</p>
+          <h1 className="text-2xl font-bold text-gray-900">
+            Messaging Integrations
+          </h1>
+          <p className="mt-2 text-sm text-gray-600">
+            Connect your messaging platforms to streamline communication
+          </p>
         </div>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {platforms.map(platform => (
-          <div key={platform.id} className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-6 border border-gray-100">
+        {platforms.map((platform) => (
+          <div
+            key={platform.id}
+            className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-6 border border-gray-100"
+          >
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center">
-                <div className="w-12 h-12 flex items-center justify-center rounded-full" style={{ backgroundColor: `${platform.color}20` }}>
+                <div
+                  className="w-12 h-12 flex items-center justify-center rounded-full"
+                  style={{
+                    backgroundColor: `${platform.color}20`,
+                  }}
+                >
                   <img
                     src={platform.icon}
                     alt={`${platform.name} logo`}
@@ -133,7 +158,9 @@ export default function MessagingIntegrations() {
                   <h3 className="text-lg font-medium text-gray-900">
                     {platform.name}
                   </h3>
-                  <span className="text-sm text-gray-500">Messaging Platform</span>
+                  <span className="text-sm text-gray-500">
+                    Messaging Platform
+                  </span>
                 </div>
               </div>
               <span
@@ -141,21 +168,23 @@ export default function MessagingIntegrations() {
                   platform.status === 'connected'
                     ? 'bg-green-100 text-green-800'
                     : platform.status === 'pending'
-                    ? 'bg-yellow-100 text-yellow-800'
-                    : 'bg-gray-100 text-gray-600'
+                      ? 'bg-yellow-100 text-yellow-800'
+                      : 'bg-gray-100 text-gray-600'
                 }`}
               >
-                {platform.status === 'connected' ? 'Connected' : 
-                 platform.status === 'pending' ? 'Pending' : 'Available'}
+                {platform.status === 'connected'
+                  ? 'Connected'
+                  : platform.status === 'pending'
+                    ? 'Pending'
+                    : 'Available'}
               </span>
             </div>
-            <p className="text-sm text-gray-600 mb-4">
-              {platform.description}
-            </p>
+            <p className="text-sm text-gray-600 mb-4">{platform.description}</p>
             <button
-              onClick={() => platform.status === 'connected' 
-                ? handleDisconnectPlatform(platform) 
-                : handleConnectPlatform(platform)
+              onClick={() =>
+                platform.status === 'connected'
+                  ? handleDisconnectPlatform(platform)
+                  : handleConnectPlatform(platform)
               }
               className={`w-full px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
                 platform.status === 'connected'
@@ -175,17 +204,23 @@ export default function MessagingIntegrations() {
           <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-gray-200">
               <div className="flex items-center">
-                <button 
-                  onClick={() => connectionStep !== 'initial' 
-                    ? setConnectionStep('initial') 
-                    : setShowConnectModal(false)
+                <button
+                  onClick={() =>
+                    connectionStep !== 'initial'
+                      ? setConnectionStep('initial')
+                      : setShowConnectModal(false)
                   }
                   className="p-2 rounded-full hover:bg-gray-100 mr-2"
                 >
                   <ArrowLeft className="h-5 w-5 text-gray-500" />
                 </button>
                 <div className="flex items-center">
-                  <div className="w-10 h-10 flex items-center justify-center rounded-full" style={{ backgroundColor: `${selectedPlatform.color}20` }}>
+                  <div
+                    className="w-10 h-10 flex items-center justify-center rounded-full"
+                    style={{
+                      backgroundColor: `${selectedPlatform.color}20`,
+                    }}
+                  >
                     <img
                       src={selectedPlatform.icon}
                       alt={`${selectedPlatform.name} logo`}
@@ -200,7 +235,7 @@ export default function MessagingIntegrations() {
                 </div>
               </div>
             </div>
-            
+
             <div className="p-6">
               {connectionStep === 'initial' && (
                 <div>
@@ -213,7 +248,8 @@ export default function MessagingIntegrations() {
                         <Check className="h-5 w-5 text-green-500" />
                       </div>
                       <p className="ml-3 text-gray-700">
-                        Receive and respond to messages from {selectedPlatform.name} directly in this platform
+                        Receive and respond to messages from{' '}
+                        {selectedPlatform.name} directly in this platform
                       </p>
                     </li>
                     <li className="flex items-start">
@@ -221,7 +257,8 @@ export default function MessagingIntegrations() {
                         <Check className="h-5 w-5 text-green-500" />
                       </div>
                       <p className="ml-3 text-gray-700">
-                        Use AI-powered responses with your {selectedPlatform.name} conversations
+                        Use AI-powered responses with your{' '}
+                        {selectedPlatform.name} conversations
                       </p>
                     </li>
                     <li className="flex items-start">
@@ -240,7 +277,8 @@ export default function MessagingIntegrations() {
                       </div>
                       <div className="ml-3">
                         <p className="text-sm text-blue-700">
-                          You'll need to authorize this application to access your {selectedPlatform.name} account.
+                          You'll need to authorize this application to access
+                          your {selectedPlatform.name} account.
                         </p>
                       </div>
                     </div>
@@ -251,9 +289,10 @@ export default function MessagingIntegrations() {
               {connectionStep === 'auth' && (
                 <div className="text-center py-8">
                   <p className="text-gray-700 mb-6">
-                    Click the button below to authenticate with {selectedPlatform.name}. This will open a new window.
+                    Click the button below to authenticate with{' '}
+                    {selectedPlatform.name}. This will open a new window.
                   </p>
-                  <button 
+                  <button
                     onClick={progressConnection}
                     className="inline-flex items-center px-6 py-3 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700"
                   >
@@ -265,60 +304,89 @@ export default function MessagingIntegrations() {
               {connectionStep === 'configure' && (
                 <div>
                   <p className="text-gray-700 mb-6">
-                    Configure your {selectedPlatform.name} notification preferences:
+                    Configure your {selectedPlatform.name} notification
+                    preferences:
                   </p>
                   <div className="space-y-4 mb-6">
                     <div className="flex items-center justify-between">
                       <div>
-                        <h3 className="text-sm font-medium text-gray-900">New message notifications</h3>
-                        <p className="text-sm text-gray-500">Get notified when you receive a new message</p>
+                        <h3 className="text-sm font-medium text-gray-900">
+                          New message notifications
+                        </h3>
+                        <p className="text-sm text-gray-500">
+                          Get notified when you receive a new message
+                        </p>
                       </div>
-                      <button 
-                        onClick={() => toggleNotificationPreference('newMessage')}
+                      <button
+                        onClick={() =>
+                          toggleNotificationPreference('newMessage')
+                        }
                         className={`relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none ${
-                          notificationPreferences.newMessage ? 'bg-blue-600' : 'bg-gray-200'
+                          notificationPreferences.newMessage
+                            ? 'bg-blue-600'
+                            : 'bg-gray-200'
                         }`}
                       >
-                        <span 
+                        <span
                           className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200 ${
-                            notificationPreferences.newMessage ? 'translate-x-5' : 'translate-x-0'
-                          }`} 
+                            notificationPreferences.newMessage
+                              ? 'translate-x-5'
+                              : 'translate-x-0'
+                          }`}
                         />
                       </button>
                     </div>
                     <div className="flex items-center justify-between">
                       <div>
-                        <h3 className="text-sm font-medium text-gray-900">Mention notifications</h3>
-                        <p className="text-sm text-gray-500">Get notified when you are mentioned in a message</p>
+                        <h3 className="text-sm font-medium text-gray-900">
+                          Mention notifications
+                        </h3>
+                        <p className="text-sm text-gray-500">
+                          Get notified when you are mentioned in a message
+                        </p>
                       </div>
-                      <button 
+                      <button
                         onClick={() => toggleNotificationPreference('mention')}
                         className={`relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none ${
-                          notificationPreferences.mention ? 'bg-blue-600' : 'bg-gray-200'
+                          notificationPreferences.mention
+                            ? 'bg-blue-600'
+                            : 'bg-gray-200'
                         }`}
                       >
-                        <span 
+                        <span
                           className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200 ${
-                            notificationPreferences.mention ? 'translate-x-5' : 'translate-x-0'
-                          }`} 
+                            notificationPreferences.mention
+                              ? 'translate-x-5'
+                              : 'translate-x-0'
+                          }`}
                         />
                       </button>
                     </div>
                     <div className="flex items-center justify-between">
                       <div>
-                        <h3 className="text-sm font-medium text-gray-900">System alert notifications</h3>
-                        <p className="text-sm text-gray-500">Get notified about system alerts and updates</p>
+                        <h3 className="text-sm font-medium text-gray-900">
+                          System alert notifications
+                        </h3>
+                        <p className="text-sm text-gray-500">
+                          Get notified about system alerts and updates
+                        </p>
                       </div>
-                      <button 
-                        onClick={() => toggleNotificationPreference('systemAlert')}
+                      <button
+                        onClick={() =>
+                          toggleNotificationPreference('systemAlert')
+                        }
                         className={`relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none ${
-                          notificationPreferences.systemAlert ? 'bg-blue-600' : 'bg-gray-200'
+                          notificationPreferences.systemAlert
+                            ? 'bg-blue-600'
+                            : 'bg-gray-200'
                         }`}
                       >
-                        <span 
+                        <span
                           className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200 ${
-                            notificationPreferences.systemAlert ? 'translate-x-5' : 'translate-x-0'
-                          }`} 
+                            notificationPreferences.systemAlert
+                              ? 'translate-x-5'
+                              : 'translate-x-0'
+                          }`}
                         />
                       </button>
                     </div>
@@ -331,14 +399,18 @@ export default function MessagingIntegrations() {
                   <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
                     <Check className="h-6 w-6 text-green-600" />
                   </div>
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">Connection Successful!</h3>
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">
+                    Connection Successful!
+                  </h3>
                   <p className="text-gray-700 mb-6">
-                    You have successfully connected {selectedPlatform.name}. You can now receive and respond to messages directly from this platform.
+                    You have successfully connected {selectedPlatform.name}. You
+                    can now receive and respond to messages directly from this
+                    platform.
                   </p>
                 </div>
               )}
             </div>
-            
+
             <div className="p-6 border-t border-gray-200 flex justify-end">
               {connectionStep === 'success' ? (
                 <button
@@ -359,8 +431,11 @@ export default function MessagingIntegrations() {
                     onClick={progressConnection}
                     className="px-6 py-2 bg-gradient-to-r from-blue-600 to-teal-500 text-white rounded-lg hover:opacity-90 transition-opacity"
                   >
-                    {connectionStep === 'initial' ? 'Continue' : 
-                     connectionStep === 'auth' ? 'Next' : 'Save Settings'}
+                    {connectionStep === 'initial'
+                      ? 'Continue'
+                      : connectionStep === 'auth'
+                        ? 'Next'
+                        : 'Save Settings'}
                   </button>
                 </>
               )}
@@ -370,4 +445,4 @@ export default function MessagingIntegrations() {
       )}
     </div>
   );
-} 
+}

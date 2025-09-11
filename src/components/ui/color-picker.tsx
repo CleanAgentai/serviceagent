@@ -18,16 +18,16 @@ export function ColorPicker({
   value,
   onChange,
   className,
-  label
+  label,
 }: ColorPickerProps) {
   const [open, setOpen] = useState(false);
-  
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
   };
-  
+
   return (
-    <div className={cn("flex flex-col space-y-1.5", className)}>
+    <div className={cn('flex flex-col space-y-1.5', className)}>
       {label && <Label htmlFor={id}>{label}</Label>}
       <div className="flex items-center gap-2">
         <Popover open={open} onOpenChange={setOpen}>
@@ -45,9 +45,9 @@ export function ColorPicker({
             <div className="space-y-2">
               <div className="flex justify-between">
                 <Label>Select Color</Label>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
+                <Button
+                  variant="ghost"
+                  size="sm"
                   className="h-6 px-2 text-xs"
                   onClick={() => setOpen(false)}
                 >
@@ -61,8 +61,18 @@ export function ColorPicker({
                 className="w-full h-8 cursor-pointer"
               />
               <div className="grid grid-cols-8 gap-1">
-                {['#ff6900', '#fcb900', '#7bdcb5', '#00d084', '#8ed1fc', '#0693e3', '#abb8c3',
-                  '#eb144c', '#f78da7', '#9900ef'].map((color) => (
+                {[
+                  '#ff6900',
+                  '#fcb900',
+                  '#7bdcb5',
+                  '#00d084',
+                  '#8ed1fc',
+                  '#0693e3',
+                  '#abb8c3',
+                  '#eb144c',
+                  '#f78da7',
+                  '#9900ef',
+                ].map((color) => (
                   <Button
                     key={color}
                     variant="outline"
@@ -88,4 +98,4 @@ export function ColorPicker({
       </div>
     </div>
   );
-} 
+}

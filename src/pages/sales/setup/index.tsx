@@ -33,4 +33,4 @@ const SalesRoutes = () => {
   );
 };
 
-export default SalesRoutes; 
+export default SalesRoutes;

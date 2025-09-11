@@ -4,7 +4,11 @@ import { Form, TextField, CheckBox } from '../form';
 import { Loader2, ExternalLink, CheckCircle, AlertCircle } from 'lucide-react';
 import { primaryGradientClass } from '@/app/shared/styles/theme';
 
-export type ConnectionStatus = 'disconnected' | 'connecting' | 'connected' | 'error';
+export type ConnectionStatus =
+  | 'disconnected'
+  | 'connecting'
+  | 'connected'
+  | 'error';
 
 export interface IntegrationConfig {
   name: string;
@@ -68,10 +72,14 @@ export const IntegrationModal: React.FC<IntegrationModalProps> = ({
     try {
       const success = await onConnect(formData);
       if (!success) {
-        setError('Failed to connect. Please check your credentials and try again.');
+        setError(
+          'Failed to connect. Please check your credentials and try again.',
+        );
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An unexpected error occurred');
+      setError(
+        err instanceof Error ? err.message : 'An unexpected error occurred',
+      );
     } finally {
       setLoading(false);
     }
@@ -87,7 +95,7 @@ export const IntegrationModal: React.FC<IntegrationModalProps> = ({
   // Handle disconnect
   const handleDisconnect = async () => {
     if (!onDisconnect) return;
-    
+
     setLoading(true);
     try {
       await onDisconnect();
@@ -137,10 +145,10 @@ export const IntegrationModal: React.FC<IntegrationModalProps> = ({
       onClose={onClose}
       title={
         <div className="flex items-center space-x-3">
-          <img 
-            src={integration.logo} 
-            alt={`${integration.name} logo`} 
-            className="h-8 w-8" 
+          <img
+            src={integration.logo}
+            alt={`${integration.name} logo`}
+            className="h-8 w-8"
           />
           <div>
             <div className="flex items-center space-x-2">
@@ -162,7 +170,7 @@ export const IntegrationModal: React.FC<IntegrationModalProps> = ({
           {/* Links */}
           <div className="mt-2 flex space-x-4 text-sm">
             {integration.learnMoreUrl && (
-              <a 
+              <a
                 href={integration.learnMoreUrl}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -173,7 +181,7 @@ export const IntegrationModal: React.FC<IntegrationModalProps> = ({
               </a>
             )}
             {integration.documentationUrl && (
-              <a 
+              <a
                 href={integration.documentationUrl}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -194,7 +202,9 @@ export const IntegrationModal: React.FC<IntegrationModalProps> = ({
                 <CheckCircle className="h-5 w-5 text-green-600" />
               </div>
               <div className="ml-3">
-                <h3 className="text-sm font-medium text-green-800">Successfully connected</h3>
+                <h3 className="text-sm font-medium text-green-800">
+                  Successfully connected
+                </h3>
                 <div className="mt-2 text-sm text-green-700">
                   <p>Your account is now linked to {integration.name}.</p>
                 </div>
@@ -206,7 +216,9 @@ export const IntegrationModal: React.FC<IntegrationModalProps> = ({
                       disabled={loading}
                       className="inline-flex items-center px-3 py-1.5 border border-red-300 text-xs font-medium rounded-md text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                     >
-                      {loading && <Loader2 className="mr-1.5 h-3 w-3 animate-spin" />}
+                      {loading && (
+                        <Loader2 className="mr-1.5 h-3 w-3 animate-spin" />
+                      )}
                       Disconnect
                     </button>
                   </div>
@@ -224,9 +236,15 @@ export const IntegrationModal: React.FC<IntegrationModalProps> = ({
                 <AlertCircle className="h-5 w-5 text-red-600" />
               </div>
               <div className="ml-3">
-                <h3 className="text-sm font-medium text-red-800">Connection error</h3>
+                <h3 className="text-sm font-medium text-red-800">
+                  Connection error
+                </h3>
                 <div className="mt-2 text-sm text-red-700">
-                  <p>{error || connectionError || 'There was an error connecting to the service.'}</p>
+                  <p>
+                    {error ||
+                      connectionError ||
+                      'There was an error connecting to the service.'}
+                  </p>
                 </div>
               </div>
             </div>
@@ -283,7 +301,7 @@ export const IntegrationModal: React.FC<IntegrationModalProps> = ({
           >
             {!integration.isOAuth && (
               <>
-                {integration.fields.map((field) => (
+                {integration.fields.map((field) =>
                   field.type === 'checkbox' ? (
                     <CheckBox
                       key={field.id}
@@ -306,8 +324,8 @@ export const IntegrationModal: React.FC<IntegrationModalProps> = ({
                       value={formData[field.id] || ''}
                       onChange={handleChange}
                     />
-                  )
-                ))}
+                  ),
+                )}
               </>
             )}
           </Form>
@@ -315,4 +333,4 @@ export const IntegrationModal: React.FC<IntegrationModalProps> = ({
       </div>
     </Modal>
   );
-}; 
+};

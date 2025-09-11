@@ -1,5 +1,12 @@
 import React from 'react';
-import { ArrowLeft, CheckCircle2, Clock, Coffee, Users, Zap } from 'lucide-react';
+import {
+  ArrowLeft,
+  CheckCircle2,
+  Clock,
+  Coffee,
+  Users,
+  Zap,
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function QuickStartGuide() {
@@ -29,7 +36,9 @@ export default function QuickStartGuide() {
             <span>5 min read</span>
           </div>
           <p className="text-lg text-gray-600">
-            Get up and running with CleanAgent.AI in minutes. This guide will walk you through the essential steps to start automating your cleaning business.
+            Get up and running with CleanAgent.AI in minutes. This guide will
+            walk you through the essential steps to start automating your
+            cleaning business.
           </p>
         </div>
 
@@ -41,11 +50,14 @@ export default function QuickStartGuide() {
               <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center mr-3">
                 <Users className="h-5 w-5 text-blue-600" />
               </div>
-              <h2 className="text-xl font-semibold text-gray-900">1. Account Setup</h2>
+              <h2 className="text-xl font-semibold text-gray-900">
+                1. Account Setup
+              </h2>
             </div>
             <div className="pl-11">
               <p className="text-gray-600 mb-4">
-                Start by setting up your CleanAgent.AI account with these simple steps:
+                Start by setting up your CleanAgent.AI account with these simple
+                steps:
               </p>
               <ul className="space-y-3">
                 <li className="flex items-start">
@@ -76,7 +88,9 @@ export default function QuickStartGuide() {
               <div className="h-8 w-8 rounded-full bg-teal-100 flex items-center justify-center mr-3">
                 <Zap className="h-5 w-5 text-teal-600" />
               </div>
-              <h2 className="text-xl font-semibold text-gray-900">2. AI Configuration</h2>
+              <h2 className="text-xl font-semibold text-gray-900">
+                2. AI Configuration
+              </h2>
             </div>
             <div className="pl-11">
               <p className="text-gray-600 mb-4">
@@ -111,7 +125,9 @@ export default function QuickStartGuide() {
               <div className="h-8 w-8 rounded-full bg-purple-100 flex items-center justify-center mr-3">
                 <Coffee className="h-5 w-5 text-purple-600" />
               </div>
-              <h2 className="text-xl font-semibold text-gray-900">3. Your First Tasks</h2>
+              <h2 className="text-xl font-semibold text-gray-900">
+                3. Your First Tasks
+              </h2>
             </div>
             <div className="pl-11">
               <p className="text-gray-600 mb-4">
@@ -142,9 +158,12 @@ export default function QuickStartGuide() {
 
           {/* Next Steps */}
           <section className="bg-gradient-to-r from-blue-50 to-teal-50 rounded-xl p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Next Steps</h2>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">
+              Next Steps
+            </h2>
             <p className="text-gray-600 mb-4">
-              Now that you've completed the basic setup, explore these resources to make the most of CleanAgent.AI:
+              Now that you've completed the basic setup, explore these resources
+              to make the most of CleanAgent.AI:
             </p>
             <div className="space-y-3">
               <Link
@@ -171,4 +190,4 @@ export default function QuickStartGuide() {
       </div>
     </div>
   );
-} 
+}

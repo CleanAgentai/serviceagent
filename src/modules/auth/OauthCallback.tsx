@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { supabase } from "@/app/lib/supabase";
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/app/lib/supabase';
 
 export function OAuthCallback() {
   const navigate = useNavigate();
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const checkUserProfile = async () => {
@@ -16,28 +16,28 @@ export function OAuthCallback() {
 
         const user = sessionData?.user;
         if (!user || !user.id)
-          throw new Error("OAuth login failed: No valid user info");
+          throw new Error('OAuth login failed: No valid user info');
 
         // 2️⃣ `profiles` 테이블에서 사용자 정보 확인 (company_name 체크)
         const { data: existingProfile, error: profileError } = await supabase
-          .from("profiles")
-          .select("company_name")
-          .eq("id", user.id)
+          .from('profiles')
+          .select('company_name')
+          .eq('id', user.id)
           .single();
 
         if (profileError) throw profileError;
 
         if (!existingProfile || !existingProfile.company_name) {
           // ❌ 회사명이 없으면 추가 정보 입력 페이지로 이동
-          navigate("/complete-profile", { state: { user } });
+          navigate('/complete-profile', { state: { user } });
           return;
         }
 
         // ✅ 회사명이 있으면 대시보드로 이동
-        navigate("/dashboard");
+        navigate('/dashboard');
       } catch (error: any) {
-        setError("OAuth authentication failed. Please try again.");
-        console.error("OAuth authentication failed:", error);
+        setError('OAuth authentication failed. Please try again.');
+        console.error('OAuth authentication failed:', error);
       }
     };
 

@@ -9,4 +9,4 @@ export interface BaseProvider {
 }
 
 export interface EmailProvider extends BaseProvider {}
-export interface SocialProvider extends BaseProvider {} 
+export interface SocialProvider extends BaseProvider {}

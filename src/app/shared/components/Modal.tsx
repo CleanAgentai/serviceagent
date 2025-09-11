@@ -90,11 +90,11 @@ export const Modal: React.FC<ModalProps> = ({
   useEffect(() => {
     if (preventScroll) {
       const originalStyle = window.getComputedStyle(document.body).overflow;
-      
+
       if (isOpen) {
         document.body.style.overflow = 'hidden';
       }
-      
+
       return () => {
         document.body.style.overflow = originalStyle;
       };
@@ -103,7 +103,11 @@ export const Modal: React.FC<ModalProps> = ({
 
   // Handle click outside
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (modalRef.current && !modalRef.current.contains(e.target as Node) && closeOnOutsideClick) {
+    if (
+      modalRef.current &&
+      !modalRef.current.contains(e.target as Node) &&
+      closeOnOutsideClick
+    ) {
       onClose();
     }
   };
@@ -119,7 +123,7 @@ export const Modal: React.FC<ModalProps> = ({
           onClick={handleOverlayClick}
         >
           {/* Overlay */}
-          <div 
+          <div
             className={`fixed inset-0 bg-black bg-opacity-50 transition-opacity ${
               disableAnimation ? '' : isOpen ? 'opacity-100' : 'opacity-0'
             }`}
@@ -149,7 +153,7 @@ export const Modal: React.FC<ModalProps> = ({
 
             {/* Modal Title */}
             {title && (
-              <div 
+              <div
                 className={`
                   p-4 sm:p-6
                   ${showDividers ? 'border-b border-gray-200' : ''}
@@ -157,8 +161,8 @@ export const Modal: React.FC<ModalProps> = ({
                 `}
               >
                 {typeof title === 'string' ? (
-                  <h3 
-                    className="text-lg font-medium text-gray-900" 
+                  <h3
+                    className="text-lg font-medium text-gray-900"
                     id="modal-title"
                   >
                     {title}
@@ -171,14 +175,12 @@ export const Modal: React.FC<ModalProps> = ({
 
             {/* Modal Body */}
             <div className={`p-4 sm:p-6 ${bodyClassName}`}>
-              <div className={contentClassName}>
-                {children}
-              </div>
+              <div className={contentClassName}>{children}</div>
             </div>
 
             {/* Modal Footer */}
             {footer && (
-              <div 
+              <div
                 className={`
                   p-4 sm:p-6
                   ${showDividers ? 'border-t border-gray-200' : ''}
@@ -190,7 +192,7 @@ export const Modal: React.FC<ModalProps> = ({
             )}
           </div>
         </div>,
-        document.body
+        document.body,
       )
     : null;
-}; 
+};

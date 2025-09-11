@@ -1,7 +1,8 @@
 import React, { useState, InputHTMLAttributes, ChangeEvent } from 'react';
 import { FormField, FormFieldProps } from './FormField';
 
-export interface TextFieldProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'id'> {
+export interface TextFieldProps
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'id'> {
   id: string;
   label?: string;
   helperText?: string;
@@ -54,28 +55,28 @@ export const TextField: React.FC<TextFieldProps> = ({
   // Validate the input
   const validateInput = (inputValue: string) => {
     if (!validation) return true;
-    
+
     if (validation.minLength && inputValue.length < validation.minLength) {
       const message = `Minimum ${validation.minLength} characters required`;
       setLocalError(message);
       onValidation?.(false);
       return false;
     }
-    
+
     if (validation.maxLength && inputValue.length > validation.maxLength) {
       const message = `Maximum ${validation.maxLength} characters allowed`;
       setLocalError(message);
       onValidation?.(false);
       return false;
     }
-    
+
     if (validation.pattern && !validation.pattern.test(inputValue)) {
       const message = 'Input format is invalid';
       setLocalError(message);
       onValidation?.(false);
       return false;
     }
-    
+
     if (validation.validate) {
       const customError = validation.validate(inputValue);
       if (customError) {
@@ -84,7 +85,7 @@ export const TextField: React.FC<TextFieldProps> = ({
         return false;
       }
     }
-    
+
     setLocalError(undefined);
     setLocalSuccess(true);
     onValidation?.(true);
@@ -94,29 +95,31 @@ export const TextField: React.FC<TextFieldProps> = ({
   // Handle input change
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
-    
+
     // If the input has been touched, validate on change
     if (isTouched && validation) {
       validateInput(newValue);
     }
-    
+
     onChange?.(e);
   };
 
   // Handle input blur
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     setIsTouched(true);
-    
+
     if (validation && value !== undefined) {
       validateInput(String(value));
     }
-    
+
     onBlur?.(e);
   };
 
   const getBorderStyles = () => {
-    if (errorMessage) return 'border-red-500 focus:border-red-500 focus:ring-red-500';
-    if (localSuccess) return 'border-green-600 focus:border-green-600 focus:ring-green-600';
+    if (errorMessage)
+      return 'border-red-500 focus:border-red-500 focus:ring-red-500';
+    if (localSuccess)
+      return 'border-green-600 focus:border-green-600 focus:ring-green-600';
     return 'border-gray-300 focus:border-blue-500 focus:ring-blue-500';
   };
 
@@ -143,7 +146,7 @@ export const TextField: React.FC<TextFieldProps> = ({
             {icon}
           </div>
         )}
-        
+
         <input
           id={id}
           disabled={disabled}
@@ -167,7 +170,7 @@ export const TextField: React.FC<TextFieldProps> = ({
           required={required}
           {...rest}
         />
-        
+
         {icon && iconPosition === 'right' && (
           <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-gray-500">
             {icon}
@@ -176,4 +179,4 @@ export const TextField: React.FC<TextFieldProps> = ({
       </div>
     </FormField>
   );
-}; 
+};

@@ -1,6 +1,7 @@
 import React, { ReactNode, FormEvent, FormHTMLAttributes } from 'react';
 
-export interface FormProps extends Omit<FormHTMLAttributes<HTMLFormElement>, 'onSubmit'> {
+export interface FormProps
+  extends Omit<FormHTMLAttributes<HTMLFormElement>, 'onSubmit'> {
   children: ReactNode;
   onSubmit?: (e: FormEvent<HTMLFormElement>) => void;
   className?: string;
@@ -35,10 +36,10 @@ export const Form: React.FC<FormProps> = ({
   };
 
   return (
-    <form 
-      onSubmit={handleSubmit} 
+    <form
+      onSubmit={handleSubmit}
       className={`${horizontal ? 'sm:grid sm:grid-cols-12 sm:gap-x-6' : ''} ${className}`}
-      noValidate 
+      noValidate
       {...rest}
     >
       {(title || description) && (
@@ -51,22 +52,24 @@ export const Form: React.FC<FormProps> = ({
           )}
         </div>
       )}
-      
+
       {/* Form Fields */}
       <div className={`space-y-4 ${horizontal ? 'sm:col-span-12' : ''}`}>
         {children}
       </div>
-      
+
       {/* Form Actions */}
       {(submitButton || resetButton) && (
-        <div className={`
+        <div
+          className={`
           mt-6 flex items-center justify-end gap-x-4
           ${horizontal ? 'sm:col-span-12' : ''}
-        `}>
+        `}
+        >
           {resetButton}
           {submitButton}
         </div>
       )}
     </form>
   );
-}; 
+};

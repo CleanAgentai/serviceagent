@@ -12,7 +12,9 @@ export function InterviewNavigation() {
   return (
     <Card className="p-4 mb-6 bg-white shadow-sm">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-800">Interview Management</h1>
+        <h1 className="text-2xl font-bold text-gray-800">
+          Interview Management
+        </h1>
         <div className="flex space-x-2">
           <Button
             variant={currentPath === '/interviews' ? 'default' : 'outline'}
@@ -23,7 +25,9 @@ export function InterviewNavigation() {
             View Interviews
           </Button>
           <Button
-            variant={currentPath === '/interviews/create' ? 'default' : 'outline'}
+            variant={
+              currentPath === '/interviews/create' ? 'default' : 'outline'
+            }
             onClick={() => navigate('/interviews/create')}
             className="flex items-center gap-2"
           >
@@ -31,7 +35,9 @@ export function InterviewNavigation() {
             Create Interview
           </Button>
           <Button
-            variant={currentPath === '/interviews/responses' ? 'default' : 'outline'}
+            variant={
+              currentPath === '/interviews/responses' ? 'default' : 'outline'
+            }
             onClick={() => navigate('/interviews/responses')}
             className="flex items-center gap-2"
           >
@@ -42,4 +48,4 @@ export function InterviewNavigation() {
       </div>
     </Card>
   );
-} 
+}

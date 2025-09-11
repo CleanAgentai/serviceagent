@@ -1,10 +1,17 @@
-import { Platform, ContentSuggestion, PostingTimeRecommendation, HashtagAnalytics, MediaRecommendation, SocialPost } from '@/types/social';
+import {
+  Platform,
+  ContentSuggestion,
+  PostingTimeRecommendation,
+  HashtagAnalytics,
+  MediaRecommendation,
+  SocialPost,
+} from '@/types/social';
 import OpenAI from 'openai';
 import { v4 as uuidv4 } from 'uuid';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
-  dangerouslyAllowBrowser: true
+  dangerouslyAllowBrowser: true,
 });
 
 interface GenerateContentParams {
@@ -20,7 +27,7 @@ export async function getContentSuggestions({
   platforms,
   tone = 'professional',
   targetAudience = ['professionals', 'decision-makers'],
-  contentType = 'text'
+  contentType = 'text',
 }: GenerateContentParams): Promise<ContentSuggestion[]> {
   try {
     const prompt = `Generate 3 engaging social media posts about "${topic}" for ${platforms.join(', ')}. 
@@ -31,22 +38,23 @@ export async function getContentSuggestions({
     Include relevant hashtags and estimate engagement rates.`;
 
     const response = await openai.chat.completions.create({
-      model: "gpt-4",
+      model: 'gpt-4',
       messages: [
         {
-          role: "system",
-          content: "You are a social media expert who creates engaging content optimized for different platforms."
+          role: 'system',
+          content:
+            'You are a social media expert who creates engaging content optimized for different platforms.',
         },
         {
-          role: "user",
-          content: prompt
-        }
+          role: 'user',
+          content: prompt,
+        },
       ],
       temperature: 0.7,
     });
 
     // Process and structure the AI response into ContentSuggestion objects
-    const suggestions: ContentSuggestion[] = response.choices.map(choice => {
+    const suggestions: ContentSuggestion[] = response.choices.map((choice) => {
       const content = choice.message?.content || '';
       return {
         id: uuidv4(),
@@ -56,12 +64,18 @@ export async function getContentSuggestions({
         platforms,
         estimatedEngagement: Math.floor(Math.random() * 30) + 20, // Mock engagement rate
         targetAudience,
-        mediaRecommendations: contentType !== 'text' ? [{
-          type: contentType as 'image' | 'video' | 'carousel',
-          description: 'AI-generated media recommendation'
-        }] : undefined,
+        mediaRecommendations:
+          contentType !== 'text'
+            ? [
+                {
+                  type: contentType as 'image' | 'video' | 'carousel',
+                  description: 'AI-generated media recommendation',
+                },
+              ]
+            : undefined,
         score: Math.floor(Math.random() * 100),
-        reasoning: 'Generated based on platform best practices and audience engagement patterns'
+        reasoning:
+          'Generated based on platform best practices and audience engagement patterns',
       };
     });
 
@@ -74,7 +88,7 @@ export async function getContentSuggestions({
 
 export async function getBestPostingTimes({
   platforms,
-  timezone = 'UTC'
+  timezone = 'UTC',
 }: {
   platforms: Platform[];
   timezone?: string;
@@ -93,12 +107,17 @@ export async function getBestPostingTimes({
   return recommendations;
 }
 
-export async function generateHashtags(content: string, platform: Platform): Promise<string[]> {
+export async function generateHashtags(
+  content: string,
+  platform: Platform,
+): Promise<string[]> {
   // Implementation
   return [];
 }
 
-export async function analyzeHashtags(posts: SocialPost[]): Promise<HashtagAnalytics> {
+export async function analyzeHashtags(
+  posts: SocialPost[],
+): Promise<HashtagAnalytics> {
   try {
     // Mock implementation - replace with actual API call
     const mockAnalytics: HashtagAnalytics = {
@@ -106,7 +125,7 @@ export async function analyzeHashtags(posts: SocialPost[]): Promise<HashtagAnaly
       popularity: 150,
       reachPotential: 10000,
       relevanceScore: 0.85,
-      trending: true
+      trending: true,
     };
 
     return mockAnalytics;
@@ -118,7 +137,7 @@ export async function analyzeHashtags(posts: SocialPost[]): Promise<HashtagAnaly
 
 function extractHashtags(text: string): string[] {
   const hashtags = text.match(/#[\w\u0590-\u05ff]+/g) || [];
-  return hashtags.map(tag => tag.slice(1)); // Remove # prefix
+  return hashtags.map((tag) => tag.slice(1)); // Remove # prefix
 }
 
 export async function analyzePostPerformance(content: string): Promise<{
@@ -138,16 +157,17 @@ export async function analyzePostPerformance(content: string): Promise<{
     4. Suggestions for improvement`;
 
     const response = await openai.chat.completions.create({
-      model: "gpt-4",
+      model: 'gpt-4',
       messages: [
         {
-          role: "system",
-          content: "You are a social media analytics expert who provides detailed content analysis."
+          role: 'system',
+          content:
+            'You are a social media analytics expert who provides detailed content analysis.',
         },
         {
-          role: "user",
-          content: prompt
-        }
+          role: 'user',
+          content: prompt,
+        },
       ],
       temperature: 0.5,
     });
@@ -157,7 +177,7 @@ export async function analyzePostPerformance(content: string): Promise<{
       sentiment: Math.random() * 100,
       clarity: Math.random() * 100,
       engagement: Math.random() * 100,
-      suggestions: response.choices[0].message?.content?.split('\n') || []
+      suggestions: response.choices[0].message?.content?.split('\n') || [],
     };
   } catch (error) {
     console.error('Error analyzing post:', error);
@@ -182,7 +202,7 @@ interface ContentResponse {
 
 export async function generateContentSuggestions(
   prompt: string,
-  platforms: Platform[]
+  platforms: Platform[],
 ): Promise<ContentSuggestion[]> {
   // Mock response for now
   const response: ContentResponse = {
@@ -198,13 +218,13 @@ export async function generateContentSuggestions(
         mediaRecommendations: [
           {
             type: 'image',
-            description: 'Sample image'
-          }
+            description: 'Sample image',
+          },
         ],
         score: 0.8,
-        reasoning: 'Sample reasoning'
-      }
-    ]
+        reasoning: 'Sample reasoning',
+      },
+    ],
   };
 
   return response.choices;
@@ -214,4 +234,4 @@ class SocialAIService {
   // Add more social media analysis methods as needed
 }
 
-export const socialAIService = new SocialAIService(); 
+export const socialAIService = new SocialAIService();

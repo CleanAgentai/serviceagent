@@ -8,7 +8,9 @@ if (!supabaseUrl || !supabaseAnonKey) {
     url: supabaseUrl ? 'present' : 'missing',
     key: supabaseAnonKey ? 'present' : 'missing',
   });
-  throw new Error('Missing Supabase environment variables. Please check your .env file.');
+  throw new Error(
+    'Missing Supabase environment variables. Please check your .env file.',
+  );
 }
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
@@ -16,8 +18,8 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     autoRefreshToken: true,
     persistSession: true,
     detectSessionInUrl: true,
-    flowType: 'pkce'
-  }
+    flowType: 'pkce',
+  },
 });
 
 // Export auth-related functions
@@ -27,11 +29,17 @@ export const signOut = async () => {
 };
 
 export const getSession = async () => {
-  const { data: { session }, error } = await supabase.auth.getSession();
+  const {
+    data: { session },
+    error,
+  } = await supabase.auth.getSession();
   return { session, error };
 };
 
 export const getUser = async () => {
-  const { data: { user }, error } = await supabase.auth.getUser();
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
   return { user, error };
-}; 
+};

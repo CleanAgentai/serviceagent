@@ -1,8 +1,8 @@
-import React, { ReactNode, useState } from "react";
-import { Navigation } from "@/modules/landing/components/Navigation";
-import { Footer } from "@/modules/landing/components/Footer";
-import { Outlet } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import React, { ReactNode, useState } from 'react';
+import { Navigation } from '@/modules/landing/components/Navigation';
+import { Footer } from '@/modules/landing/components/Footer';
+import { Outlet } from 'react-router-dom';
+import { Menu, X } from 'lucide-react';
 
 interface AppLayoutProps {
   children?: ReactNode;
@@ -21,7 +21,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
   showNavigation = true,
   showFooter = true,
   fullWidth = false,
-  className = "",
+  className = '',
 }) => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
@@ -38,7 +38,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
             type="button"
             className="flex items-center justify-center h-10 w-10 rounded-md bg-white shadow-md text-gray-500 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
             onClick={toggleMobileSidebar}
-            aria-label={mobileSidebarOpen ? "Close menu" : "Open menu"}
+            aria-label={mobileSidebarOpen ? 'Close menu' : 'Open menu'}
           >
             {mobileSidebarOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -49,7 +49,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
       {showNavigation && (
         <div
           className={`fixed inset-0 z-40 md:hidden transform ${
-            mobileSidebarOpen ? "translate-x-0" : "-translate-x-full"
+            mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'
           } transition-transform duration-300 ease-in-out`}
         >
           <div className="relative flex flex-col w-full max-w-xs h-full bg-white shadow-xl">
@@ -82,7 +82,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
         {showNavigation && <Navigation />}
         <main
           className={`flex-grow ${
-            fullWidth ? "" : "max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8"
+            fullWidth ? '' : 'max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8'
           }`}
         >
           {children || <Outlet />}

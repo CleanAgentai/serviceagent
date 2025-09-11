@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Mail,
   Phone,
@@ -7,8 +7,8 @@ import {
   Twitter,
   Send,
   AlertCircle,
-} from "lucide-react";
-import { Helmet } from "react-helmet";
+} from 'lucide-react';
+import { Helmet } from 'react-helmet';
 
 interface FormData {
   name: string;
@@ -26,11 +26,11 @@ interface FormErrors {
 
 export function Contact() {
   const [formData, setFormData] = useState<FormData>({
-    name: "",
-    email: "",
-    phone: "",
-    subject: "",
-    message: "",
+    name: '',
+    email: '',
+    phone: '',
+    subject: '',
+    message: '',
   });
 
   const [formErrors, setFormErrors] = useState<FormErrors>({});
@@ -40,12 +40,12 @@ export function Contact() {
   // Scroll to top on mount
   useEffect(() => {
     window.scrollTo(0, 0);
-    document.title = "Contact Us - ServiceAgent";
+    document.title = 'Contact Us - ServiceAgent';
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute(
-        "content",
-        "Get in touch with ServiceAgent. We're here to help you automate and grow your business."
+        'content',
+        "Get in touch with ServiceAgent. We're here to help you automate and grow your business.",
       );
     }
   }, []);
@@ -54,17 +54,17 @@ export function Contact() {
     const errors: FormErrors = {};
 
     if (!formData.name.trim()) {
-      errors.name = "Name is required";
+      errors.name = 'Name is required';
     }
 
     if (!formData.email.trim()) {
-      errors.email = "Email is required";
+      errors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      errors.email = "Email is invalid";
+      errors.email = 'Email is invalid';
     }
 
     if (!formData.message.trim()) {
-      errors.message = "Message is required";
+      errors.message = 'Message is required';
     }
 
     setFormErrors(errors);
@@ -85,14 +85,14 @@ export function Contact() {
       await new Promise((resolve) => setTimeout(resolve, 1500));
       setIsSubmitted(true);
       setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        subject: "",
-        message: "",
+        name: '',
+        email: '',
+        phone: '',
+        subject: '',
+        message: '',
       });
     } catch (error) {
-      console.error("Error submitting form:", error);
+      console.error('Error submitting form:', error);
     } finally {
       setIsSubmitting(false);
     }
@@ -172,12 +172,15 @@ export function Contact() {
                           id="name"
                           value={formData.name}
                           onChange={(e) =>
-                            setFormData({ ...formData, name: e.target.value })
+                            setFormData({
+                              ...formData,
+                              name: e.target.value,
+                            })
                           }
                           className={`block w-full rounded-lg border ${
                             formErrors.name
-                              ? "border-red-300"
-                              : "border-gray-300"
+                              ? 'border-red-300'
+                              : 'border-gray-300'
                           } px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                         />
                         {formErrors.name && (
@@ -200,12 +203,15 @@ export function Contact() {
                           id="email"
                           value={formData.email}
                           onChange={(e) =>
-                            setFormData({ ...formData, email: e.target.value })
+                            setFormData({
+                              ...formData,
+                              email: e.target.value,
+                            })
                           }
                           className={`block w-full rounded-lg border ${
                             formErrors.email
-                              ? "border-red-300"
-                              : "border-gray-300"
+                              ? 'border-red-300'
+                              : 'border-gray-300'
                           } px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                         />
                         {formErrors.email && (
@@ -228,7 +234,10 @@ export function Contact() {
                           id="phone"
                           value={formData.phone}
                           onChange={(e) =>
-                            setFormData({ ...formData, phone: e.target.value })
+                            setFormData({
+                              ...formData,
+                              phone: e.target.value,
+                            })
                           }
                           className="block w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         />
@@ -276,8 +285,8 @@ export function Contact() {
                           }
                           className={`block w-full rounded-lg border ${
                             formErrors.message
-                              ? "border-red-300"
-                              : "border-gray-300"
+                              ? 'border-red-300'
+                              : 'border-gray-300'
                           } px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                         />
                         {formErrors.message && (
@@ -299,7 +308,7 @@ export function Contact() {
                             Sending...
                           </div>
                         ) : (
-                          "Send Message"
+                          'Send Message'
                         )}
                       </button>
                     </form>

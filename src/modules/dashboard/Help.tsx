@@ -4,28 +4,32 @@ import { Mail, PlayCircle } from 'lucide-react';
 const gettingStartedVideos = [
   {
     id: 1,
-    title: "Introduction to CleanAgent.AI",
-    embedId: "your-video-id-1",
-    description: "Learn the basics of CleanAgent.AI and how it can transform your business operations."
+    title: 'Introduction to CleanAgent.AI',
+    embedId: 'your-video-id-1',
+    description:
+      'Learn the basics of CleanAgent.AI and how it can transform your business operations.',
   },
   {
     id: 2,
-    title: "Setting Up Your Account",
-    embedId: "your-video-id-2",
-    description: "A step-by-step guide to configuring your CleanAgent.AI account for optimal performance."
+    title: 'Setting Up Your Account',
+    embedId: 'your-video-id-2',
+    description:
+      'A step-by-step guide to configuring your CleanAgent.AI account for optimal performance.',
   },
   {
     id: 3,
-    title: "Using AI Sales Features",
-    embedId: "your-video-id-3",
-    description: "Discover how to leverage our AI sales tools to boost your business."
+    title: 'Using AI Sales Features',
+    embedId: 'your-video-id-3',
+    description:
+      'Discover how to leverage our AI sales tools to boost your business.',
   },
   {
     id: 4,
-    title: "Marketing Automation Guide",
-    embedId: "your-video-id-4",
-    description: "Master the marketing automation features to enhance your campaigns."
-  }
+    title: 'Marketing Automation Guide',
+    embedId: 'your-video-id-4',
+    description:
+      'Master the marketing automation features to enhance your campaigns.',
+  },
 ];
 
 export default function Help() {
@@ -43,15 +47,16 @@ export default function Help() {
             Welcome to CleanAgent.AI Help Center
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Get started with our comprehensive video guides to make the most of CleanAgent.AI's powerful features
+            Get started with our comprehensive video guides to make the most of
+            CleanAgent.AI's powerful features
           </p>
         </div>
 
         {/* Video Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
           {gettingStartedVideos.map((video) => (
-            <div 
-              key={video.id} 
+            <div
+              key={video.id}
               className="bg-white rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
             >
               <div className="relative">
@@ -69,8 +74,12 @@ export default function Help() {
                 </div>
               </div>
               <div className="p-8">
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">{video.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{video.description}</p>
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                  {video.title}
+                </h3>
+                <p className="text-gray-600 leading-relaxed">
+                  {video.description}
+                </p>
               </div>
             </div>
           ))}
@@ -79,9 +88,12 @@ export default function Help() {
         {/* Contact Support */}
         <div className="max-w-3xl mx-auto">
           <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl shadow-lg p-8 text-center">
-            <h2 className="text-2xl font-semibold text-white mb-6">Need Additional Help?</h2>
+            <h2 className="text-2xl font-semibold text-white mb-6">
+              Need Additional Help?
+            </h2>
             <p className="text-blue-100 mb-8 text-lg">
-              Our support team is ready to assist you with any questions you may have.
+              Our support team is ready to assist you with any questions you may
+              have.
             </p>
             <a
               href="mailto:porter@cleanagent.ai"

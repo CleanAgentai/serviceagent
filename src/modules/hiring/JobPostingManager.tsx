@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import { Plus, Edit2, Power, RefreshCw, Eye, ChevronDown } from 'lucide-react';
-import { JobPosting, JobPostFormData, JobPlatform, PostingStatus } from '@/types/hiring';
+import {
+  JobPosting,
+  JobPostFormData,
+  JobPlatform,
+  PostingStatus,
+} from '@/types/hiring';
 import { formatDistanceToNow } from 'date-fns';
 
 interface JobPostingManagerProps {
@@ -16,10 +21,12 @@ const JobPostingManager: React.FC<JobPostingManagerProps> = ({
   onCreatePosting,
   onUpdatePosting,
   onDeactivatePosting,
-  onRepostPosting
+  onRepostPosting,
 }) => {
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [selectedPosting, setSelectedPosting] = useState<JobPosting | null>(null);
+  const [selectedPosting, setSelectedPosting] = useState<JobPosting | null>(
+    null,
+  );
   const [formData, setFormData] = useState<JobPostFormData>({
     title: '',
     description: '',
@@ -31,7 +38,7 @@ const JobPostingManager: React.FC<JobPostingManagerProps> = ({
     benefits: [''],
     platforms: [],
     department: '',
-    hiringManager: ''
+    hiringManager: '',
   });
   const [previewMode, setPreviewMode] = useState(false);
 
@@ -50,41 +57,46 @@ const JobPostingManager: React.FC<JobPostingManagerProps> = ({
       benefits: [''],
       platforms: [],
       department: '',
-      hiringManager: ''
+      hiringManager: '',
     });
   };
 
   const handleArrayInput = (
     field: 'requirements' | 'responsibilities' | 'benefits',
     index: number,
-    value: string
+    value: string,
   ) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [field]: prev[field].map((item, i) => (i === index ? value : item))
+      [field]: prev[field].map((item, i) => (i === index ? value : item)),
     }));
   };
 
-  const addArrayItem = (field: 'requirements' | 'responsibilities' | 'benefits') => {
-    setFormData(prev => ({
+  const addArrayItem = (
+    field: 'requirements' | 'responsibilities' | 'benefits',
+  ) => {
+    setFormData((prev) => ({
       ...prev,
-      [field]: [...prev[field], '']
+      [field]: [...prev[field], ''],
     }));
   };
 
-  const removeArrayItem = (field: 'requirements' | 'responsibilities' | 'benefits', index: number) => {
-    setFormData(prev => ({
+  const removeArrayItem = (
+    field: 'requirements' | 'responsibilities' | 'benefits',
+    index: number,
+  ) => {
+    setFormData((prev) => ({
       ...prev,
-      [field]: prev[field].filter((_, i) => i !== index)
+      [field]: prev[field].filter((_, i) => i !== index),
     }));
   };
 
   const togglePlatform = (platform: JobPlatform) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       platforms: prev.platforms.includes(platform)
-        ? prev.platforms.filter(p => p !== platform)
-        : [...prev.platforms, platform]
+        ? prev.platforms.filter((p) => p !== platform)
+        : [...prev.platforms, platform],
     }));
   };
 
@@ -95,7 +107,7 @@ const JobPostingManager: React.FC<JobPostingManagerProps> = ({
       <div className="prose max-w-none">
         <h2 className="text-xl font-semibold mb-4">{formData.title}</h2>
         <p className="mb-4">{formData.description}</p>
-        
+
         {formData.requirements.length > 0 && (
           <>
             <h3 className="text-lg font-medium mb-2">Requirements</h3>
@@ -150,7 +162,9 @@ const JobPostingManager: React.FC<JobPostingManagerProps> = ({
       {isFormOpen && (
         <div className="bg-white rounded-lg shadow p-6 space-y-6">
           <div className="flex justify-between items-center">
-            <h2 className="text-xl font-semibold text-gray-900">Create New Job Post</h2>
+            <h2 className="text-xl font-semibold text-gray-900">
+              Create New Job Post
+            </h2>
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => setPreviewMode(!previewMode)}
@@ -170,54 +184,89 @@ const JobPostingManager: React.FC<JobPostingManagerProps> = ({
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Title</label>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Title
+                  </label>
                   <input
                     type="text"
                     value={formData.title}
-                    onChange={e => setFormData(prev => ({ ...prev, title: e.target.value }))}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        title: e.target.value,
+                      }))
+                    }
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Location</label>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Location
+                  </label>
                   <input
                     type="text"
                     value={formData.location}
-                    onChange={e => setFormData(prev => ({ ...prev, location: e.target.value }))}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        location: e.target.value,
+                      }))
+                    }
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Department</label>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Department
+                  </label>
                   <input
                     type="text"
                     value={formData.department}
-                    onChange={e => setFormData(prev => ({ ...prev, department: e.target.value }))}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        department: e.target.value,
+                      }))
+                    }
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Hiring Manager</label>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Hiring Manager
+                  </label>
                   <input
                     type="text"
                     value={formData.hiringManager}
-                    onChange={e => setFormData(prev => ({ ...prev, hiringManager: e.target.value }))}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        hiringManager: e.target.value,
+                      }))
+                    }
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                     required
                   />
                 </div>
 
                 <div className="sm:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700">Description</label>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Description
+                  </label>
                   <textarea
                     value={formData.description}
-                    onChange={e => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        description: e.target.value,
+                      }))
+                    }
                     rows={4}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                     required
@@ -225,10 +274,17 @@ const JobPostingManager: React.FC<JobPostingManagerProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Job Type</label>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Job Type
+                  </label>
                   <select
                     value={formData.jobType}
-                    onChange={e => setFormData(prev => ({ ...prev, jobType: e.target.value as any }))}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        jobType: e.target.value as any,
+                      }))
+                    }
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                   >
                     <option value="FULL_TIME">Full Time</option>
@@ -238,25 +294,37 @@ const JobPostingManager: React.FC<JobPostingManagerProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Salary Range</label>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Salary Range
+                  </label>
                   <div className="grid grid-cols-2 gap-2">
                     <input
                       type="number"
                       value={formData.salaryRange.min}
-                      onChange={e => setFormData(prev => ({
-                        ...prev,
-                        salaryRange: { ...prev.salaryRange, min: parseInt(e.target.value) }
-                      }))}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          salaryRange: {
+                            ...prev.salaryRange,
+                            min: parseInt(e.target.value),
+                          },
+                        }))
+                      }
                       placeholder="Min"
                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                     />
                     <input
                       type="number"
                       value={formData.salaryRange.max}
-                      onChange={e => setFormData(prev => ({
-                        ...prev,
-                        salaryRange: { ...prev.salaryRange, max: parseInt(e.target.value) }
-                      }))}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          salaryRange: {
+                            ...prev.salaryRange,
+                            max: parseInt(e.target.value),
+                          },
+                        }))
+                      }
                       placeholder="Max"
                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                     />
@@ -265,13 +333,17 @@ const JobPostingManager: React.FC<JobPostingManagerProps> = ({
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Requirements</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Requirements
+                </label>
                 {formData.requirements.map((req, index) => (
                   <div key={index} className="flex mb-2">
                     <input
                       type="text"
                       value={req}
-                      onChange={e => handleArrayInput('requirements', index, e.target.value)}
+                      onChange={(e) =>
+                        handleArrayInput('requirements', index, e.target.value)
+                      }
                       className="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                     />
                     <button
@@ -293,13 +365,21 @@ const JobPostingManager: React.FC<JobPostingManagerProps> = ({
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Responsibilities</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Responsibilities
+                </label>
                 {formData.responsibilities.map((resp, index) => (
                   <div key={index} className="flex mb-2">
                     <input
                       type="text"
                       value={resp}
-                      onChange={e => handleArrayInput('responsibilities', index, e.target.value)}
+                      onChange={(e) =>
+                        handleArrayInput(
+                          'responsibilities',
+                          index,
+                          e.target.value,
+                        )
+                      }
                       className="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                     />
                     <button
@@ -321,13 +401,17 @@ const JobPostingManager: React.FC<JobPostingManagerProps> = ({
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Benefits</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Benefits
+                </label>
                 {formData.benefits.map((benefit, index) => (
                   <div key={index} className="flex mb-2">
                     <input
                       type="text"
                       value={benefit}
-                      onChange={e => handleArrayInput('benefits', index, e.target.value)}
+                      onChange={(e) =>
+                        handleArrayInput('benefits', index, e.target.value)
+                      }
                       className="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                     />
                     <button
@@ -349,9 +433,18 @@ const JobPostingManager: React.FC<JobPostingManagerProps> = ({
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Posting Platforms</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Posting Platforms
+                </label>
                 <div className="flex flex-wrap gap-3">
-                  {(['INDEED', 'FACEBOOK', 'CRAIGSLIST', 'LINKEDIN'] as JobPlatform[]).map(platform => (
+                  {(
+                    [
+                      'INDEED',
+                      'FACEBOOK',
+                      'CRAIGSLIST',
+                      'LINKEDIN',
+                    ] as JobPlatform[]
+                  ).map((platform) => (
                     <label key={platform} className="inline-flex items-center">
                       <input
                         type="checkbox"
@@ -359,7 +452,9 @@ const JobPostingManager: React.FC<JobPostingManagerProps> = ({
                         onChange={() => togglePlatform(platform)}
                         className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                       />
-                      <span className="ml-2 text-sm text-gray-700">{platform.charAt(0) + platform.slice(1).toLowerCase()}</span>
+                      <span className="ml-2 text-sm text-gray-700">
+                        {platform.charAt(0) + platform.slice(1).toLowerCase()}
+                      </span>
                     </label>
                   ))}
                 </div>
@@ -390,32 +485,54 @@ const JobPostingManager: React.FC<JobPostingManagerProps> = ({
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
                 Job Title
               </th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
                 Platforms
               </th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
                 Posted
               </th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
                 Applicants
               </th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
                 Status
               </th>
-              <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th
+                scope="col"
+                className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
                 Actions
               </th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {jobPostings.map(posting => (
+            {jobPostings.map((posting) => (
               <tr key={posting.id}>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm font-medium text-gray-900">{posting.title}</div>
-                  <div className="text-sm text-gray-500">{posting.department}</div>
+                  <div className="text-sm font-medium text-gray-900">
+                    {posting.title}
+                  </div>
+                  <div className="text-sm text-gray-500">
+                    {posting.department}
+                  </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex space-x-2">
@@ -423,9 +540,13 @@ const JobPostingManager: React.FC<JobPostingManagerProps> = ({
                       <div
                         key={platform}
                         className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium
-                          ${status === 'POSTED' ? 'bg-green-100 text-green-800' :
-                          status === 'FAILED' ? 'bg-red-100 text-red-800' :
-                          'bg-yellow-100 text-yellow-800'}`}
+                          ${
+                            status === 'POSTED'
+                              ? 'bg-green-100 text-green-800'
+                              : status === 'FAILED'
+                                ? 'bg-red-100 text-red-800'
+                                : 'bg-yellow-100 text-yellow-800'
+                          }`}
                       >
                         {platform.charAt(0) + platform.slice(1).toLowerCase()}
                       </div>
@@ -433,19 +554,30 @@ const JobPostingManager: React.FC<JobPostingManagerProps> = ({
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {formatDistanceToNow(new Date(posting.createdAt), { addSuffix: true })}
+                  {formatDistanceToNow(new Date(posting.createdAt), {
+                    addSuffix: true,
+                  })}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {posting.applicantCount}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full
-                    ${posting.status === 'ACTIVE' ? 'bg-green-100 text-green-800' :
-                    posting.status === 'PAUSED' ? 'bg-yellow-100 text-yellow-800' :
-                    posting.status === 'EXPIRED' ? 'bg-red-100 text-red-800' :
-                    posting.status === 'FILLED' ? 'bg-blue-100 text-blue-800' :
-                    'bg-gray-100 text-gray-800'}`}>
-                    {posting.status.charAt(0) + posting.status.slice(1).toLowerCase()}
+                  <span
+                    className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full
+                    ${
+                      posting.status === 'ACTIVE'
+                        ? 'bg-green-100 text-green-800'
+                        : posting.status === 'PAUSED'
+                          ? 'bg-yellow-100 text-yellow-800'
+                          : posting.status === 'EXPIRED'
+                            ? 'bg-red-100 text-red-800'
+                            : posting.status === 'FILLED'
+                              ? 'bg-blue-100 text-blue-800'
+                              : 'bg-gray-100 text-gray-800'
+                    }`}
+                  >
+                    {posting.status.charAt(0) +
+                      posting.status.slice(1).toLowerCase()}
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -482,4 +614,4 @@ const JobPostingManager: React.FC<JobPostingManagerProps> = ({
   );
 };
 
-export default JobPostingManager; 
+export default JobPostingManager;

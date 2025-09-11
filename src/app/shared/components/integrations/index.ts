@@ -1,1 +1,1 @@
-export * from './IntegrationModal'; 
+export * from './IntegrationModal';

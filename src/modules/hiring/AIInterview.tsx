@@ -13,32 +13,36 @@ const AIInterview: React.FC<AIInterviewProps> = ({
   session,
   scenario,
   onComplete,
-  onSaveTranscript
+  onSaveTranscript,
 }) => {
-  const [isVideoEnabled, setIsVideoEnabled] = useState(session.type === 'VIDEO');
+  const [isVideoEnabled, setIsVideoEnabled] = useState(
+    session.type === 'VIDEO',
+  );
   const [isAudioEnabled, setIsAudioEnabled] = useState(true);
   const [isRecording, setIsRecording] = useState(false);
   const [currentMessage, setCurrentMessage] = useState('');
-  const [transcript, setTranscript] = useState<InterviewSession['transcript']>(session.transcript || []);
+  const [transcript, setTranscript] = useState<InterviewSession['transcript']>(
+    session.transcript || [],
+  );
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [isTyping, setIsTyping] = useState(false);
-  
+
   const videoRef = useRef<HTMLVideoElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
-  
+
   // Simulate AI typing effect
   useEffect(() => {
     if (scenario && currentQuestionIndex < scenario.questions.length) {
       setIsTyping(true);
       const question = scenario.questions[currentQuestionIndex].text;
       const timer = setTimeout(() => {
-        setTranscript(prev => [
+        setTranscript((prev) => [
           ...prev,
           {
             timestamp: new Date().toISOString(),
             speaker: 'AI',
-            message: question
-          }
+            message: question,
+          },
         ]);
         setIsTyping(false);
       }, 1000);
@@ -49,7 +53,8 @@ const AIInterview: React.FC<AIInterviewProps> = ({
   // Auto-scroll chat
   useEffect(() => {
     if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
     }
   }, [transcript]);
 
@@ -61,8 +66,8 @@ const AIInterview: React.FC<AIInterviewProps> = ({
       {
         timestamp: new Date().toISOString(),
         speaker: 'CANDIDATE' as const,
-        message: currentMessage.trim()
-      }
+        message: currentMessage.trim(),
+      },
     ];
 
     setTranscript(newTranscript);
@@ -72,14 +77,14 @@ const AIInterview: React.FC<AIInterviewProps> = ({
     // Move to next question after a brief delay
     if (scenario && currentQuestionIndex < scenario.questions.length - 1) {
       setTimeout(() => {
-        setCurrentQuestionIndex(prev => prev + 1);
+        setCurrentQuestionIndex((prev) => prev + 1);
       }, 1500);
     } else if (currentQuestionIndex === scenario.questions.length - 1) {
       // Interview complete
       onComplete({
         ...session,
         transcript: newTranscript,
-        endTime: new Date().toISOString()
+        endTime: new Date().toISOString(),
       });
     }
   };
@@ -88,16 +93,16 @@ const AIInterview: React.FC<AIInterviewProps> = ({
     if (videoRef.current && isVideoEnabled) {
       const stream = videoRef.current.srcObject as MediaStream;
       if (stream) {
-        stream.getTracks().forEach(track => track.stop());
+        stream.getTracks().forEach((track) => track.stop());
       }
       videoRef.current.srcObject = null;
     } else if (videoRef.current) {
       navigator.mediaDevices
         .getUserMedia({ video: true })
-        .then(stream => {
+        .then((stream) => {
           videoRef.current!.srcObject = stream;
         })
-        .catch(err => console.error('Error accessing camera:', err));
+        .catch((err) => console.error('Error accessing camera:', err));
     }
     setIsVideoEnabled(!isVideoEnabled);
   };
@@ -106,7 +111,7 @@ const AIInterview: React.FC<AIInterviewProps> = ({
     if (videoRef.current) {
       const stream = videoRef.current.srcObject as MediaStream;
       if (stream) {
-        stream.getAudioTracks().forEach(track => {
+        stream.getAudioTracks().forEach((track) => {
           track.enabled = !isAudioEnabled;
         });
       }
@@ -134,42 +139,60 @@ const AIInterview: React.FC<AIInterviewProps> = ({
             <button
               onClick={toggleVideo}
               className={`p-3 rounded-full ${
-                isVideoEnabled ? 'bg-blue-500 hover:bg-blue-600' : 'bg-red-500 hover:bg-red-600'
+                isVideoEnabled
+                  ? 'bg-blue-500 hover:bg-blue-600'
+                  : 'bg-red-500 hover:bg-red-600'
               } text-white`}
             >
-              {isVideoEnabled ? <Video className="h-5 w-5" /> : <VideoOff className="h-5 w-5" />}
+              {isVideoEnabled ? (
+                <Video className="h-5 w-5" />
+              ) : (
+                <VideoOff className="h-5 w-5" />
+              )}
             </button>
             <button
               onClick={toggleAudio}
               className={`p-3 rounded-full ${
-                isAudioEnabled ? 'bg-blue-500 hover:bg-blue-600' : 'bg-red-500 hover:bg-red-600'
+                isAudioEnabled
+                  ? 'bg-blue-500 hover:bg-blue-600'
+                  : 'bg-red-500 hover:bg-red-600'
               } text-white`}
             >
-              {isAudioEnabled ? <Mic className="h-5 w-5" /> : <MicOff className="h-5 w-5" />}
+              {isAudioEnabled ? (
+                <Mic className="h-5 w-5" />
+              ) : (
+                <MicOff className="h-5 w-5" />
+              )}
             </button>
             <button
               onClick={toggleRecording}
               className={`p-3 rounded-full ${
-                isRecording ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600'
+                isRecording
+                  ? 'bg-red-500 hover:bg-red-600'
+                  : 'bg-green-500 hover:bg-green-600'
               } text-white`}
             >
-              {isRecording ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
+              {isRecording ? (
+                <Pause className="h-5 w-5" />
+              ) : (
+                <Play className="h-5 w-5" />
+              )}
             </button>
           </div>
         </div>
       )}
 
       {/* Chat Section */}
-      <div className={`${session.type === 'VIDEO' ? 'w-1/2' : 'w-full'} flex flex-col bg-white`}>
+      <div
+        className={`${session.type === 'VIDEO' ? 'w-1/2' : 'w-full'} flex flex-col bg-white`}
+      >
         {/* Interview Info */}
         <div className="p-4 border-b">
           <h2 className="text-lg font-semibold text-gray-900">
             {scenario ? scenario.title : 'AI Interview'}
           </h2>
           {scenario && (
-            <p className="text-sm text-gray-500 mt-1">
-              {scenario.description}
-            </p>
+            <p className="text-sm text-gray-500 mt-1">{scenario.description}</p>
           )}
         </div>
 
@@ -216,8 +239,8 @@ const AIInterview: React.FC<AIInterviewProps> = ({
             <input
               type="text"
               value={currentMessage}
-              onChange={e => setCurrentMessage(e.target.value)}
-              onKeyPress={e => e.key === 'Enter' && handleSendMessage()}
+              onChange={(e) => setCurrentMessage(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
               placeholder="Type your response..."
               className="flex-1 rounded-lg border-gray-300 focus:ring-blue-500 focus:border-blue-500"
             />
@@ -235,4 +258,4 @@ const AIInterview: React.FC<AIInterviewProps> = ({
   );
 };
 
-export default AIInterview; 
+export default AIInterview;

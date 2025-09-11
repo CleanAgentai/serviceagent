@@ -5,7 +5,7 @@ import {
   Cell,
   Tooltip,
   Legend,
-  ResponsiveContainer
+  ResponsiveContainer,
 } from 'recharts';
 import { ChartContainer, ChartContainerProps } from './ChartContainer';
 import { tokens } from '@/app/shared/styles/tokens';
@@ -73,7 +73,7 @@ export const PieChart: React.FC<PieChartProps> = ({
 
   // Generate a set of default colors from our design tokens
   const defaultColors = colorScheme || [
-    tokens.colors.primary.blue, 
+    tokens.colors.primary.blue,
     tokens.colors.primary.teal,
     tokens.colors.status.success,
     tokens.colors.status.warning,
@@ -87,9 +87,19 @@ export const PieChart: React.FC<PieChartProps> = ({
   const total = data.reduce((sum, entry) => sum + entry.value, 0);
 
   // Custom label renderer
-  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, name, value }: any) => {
+  const renderCustomizedLabel = ({
+    cx,
+    cy,
+    midAngle,
+    innerRadius,
+    outerRadius,
+    percent,
+    name,
+    value,
+  }: any) => {
     const RADIAN = Math.PI / 180;
-    const radius = Number(innerRadius) + (Number(outerRadius) - Number(innerRadius)) * 0.5;
+    const radius =
+      Number(innerRadius) + (Number(outerRadius) - Number(innerRadius)) * 0.5;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
@@ -110,11 +120,11 @@ export const PieChart: React.FC<PieChartProps> = ({
     }
 
     return (
-      <text 
-        x={x} 
-        y={y} 
-        fill="white" 
-        textAnchor={x > cx ? 'start' : 'end'} 
+      <text
+        x={x}
+        y={y}
+        fill="white"
+        textAnchor={x > cx ? 'start' : 'end'}
         dominantBaseline="central"
         fontSize={12}
         fontWeight="medium"
@@ -129,15 +139,12 @@ export const PieChart: React.FC<PieChartProps> = ({
     // Format numbers with commas and add % for percent
     if (typeof value === 'number') {
       const formattedValue = new Intl.NumberFormat('en-US', {
-        maximumFractionDigits: 2
+        maximumFractionDigits: 2,
       }).format(value);
-      
+
       const percentage = ((value / total) * 100).toFixed(1);
-      
-      return [
-        `${formattedValue} (${percentage}%)`,
-        name
-      ];
+
+      return [`${formattedValue} (${percentage}%)`, name];
     }
     return [value, name];
   };
@@ -172,29 +179,31 @@ export const PieChart: React.FC<PieChartProps> = ({
           animationDuration={animationDuration}
         >
           {data.map((entry, index) => (
-            <Cell 
-              key={`cell-${index}`} 
+            <Cell
+              key={`cell-${index}`}
               fill={entry.color || defaultColors[index % defaultColors.length]}
-              opacity={activeIndex !== undefined && activeIndex !== index ? 0.6 : 1}
+              opacity={
+                activeIndex !== undefined && activeIndex !== index ? 0.6 : 1
+              }
             />
           ))}
         </Pie>
-        
+
         {showTooltip && (
-          <Tooltip 
-            formatter={tooltipFormatter || defaultTooltipFormatter} 
-            contentStyle={{ 
-              backgroundColor: 'white', 
+          <Tooltip
+            formatter={tooltipFormatter || defaultTooltipFormatter}
+            contentStyle={{
+              backgroundColor: 'white',
               borderColor: '#e5e7eb',
               borderRadius: '4px',
-              boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)'
+              boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
             }}
             itemStyle={{ padding: '4px 0' }}
           />
         )}
-        
+
         {showLegend && (
-          <Legend 
+          <Legend
             layout="horizontal"
             verticalAlign="bottom"
             align="center"
@@ -204,4 +213,4 @@ export const PieChart: React.FC<PieChartProps> = ({
       </RechartsPieChart>
     </ChartContainer>
   );
-}; 
+};

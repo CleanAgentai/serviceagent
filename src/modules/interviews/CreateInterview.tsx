@@ -1,18 +1,18 @@
-import React, { useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
-import { supabase } from "@/app/lib/supabase";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import React, { useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
+import { supabase } from '@/app/lib/supabase';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select';
 import {
   Card,
   CardContent,
@@ -20,10 +20,10 @@ import {
   CardTitle,
   CardDescription,
   CardFooter,
-} from "@/components/ui/card";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Switch } from "@/components/ui/switch";
-import { toast } from "sonner";
+} from '@/components/ui/card';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Switch } from '@/components/ui/switch';
+import { toast } from 'sonner';
 import {
   Trash2,
   Plus,
@@ -31,22 +31,22 @@ import {
   ArrowLeft,
   Copy,
   Calendar,
-} from "lucide-react";
-import { format } from "date-fns";
+} from 'lucide-react';
+import { format } from 'date-fns';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import { Calendar as CalendarComponent } from "@/components/ui/calendar";
-import { useAuth } from "@/app/providers/AuthContext";
+} from '@/components/ui/popover';
+import { Calendar as CalendarComponent } from '@/components/ui/calendar';
+import { useAuth } from '@/app/providers/AuthContext';
 
 // Define types for our form
 interface Question {
   id: string;
   text: string;
   order: number;
-  answerType: "video" | "text";
+  answerType: 'video' | 'text';
   maxDuration?: number;
   maxRetakes?: number;
   maxCharacters?: number;
@@ -65,39 +65,39 @@ interface InterviewFormData {
 }
 
 const languages = [
-  "English",
-  "Spanish",
-  "French",
-  "German",
-  "Chinese",
-  "Japanese",
-  "Arabic",
-  "Russian",
-  "Portuguese",
-  "Hindi",
+  'English',
+  'Spanish',
+  'French',
+  'German',
+  'Chinese',
+  'Japanese',
+  'Arabic',
+  'Russian',
+  'Portuguese',
+  'Hindi',
 ];
 
 export default function CreateInterview() {
   const navigate = useNavigate();
 
   const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState("basic-details");
+  const [activeTab, setActiveTab] = useState('basic-details');
 
   const [loading, setLoading] = useState(false);
   const [interviewLink, setInterviewLink] = useState<string | null>(null);
 
   // Initialize form data
   const [formData, setFormData] = useState<InterviewFormData>({
-    title: "",
-    language: "English",
-    hourlyRate: "",
-    description: "",
+    title: '',
+    language: 'English',
+    hourlyRate: '',
+    description: '',
     questions: [
       {
         id: uuidv4(),
-        text: "",
+        text: '',
         order: 1,
-        answerType: "video",
+        answerType: 'video',
       },
     ],
     showHints: true,
@@ -107,7 +107,7 @@ export default function CreateInterview() {
   // Handle basic details changes
   const handleBasicDetailsChange = (
     field: keyof InterviewFormData,
-    value: any
+    value: any,
   ) => {
     setFormData((prev) => ({
       ...prev,
@@ -119,12 +119,12 @@ export default function CreateInterview() {
   const handleQuestionChange = (
     id: string,
     field: keyof Question,
-    value: any
+    value: any,
   ) => {
     setFormData((prev) => ({
       ...prev,
       questions: prev.questions.map((q) =>
-        q.id === id ? { ...q, [field]: value } : q
+        q.id === id ? { ...q, [field]: value } : q,
       ),
     }));
   };
@@ -138,9 +138,9 @@ export default function CreateInterview() {
         ...prev.questions,
         {
           id: uuidv4(),
-          text: "",
+          text: '',
           order: newOrder,
-          answerType: "video",
+          answerType: 'video',
         },
       ],
     }));
@@ -150,7 +150,7 @@ export default function CreateInterview() {
   const removeQuestion = useCallback(
     (id: string) => {
       if (formData.questions.length <= 1) {
-        toast.error("You must have at least one question");
+        toast.error('You must have at least one question');
         return;
       }
 
@@ -168,40 +168,40 @@ export default function CreateInterview() {
         };
       });
     },
-    [formData.questions]
+    [formData.questions],
   );
 
   // Navigate to next tab
   const nextTab = () => {
-    if (activeTab === "basic-details") {
+    if (activeTab === 'basic-details') {
       // Validate basic details
       if (!formData.title.trim()) {
-        toast.error("Interview title is required");
+        toast.error('Interview title is required');
         return;
       }
       if (!formData.description.trim()) {
-        toast.error("Interview description is required");
+        toast.error('Interview description is required');
         return;
       }
-      setActiveTab("questions");
-    } else if (activeTab === "questions") {
+      setActiveTab('questions');
+    } else if (activeTab === 'questions') {
       // Validate questions
       const invalidQuestions = formData.questions.filter((q) => !q.text.trim());
       if (invalidQuestions.length > 0) {
-        toast.error("All questions must have text");
+        toast.error('All questions must have text');
         return;
       }
 
-      setActiveTab("settings");
+      setActiveTab('settings');
     }
   };
 
   // Navigate to previous tab
   const prevTab = () => {
-    if (activeTab === "questions") {
-      setActiveTab("basic-details");
-    } else if (activeTab === "settings") {
-      setActiveTab("questions");
+    if (activeTab === 'questions') {
+      setActiveTab('basic-details');
+    } else if (activeTab === 'settings') {
+      setActiveTab('questions');
     }
   };
 
@@ -210,7 +210,7 @@ export default function CreateInterview() {
     e.preventDefault();
 
     if (!user) {
-      toast.error("You must be logged in to create an interview");
+      toast.error('You must be logged in to create an interview');
       return;
     }
 
@@ -224,19 +224,19 @@ export default function CreateInterview() {
       } = await supabase.auth.getUser();
 
       if (userError || !user) {
-        toast.error("You must be logged in to create an interview");
+        toast.error('You must be logged in to create an interview');
         setLoading(false);
         return;
       }
       //bring willo_company_key from company_profiles
       const { data: companyProfile, error: profileError } = await supabase
-        .from("company_profiles")
-        .select("willo_company_key")
-        .eq("created_by_user_id", user.id)
+        .from('company_profiles')
+        .select('willo_company_key')
+        .eq('created_by_user_id', user.id)
         .single();
 
       if (profileError || !companyProfile?.willo_company_key) {
-        toast.error("Could not find your company profile or Willow key.");
+        toast.error('Could not find your company profile or Willow key.');
         setLoading(false);
         return;
       }
@@ -255,7 +255,7 @@ export default function CreateInterview() {
           max_retakes: q.maxRetakes ?? 0,
         };
 
-        if (q.answerType === "video") {
+        if (q.answerType === 'video') {
           return {
             ...base,
             max_duration: q.maxDuration ?? 60, // 반드시 있어야 함
@@ -263,7 +263,7 @@ export default function CreateInterview() {
           };
         }
 
-        if (q.answerType === "text") {
+        if (q.answerType === 'text') {
           return {
             ...base,
             max_characters: q.maxCharacters ?? 500, // 반드시 있어야 함
@@ -300,7 +300,7 @@ export default function CreateInterview() {
         // interview_link: generatedLink,
       };
 
-      console.log("Sending interview data:", interviewData);
+      console.log('Sending interview data:', interviewData);
 
       // Directly insert data into the interviews table
       // const { error: saveError } = await supabase
@@ -331,19 +331,19 @@ export default function CreateInterview() {
 
       const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
       const response = await fetch(`${apiBaseUrl}/api/interviews`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(interviewData),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to create interview");
+        throw new Error('Failed to create interview');
       }
 
       const result = await response.json();
-      console.log("Willow response:", result);
+      console.log('Willow response:', result);
       const {
         key: willo_interview_key,
         invite_link: interview_link,
@@ -351,9 +351,9 @@ export default function CreateInterview() {
       } = result;
       const show_hints_and_tips = settings?.show_hints_and_tips;
       const show_availability_calendar = settings?.show_availability_calendar;
-      console.log("invite_link", interview_link);
+      console.log('invite_link', interview_link);
 
-      const { error: insertError } = await supabase.from("interviews").insert({
+      const { error: insertError } = await supabase.from('interviews').insert({
         user_id: user.id,
         willo_interview_key,
         title: formData.title,
@@ -369,36 +369,38 @@ export default function CreateInterview() {
 
       if (!insertError) {
         const { data: insertedInterview, error: fetchError } = await supabase
-          .from("interviews")
-          .select("id")
-          .eq("willo_interview_key", willo_interview_key)
-          .eq("user_id", user.id)
+          .from('interviews')
+          .select('id')
+          .eq('willo_interview_key', willo_interview_key)
+          .eq('user_id', user.id)
           .single();
 
         if (!fetchError && insertedInterview?.id) {
           const { data: profile, error: profileError } = await supabase
-            .from("company_profiles")
-            .select("first_interview_id")
-            .eq("willo_company_key", departmentKey)
+            .from('company_profiles')
+            .select('first_interview_id')
+            .eq('willo_company_key', departmentKey)
             .single();
 
           if (!profileError && !profile?.first_interview_id) {
             const { error: updateError } = await supabase
-              .from("company_profiles")
-              .update({ first_interview_id: insertedInterview.id })
-              .eq("willo_company_key", departmentKey);
+              .from('company_profiles')
+              .update({
+                first_interview_id: insertedInterview.id,
+              })
+              .eq('willo_company_key', departmentKey);
           }
         }
       }
 
       if (insertError) {
-        console.error("❌ Supabase insert error:", insertError);
+        console.error('❌ Supabase insert error:', insertError);
         throw new Error(insertError.message);
       }
 
       // Insert questions into Supabase
       const { error: questionInsertError } = await supabase
-        .from("questions")
+        .from('questions')
         .insert(
           formData.questions.map((q, index) => ({
             interview_id: willo_interview_key,
@@ -410,26 +412,26 @@ export default function CreateInterview() {
             max_characters: q.maxCharacters || null,
             thinking_time: q.thinkingTime || null,
             created_at: new Date().toISOString(),
-          }))
+          })),
         );
 
       if (questionInsertError) {
-        console.error("❌ Failed to insert questions:", questionInsertError);
-        throw new Error("Question insert failed");
+        console.error('❌ Failed to insert questions:', questionInsertError);
+        throw new Error('Question insert failed');
       }
 
       // Set the interview link to display to the user
       setInterviewLink(generatedLink);
 
-      toast.success("Interview created successfully!");
-      navigate("/interviews");
+      toast.success('Interview created successfully!');
+      navigate('/interviews');
     } catch (error) {
-      console.error("Error in handleSubmit:", error);
+      console.error('Error in handleSubmit:', error);
 
       if (error instanceof Error) {
         toast.error(`An error occurred: ${error.message}`);
       } else {
-        toast.error("An unexpected error occurred");
+        toast.error('An unexpected error occurred');
       }
     } finally {
       setLoading(false);
@@ -441,14 +443,14 @@ export default function CreateInterview() {
     if (interviewLink) {
       navigator.clipboard
         .writeText(interviewLink)
-        .then(() => toast.success("Link copied to clipboard!"))
-        .catch(() => toast.error("Failed to copy link"));
+        .then(() => toast.success('Link copied to clipboard!'))
+        .catch(() => toast.error('Failed to copy link'));
     }
   };
 
   // View all interviews
   const viewAllInterviews = () => {
-    navigate("/interviews");
+    navigate('/interviews');
   };
 
   // Render the appropriate content based on the active tab
@@ -491,23 +493,23 @@ export default function CreateInterview() {
               onClick={() => {
                 setInterviewLink(null);
                 setFormData({
-                  title: "",
-                  language: "English",
-                  hourlyRate: "",
-                  description: "",
+                  title: '',
+                  language: 'English',
+                  hourlyRate: '',
+                  description: '',
                   questions: [
                     {
                       id: uuidv4(),
-                      text: "",
+                      text: '',
                       order: 1,
-                      answerType: "video",
+                      answerType: 'video',
                     },
                   ],
                   showHints: true,
                   showAvailability: true,
                   deadline: undefined,
                 });
-                setActiveTab("basic-details");
+                setActiveTab('basic-details');
               }}
             >
               Create Another Interview
@@ -518,7 +520,7 @@ export default function CreateInterview() {
     }
 
     switch (activeTab) {
-      case "basic-details":
+      case 'basic-details':
         return (
           <div className="space-y-6">
             <div className="space-y-2">
@@ -529,7 +531,7 @@ export default function CreateInterview() {
                 id="title"
                 value={formData.title}
                 onChange={(e) =>
-                  handleBasicDetailsChange("title", e.target.value)
+                  handleBasicDetailsChange('title', e.target.value)
                 }
                 placeholder="e.g. Software Engineer Interview"
                 required
@@ -542,7 +544,7 @@ export default function CreateInterview() {
                 <Select
                   value={formData.language}
                   onValueChange={(value) =>
-                    handleBasicDetailsChange("language", value)
+                    handleBasicDetailsChange('language', value)
                   }
                 >
                   <SelectTrigger id="language">
@@ -564,7 +566,7 @@ export default function CreateInterview() {
                   id="hourlyRate"
                   value={formData.hourlyRate}
                   onChange={(e) =>
-                    handleBasicDetailsChange("hourlyRate", e.target.value)
+                    handleBasicDetailsChange('hourlyRate', e.target.value)
                   }
                   placeholder="e.g. $25 - $35"
                 />
@@ -579,7 +581,7 @@ export default function CreateInterview() {
                 id="description"
                 value={formData.description}
                 onChange={(e) =>
-                  handleBasicDetailsChange("description", e.target.value)
+                  handleBasicDetailsChange('description', e.target.value)
                 }
                 placeholder="Describe the interview process and what candidates should expect..."
                 rows={5}
@@ -588,7 +590,11 @@ export default function CreateInterview() {
             </div>
 
             <div className="flex justify-end">
-              <Button type="button" onClick={nextTab} className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 px-6 py-3">
+              <Button
+                type="button"
+                onClick={nextTab}
+                className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 px-6 py-3"
+              >
                 Next: Questions
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -596,11 +602,14 @@ export default function CreateInterview() {
           </div>
         );
 
-      case "questions":
+      case 'questions':
         return (
           <div className="space-y-8">
             {formData.questions.map((question, index) => (
-              <Card key={question.id} className="relative border-0 shadow-lg hover:shadow-xl transition-all duration-300">
+              <Card
+                key={question.id}
+                className="relative border-0 shadow-lg hover:shadow-xl transition-all duration-300"
+              >
                 <CardHeader className="pb-3">
                   <div className="flex justify-between items-center">
                     <CardTitle className="text-lg">
@@ -631,8 +640,8 @@ export default function CreateInterview() {
                       onChange={(e) =>
                         handleQuestionChange(
                           question.id,
-                          "text",
-                          e.target.value
+                          'text',
+                          e.target.value,
                         )
                       }
                       placeholder="Enter your question here..."
@@ -651,11 +660,11 @@ export default function CreateInterview() {
                       <Select
                         value={question.answerType}
                         onValueChange={(value) => {
-                          const answerType = value as Question["answerType"];
+                          const answerType = value as Question['answerType'];
                           handleQuestionChange(
                             question.id,
-                            "answerType",
-                            answerType
+                            'answerType',
+                            answerType,
                           );
                         }}
                       >
@@ -669,7 +678,7 @@ export default function CreateInterview() {
                       </Select>
                     </div>
 
-                    {question.answerType === "video" && (
+                    {question.answerType === 'video' && (
                       <div className="space-y-2">
                         <Label
                           htmlFor={`maxDuration-${question.id}`}
@@ -679,12 +688,12 @@ export default function CreateInterview() {
                         </Label>
                         <Select
                           //id={`maxDuration-${question.id}`}
-                          value={question.maxDuration?.toString() || ""}
+                          value={question.maxDuration?.toString() || ''}
                           onValueChange={(value) =>
                             handleQuestionChange(
                               question.id,
-                              "maxDuration",
-                              Number(value)
+                              'maxDuration',
+                              Number(value),
                             )
                           }
 
@@ -704,7 +713,7 @@ export default function CreateInterview() {
                       </div>
                     )}
 
-                    {question.answerType === "text" && (
+                    {question.answerType === 'text' && (
                       <div className="space-y-2">
                         <Label
                           htmlFor={`maxCharacters-${question.id}`}
@@ -714,12 +723,12 @@ export default function CreateInterview() {
                         </Label>
                         <Select
                           //id={`maxDuration-${question.id}`}
-                          value={question.maxCharacters?.toString() || ""}
+                          value={question.maxCharacters?.toString() || ''}
                           onValueChange={(value) =>
                             handleQuestionChange(
                               question.id,
-                              "maxCharacters",
-                              Number(value)
+                              'maxCharacters',
+                              Number(value),
                             )
                           }
 
@@ -739,20 +748,20 @@ export default function CreateInterview() {
                     )}
                   </div>
 
-                  {(question.answerType === "video" ||
-                    question.answerType === "text") && (
+                  {(question.answerType === 'video' ||
+                    question.answerType === 'text') && (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <Label htmlFor={`maxRetakes-${question.id}`}>
                           Max Retakes
                         </Label>
                         <Select
-                          value={question.maxRetakes?.toString() || ""}
+                          value={question.maxRetakes?.toString() || ''}
                           onValueChange={(value) =>
                             handleQuestionChange(
                               question.id,
-                              "maxRetakes",
-                              Number(value)
+                              'maxRetakes',
+                              Number(value),
                             )
                           }
                         >
@@ -767,18 +776,18 @@ export default function CreateInterview() {
                         </Select>
                       </div>
 
-                      {question.answerType === "video" && (
+                      {question.answerType === 'video' && (
                         <div className="space-y-2">
                           <Label htmlFor={`thinkingTime-${question.id}`}>
                             Thinking Time (seconds)
                           </Label>
                           <Select
-                            value={question.thinkingTime?.toString() || ""}
+                            value={question.thinkingTime?.toString() || ''}
                             onValueChange={(value) =>
                               handleQuestionChange(
                                 question.id,
-                                "thinkingTime",
-                                Number(value)
+                                'thinkingTime',
+                                Number(value),
                               )
                             }
                           >
@@ -799,7 +808,11 @@ export default function CreateInterview() {
               </Card>
             ))}
 
-            <Button variant="outline" onClick={addQuestion} className="w-full bg-white text-black shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3 border border-gray-200 focus:z-10">
+            <Button
+              variant="outline"
+              onClick={addQuestion}
+              className="w-full bg-white text-black shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3 border border-gray-200 focus:z-10"
+            >
               <Plus className="h-4 w-4 mr-1" />
               Add Question
             </Button>
@@ -814,7 +827,11 @@ export default function CreateInterview() {
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Previous
               </Button>
-              <Button type="button" onClick={nextTab} className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 px-6 py-3">
+              <Button
+                type="button"
+                onClick={nextTab}
+                className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 px-6 py-3"
+              >
                 Next: Settings
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -822,7 +839,7 @@ export default function CreateInterview() {
           </div>
         );
 
-      case "settings":
+      case 'settings':
         return (
           <div className="space-y-6">
             <Card className="p-6">
@@ -844,9 +861,9 @@ export default function CreateInterview() {
                   {/* Mobile: Select, Desktop: Switch */}
                   <div className="md:hidden">
                     <Select
-                      value={formData.showHints ? "yes" : "no"}
+                      value={formData.showHints ? 'yes' : 'no'}
                       onValueChange={(value) =>
-                        handleBasicDetailsChange("showHints", value === "yes")
+                        handleBasicDetailsChange('showHints', value === 'yes')
                       }
                     >
                       <SelectTrigger className="w-20">
@@ -863,7 +880,7 @@ export default function CreateInterview() {
                       id="showHints"
                       checked={formData.showHints}
                       onCheckedChange={(checked) =>
-                        handleBasicDetailsChange("showHints", checked)
+                        handleBasicDetailsChange('showHints', checked)
                       }
                       className="data-[state=checked]:bg-blue-600"
                     />
@@ -885,9 +902,12 @@ export default function CreateInterview() {
                   {/* Mobile: Select, Desktop: Switch */}
                   <div className="md:hidden">
                     <Select
-                      value={formData.showAvailability ? "yes" : "no"}
+                      value={formData.showAvailability ? 'yes' : 'no'}
                       onValueChange={(value) =>
-                        handleBasicDetailsChange("showAvailability", value === "yes")
+                        handleBasicDetailsChange(
+                          'showAvailability',
+                          value === 'yes',
+                        )
                       }
                     >
                       <SelectTrigger className="w-20">
@@ -904,7 +924,7 @@ export default function CreateInterview() {
                       id="showAvailability"
                       checked={formData.showAvailability}
                       onCheckedChange={(checked) =>
-                        handleBasicDetailsChange("showAvailability", checked)
+                        handleBasicDetailsChange('showAvailability', checked)
                       }
                       className="data-[state=checked]:bg-blue-600"
                     />
@@ -927,8 +947,8 @@ export default function CreateInterview() {
                       >
                         <Calendar className="mr-2 h-4 w-4" />
                         {formData.deadline
-                          ? format(formData.deadline, "PPP")
-                          : "Select a deadline"}
+                          ? format(formData.deadline, 'PPP')
+                          : 'Select a deadline'}
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
@@ -936,7 +956,7 @@ export default function CreateInterview() {
                         mode="single"
                         selected={formData.deadline}
                         onSelect={(date) =>
-                          handleBasicDetailsChange("deadline", date)
+                          handleBasicDetailsChange('deadline', date)
                         }
                         disabled={(date) => date < new Date()}
                         initialFocus
@@ -947,12 +967,22 @@ export default function CreateInterview() {
               </div>
 
               <div className="flex justify-between mt-6">
-                <Button type="button" variant="outline" onClick={prevTab} className="bg-white text-black shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3 border border-gray-200 focus:z-10 relative">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={prevTab}
+                  className="bg-white text-black shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3 border border-gray-200 focus:z-10 relative"
+                >
                   <ArrowLeft className="mr-2 h-4 w-4" />
                   Previous
                 </Button>
-                <Button type="button" onClick={handleSubmit} disabled={loading} className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 px-6 py-3">
-                  {loading ? "Creating..." : "Create Interview"}
+                <Button
+                  type="button"
+                  onClick={handleSubmit}
+                  disabled={loading}
+                  className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 px-6 py-3"
+                >
+                  {loading ? 'Creating...' : 'Create Interview'}
                 </Button>
               </div>
             </Card>
@@ -976,9 +1006,15 @@ export default function CreateInterview() {
       {!interviewLink && (
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full h-full grid-cols-3 border-0 shadow-lg hover:shadow-xl transition-all duration-300">
-            <TabsTrigger value="basic-details"><p className="max-sm:text-wrap">Basic Details</p></TabsTrigger>
-            <TabsTrigger value="questions"><p className="max-sm:text-wrap">Interview Questions</p></TabsTrigger>
-            <TabsTrigger value="settings"><p className="max-sm:text-wrap">Settings</p></TabsTrigger>
+            <TabsTrigger value="basic-details">
+              <p className="max-sm:text-wrap">Basic Details</p>
+            </TabsTrigger>
+            <TabsTrigger value="questions">
+              <p className="max-sm:text-wrap">Interview Questions</p>
+            </TabsTrigger>
+            <TabsTrigger value="settings">
+              <p className="max-sm:text-wrap">Settings</p>
+            </TabsTrigger>
           </TabsList>
           <div className="mt-6">{renderTabContent()}</div>
         </Tabs>

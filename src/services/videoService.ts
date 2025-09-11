@@ -4,7 +4,10 @@ class VideoService {
   private peerConnection?: RTCPeerConnection;
   private localStream?: MediaStream;
   public onRemoteStreamUpdate?: (stream: MediaStream) => void;
-  public onParticipantStatusChange?: (participantId: string, status: 'connecting' | 'connected' | 'disconnected') => void;
+  public onParticipantStatusChange?: (
+    participantId: string,
+    status: 'connecting' | 'connected' | 'disconnected',
+  ) => void;
 
   async initializeCall(roomId: string): Promise<VideoCallState> {
     try {
@@ -14,7 +17,7 @@ class VideoService {
         roomId,
         participants: [],
         localStream: this.localStream,
-        isConnected: false
+        isConnected: false,
       };
     } catch (error) {
       console.error('Failed to initialize call:', error);
@@ -26,7 +29,7 @@ class VideoService {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: true,
-        audio: true
+        audio: true,
       });
       return stream;
     } catch (error) {
@@ -44,7 +47,7 @@ class VideoService {
       this.peerConnection.close();
     }
     if (this.localStream) {
-      this.localStream.getTracks().forEach(track => track.stop());
+      this.localStream.getTracks().forEach((track) => track.stop());
     }
   }
 
@@ -73,7 +76,7 @@ class VideoService {
   async shareScreen(): Promise<MediaStream | null> {
     try {
       const screenStream = await navigator.mediaDevices.getDisplayMedia({
-        video: true
+        video: true,
       });
       return screenStream;
     } catch (error) {
@@ -87,11 +90,11 @@ class VideoService {
       this.peerConnection.close();
     }
     if (this.localStream) {
-      this.localStream.getTracks().forEach(track => track.stop());
+      this.localStream.getTracks().forEach((track) => track.stop());
     }
     this.onRemoteStreamUpdate = undefined;
     this.onParticipantStatusChange = undefined;
   }
 }
 
-export const videoService = new VideoService(); 
+export const videoService = new VideoService();

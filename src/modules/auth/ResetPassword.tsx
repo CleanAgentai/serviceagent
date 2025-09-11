@@ -1,48 +1,49 @@
-import React, { useEffect, useState } from "react";
-import { supabase } from "@/app/lib/supabase";
-import { useNavigate } from "react-router-dom";
-import { Lock, ArrowRight } from "lucide-react";
+import React, { useEffect, useState } from 'react';
+import { supabase } from '@/app/lib/supabase';
+import { useNavigate } from 'react-router-dom';
+import { Lock, ArrowRight } from 'lucide-react';
 
 export function ResetPassword() {
   const navigate = useNavigate();
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
-  const [showPasswordRequirements, setShowPasswordRequirements] = useState(false);
+  const [showPasswordRequirements, setShowPasswordRequirements] =
+    useState(false);
 
   const validatePassword = (password: string) => {
     const errors: string[] = [];
-    
+
     if (password.length < 8) {
-      errors.push("Password must be at least 8 characters long");
+      errors.push('Password must be at least 8 characters long');
     }
-    
+
     if (!/[A-Z]/.test(password)) {
-      errors.push("At least 1 uppercase letter required");
+      errors.push('At least 1 uppercase letter required');
     }
-    
+
     if (!/[a-z]/.test(password)) {
-      errors.push("At least 1 lowercase letter required");
+      errors.push('At least 1 lowercase letter required');
     }
-    
+
     if (!/[0-9]/.test(password)) {
-      errors.push("At least 1 number (0-9) required");
+      errors.push('At least 1 number (0-9) required');
     }
-    
+
     if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
-      errors.push("At least 1 special character required");
+      errors.push('At least 1 special character required');
     }
-    
+
     return errors;
   };
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setPassword(value);
-    
+
     const errors = validatePassword(value);
     setPasswordErrors(errors);
     setShowPasswordRequirements(value.length > 0);
@@ -50,18 +51,18 @@ export function ResetPassword() {
 
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
+    setError('');
+    setSuccess('');
     setIsLoading(true);
 
     if (!password || !confirmPassword) {
-      setError("Please fill in all fields");
+      setError('Please fill in all fields');
       setIsLoading(false);
       return;
     }
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      setError('Passwords do not match');
       setIsLoading(false);
       return;
     }
@@ -69,7 +70,7 @@ export function ResetPassword() {
     // Check password requirements
     const passwordValidationErrors = validatePassword(password);
     if (passwordValidationErrors.length > 0) {
-      setError("Password does not meet requirements");
+      setError('Password does not meet requirements');
       setIsLoading(false);
       return;
     }
@@ -80,14 +81,14 @@ export function ResetPassword() {
       });
 
       if (error) throw error;
-      setSuccess("Password updated successfully!");
+      setSuccess('Password updated successfully!');
 
       setTimeout(() => {
-        navigate("/signin");
+        navigate('/signin');
       }, 2000);
     } catch (err: any) {
       console.error(err);
-      setError(err.message || "Something went wrong.");
+      setError(err.message || 'Something went wrong.');
     } finally {
       setIsLoading(false);
     }
@@ -104,7 +105,8 @@ export function ResetPassword() {
               Reset Your Password
             </h1>
             <p className="text-gray-600">
-              Enter your new password below. Make sure it meets our security requirements.
+              Enter your new password below. Make sure it meets our security
+              requirements.
             </p>
           </div>
 
@@ -113,8 +115,16 @@ export function ResetPassword() {
             <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  <svg className="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  <svg
+                    className="h-5 w-5 text-green-400"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                 </div>
                 <div className="ml-3">
@@ -129,8 +139,16 @@ export function ResetPassword() {
             <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                  <svg
+                    className="h-5 w-5 text-red-400"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                 </div>
                 <div className="ml-3">
@@ -142,7 +160,11 @@ export function ResetPassword() {
 
           {/* Reset Password Form */}
           <div className="bg-transparent rounded-xl p-8 pt-0">
-            <form onSubmit={handleResetPassword} className="space-y-6" noValidate>
+            <form
+              onSubmit={handleResetPassword}
+              className="space-y-6"
+              noValidate
+            >
               {/* Password Fields */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
@@ -171,41 +193,75 @@ export function ResetPassword() {
                       placeholder="••••••••"
                     />
                   </div>
-                  
+
                   {/* Password Requirements */}
                   {showPasswordRequirements && (
                     <div className="mt-2 bg-gray-50 rounded-lg">
                       <ul className="space-y-1 transition-all duration-300">
-                        <li className={`text-xs flex items-center transition-colors duration-300 ${
-                          password.length >= 8 
-                            ? 'text-green-600' 
-                            : 'text-red-600'
-                        }`}>
-                          <span className="mr-2 transition-all duration-300">{password.length >= 8 ? '✓' : '✗'}</span>
+                        <li
+                          className={`text-xs flex items-center transition-colors duration-300 ${
+                            password.length >= 8
+                              ? 'text-green-600'
+                              : 'text-red-600'
+                          }`}
+                        >
+                          <span className="mr-2 transition-all duration-300">
+                            {password.length >= 8 ? '✓' : '✗'}
+                          </span>
                           At least 8 characters long
                         </li>
-                        <li className={`text-xs flex items-center transition-colors duration-300 ${
-                          /[A-Z]/.test(password) ? 'text-green-600' : 'text-red-600'
-                        }`}>
-                          <span className="mr-2 transition-all duration-300">{/[A-Z]/.test(password) ? '✓' : '✗'}</span>
+                        <li
+                          className={`text-xs flex items-center transition-colors duration-300 ${
+                            /[A-Z]/.test(password)
+                              ? 'text-green-600'
+                              : 'text-red-600'
+                          }`}
+                        >
+                          <span className="mr-2 transition-all duration-300">
+                            {/[A-Z]/.test(password) ? '✓' : '✗'}
+                          </span>
                           At least 1 uppercase letter
                         </li>
-                        <li className={`text-xs flex items-center transition-colors duration-300 ${
-                          /[a-z]/.test(password) ? 'text-green-600' : 'text-red-600'
-                        }`}>
-                          <span className="mr-2 transition-all duration-300">{/[a-z]/.test(password) ? '✓' : '✗'}</span>
+                        <li
+                          className={`text-xs flex items-center transition-colors duration-300 ${
+                            /[a-z]/.test(password)
+                              ? 'text-green-600'
+                              : 'text-red-600'
+                          }`}
+                        >
+                          <span className="mr-2 transition-all duration-300">
+                            {/[a-z]/.test(password) ? '✓' : '✗'}
+                          </span>
                           At least 1 lowercase letter
                         </li>
-                        <li className={`text-xs flex items-center transition-colors duration-300 ${
-                          /[0-9]/.test(password) ? 'text-green-600' : 'text-red-600'
-                        }`}>
-                          <span className="mr-2 transition-all duration-300">{/[0-9]/.test(password) ? '✓' : '✗'}</span>
+                        <li
+                          className={`text-xs flex items-center transition-colors duration-300 ${
+                            /[0-9]/.test(password)
+                              ? 'text-green-600'
+                              : 'text-red-600'
+                          }`}
+                        >
+                          <span className="mr-2 transition-all duration-300">
+                            {/[0-9]/.test(password) ? '✓' : '✗'}
+                          </span>
                           At least 1 number (0-9)
                         </li>
-                        <li className={`text-xs flex items-center transition-colors duration-300 ${
-                          /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password) ? 'text-green-600' : 'text-red-600'
-                        }`}>
-                          <span className="mr-2 transition-all duration-300">{/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password) ? '✓' : '✗'}</span>
+                        <li
+                          className={`text-xs flex items-center transition-colors duration-300 ${
+                            /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(
+                              password,
+                            )
+                              ? 'text-green-600'
+                              : 'text-red-600'
+                          }`}
+                        >
+                          <span className="mr-2 transition-all duration-300">
+                            {/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(
+                              password,
+                            )
+                              ? '✓'
+                              : '✗'}
+                          </span>
                           At least 1 special character
                         </li>
                       </ul>
@@ -231,11 +287,13 @@ export function ResetPassword() {
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       className={`block w-full pl-10 pr-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                        confirmPassword.length > 0 && password !== confirmPassword
+                        confirmPassword.length > 0 &&
+                        password !== confirmPassword
                           ? 'border-red-300 focus:ring-red-500 focus:border-red-500'
-                          : confirmPassword.length > 0 && password === confirmPassword
-                          ? 'border-green-300 focus:ring-green-500 focus:border-green-500'
-                          : 'border-gray-300'
+                          : confirmPassword.length > 0 &&
+                              password === confirmPassword
+                            ? 'border-green-300 focus:ring-green-500 focus:border-green-500'
+                            : 'border-gray-300'
                       }`}
                       placeholder="••••••••"
                     />
@@ -244,12 +302,16 @@ export function ResetPassword() {
                     <div className="mt-1 transition-all duration-300">
                       {password === confirmPassword ? (
                         <p className="text-xs text-green-600 flex items-center transition-colors duration-300">
-                          <span className="mr-1 transition-all duration-300">✓</span>
+                          <span className="mr-1 transition-all duration-300">
+                            ✓
+                          </span>
                           Passwords match
                         </p>
                       ) : (
                         <p className="text-xs text-red-600 flex items-center transition-colors duration-300">
-                          <span className="mr-1 transition-all duration-300">✗</span>
+                          <span className="mr-1 transition-all duration-300">
+                            ✗
+                          </span>
                           Passwords do not match
                         </p>
                       )}
@@ -263,7 +325,7 @@ export function ResetPassword() {
                 disabled={isLoading}
                 className="w-full flex items-center justify-center bg-blue-600 hover:bg-blue-700 bg-clip-padding text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 border border-white/20 disabled:opacity-50"
               >
-                {isLoading ? "Updating..." : "Reset Password"}
+                {isLoading ? 'Updating...' : 'Reset Password'}
                 <ArrowRight className="ml-2 h-5 w-5" />
               </button>
             </form>

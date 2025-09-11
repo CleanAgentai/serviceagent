@@ -45,22 +45,24 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
       {/* Group Label */}
       {label && (
         <div className="mb-2">
-          <span className={`block text-sm font-medium ${error ? 'text-red-500' : 'text-gray-700'}`}>
+          <span
+            className={`block text-sm font-medium ${error ? 'text-red-500' : 'text-gray-700'}`}
+          >
             {label}
             {required && <span className="text-red-500 ml-1">*</span>}
           </span>
         </div>
       )}
-      
+
       {/* Radio Options */}
-      <div 
+      <div
         className={`
           ${direction === 'vertical' ? 'space-y-2' : 'flex flex-wrap space-x-4'}
         `}
       >
         {options.map((option, index) => (
-          <div 
-            key={`${id}-${option.value}`} 
+          <div
+            key={`${id}-${option.value}`}
             className={`
               flex items-center
               ${optionClassName}
@@ -80,7 +82,7 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
                 border-gray-300
                 focus:ring-blue-500
                 ${error ? 'border-red-500' : 'border-gray-300'}
-                ${(disabled || option.disabled) ? 'opacity-60 cursor-not-allowed' : ''}
+                ${disabled || option.disabled ? 'opacity-60 cursor-not-allowed' : ''}
               `}
               aria-invalid={!!error}
               required={required}
@@ -90,7 +92,7 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
               className={`
                 ml-2 block text-sm
                 ${error ? 'text-red-500' : 'text-gray-700'}
-                ${(disabled || option.disabled) ? 'opacity-60 cursor-not-allowed' : ''}
+                ${disabled || option.disabled ? 'opacity-60 cursor-not-allowed' : ''}
               `}
             >
               {option.label}
@@ -98,7 +100,7 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
           </div>
         ))}
       </div>
-      
+
       {/* Helper Text or Error Message */}
       {(helperText || error) && (
         <div className="mt-1">
@@ -109,4 +111,4 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
       )}
     </div>
   );
-}; 
+};

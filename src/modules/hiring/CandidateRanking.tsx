@@ -1,6 +1,18 @@
 import React, { useState } from 'react';
-import { ChevronDown, ChevronUp, FileText, MessageSquare, Star, Edit2, ExternalLink } from 'lucide-react';
-import { Candidate, CandidateStatus, InterviewEvaluation } from '@/types/hiring';
+import {
+  ChevronDown,
+  ChevronUp,
+  FileText,
+  MessageSquare,
+  Star,
+  Edit2,
+  ExternalLink,
+} from 'lucide-react';
+import {
+  Candidate,
+  CandidateStatus,
+  InterviewEvaluation,
+} from '@/types/hiring';
 import { formatDistanceToNow } from 'date-fns';
 
 interface CandidateRankingProps {
@@ -14,17 +26,21 @@ const CandidateRanking: React.FC<CandidateRankingProps> = ({
   candidates,
   onUpdateCandidate,
   onViewResume,
-  onViewTranscript
+  onViewTranscript,
 }) => {
-  const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(null);
+  const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(
+    null,
+  );
   const [sortField, setSortField] = useState<keyof Candidate>('aiScore');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
-  const [statusFilter, setStatusFilter] = useState<CandidateStatus | 'ALL'>('ALL');
+  const [statusFilter, setStatusFilter] = useState<CandidateStatus | 'ALL'>(
+    'ALL',
+  );
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleSort = (field: keyof Candidate) => {
     if (field === sortField) {
-      setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc');
+      setSortDirection((prev) => (prev === 'asc' ? 'desc' : 'asc'));
     } else {
       setSortField(field);
       setSortDirection('desc');
@@ -32,15 +48,16 @@ const CandidateRanking: React.FC<CandidateRankingProps> = ({
   };
 
   const filteredCandidates = candidates
-    .filter(candidate => 
-      (statusFilter === 'ALL' || candidate.currentStatus === statusFilter) &&
-      (searchTerm === '' || 
-        candidate.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        candidate.email.toLowerCase().includes(searchTerm.toLowerCase()))
+    .filter(
+      (candidate) =>
+        (statusFilter === 'ALL' || candidate.currentStatus === statusFilter) &&
+        (searchTerm === '' ||
+          candidate.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          candidate.email.toLowerCase().includes(searchTerm.toLowerCase())),
     )
     .sort((a, b) => {
       if (sortField === 'aiScore') {
-        return sortDirection === 'asc' 
+        return sortDirection === 'asc'
           ? (a.aiScore || 0) - (b.aiScore || 0)
           : (b.aiScore || 0) - (a.aiScore || 0);
       }
@@ -53,7 +70,9 @@ const CandidateRanking: React.FC<CandidateRankingProps> = ({
         <div className="flex items-center justify-between">
           <h4 className="font-medium text-gray-900">Overall Score</h4>
           <div className="flex items-center">
-            <span className="text-2xl font-bold text-blue-600">{evaluation.overallScore}</span>
+            <span className="text-2xl font-bold text-blue-600">
+              {evaluation.overallScore}
+            </span>
             <span className="text-gray-500 ml-1">/100</span>
           </div>
         </div>
@@ -110,7 +129,9 @@ const CandidateRanking: React.FC<CandidateRankingProps> = ({
           <p className="text-sm text-gray-700">{evaluation.aiNotes}</p>
           {evaluation.managerNotes && (
             <>
-              <h4 className="font-medium text-gray-900 mb-2 mt-4">Manager Notes</h4>
+              <h4 className="font-medium text-gray-900 mb-2 mt-4">
+                Manager Notes
+              </h4>
               <p className="text-sm text-gray-700">{evaluation.managerNotes}</p>
             </>
           )}
@@ -135,8 +156,8 @@ const CandidateRanking: React.FC<CandidateRankingProps> = ({
           title: 'Senior Developer',
           startDate: '2019-01',
           endDate: '2024-02',
-          description: '5 years of full-stack development experience'
-        }
+          description: '5 years of full-stack development experience',
+        },
       ],
       skills: ['React', 'TypeScript', 'Node.js'],
       education: [
@@ -144,8 +165,8 @@ const CandidateRanking: React.FC<CandidateRankingProps> = ({
           institution: 'University of California',
           degree: 'Bachelor of Science',
           field: 'Computer Science',
-          graduationYear: 2019
-        }
+          graduationYear: 2019,
+        },
       ],
       interviews: [
         {
@@ -158,17 +179,18 @@ const CandidateRanking: React.FC<CandidateRankingProps> = ({
             rating: 8.5,
             strengths: ['Technical knowledge', 'Problem-solving'],
             weaknesses: ['Could improve communication'],
-            notes: 'Strong candidate overall'
+            notes: 'Strong candidate overall',
           },
           questions: [
             {
               id: 'q1',
               question: 'Describe your experience with React',
-              answer: 'I have 3 years of experience building React applications...',
-              rating: 9
-            }
-          ]
-        }
+              answer:
+                'I have 3 years of experience building React applications...',
+              rating: 9,
+            },
+          ],
+        },
       ],
       aiScore: 85,
       tags: ['frontend', 'senior'],
@@ -179,10 +201,10 @@ const CandidateRanking: React.FC<CandidateRankingProps> = ({
           id: 'note1',
           content: 'Strong technical background',
           createdAt: new Date().toISOString(),
-          createdBy: 'recruiter1'
-        }
-      ]
-    }
+          createdBy: 'recruiter1',
+        },
+      ],
+    },
   ];
 
   const renderReferenceSection = (reference: any) => (
@@ -190,8 +212,12 @@ const CandidateRanking: React.FC<CandidateRankingProps> = ({
       <div className="flex justify-between items-start">
         <div>
           <div className="font-medium text-gray-900">{reference.name}</div>
-          <div className="text-gray-500">{reference.position} at {reference.company}</div>
-          <div className="text-gray-500">{reference.phone} | {reference.email}</div>
+          <div className="text-gray-500">
+            {reference.position} at {reference.company}
+          </div>
+          <div className="text-gray-500">
+            {reference.phone} | {reference.email}
+          </div>
         </div>
       </div>
       {reference.feedback && (
@@ -207,21 +233,28 @@ const CandidateRanking: React.FC<CandidateRankingProps> = ({
       <div className="flex justify-between items-start">
         <div>
           <div className="font-medium text-gray-900">
-            {interview.type.charAt(0).toUpperCase() + interview.type.slice(1)} Interview
+            {interview.type.charAt(0).toUpperCase() + interview.type.slice(1)}{' '}
+            Interview
           </div>
           <div className="text-gray-500">
             {new Date(interview.scheduledAt).toLocaleDateString()}
           </div>
           <div className="text-gray-500">
-            Status: {interview.status.charAt(0).toUpperCase() + interview.status.slice(1)}
+            Status:{' '}
+            {interview.status.charAt(0).toUpperCase() +
+              interview.status.slice(1)}
           </div>
         </div>
       </div>
       {interview.feedback && (
         <div className="mt-2">
           <div className="text-sm font-medium text-gray-900">Feedback</div>
-          <div className="text-sm text-gray-600">Rating: {interview.feedback.rating}/10</div>
-          <div className="text-sm text-gray-600">Notes: {interview.feedback.notes}</div>
+          <div className="text-sm text-gray-600">
+            Rating: {interview.feedback.rating}/10
+          </div>
+          <div className="text-sm text-gray-600">
+            Notes: {interview.feedback.notes}
+          </div>
         </div>
       )}
     </div>
@@ -235,7 +268,9 @@ const CandidateRanking: React.FC<CandidateRankingProps> = ({
         <div className="flex space-x-4">
           <select
             value={statusFilter}
-            onChange={e => setStatusFilter(e.target.value as CandidateStatus | 'ALL')}
+            onChange={(e) =>
+              setStatusFilter(e.target.value as CandidateStatus | 'ALL')
+            }
             className="rounded-md border-gray-300 text-sm focus:ring-blue-500 focus:border-blue-500"
           >
             <option value="ALL">All Statuses</option>
@@ -249,7 +284,7 @@ const CandidateRanking: React.FC<CandidateRankingProps> = ({
           <input
             type="text"
             value={searchTerm}
-            onChange={e => setSearchTerm(e.target.value)}
+            onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search candidates..."
             className="rounded-md border-gray-300 text-sm focus:ring-blue-500 focus:border-blue-500"
           />
@@ -276,9 +311,12 @@ const CandidateRanking: React.FC<CandidateRankingProps> = ({
               >
                 <div className="flex items-center">
                   <span>AI Score</span>
-                  {sortField === 'aiScore' && (
-                    sortDirection === 'asc' ? <ChevronUp className="ml-1 h-4 w-4" /> : <ChevronDown className="ml-1 h-4 w-4" />
-                  )}
+                  {sortField === 'aiScore' &&
+                    (sortDirection === 'asc' ? (
+                      <ChevronUp className="ml-1 h-4 w-4" />
+                    ) : (
+                      <ChevronDown className="ml-1 h-4 w-4" />
+                    ))}
                 </div>
               </div>
               <div className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -290,43 +328,67 @@ const CandidateRanking: React.FC<CandidateRankingProps> = ({
             </div>
           </div>
           <div className="bg-white divide-y divide-gray-200">
-            {filteredCandidates.map(candidate => (
-              <div key={candidate.id} className="grid grid-cols-6 divide-x divide-gray-200">
+            {filteredCandidates.map((candidate) => (
+              <div
+                key={candidate.id}
+                className="grid grid-cols-6 divide-x divide-gray-200"
+              >
                 <div className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center">
                     <div>
-                      <div className="text-sm font-medium text-gray-900">{candidate.name}</div>
-                      <div className="text-sm text-gray-500">{candidate.email}</div>
+                      <div className="text-sm font-medium text-gray-900">
+                        {candidate.name}
+                      </div>
+                      <div className="text-sm text-gray-500">
+                        {candidate.email}
+                      </div>
                     </div>
                   </div>
                 </div>
                 <div className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">{candidate.appliedFor}</div>
+                  <div className="text-sm text-gray-900">
+                    {candidate.appliedFor}
+                  </div>
                 </div>
                 <div className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm text-gray-900">
-                    {candidate.interviews && candidate.interviews.length > 0 
-                      ? candidate.interviews[candidate.interviews.length - 1].type.charAt(0).toUpperCase() + 
-                        candidate.interviews[candidate.interviews.length - 1].type.slice(1) + ' Interview'
+                    {candidate.interviews && candidate.interviews.length > 0
+                      ? candidate.interviews[
+                          candidate.interviews.length - 1
+                        ].type
+                          .charAt(0)
+                          .toUpperCase() +
+                        candidate.interviews[
+                          candidate.interviews.length - 1
+                        ].type.slice(1) +
+                        ' Interview'
                       : candidate.appliedFor}
                   </div>
                 </div>
                 <div className="px-6 py-4 whitespace-nowrap">
                   {candidate.aiScore ? (
                     <div className="flex items-center">
-                      <Star className={`h-4 w-4 ${
-                        candidate.aiScore >= 80 ? 'text-yellow-400' :
-                        candidate.aiScore >= 60 ? 'text-blue-400' :
-                        'text-gray-400'
-                      }`} />
-                      <span className="ml-2 text-sm font-medium text-gray-900">{candidate.aiScore}</span>
+                      <Star
+                        className={`h-4 w-4 ${
+                          candidate.aiScore >= 80
+                            ? 'text-yellow-400'
+                            : candidate.aiScore >= 60
+                              ? 'text-blue-400'
+                              : 'text-gray-400'
+                        }`}
+                      />
+                      <span className="ml-2 text-sm font-medium text-gray-900">
+                        {candidate.aiScore}
+                      </span>
                     </div>
                   ) : (
                     <span className="text-sm text-gray-500">Not evaluated</span>
                   )}
                 </div>
                 <div className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {formatDistanceToNow(new Date(candidate.createdAt), { addSuffix: true })}
+                  {formatDistanceToNow(new Date(candidate.createdAt), {
+                    addSuffix: true,
+                  })}
                 </div>
                 <div className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <div className="flex justify-end space-x-3">
@@ -362,16 +424,30 @@ const CandidateRanking: React.FC<CandidateRankingProps> = ({
           <div className="relative top-20 mx-auto p-5 border w-3/4 shadow-lg rounded-lg bg-white">
             <div className="flex justify-between items-start">
               <div>
-                <h2 className="text-xl font-bold text-gray-900">{selectedCandidate.name}</h2>
-                <p className="text-sm text-gray-500">{selectedCandidate.email}</p>
+                <h2 className="text-xl font-bold text-gray-900">
+                  {selectedCandidate.name}
+                </h2>
+                <p className="text-sm text-gray-500">
+                  {selectedCandidate.email}
+                </p>
               </div>
               <button
                 onClick={() => setSelectedCandidate(null)}
                 className="text-gray-400 hover:text-gray-500"
               >
                 <span className="sr-only">Close</span>
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
             </div>
@@ -380,20 +456,35 @@ const CandidateRanking: React.FC<CandidateRankingProps> = ({
               {/* Left Column: Basic Info */}
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-medium text-gray-900">Basic Information</h3>
+                  <h3 className="text-lg font-medium text-gray-900">
+                    Basic Information
+                  </h3>
                   <dl className="mt-2 space-y-2">
                     <div>
-                      <dt className="text-sm font-medium text-gray-500">Applied Position</dt>
-                      <dd className="text-sm text-gray-900">{selectedCandidate.appliedFor}</dd>
-                    </div>
-                    <div>
-                      <dt className="text-sm font-medium text-gray-500">Location</dt>
-                      <dd className="text-sm text-gray-900">{selectedCandidate.location}</dd>
-                    </div>
-                    <div>
-                      <dt className="text-sm font-medium text-gray-500">Applied</dt>
+                      <dt className="text-sm font-medium text-gray-500">
+                        Applied Position
+                      </dt>
                       <dd className="text-sm text-gray-900">
-                        {formatDistanceToNow(new Date(selectedCandidate.createdAt), { addSuffix: true })}
+                        {selectedCandidate.appliedFor}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className="text-sm font-medium text-gray-500">
+                        Location
+                      </dt>
+                      <dd className="text-sm text-gray-900">
+                        {selectedCandidate.location}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className="text-sm font-medium text-gray-500">
+                        Applied
+                      </dt>
+                      <dd className="text-sm text-gray-900">
+                        {formatDistanceToNow(
+                          new Date(selectedCandidate.createdAt),
+                          { addSuffix: true },
+                        )}
                       </dd>
                     </div>
                   </dl>
@@ -413,26 +504,41 @@ const CandidateRanking: React.FC<CandidateRankingProps> = ({
                   </div>
                 </div>
 
-                {selectedCandidate.references && selectedCandidate.references.length > 0 && (
-                  <div>
-                    <h3 className="text-lg font-medium text-gray-900">References</h3>
-                    <ul className="mt-2 space-y-3">
-                      {selectedCandidate.references.map((ref, index) => (
-                        <li key={index} className="text-sm">
-                          <div className="font-medium text-gray-900">{ref.name}</div>
-                          <div className="text-gray-500">{ref.relationship}</div>
-                          <div className="text-gray-500">{ref.phone} | {ref.email}</div>
-                          {ref.notes && <div className="text-gray-700 mt-1">{ref.notes}</div>}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
+                {selectedCandidate.references &&
+                  selectedCandidate.references.length > 0 && (
+                    <div>
+                      <h3 className="text-lg font-medium text-gray-900">
+                        References
+                      </h3>
+                      <ul className="mt-2 space-y-3">
+                        {selectedCandidate.references.map((ref, index) => (
+                          <li key={index} className="text-sm">
+                            <div className="font-medium text-gray-900">
+                              {ref.name}
+                            </div>
+                            <div className="text-gray-500">
+                              {ref.relationship}
+                            </div>
+                            <div className="text-gray-500">
+                              {ref.phone} | {ref.email}
+                            </div>
+                            {ref.notes && (
+                              <div className="text-gray-700 mt-1">
+                                {ref.notes}
+                              </div>
+                            )}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
               </div>
 
               {/* Middle Column: Interview Evaluation */}
               <div className="col-span-2">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Interview Evaluation</h3>
+                <h3 className="text-lg font-medium text-gray-900 mb-4">
+                  Interview Evaluation
+                </h3>
                 {selectedCandidate.interviews.length > 0 ? (
                   <div className="space-y-6">
                     {selectedCandidate.interviews.map((interview, index) => (
@@ -442,7 +548,9 @@ const CandidateRanking: React.FC<CandidateRankingProps> = ({
                     ))}
                   </div>
                 ) : (
-                  <p className="text-sm text-gray-500">No interviews conducted yet.</p>
+                  <p className="text-sm text-gray-500">
+                    No interviews conducted yet.
+                  </p>
                 )}
               </div>
             </div>
@@ -465,14 +573,20 @@ const CandidateRanking: React.FC<CandidateRankingProps> = ({
               <button
                 onClick={() => {
                   // Handle status update
-                  const newStatus: CandidateStatus = 
-                    selectedCandidate.currentStatus === 'APPLIED' ? 'SCREENING' :
-                    selectedCandidate.currentStatus === 'SCREENING' ? 'INTERVIEWED' :
-                    selectedCandidate.currentStatus === 'INTERVIEWED' ? 'OFFERED' :
-                    selectedCandidate.currentStatus === 'OFFERED' ? 'ACCEPTED' :
-                    'REJECTED';
-                  
-                  onUpdateCandidate(selectedCandidate.id, { currentStatus: newStatus });
+                  const newStatus: CandidateStatus =
+                    selectedCandidate.currentStatus === 'APPLIED'
+                      ? 'SCREENING'
+                      : selectedCandidate.currentStatus === 'SCREENING'
+                        ? 'INTERVIEWED'
+                        : selectedCandidate.currentStatus === 'INTERVIEWED'
+                          ? 'OFFERED'
+                          : selectedCandidate.currentStatus === 'OFFERED'
+                            ? 'ACCEPTED'
+                            : 'REJECTED';
+
+                  onUpdateCandidate(selectedCandidate.id, {
+                    currentStatus: newStatus,
+                  });
                 }}
                 className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700"
               >
@@ -486,4 +600,4 @@ const CandidateRanking: React.FC<CandidateRankingProps> = ({
   );
 };
 
-export default CandidateRanking; 
+export default CandidateRanking;

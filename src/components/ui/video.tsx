@@ -4,7 +4,10 @@ interface VideoEmbedProps {
 
 export function VideoEmbed({ src }: VideoEmbedProps) {
   return (
-    <div className="w-full mb-4 rounded-lg overflow-hidden" style={{ aspectRatio: "1744/1000" }}>
+    <div
+      className="w-full mb-4 rounded-lg overflow-hidden"
+      style={{ aspectRatio: '1744/1000' }}
+    >
       <iframe
         className="w-full h-full"
         src={src}

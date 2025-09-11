@@ -57,16 +57,16 @@ body {
   border-radius: 3px;
 }
 
-.no-scrollbar { 
-  -ms-overflow-style: none; 
-  scrollbar-width: none; 
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-.no-scrollbar::-webkit-scrollbar { 
-  display: none; 
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
-section[aria-live][aria-label^="Notifications"] {
+section[aria-live][aria-label^='Notifications'] {
   position: fixed !important;
   inset: 0 auto auto 0 !important; /* or just left/top 0 */
   width: 0 !important;
@@ -78,7 +78,6 @@ section[aria-live][aria-label^="Notifications"] {
   z-index: 9999 !important;
 }
 
-
 /* Smooth image rendering */
 img {
   image-rendering: -webkit-optimize-contrast;
@@ -89,7 +88,9 @@ img {
 
 /* Custom shadow for diagonal green effect */
 .shadow-green-diagonal {
-  box-shadow: 10px 10px 0 0 #7DE295, 20px 20px 0 0 oklch(71.4% 0.203 305.504);
+  box-shadow:
+    10px 10px 0 0 #7de295,
+    20px 20px 0 0 oklch(71.4% 0.203 305.504);
 }
 
 /* Responsive font size adjustments */
@@ -248,10 +249,10 @@ img {
     /* Additional color tokens for the new palette */
     --terracotta: 353 78% 56%; /* Accent Warm (Terracotta Red) #E63946 */
     --terracotta-foreground: 0 0% 100%;
-    
+
     --gold: 32 85% 67%; /* CTA Highlight (Modern Gold) #F4A261 */
     --gold-foreground: 0 0% 100%;
-    
+
     --teal: 174 62% 47%; /* Optional Pop (Teal) #2EC4B6 */
     --teal-foreground: 0 0% 100%;
 
@@ -332,19 +333,20 @@ img {
 }
 
 .list-dash li::before {
-  content: "–";                  /* dash symbol */
+  content: '–'; /* dash symbol */
   position: absolute;
   left: 0;
   top: 0;
-  width: 1.25rem;                /* reserve space */
+  width: 1.25rem; /* reserve space */
   display: inline-block;
   text-align: left;
   font-family: inherit;
   font-size: inherit;
 }
-  
+
 @keyframes gradient-shift {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(0%) rotate(0deg);
   }
   50% {

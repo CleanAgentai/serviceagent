@@ -32,7 +32,9 @@ const IntegrationModal: React.FC<IntegrationModalProps> = ({
       onSuccess();
       onClose();
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'An unknown error occurred');
+      setError(
+        err instanceof Error ? err.message : 'An unknown error occurred',
+      );
     } finally {
       setIsLoading(false);
     }
@@ -52,7 +54,10 @@ const IntegrationModal: React.FC<IntegrationModalProps> = ({
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 value={credentials.apiKey || ''}
                 onChange={(e) =>
-                  setCredentials({ ...credentials, apiKey: e.target.value })
+                  setCredentials({
+                    ...credentials,
+                    apiKey: e.target.value,
+                  })
                 }
                 required
               />
@@ -72,7 +77,10 @@ const IntegrationModal: React.FC<IntegrationModalProps> = ({
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 value={credentials.clientId || ''}
                 onChange={(e) =>
-                  setCredentials({ ...credentials, clientId: e.target.value })
+                  setCredentials({
+                    ...credentials,
+                    clientId: e.target.value,
+                  })
                 }
                 required
               />
@@ -86,7 +94,10 @@ const IntegrationModal: React.FC<IntegrationModalProps> = ({
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 value={credentials.clientSecret || ''}
                 onChange={(e) =>
-                  setCredentials({ ...credentials, clientSecret: e.target.value })
+                  setCredentials({
+                    ...credentials,
+                    clientSecret: e.target.value,
+                  })
                 }
                 required
               />
@@ -108,7 +119,9 @@ const IntegrationModal: React.FC<IntegrationModalProps> = ({
       <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b">
-          <h2 className="text-xl font-semibold">Configure {integration.name}</h2>
+          <h2 className="text-xl font-semibold">
+            Configure {integration.name}
+          </h2>
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-gray-500"
@@ -120,11 +133,11 @@ const IntegrationModal: React.FC<IntegrationModalProps> = ({
         {/* Content */}
         <form onSubmit={handleSubmit}>
           <div className="px-6 py-4">
-            <p className="text-sm text-gray-600 mb-4">{integration.description}</p>
+            <p className="text-sm text-gray-600 mb-4">
+              {integration.description}
+            </p>
             {renderFields()}
-            {error && (
-              <div className="mt-4 text-sm text-red-600">{error}</div>
-            )}
+            {error && <div className="mt-4 text-sm text-red-600">{error}</div>}
           </div>
 
           {/* Footer */}
@@ -154,4 +167,4 @@ const IntegrationModal: React.FC<IntegrationModalProps> = ({
   );
 };
 
-export default IntegrationModal; 
+export default IntegrationModal;

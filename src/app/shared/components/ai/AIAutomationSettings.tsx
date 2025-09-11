@@ -1,7 +1,15 @@
 import React from 'react';
 import { Card } from '../Card';
 import { CheckBox } from '../form';
-import { Bot, Sparkles, MessageSquare, Zap, Clock, Lock, Info } from 'lucide-react';
+import {
+  Bot,
+  Sparkles,
+  MessageSquare,
+  Zap,
+  Clock,
+  Lock,
+  Info,
+} from 'lucide-react';
 import { tokens } from '@/app/shared/styles/tokens';
 
 export interface AIFeature {
@@ -56,7 +64,10 @@ export const AIAutomationSettings: React.FC<AIAutomationSettingsProps> = ({
       return <Sparkles className="h-5 w-5 text-blue-500" />;
     } else if (feature.id.includes('reply') || feature.id.includes('message')) {
       return <MessageSquare className="h-5 w-5 text-green-500" />;
-    } else if (feature.id.includes('automate') || feature.id.includes('action')) {
+    } else if (
+      feature.id.includes('automate') ||
+      feature.id.includes('action')
+    ) {
       return <Zap className="h-5 w-5 text-amber-500" />;
     } else if (feature.id.includes('schedule')) {
       return <Clock className="h-5 w-5 text-purple-500" />;
@@ -87,7 +98,7 @@ export const AIAutomationSettings: React.FC<AIAutomationSettingsProps> = ({
     <Card
       title={
         <div className="flex items-center">
-          <Bot 
+          <Bot
             className="h-5 w-5 mr-2"
             style={{ color: tokens.colors.primary.blue }}
           />
@@ -103,20 +114,22 @@ export const AIAutomationSettings: React.FC<AIAutomationSettingsProps> = ({
         {Object.entries(groupedFeatures).map(([category, categoryFeatures]) => (
           <div key={category}>
             {groupByCategory && Object.keys(groupedFeatures).length > 1 && (
-              <h4 className="font-medium text-gray-900 text-sm mb-3">{category}</h4>
+              <h4 className="font-medium text-gray-900 text-sm mb-3">
+                {category}
+              </h4>
             )}
-            
+
             <div className="space-y-4">
               {categoryFeatures.map((feature) => {
-                const isDisabled = 
-                  disabled || 
-                  loading || 
+                const isDisabled =
+                  disabled ||
+                  loading ||
                   (feature.requiresPremium && !isPremium) ||
                   feature.requiresPermission;
-                
+
                 return (
-                  <div 
-                    key={feature.id} 
+                  <div
+                    key={feature.id}
                     className={`
                       relative rounded-lg border border-gray-200 p-4
                       ${isDisabled ? 'bg-gray-50 opacity-80' : 'bg-white'}
@@ -131,35 +144,37 @@ export const AIAutomationSettings: React.FC<AIAutomationSettingsProps> = ({
                         </span>
                       </div>
                     )}
-                    
+
                     <div className="flex items-start">
                       <div className="flex-shrink-0 mt-0.5">
                         {renderFeatureIcon(feature)}
                       </div>
-                      
+
                       <div className="ml-3 flex-1">
                         <div className="flex items-center justify-between">
-                          <label 
+                          <label
                             htmlFor={`feature-${feature.id}`}
                             className="text-sm font-medium text-gray-900 hover:cursor-pointer"
                           >
                             {feature.name}
                           </label>
-                          
+
                           <CheckBox
                             id={`feature-${feature.id}`}
                             label=""
                             checked={feature.enabled}
                             disabled={isDisabled}
-                            onChange={(e) => onChange(feature.id, e.target.checked)}
+                            onChange={(e) =>
+                              onChange(feature.id, e.target.checked)
+                            }
                             containerClassName="m-0"
                           />
                         </div>
-                        
+
                         <p className="mt-1 text-sm text-gray-500">
                           {feature.description}
                         </p>
-                        
+
                         {/* Premium Upgrade Button */}
                         {feature.requiresPremium && !isPremium && onUpgrade && (
                           <button
@@ -170,11 +185,11 @@ export const AIAutomationSettings: React.FC<AIAutomationSettingsProps> = ({
                             Upgrade to Premium
                           </button>
                         )}
-                        
+
                         {/* Info Link */}
                         {showInfoLinks && (
                           <div className="mt-2">
-                            <a 
+                            <a
                               href={`#feature-info-${feature.id}`}
                               className="text-xs text-blue-600 hover:text-blue-800 hover:underline flex items-center"
                             >
@@ -194,4 +209,4 @@ export const AIAutomationSettings: React.FC<AIAutomationSettingsProps> = ({
       </div>
     </Card>
   );
-}; 
+};

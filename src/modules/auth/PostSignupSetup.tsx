@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { supabase } from "@/app/lib/supabase";
-import { CompanyProfileForm } from "@/modules/dashboard/CompanyProfileForm";
-import { routes } from "@/lib/constants";
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/app/lib/supabase';
+import { CompanyProfileForm } from '@/modules/dashboard/CompanyProfileForm';
+import { routes } from '@/lib/constants';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from '@/components/ui/card';
 
 export function PostSignupSetup() {
   const navigate = useNavigate();
@@ -45,8 +45,8 @@ export function PostSignupSetup() {
         // If we get here, the user needs to complete their profile
         setLoading(false);
       } catch (error) {
-        console.error("Error in auth check:", error);
-        setError("Authentication error. Please try logging in again.");
+        console.error('Error in auth check:', error);
+        setError('Authentication error. Please try logging in again.');
         setLoading(false);
       }
     }
@@ -97,7 +97,11 @@ export function PostSignupSetup() {
   return (
     <div className="max-w-5xl mx-auto px-6 py-0 md:py-12">
       <div className="flex justify-center mb-4">
-        <img src="/logos/Brandmark.svg" alt="ServiceAgent Icon" className="h-20 w-20 max-w-none object-contain" />
+        <img
+          src="/logos/Brandmark.svg"
+          alt="ServiceAgent Icon"
+          className="h-20 w-20 max-w-none object-contain"
+        />
       </div>
       <div className="text-center mb-4">
         <h1 className="text-3xl font-bold mb-2">Tell Us About Your Business</h1>

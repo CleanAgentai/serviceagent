@@ -1,26 +1,26 @@
-import { useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { supabase } from "@/app/lib/supabase";
+import { useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { supabase } from '@/app/lib/supabase';
 
 export function ResetPasswordHandoff() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const code = searchParams.get("code");
-    console.log("🔐 Received code:", code);
+    const code = searchParams.get('code');
+    console.log('🔐 Received code:', code);
 
     if (!code) {
-      navigate("/reset-password?session=missing");
+      navigate('/reset-password?session=missing');
       return;
     }
 
     supabase.auth.exchangeCodeForSession(code).then(({ error }) => {
       if (error) {
-        console.error("Session error:", error);
-        navigate("/reset-password?session=error");
+        console.error('Session error:', error);
+        navigate('/reset-password?session=error');
       } else {
-        navigate("/reset-password");
+        navigate('/reset-password');
       }
     });
   }, [searchParams, navigate]);

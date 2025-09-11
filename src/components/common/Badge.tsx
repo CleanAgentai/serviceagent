@@ -19,13 +19,13 @@ export default function Badge({
     success: 'bg-success-50 text-success-700',
     warning: 'bg-yellow-50 text-yellow-700',
     error: 'bg-red-50 text-red-700',
-    info: 'bg-primary-50 text-primary-700'
+    info: 'bg-primary-50 text-primary-700',
   };
 
   const sizes = {
     sm: 'px-2 py-0.5 text-xs',
     md: 'px-2.5 py-0.5 text-sm',
-    lg: 'px-3 py-1 text-base'
+    lg: 'px-3 py-1 text-base',
   };
 
   return (
@@ -34,7 +34,7 @@ export default function Badge({
         'inline-flex items-center font-medium rounded-full',
         variants[variant],
         sizes[size],
-        className
+        className,
       )}
       {...props}
     >

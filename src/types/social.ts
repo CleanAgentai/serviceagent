@@ -33,7 +33,7 @@ export const platformIcons: Record<Platform, any> = {
   Twitter: 'twitter',
   LinkedIn: 'linkedin',
   Facebook: 'facebook',
-  Instagram: 'instagram'
+  Instagram: 'instagram',
 };
 
 export interface MediaRecommendation {
@@ -97,4 +97,4 @@ export interface HashtagAnalytics {
   reachPotential: number;
   relevanceScore: number;
   trending: boolean;
-} 
+}

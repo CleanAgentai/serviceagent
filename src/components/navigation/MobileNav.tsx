@@ -11,7 +11,7 @@ const MobileNav: React.FC<MobileNavProps> = ({ isTransparent = false }) => {
 
   return (
     <>
-      <nav 
+      <nav
         className={`
           fixed top-0 left-0 right-0 z-50
           ${isTransparent ? 'bg-transparent' : 'bg-white/90 backdrop-blur-sm border-b border-gray-200'}
@@ -21,12 +21,14 @@ const MobileNav: React.FC<MobileNavProps> = ({ isTransparent = false }) => {
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link to="/" className="flex items-center space-x-2">
-              <img 
-                src="/logos/Logo.svg" 
-                alt="ServiceAgent Logo" 
+              <img
+                src="/logos/Logo.svg"
+                alt="ServiceAgent Logo"
                 className="w-8 h-8"
               />
-              <span className={`text-xl font-semibold ${isTransparent ? 'text-white' : 'text-gray-900'}`}>
+              <span
+                className={`text-xl font-semibold ${isTransparent ? 'text-white' : 'text-gray-900'}`}
+              >
                 ServiceAgent
               </span>
             </Link>
@@ -50,7 +52,9 @@ const MobileNav: React.FC<MobileNavProps> = ({ isTransparent = false }) => {
             <div className="flex flex-col h-full">
               {/* Header */}
               <div className="flex items-center justify-between p-4 border-b">
-                <span className="text-xl font-semibold text-gray-900">Menu</span>
+                <span className="text-xl font-semibold text-gray-900">
+                  Menu
+                </span>
                 <button
                   onClick={() => setIsOpen(false)}
                   className="p-2 text-gray-600"
@@ -85,4 +89,4 @@ const MobileNav: React.FC<MobileNavProps> = ({ isTransparent = false }) => {
   );
 };
 
-export default MobileNav; 
+export default MobileNav;

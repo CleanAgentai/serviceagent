@@ -20,4 +20,4 @@ export interface Interview {
   type: 'technical' | 'screening' | 'cultural' | 'final';
   interviewerId: string;
   scheduledAt: Date;
-} 
+}

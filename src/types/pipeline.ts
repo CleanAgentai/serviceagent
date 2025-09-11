@@ -9,4 +9,4 @@ export interface PipelineStage {
 export interface PipelineSettings {
   stages: PipelineStage[];
   defaultStage: string; // ID of the default stage for new leads
-} 
+}

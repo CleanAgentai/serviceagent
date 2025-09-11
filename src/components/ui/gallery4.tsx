@@ -1,13 +1,13 @@
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Carousel,
   CarouselApi,
   CarouselContent,
   CarouselItem,
-} from "@/components/ui/carousel";
+} from '@/components/ui/carousel';
 
 export interface Gallery4Item {
   id: string;
@@ -24,8 +24,8 @@ export interface Gallery4Props {
 }
 
 const Gallery4 = ({
-  title = "Industries",
-  description = "ServiceAgent serves high-turnover service industries with tailored AI hiring solutions designed for rapid candidate screening and quality assessment.",
+  title = 'Industries',
+  description = 'ServiceAgent serves high-turnover service industries with tailored AI hiring solutions designed for rapid candidate screening and quality assessment.',
   items,
 }: Gallery4Props) => {
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
@@ -43,9 +43,9 @@ const Gallery4 = ({
       setCurrentSlide(carouselApi.selectedScrollSnap());
     };
     updateSelection();
-    carouselApi.on("select", updateSelection);
+    carouselApi.on('select', updateSelection);
     return () => {
-      carouselApi.off("select", updateSelection);
+      carouselApi.off('select', updateSelection);
     };
   }, [carouselApi]);
 
@@ -90,7 +90,7 @@ const Gallery4 = ({
           setApi={setCarouselApi}
           opts={{
             breakpoints: {
-              "(max-width: 768px)": {
+              '(max-width: 768px)': {
                 dragFree: true,
               },
             },
@@ -118,7 +118,7 @@ const Gallery4 = ({
                         {item.description}
                       </div>
                       <div className="flex items-center text-sm">
-                        Learn more{" "}
+                        Learn more{' '}
                         <ArrowRight className="ml-2 size-5 transition-transform group-hover:translate-x-1" />
                       </div>
                     </div>
@@ -133,7 +133,7 @@ const Gallery4 = ({
             <button
               key={index}
               className={`h-2 w-2 rounded-full transition-colors ${
-                currentSlide === index ? "bg-primary" : "bg-primary/20"
+                currentSlide === index ? 'bg-primary' : 'bg-primary/20'
               }`}
               onClick={() => carouselApi?.scrollTo(index)}
               aria-label={`Go to slide ${index + 1}`}

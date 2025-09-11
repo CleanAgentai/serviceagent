@@ -5,9 +5,9 @@ interface LoadingStateProps {
   message?: string;
 }
 
-export function LoadingState({ 
+export function LoadingState({
   variant = 'inline',
-  message = 'Loading...'
+  message = 'Loading...',
 }: LoadingStateProps) {
   if (variant === 'full') {
     return (
@@ -26,4 +26,4 @@ export function LoadingState({
       <p className="ml-2 text-gray-600">{message}</p>
     </div>
   );
-} 
+}

@@ -2,7 +2,8 @@ import React, { useState, InputHTMLAttributes } from 'react';
 import { FormField } from './FormField';
 import { Calendar } from 'lucide-react';
 
-export interface DatePickerProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'id' | 'type'> {
+export interface DatePickerProps
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'id' | 'type'> {
   id: string;
   label?: string;
   helperText?: string;
@@ -43,11 +44,11 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   // Handle blur event
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     setIsTouched(true);
-    
+
     // Validate on blur
     if (value) {
       const dateValue = new Date(String(value));
-      
+
       // Check for valid date
       if (isNaN(dateValue.getTime())) {
         // Invalid date format (should be caught by browser)
@@ -55,13 +56,14 @@ export const DatePicker: React.FC<DatePickerProps> = ({
         setLocalSuccess(true);
       }
     }
-    
+
     onBlur?.(e);
   };
 
   const getBorderStyles = () => {
     if (error) return 'border-red-500 focus:border-red-500 focus:ring-red-500';
-    if (localSuccess) return 'border-green-600 focus:border-green-600 focus:ring-green-600';
+    if (localSuccess)
+      return 'border-green-600 focus:border-green-600 focus:ring-green-600';
     return 'border-gray-300 focus:border-blue-500 focus:ring-blue-500';
   };
 
@@ -80,7 +82,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
           <Calendar className="h-5 w-5" />
         </div>
-        
+
         <input
           id={id}
           type="date"
@@ -108,4 +110,4 @@ export const DatePicker: React.FC<DatePickerProps> = ({
       </div>
     </FormField>
   );
-}; 
+};

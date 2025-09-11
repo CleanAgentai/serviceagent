@@ -8,7 +8,8 @@ export interface SelectOption {
   disabled?: boolean;
 }
 
-export interface SelectDropdownProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'id'> {
+export interface SelectDropdownProps
+  extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'id'> {
   id: string;
   options: SelectOption[];
   label?: string;
@@ -48,20 +49,21 @@ export const SelectDropdown: React.FC<SelectDropdownProps> = ({
   // Handle select blur
   const handleBlur = (e: React.FocusEvent<HTMLSelectElement>) => {
     setIsTouched(true);
-    
+
     // Validate on blur
     if (required && (!value || value === '')) {
       // Don't do anything for now, as error is passed from parent
     } else if (value) {
       setLocalSuccess(true);
     }
-    
+
     onBlur?.(e);
   };
 
   const getBorderStyles = () => {
     if (error) return 'border-red-500 focus:border-red-500 focus:ring-red-500';
-    if (localSuccess) return 'border-green-600 focus:border-green-600 focus:ring-green-600';
+    if (localSuccess)
+      return 'border-green-600 focus:border-green-600 focus:ring-green-600';
     return 'border-gray-300 focus:border-blue-500 focus:ring-blue-500';
   };
 
@@ -111,16 +113,16 @@ export const SelectDropdown: React.FC<SelectDropdownProps> = ({
             </option>
           )}
           {options.map((option) => (
-            <option 
-              key={option.value} 
-              value={option.value} 
+            <option
+              key={option.value}
+              value={option.value}
               disabled={option.disabled}
             >
               {option.label}
             </option>
           ))}
         </select>
-        
+
         {/* Custom dropdown arrow */}
         <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
           <ChevronDown className="h-5 w-5 text-gray-400" />
@@ -128,4 +130,4 @@ export const SelectDropdown: React.FC<SelectDropdownProps> = ({
       </div>
     </FormField>
   );
-}; 
+};

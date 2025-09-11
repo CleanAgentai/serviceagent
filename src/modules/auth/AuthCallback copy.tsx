@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { supabase } from "@/app/lib/supabase";
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/app/lib/supabase';
 
 export function AuthCallback() {
   const navigate = useNavigate();
@@ -10,7 +10,7 @@ export function AuthCallback() {
   useEffect(() => {
     const handleCallback = async () => {
       try {
-        console.log("Starting auth callback handling...");
+        console.log('Starting auth callback handling...');
 
         // Check if we have a session
         const {
@@ -19,15 +19,15 @@ export function AuthCallback() {
         } = await supabase.auth.getSession();
 
         if (sessionError) {
-          console.error("Session error:", sessionError);
+          console.error('Session error:', sessionError);
           throw sessionError;
         }
 
         if (session) {
-          console.log("Session found, redirecting to dashboard...");
+          console.log('Session found, redirecting to dashboard...');
           if (!hasNavigated.current) {
             hasNavigated.current = true;
-            navigate("/dashboard", { replace: true });
+            navigate('/dashboard', { replace: true });
           }
           return;
         }
@@ -36,25 +36,25 @@ export function AuthCallback() {
         const {
           data: { subscription },
         } = supabase.auth.onAuthStateChange(async (event, session) => {
-          console.log("Auth state changed:", event, !!session);
+          console.log('Auth state changed:', event, !!session);
 
           if (session && !hasNavigated.current) {
-            console.log("Session established, redirecting to dashboard...");
+            console.log('Session established, redirecting to dashboard...');
             hasNavigated.current = true;
-            navigate("/dashboard", { replace: true });
+            navigate('/dashboard', { replace: true });
           } else if (!session && !hasNavigated.current) {
-            console.log("No session found, redirecting to login...");
+            console.log('No session found, redirecting to login...');
             hasNavigated.current = true;
-            navigate("/login", { replace: true });
+            navigate('/login', { replace: true });
           }
         });
 
         // If no session after 5 seconds, redirect to login
         const timeout = setTimeout(() => {
           if (!hasNavigated.current) {
-            console.log("Auth timeout, redirecting to login...");
+            console.log('Auth timeout, redirecting to login...');
             hasNavigated.current = true;
-            navigate("/login", { replace: true });
+            navigate('/login', { replace: true });
           }
         }, 5000);
 
@@ -63,11 +63,11 @@ export function AuthCallback() {
           subscription.unsubscribe();
         };
       } catch (err) {
-        console.error("Auth callback error:", err);
-        setError(err instanceof Error ? err.message : "Authentication failed");
+        console.error('Auth callback error:', err);
+        setError(err instanceof Error ? err.message : 'Authentication failed');
         if (!hasNavigated.current) {
           hasNavigated.current = true;
-          navigate("/login", { replace: true });
+          navigate('/login', { replace: true });
         }
       }
     };
@@ -81,7 +81,7 @@ export function AuthCallback() {
         <div className="text-center">
           <div className="text-red-600 mb-4">{error}</div>
           <button
-            onClick={() => navigate("/login")}
+            onClick={() => navigate('/login')}
             className="text-blue-600 hover:text-blue-800"
           >
             Return to login
