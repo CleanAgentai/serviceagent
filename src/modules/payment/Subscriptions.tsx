@@ -18,21 +18,37 @@ export const Subscriptions: React.FC = () => {
 
   async function handleOnboardingStatus(){
     try{
+      const { data: { user }, } = await supabase.auth.getUser();
+      if (!user) throw new Error("No authenticated user");
 
-      const { data: { user },} = await supabase.auth.getUser();
+      const { error: trialStatusError } = await supabase
+        .from('customerio')
+        .update({ plan_status: "onboarding" })
+        .eq("user_id", user.id);
 
-      const {error: trialStatusError} = await supabase
-      .from('customerio')
-      .update({trial_status: "onboarding"})
-      .eq("user_id", user.id);
+      if (trialStatusError) console.error("Supabase update error:", trialStatusError);
+
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+      try {
+        const identifyRes = await fetch(`${apiBaseUrl}/api/customerio/identify`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId: user.id,
+            traits: { plan_status: "onboarding", last_seen_at: new Date().toISOString() },
+          }),
+        });
+        if (!identifyRes.ok) throw new Error(`identify failed: ${identifyRes.status}`);
+
+      } catch (cioErr) {
+        console.error("Customer.io backend calls failed:", cioErr);
+      }
 
       window.open('https://calendly.com/serviceagent/25min', '_blank')
-
     }
     catch(err){
-      console.error("Error in trialStatusError:", err);
+      console.error("Error in handleOnboardingStatus:", err);
     }
-
   }
 
   async function handlePayStatus(){
