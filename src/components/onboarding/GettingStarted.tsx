@@ -84,10 +84,17 @@ export default function GettingStarted() {
         key: string;
         value: string;
       }) => {
-        const { data: interview }: { data: any } = await supabase
+        let query = supabase
           .from('interviews')
-          .select('id, willo_interview_key, created_at')
-          .eq(filter.key as any, filter.value)
+          .select('id, willo_interview_key, created_at');
+        
+        if (filter.key === 'user_id') {
+          query = query.eq('user_id', filter.value);
+        } else if (filter.key === 'department') {
+          query = query.eq('department', filter.value);
+        }
+        
+        const { data: interview } = await query
           .order('created_at', { ascending: false })
           .limit(1);
         return interview?.[0] ?? null;
@@ -500,10 +507,17 @@ function CopyInterviewLink({
           key: string;
           value: string;
         }): Promise<string | null> => {
-          const { data: interview } = await supabase
+          let query = supabase
             .from('interviews')
-            .select('id, interview_link, created_at')
-            .eq(filter.key as any, filter.value)
+            .select('id, interview_link, created_at');
+          
+          if (filter.key === 'user_id') {
+            query = query.eq('user_id', filter.value);
+          } else if (filter.key === 'department') {
+            query = query.eq('department', filter.value);
+          }
+          
+          const { data: interview } = await query
             .not('interview_link', 'is', null)
             .order('created_at', { ascending: false })
             .limit(1);
