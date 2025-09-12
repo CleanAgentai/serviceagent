@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import {
   Rocket,
@@ -46,13 +46,18 @@ export default function GettingStarted() {
   const [activeStep, setActiveStep] = useState('create');
 
   //Completion states
-  const [firstInterviewId, setFirstInterviewId] = useState<string | null>(null);
-  const [companyProfileId, setCompanyProfileId] = useState<string | null>(null);
+  const [mostRecentInterviewId, setMostRecentInterviewId] = useState<
+    string | null
+  >(null);
+  // const [companyProfileId, setCompanyProfileId] = useState<string | null>(null);
   const [completionBitmask, setCompletionBitmask] = useState('0000');
 
   const [hasCandidate, setHasCandidate] = useState(false);
   const [attemptId, setAttemptId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [knitConnected, setKnitConnected] = useState(false);
+  const [mostRecentWilloKey, setMostRecentWilloKey] = useState<string | null>(null);
+
 
   // Load all status info once
   useEffect(() => {
@@ -61,93 +66,196 @@ export default function GettingStarted() {
 
       const { data: profile } = await supabase
         .from('company_profiles')
-        .select('id, first_interview_id, completion_bitmask')
+        .select(
+          'id, first_interview_id, completion_bitmask, willo_company_key, knit_integration_id, knit_connected_at, knit_app_id, knit_category_id',
+        )
         .eq('created_by_user_id', user.id)
         .single();
 
-      const interviewId = profile?.first_interview_id;
-      setFirstInterviewId(interviewId);
-      setCompanyProfileId(profile?.id ?? null);
-      setCompletionBitmask(profile?.completion_bitmask ?? '0000');
+      const connected =
+        !!profile?.knit_integration_id ||
+        !!profile?.knit_connected_at ||
+        !!profile?.knit_app_id ||
+        !!profile?.knit_category_id;
 
-      if (interviewId) {
-        const { data: interview } = await supabase
+      setKnitConnected(connected);
+
+      const selectMostRecentBy = async (filter: {
+        key: string;
+        value: string;
+      }) => {
+        const { data: interview }: { data: any } = await supabase
           .from('interviews')
-          .select('willo_interview_key')
-          .eq('id', interviewId)
-          .single();
+          .select('id, willo_interview_key, created_at')
+          .eq(filter.key as any, filter.value)
+          .order('created_at', { ascending: false })
+          .limit(1);
+        return interview?.[0] ?? null;
+      };
 
-        const willoKey = interview?.willo_interview_key;
+      // 1) Most recent interview created by the user
+      let recent = await selectMostRecentBy({ key: 'user_id', value: user.id });
 
-        if (willoKey) {
+      // 2) Fallback: most recent interview tied to company via willo_company_key in department
+      if (!recent && profile?.willo_company_key) {
+        recent = await selectMostRecentBy({
+          key: 'department',
+          value: profile.willo_company_key,
+        });
+      }
+
+      if (recent) {
+        setMostRecentInterviewId(recent.id);
+        setMostRecentWilloKey(recent.willo_interview_key ?? null);
+
+        // If we have a Willo key, check if any attempts exist
+        if (recent.willo_interview_key) {
           const { data: attempts } = await supabase
             .from('interview_attempts')
             .select('id')
-            .eq('interview_id', willoKey)
+            .eq('interview_id', recent.willo_interview_key) // this table stores the Willo key
             .limit(1);
 
           if (attempts?.[0]) {
             setHasCandidate(true);
             setAttemptId(attempts[0].id);
+            markStepComplete('candidate');
           }
         }
+      } else {
+        setMostRecentInterviewId(null);
+        setMostRecentWilloKey(null);
       }
 
       setLoading(false);
     };
 
     fetchStatus();
-  }, [user]);
+  }, [user, mostRecentInterviewId, mostRecentWilloKey]);
 
-  const isCompleted = {
-    create: !!firstInterviewId,
-    copy: completionBitmask[0] === '1',
-    candidate: completionBitmask[1] === '1',
-    edit: completionBitmask[2] === '1',
-    connect: completionBitmask[3] === '1',
-  };
+  // const isCompleted = {
+  //   create: !!firstInterviewId,
+  //   copy: completionBitmask[0] === '1',
+  //   candidate: completionBitmask[1] === '1',
+  //   edit: completionBitmask[2] === '1',
+  //   connect: completionBitmask[3] === '1',
+  // };
 
-  const updateBitmask = async (index: number) => {
-    if (!companyProfileId) return;
+  // const updateBitmask = async (index: number) => {
+  //   if (!companyProfileId) return;
 
-    const newBits = completionBitmask.split('');
-    if (newBits[index] === '1') return;
+  //   const newBits = completionBitmask.split('');
+  //   if (newBits[index] === '1') return;
 
-    newBits[index] = '1';
-    const updated = newBits.join('');
+  //   newBits[index] = '1';
+  //   const updated = newBits.join('');
 
-    setCompletionBitmask(updated);
+  //   setCompletionBitmask(updated);
 
-    await supabase
-      .from('company_profiles')
-      .update({ completion_bitmask: updated })
-      .eq('id', companyProfileId);
-  };
+  //   await supabase
+  //     .from('company_profiles')
+  //     .update({ completion_bitmask: updated })
+  //     .eq('id', companyProfileId);
+  // };
 
-  const defaultChecks = steps.reduce<Record<string, boolean>>((acc, s) => {
-    acc[s.id] = false;
-    return acc;
-  }, {});
+  
+  const defaultChecks = useMemo(
+    () =>
+      steps.reduce<Record<string, boolean>>((acc, s) => {
+        acc[s.id] = false;
+        return acc;
+      }, {} as Record<string, boolean>),
+    []
+  );
 
-  const storageKey = `getting_started_checks_${user?.id ?? 'anon'}`;
-  const [checkedSteps, setCheckedSteps] =
-    useState<Record<string, boolean>>(defaultChecks);
+  const storageKey = useMemo(
+    () => `getting_started_checks_${user?.id ?? 'anon'}`,
+    [user?.id]
+  );
 
+  
+
+  const [checkedSteps, setCheckedSteps] = useState<Record<string, boolean>>(defaultChecks);
+  const [hydratedKey, setHydratedKey] = useState<string | null>(null);
+  const [pendingConnectMark, setPendingConnectMark] = useState(false);
+
+  // LOAD for current storageKey
   useEffect(() => {
     try {
-      const raw = localStorage.getItem(storageKey);
-      if (raw) setCheckedSteps({ ...defaultChecks, ...JSON.parse(raw) });
-    } catch {}
-  }, [user?.id]);
+      const raw = typeof window !== 'undefined' ? localStorage.getItem(storageKey) : null;
+      setCheckedSteps(raw ? { ...defaultChecks, ...JSON.parse(raw) } : defaultChecks);
+    } catch {
+      setCheckedSteps(defaultChecks);
+    }
+    setHydratedKey(storageKey);
+  }, [storageKey, defaultChecks]);
 
+  // SAVE only after we hydrated for this storageKey
   useEffect(() => {
+    if (hydratedKey !== storageKey) return;
     try {
       localStorage.setItem(storageKey, JSON.stringify(checkedSteps));
     } catch {}
-  }, [checkedSteps, storageKey]);
+  }, [checkedSteps, storageKey, hydratedKey]);
 
-  const toggleStep = (id: string) =>
+  // mark connect completed (queues until hydrated)
+  const markConnectCompleted = useCallback(() => {
+    if (hydratedKey !== storageKey) {
+      setPendingConnectMark(true);
+      return;
+    }
+    setCheckedSteps((prev) => (prev.connect ? prev : { ...prev, connect: true }));
+  }, [hydratedKey, storageKey]);
+
+  // apply queued connect mark post-hydration
+  useEffect(() => {
+    if (!pendingConnectMark) return;
+    if (hydratedKey !== storageKey) return;
+    setCheckedSteps((prev) => (prev.connect ? prev : { ...prev, connect: true }));
+    setPendingConnectMark(false);
+  }, [pendingConnectMark, hydratedKey, storageKey]);
+
+  const toggleStep = (id: string)=>
     setCheckedSteps((prev) => ({ ...prev, [id]: !prev[id] }));
+
+  const markStepComplete = React.useCallback((id: string) => {
+    setCheckedSteps(prev => {
+      if (prev[id]) return prev;                 // idempotent
+      const next = { ...prev, [id]: true };
+      try { localStorage.setItem(storageKey, JSON.stringify(next)); } catch {}
+      return next;
+    });
+  }, [storageKey]);
+
+  // === below your existing storageKey/useMemo ===
+const lastInterviewKey = useMemo(
+  () => `getting_started_last_interview_${user?.id ?? 'anon'}`,
+  [user?.id]
+);
+
+// Reset "copy" when the most recent interview changes (after hydration)
+useEffect(() => {
+  if (hydratedKey !== storageKey) return;
+  if (!mostRecentInterviewId) return;
+
+  try {
+    const last = localStorage.getItem(lastInterviewKey);
+
+    // If we've seen an interview before AND it's different now → reset "copy"
+    if (last && last !== mostRecentInterviewId) {
+      setCheckedSteps(prev => {
+        if (!prev.copy) return prev;                // already unchecked
+        const next = { ...prev, copy: false };
+        try { localStorage.setItem(storageKey, JSON.stringify(next)); } catch {}
+        return next;
+      });
+    }
+
+    // Update our last-seen interview id
+    localStorage.setItem(lastInterviewKey, mostRecentInterviewId);
+  } catch {}
+}, [mostRecentInterviewId, hydratedKey, storageKey, lastInterviewKey, setCheckedSteps]);
+
 
   return (
     <div className="flex h-fill">
@@ -204,33 +312,32 @@ export default function GettingStarted() {
       <main className="flex-1 p-6 min-w-0">
         {activeStep === 'create' && (
           <CreateInterview
-            hasInterview={!!firstInterviewId}
+            hasInterview={!!mostRecentInterviewId}
             setActiveStep={setActiveStep}
+            onComplete={() => markStepComplete('create')}
           />
         )}
         {activeStep === 'copy' && (
-          <CopyInterviewLink
-            firstInterviewId={firstInterviewId}
-            onComplete={() => updateBitmask(0)}
+          <CopyInterviewLink 
+            mostRecentInterviewId={mostRecentInterviewId}
+            onComplete={() => markStepComplete('copy')}
           />
         )}
         {activeStep === 'candidate' && (
           <FirstCandidate
             hasCandidate={hasCandidate}
             attemptId={attemptId}
-            onComplete={() => updateBitmask(1)}
             setActiveStep={setActiveStep}
+            onComplete={() => markStepComplete('candidate')}
           />
         )}
         {activeStep === 'edit' && (
-          <EditInterview
-            firstInterviewId={firstInterviewId}
-            onComplete={() => updateBitmask(2)}
+          <EditInterview 
+            mostRecentInterviewId={mostRecentInterviewId}
+            onComplete={() => markStepComplete('edit')}
           />
         )}
-        {activeStep === 'connect' && (
-          <ConnectATS onComplete={() => updateBitmask(3)} />
-        )}
+        {activeStep === 'connect' && <ConnectATS knitConnected={knitConnected} onVerifyConnected={markConnectCompleted} />}
       </main>
     </div>
   );
@@ -239,9 +346,11 @@ export default function GettingStarted() {
 function CreateInterview({
   hasInterview,
   setActiveStep,
+  onComplete,
 }: {
   hasInterview: boolean;
   setActiveStep: (step: string) => void;
+  onComplete: () => void;
 }) {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
@@ -322,7 +431,10 @@ function CreateInterview({
             <Button
               className="group bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-full
               border-0 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center"
-              onClick={() => setActiveStep('copy')}
+              onClick={() => {
+                onComplete();
+                setActiveStep('copy');
+              }}
             >
               <p className="text-sm">Go to Next Step</p>
               <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
@@ -344,47 +456,96 @@ function CreateInterview({
 }
 
 function CopyInterviewLink({
-  firstInterviewId,
+  mostRecentInterviewId,
   onComplete,
 }: {
-  firstInterviewId: string | null;
+  mostRecentInterviewId: string | null;
   onComplete: () => void;
 }) {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [interviewLink, setInterviewLink] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
   const [copyTimeout, setCopyTimeout] = useState<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    const fetchLink = async () => {
-      if (!firstInterviewId) {
+    const fetchMostRecentLink = async () => {
+      try {
+        if (!user) {
+          setLoading(false);
+          return;
+        }
+
+        // Grab the user's company profile (unique per user)
+        const { data: profile } = await supabase
+          .from('company_profiles')
+          .select('willo_company_key, first_interview_id')
+          .eq('created_by_user_id', user.id)
+          .single();
+
+        // Helper: read a link by interview UUID (text)
+        const readLinkById = async (id: string | null) => {
+          if (!id) return null;
+          const { data } = await supabase
+            .from('interviews')
+            .select('interview_link')
+            .eq('id', id)
+            .single();
+          return data?.interview_link ?? null;
+        };
+
+        // Helper: most recent interview with a non-null link by a filter
+        const selectMostRecentBy = async (filter: {
+          key: string;
+          value: string;
+        }): Promise<string | null> => {
+          const { data: interview } = await supabase
+            .from('interviews')
+            .select('id, interview_link, created_at')
+            .eq(filter.key as any, filter.value)
+            .not('interview_link', 'is', null)
+            .order('created_at', { ascending: false })
+            .limit(1);
+          if (interview && interview[0]) {
+            return interview[0].interview_link as string | null;
+          }
+          return null;
+        };
+
+        // 1) Most recent interview created by this user
+        let link = await selectMostRecentBy({ key: 'user_id', value: user.id });
+
+        // 2) Fallback: most recent interview tied to this company via willo_company_key
+        if (!link && profile?.willo_company_key) {
+          link = await selectMostRecentBy({
+            key: 'department',
+            value: profile.willo_company_key,
+          });
+        }
+
+        // 3) Final fallback: the profile's first_interview_id (uuid-as-text)
+        if (!link && (profile?.first_interview_id || mostRecentInterviewId)) {
+          link = await readLinkById(
+            profile?.first_interview_id ?? mostRecentInterviewId,
+          );
+        }
+
+        setInterviewLink(link ?? null);
+      } finally {
         setLoading(false);
-        return;
       }
-
-      const { data: interview } = await supabase
-        .from('interviews')
-        .select('interview_link')
-        .eq('id', firstInterviewId)
-        .single();
-
-      if (interview?.interview_link) {
-        setInterviewLink(interview.interview_link);
-      }
-
-      setLoading(false);
     };
 
-    fetchLink();
-  }, [firstInterviewId]);
+    fetchMostRecentLink();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mostRecentInterviewId, user?.id]);
 
   const handleCopy = () => {
     if (interviewLink) {
       navigator.clipboard.writeText(interviewLink);
       onComplete();
 
-      // Clear existing timeout if user clicks again
       if (copyTimeout) {
         clearTimeout(copyTimeout);
       }
@@ -509,18 +670,18 @@ function CopyInterviewLink({
 }
 
 function EditInterview({
-  firstInterviewId,
+  mostRecentInterviewId,
   onComplete,
 }: {
-  firstInterviewId: string | null;
+  mostRecentInterviewId: string | null;
   onComplete: () => void;
 }) {
   const navigate = useNavigate();
 
   const handleEdit = () => {
-    if (firstInterviewId) {
+    if (mostRecentInterviewId) {
       onComplete();
-      navigate(`/interviews/edit/${firstInterviewId}`);
+      navigate(`/interviews/edit/${mostRecentInterviewId}`);
     }
   };
 
@@ -537,7 +698,7 @@ function EditInterview({
         title="How To Edit Your Interview Link"
       />
 
-      {firstInterviewId ? (
+      {mostRecentInterviewId ? (
         <div className="space-y-4">
           <p className="text-gray-700 leading-relaxed hyphens-none break-words">
             Click below if you want to update your interview — otherwise, skip
@@ -574,20 +735,22 @@ function EditInterview({
 function FirstCandidate({
   hasCandidate,
   attemptId,
-  onComplete,
   setActiveStep,
+  onComplete,
 }: {
   hasCandidate: boolean;
   attemptId: string | null;
-  onComplete: () => void;
   setActiveStep: (step: string) => void;
+  onComplete: () => void;
 }) {
   const navigate = useNavigate();
 
   const handleView = () => {
+    onComplete();
     if (attemptId) {
-      onComplete();
       navigate(`/interviews/responses/${attemptId}`);
+    } else {
+      navigate('/interviews/responses');
     }
   };
 
@@ -638,10 +801,29 @@ function FirstCandidate({
   );
 }
 
-function ConnectATS({ onComplete }: { onComplete: () => void }) {
+function ConnectATS({ knitConnected, onVerifyConnected }: { knitConnected: boolean, onVerifyConnected: () => void }) {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const handleVerify = async () => {
+    if (!user) return;
+    const { data: profile } = await supabase
+      .from('company_profiles')
+      .select('knit_integration_id, knit_connected_at, knit_app_id, knit_category_id')
+      .eq('created_by_user_id', user.id)
+      .single();
+
+    const connected =
+      !!profile?.knit_integration_id ||
+      !!profile?.knit_connected_at ||
+      !!profile?.knit_app_id ||
+      !!profile?.knit_category_id;
+
+    if (connected) onVerifyConnected();
+  };
+
   const handleConnect = () => {
-    // Trigger your integration logic here if needed
-    onComplete();
+    navigate('/integrations/');
   };
 
   return (
