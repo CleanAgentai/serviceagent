@@ -181,7 +181,7 @@ export const Subscriptions: React.FC = () => {
                     </div>
                   </Button>
                 <div className="text-center space-y-1">
-                  <p className="text-xs text-muted-foreground">14 Days Free</p>
+                  <p className="text-xs text-muted-foreground">No charges today. Cancel anytime.</p>
                 </div>
               </div>
             </div>
@@ -269,7 +269,7 @@ export const Subscriptions: React.FC = () => {
                     </div>
                   </Button>
                 <div className="text-center space-y-1">
-                  <p className="text-xs text-muted-foreground">14 Days Free</p>
+                  <p className="text-xs text-muted-foreground">No charges today. Cancel anytime.</p>
                 </div>
               </div>
             </div>
@@ -339,8 +339,8 @@ export const Subscriptions: React.FC = () => {
                     </div>
                   </Button>
                 </a>
-                <div className="text-center">
-                  <p className="text-xs text-muted-foreground">Custom pricing available</p>
+                <div className="text-center space-y-1">
+                  <p className="text-xs text-muted-foreground">Custom pricing available.</p>
                 </div>
               </div>
             </div>

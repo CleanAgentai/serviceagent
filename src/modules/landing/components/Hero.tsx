@@ -192,14 +192,14 @@ const Hero = () => {
                 <div className="flex items-center max-sm:justify-center gap-6 text-sm text-muted-foreground">
                   <div className="flex items-center gap-2">
                      <div className="flex -space-x-2">
-                       <div className="w-8 h-8 rounded-full border-2 border-background overflow-hidden">
-                         <img src="/workers/PestControl.png" alt="ServiceAgent customer testimonial avatar showing professional headshot" className="w-full h-full object-cover" />
+                       <div className="w-10 h-10 rounded-full border-2 border-background overflow-hidden">
+                         <img src="/Clementines_Original.png" alt="Clementines" className="w-[140%] h-full object-cover" />
                         </div>
-                        <div className="w-8 h-8 rounded-full border-2 border-background overflow-hidden">
-                          <img src="/workers/Plumber.png" alt="ServiceAgent satisfied client avatar demonstrating hiring success" className="w-full h-full object-cover" />
+                        <div className="w-10 h-10 rounded-full border-2 border-background overflow-hidden">
+                          <img src="/ConnectedPower_Logo.png" alt="Connected Power" className="w-full h-full object-cover scale-75" />
                         </div>
-                        <div className="w-8 h-8 rounded-full border-2 border-background overflow-hidden">
-                          <img src="/workers/ResidentialCleaning.png" alt="ServiceAgent business owner testimonial photo for hiring platform" className="w-full h-full object-cover" />
+                        <div className="w-10 h-10 rounded-full border-2 border-background overflow-hidden">
+                          <img src="/SmartEnroll.png" alt="SmartEnroll" className="w-full h-full object-cover" />
                        </div>
                      </div>
                     <span className="font-medium">150+ companies hiring better</span>
