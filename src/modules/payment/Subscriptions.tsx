@@ -229,7 +229,7 @@ export const Subscriptions: React.FC = () => {
                         <div className="text-sm text-muted-foreground">(billed monthly)</div>
                       )}
                       {isYearly && (
-                        <div className="text-sm text-muted-foreground">(billed yearlyy)</div>
+                        <div className="text-sm text-muted-foreground">(billed yearly)</div>
                       )}
                     </div>
                   )}
