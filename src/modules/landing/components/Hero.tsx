@@ -92,13 +92,13 @@ const Hero = () => {
                       <Button 
                         size="lg" 
                         className="shrink-0 bg-gradient-to-r from-gold to-gold/90 hover:from-terracotta hover:to-terracotta/90 text-white px-8 py-6 text-xl font-bold rounded-xl shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300"
-                        aria-label="Start free trial - 14 day free trial, credit card required"
+                        aria-label="Start for Free"
                       >
                         Start for Free
                       </Button>
                     </Link>
                     <p className="text-[10px] font-semibold uppercase text-muted-foreground text-center">
-                    <span className="mr-[2px]">🎁</span> 14 Days Free Trial
+                    <span className="mr-[2px]">🎁</span> 14 Days Free
                     </p>
                   </div>
                   

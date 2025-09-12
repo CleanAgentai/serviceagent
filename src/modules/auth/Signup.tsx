@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { User, Mail, Lock, Building2, ArrowRight } from "lucide-react";
+import { User, Mail, Lock, Building2, ArrowRight, Eye, EyeOff } from "lucide-react";
 import { useAuth } from "@/app/providers/AuthContext";
 import { supabase } from "@/app/lib/supabase";
 
@@ -22,6 +22,9 @@ export function Signup() {
   const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
   const [showPasswordRequirements, setShowPasswordRequirements] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  
   // Set meta title and description
   React.useEffect(() => {
     document.title = "Sign Up - ServiceAgent";
@@ -203,11 +206,11 @@ export function Signup() {
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              Start Your Free 14-Day Trial
+            Start Free Today
             </h1>
             <p className="text-gray-600">
-              Create your account in seconds.<br />
-              No payment required up front, and no commitment cancel anytime.
+              Create your account in seconds.
+              Get instant access to all features.
             </p>
           </div>
 
@@ -346,18 +349,29 @@ export function Signup() {
                     <input
                       id="password"
                       name="password"
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       value={formData.password}
                       onChange={handleChange}
                       onFocus={() => setShowPasswordRequirements(true)}
                       required
-                      className={`block w-full pl-10 pr-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+                      className={`block w-full pl-10 pr-10 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
                         passwordErrors.length > 0 && formData.password.length > 0
                           ? 'border-red-300 focus:ring-red-500 focus:border-red-500'
                           : 'border-gray-300'
                       }`}
                       placeholder="••••••••"
                     />
+                    <button
+                      type="button"
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? (
+                        <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                      ) : (
+                        <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                      )}
+                    </button>
                   </div>
                   
                   {/* Password Requirements */}
@@ -415,11 +429,11 @@ export function Signup() {
                     <input
                       id="confirmPassword"
                       name="confirmPassword"
-                      type="password"
+                      type={showConfirmPassword ? "text" : "password"}
                       value={formData.confirmPassword}
                       onChange={handleChange}
                       required
-                      className={`block w-full pl-10 pr-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+                      className={`block w-full pl-10 pr-10 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
                         formData.confirmPassword.length > 0 && formData.password !== formData.confirmPassword
                           ? 'border-red-300 focus:ring-red-500 focus:border-red-500'
                           : formData.confirmPassword.length > 0 && formData.password === formData.confirmPassword
@@ -428,6 +442,17 @@ export function Signup() {
                       }`}
                       placeholder="••••••••"
                     />
+                    <button
+                      type="button"
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    >
+                      {showConfirmPassword ? (
+                        <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                      ) : (
+                        <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                      )}
+                    </button>
                   </div>
                   {formData.confirmPassword.length > 0 && (
                     <div className="mt-1 transition-all duration-300">

@@ -227,7 +227,7 @@ const Testimonials = () => {
                  Ready to Join These Success Stories?
                </h3>
                <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                 Start your free trial today and see why companies choose ServiceAgent for their hiring needs
+                 Start for free today and see why companies choose ServiceAgent for their hiring needs
                </p>
              </div>
 
@@ -246,18 +246,6 @@ const Testimonials = () => {
                    </div>
                  </Button>
                  </Link>
-               </div>
-
-               {/* Security & Trust Messaging */}
-               <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground flex-wrap">
-                 <div className="flex items-center gap-2">
-                   <Check className="w-4 h-4 text-teal" />
-                   <span>14 Days Free Trial</span>
-                 </div>
-                 <div className="flex items-center gap-2">
-                   <Zap className="w-4 h-4 text-terracotta" />
-                   <span>Cancel anytime</span>
-                 </div>
                </div>
              </div>
            </div>

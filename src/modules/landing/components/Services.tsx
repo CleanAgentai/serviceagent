@@ -181,7 +181,7 @@ const Services = () => {
                 <Link to="/signup" className="block w-full">
                   <Button 
                     className="flex w-full bg-gradient-to-r from-teal to-teal/90 hover:from-teal/90 hover:to-teal text-white py-3 text-lg font-bold rounded-xl shadow-xl shadow-teal/40 hover:scale-105 active:scale-95 transition-all duration-300"
-                    aria-label="Start free trial with Launch Plan - 20 AI interviews per month, 14 day free trial"
+                    aria-label="Start free trial with Launch Plan - 20 AI interviews per month, 14 day free"
                   >
                     <div className="flex items-center gap-2">
                       <Zap className="w-5 h-5" />
@@ -190,7 +190,7 @@ const Services = () => {
                   </Button>
                 </Link>
                 <div className="text-center space-y-1">
-                  <p className="text-xs text-muted-foreground">14 Days Free Trial</p>
+                  <p className="text-xs text-muted-foreground">14 Days Free</p>
                 </div>
               </div>
             </div>
@@ -279,7 +279,7 @@ const Services = () => {
                   </Button>
                 </Link>
                 <div className="text-center space-y-1">
-                  <p className="text-xs text-muted-foreground">14 Days Free Trial</p>
+                  <p className="text-xs text-muted-foreground">14 Days Free</p>
                 </div>
               </div>
             </div>

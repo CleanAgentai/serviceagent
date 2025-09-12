@@ -469,7 +469,7 @@ const IndustryExpertise = () => {
               </Link>
             </div>
             <p className="text-sm text-muted-foreground mt-4">
-              14 Days Free Trial • Works with any industry
+              14 Days Free • Works with any industry
             </p>
           </div>    
         </div>
