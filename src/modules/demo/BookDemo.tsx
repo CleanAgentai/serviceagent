@@ -224,7 +224,7 @@ export function BookDemo() {
                 Not ready for a demo?
               </h3>
               <p className="text-sm sm:text-base text-gray-600 mb-4">
-                Try CleanAgent.AI on your own with our 7-day free trial.
+                Try CleanAgent.AI on your own with our 14-day free trial.
               </p>
               <Link
                 to="/signup"

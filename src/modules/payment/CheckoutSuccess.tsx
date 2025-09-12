@@ -28,7 +28,11 @@ const CheckoutSuccess = () => {
       })
       .then((data) => {
         if (data.paid) {
-          setStatus('success');
+          setStatus("success");
+          // Redirect to company profile setup after successful payment
+          setTimeout(() => {
+            navigate("/post-signup");
+          }, 3000);
         } else {
           setStatus('error');
         }
@@ -58,10 +62,10 @@ const CheckoutSuccess = () => {
               Thank you for your subscription.
             </p>
             <button
-              onClick={() => navigate('/dashboard')}
+              onClick={() => navigate("/post-signup")}
               className="mt-6 px-4 py-2 bg-black text-white rounded hover:bg-gray-800"
             >
-              Go to Dashboard
+              Complete Your Profile
             </button>
           </>
         )}

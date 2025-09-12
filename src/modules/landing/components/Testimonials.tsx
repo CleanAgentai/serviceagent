@@ -239,61 +239,44 @@ const Testimonials = () => {
             </div>
           </div>
         </div>
+       {/* Call-to-Action Section */}
+       <div 
+         className="text-center mt-20 opacity-0 animate-fade-in"
+         style={{ animationDelay: '0.5s', animationFillMode: 'forwards' }}
+       >
+         <div className="bg-gradient-to-br from-card to-background/80 rounded-3xl p-8 md:p-12 border border-border/30 shadow-2xl max-w-4xl mx-auto">
+           <div className="space-y-8">
+             <div className="space-y-4">
+               <h3 className="text-3xl font-bold text-primary">
+                 Ready to Join These Success Stories?
+               </h3>
+               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                 Start for free today and see why companies choose ServiceAgent for their hiring needs
+               </p>
+             </div>
 
-        {/* Call-to-Action Section */}
-        <div
-          className="text-center mt-20 opacity-0 animate-fade-in"
-          style={{
-            animationDelay: '0.5s',
-            animationFillMode: 'forwards',
-          }}
-        >
-          <div className="bg-gradient-to-br from-card to-background/80 rounded-3xl p-8 md:p-12 border border-border/30 shadow-2xl max-w-4xl mx-auto">
-            <div className="space-y-8">
-              <div className="space-y-4">
-                <h3 className="text-3xl font-bold text-primary">
-                  Ready to Join These Success Stories?
-                </h3>
-                <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                  Start your free trial today and see why companies choose
-                  ServiceAgent for their hiring needs
-                </p>
-              </div>
-
-              {/* CTA Button */}
-              <div className="space-y-4">
-                <div className="relative group">
-                  <Link to="/signup">
-                    <Button
-                      size="lg"
-                      className="relative bg-gradient-to-r from-gold to-gold/90 hover:from-terracotta hover:to-terracotta/90 text-white px-12 py-6 text-xl font-bold rounded-xl shadow-lg shadow-gold/30 hover:shadow-terracotta/40 hover:scale-105 active:scale-95 transition-all duration-300"
-                    >
-                      <div className="flex items-center gap-3">
-                        <Zap className="w-6 h-6" />
-                        Start for Free
-                        <div className="w-2 h-2 bg-white rounded-full animate-pulse opacity-80"></div>
-                      </div>
-                    </Button>
-                  </Link>
-                </div>
-
-                {/* Security & Trust Messaging */}
-                <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground flex-wrap">
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-teal" />
-                    <span>First 5 candidates free</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Zap className="w-4 h-4 text-terracotta" />
-                    <span>Cancel anytime</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+             {/* CTA Button */}
+             <div className="space-y-4">
+               <div className="relative group">
+                <Link to="/signup">
+                 <Button 
+                   size="lg"
+                   className="relative bg-gradient-to-r from-gold to-gold/90 hover:from-terracotta hover:to-terracotta/90 text-white px-12 py-6 text-xl font-bold rounded-xl shadow-lg shadow-gold/30 hover:shadow-terracotta/40 hover:scale-105 active:scale-95 transition-all duration-300"
+                 >
+                   <div className="flex items-center gap-3">
+                     <Zap className="w-6 h-6" />
+                     Start for Free
+                     <div className="w-2 h-2 bg-white rounded-full animate-pulse opacity-80"></div>
+                   </div>
+                 </Button>
+                 </Link>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+   </section>
   );
 };
 export default Testimonials;

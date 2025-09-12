@@ -82,54 +82,36 @@ const Hero = () => {
                 <Sparkles className="w-4 h-4" />
                 AI-Powered Hiring Platform
               </div>
-            </div>
-
-            {/* Headline */}
-            <div
-              className="space-y-6 opacity-0 animate-fade-in"
-              style={{
-                animationDelay: '0.3s',
-                animationFillMode: 'forwards',
-              }}
-            >
-              <h1 className="text-6xl lg:text-7xl font-bold leading-tight">
-                <span className="text-foreground">Hiring Sucks.</span>
-                <br />
-                <span className="text-foreground">We Make It</span>{' '}
-                <span className="relative inline-block">
-                  <span className="text-gold">Easy.</span>
-                  <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-gold to-terracotta rounded-full"></div>
-                </span>
-              </h1>
-              <p className="text-xl lg:text-2xl max-md:text-center max-md:px-8 text-muted-foreground leading-relaxed break-words hyphens-none">
-                ServiceAgent uses AI to interview candidates, score them
-                perfectly, and save the videos so you can quickly review and
-                hire only the best talent.
-              </p>
-            </div>
-
-            {/* CTA Buttons */}
-            <div
-              className="opacity-0 animate-fade-in"
-              style={{
-                animationDelay: '0.5s',
-                animationFillMode: 'forwards',
-              }}
-            >
-              <div className="flex flex-col md:flex-row justify-center md:justify-start items-center md:items-start gap-4">
-                <div className="flex flex-col items-center gap-2">
-                  <Link to="/signup">
-                    <Button
-                      size="lg"
-                      className="shrink-0 bg-gradient-to-r from-gold to-gold/90 hover:from-terracotta hover:to-terracotta/90 text-white px-8 py-6 text-xl font-bold rounded-xl shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300"
-                      aria-label="Start free trial - first 5 candidates free, credit card required"
-                    >
-                      Start for Free
-                    </Button>
-                  </Link>
-                  <p className="text-[10px] font-semibold uppercase text-muted-foreground text-center">
-                    <span className="mr-[2px]">🎁</span> First 5 candidates free
-                  </p>
+    
+              {/* CTA Buttons */}
+              <div 
+                className="opacity-0 animate-fade-in"
+                style={{ animationDelay: '0.5s', animationFillMode: 'forwards' }}
+              >
+                <div className="flex flex-col md:flex-row justify-center md:justify-start items-center md:items-start gap-4">
+                  <div className="flex flex-col items-center gap-2">
+                    <Link to="/signup">
+                      <Button 
+                        size="lg" 
+                        className="shrink-0 bg-gradient-to-r from-gold to-gold/90 hover:from-terracotta hover:to-terracotta/90 text-white px-8 py-6 text-xl font-bold rounded-xl shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300"
+                        aria-label="Start for Free"
+                      >
+                        Start for Free
+                      </Button>
+                    </Link>
+                    <p className="text-[10px] font-semibold uppercase text-muted-foreground text-center">
+                    <span className="mr-[2px]">🎁</span> 14 Days Free
+                    </p>
+                  </div>
+                  
+                  <Button 
+                    variant="outline" 
+                    size="lg" 
+                    className="shrink-0 px-8 py-6 text-xl font-bold border-2 border-teal/30 text-teal hover:bg-teal/10 hover:border-teal/50 hover:text-teal transition-all duration-300 shadow-lg hover:shadow-teal/20"
+                    onClick={() => document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' })}
+                  >
+                    Watch Demo
+                  </Button>
                 </div>
 
                 <Button
