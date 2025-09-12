@@ -94,7 +94,7 @@ const CTA = () => {
                     size="lg"
                     onClick={() => window.location.href = '/signup'}
                     className="relative bg-gradient-to-r from-gold to-gold/90 hover:from-terracotta hover:to-terracotta/90 text-white px-16 py-8 text-2xl font-bold rounded-xl shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300"
-                    aria-label="Start free trial for AI hiring software - first 5 candidates free, credit card required"
+                    aria-label="Start free trial for AI hiring software - 14 day free trial, credit card required"
                   >
                     <div className="flex items-center gap-3">
                       <Zap className="w-6 h-6 animate-pulse" />
@@ -105,7 +105,7 @@ const CTA = () => {
                 </div>
                 <div className="space-y-2">
                 <p className="text-[8px] md:text-[10px] font-semibold uppercase text-muted-foreground text-center">
-                <span className="mr-[2px]">🎁</span> First 5 candidates free
+                <span className="mr-[2px]">🎁</span> 14 Days Free Trial
                     </p>
                 </div>
               </div>

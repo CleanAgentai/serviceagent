@@ -178,7 +178,7 @@ export function BookDemo() {
             <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6 text-center">
               <h3 className="text-lg font-medium text-gray-900 mb-2">Not ready for a demo?</h3>
               <p className="text-sm sm:text-base text-gray-600 mb-4">
-                Try CleanAgent.AI on your own with our 7-day free trial.
+                Try CleanAgent.AI on your own with our 14-day free trial.
               </p>
               <Link
                 to="/signup"

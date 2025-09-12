@@ -252,7 +252,7 @@ const Testimonials = () => {
                <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground flex-wrap">
                  <div className="flex items-center gap-2">
                    <Check className="w-4 h-4 text-teal" />
-                   <span>First 5 candidates free</span>
+                   <span>14 Days Free Trial</span>
                  </div>
                  <div className="flex items-center gap-2">
                    <Zap className="w-4 h-4 text-terracotta" />

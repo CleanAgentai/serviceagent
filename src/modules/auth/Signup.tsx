@@ -153,8 +153,8 @@ export function Signup() {
           throw signUpError;
         }
       } else {
-        // Navigate to setup page upon successful signup
-        navigate("/post-signup");
+        // Navigate to payment selection upon successful signup
+        navigate("/plan-onboarding");
       }
     } catch (err: any) {
       setError(err.message || "회원가입 중 오류가 발생했습니다.");
@@ -203,7 +203,7 @@ export function Signup() {
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              Start Your Free 7-Day Trial
+              Start Your Free 14-Day Trial
             </h1>
             <p className="text-gray-600">
               Create your account in seconds.<br />

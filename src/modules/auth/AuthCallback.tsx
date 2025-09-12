@@ -24,10 +24,27 @@ export function AuthCallback() {
         }
 
         if (session) {
-          console.log("Session found, redirecting to dashboard...");
+          console.log("Session found, checking user profile completion...");
+          
+          // Check if user has completed company profile
+          const { data: user } = await supabase.auth.getUser();
+          const { data: profile } = await supabase
+            .from("company_profiles")
+            .select("company_profile_completed")
+            .eq("created_by_user_id", user.user?.id)
+            .single();
+          
           if (!hasNavigated.current) {
             hasNavigated.current = true;
-            navigate("/dashboard", { replace: true });
+            
+            // If company profile is not completed, redirect to company setup
+            if (!profile?.company_profile_completed) {
+              console.log("Company profile not completed, redirecting to post-signup...");
+              navigate("/post-signup", { replace: true });
+            } else {
+              console.log("Company profile completed, redirecting to dashboard...");
+              navigate("/dashboard", { replace: true });
+            }
           }
           return;
         }
@@ -39,9 +56,26 @@ export function AuthCallback() {
           console.log("Auth state changed:", event, !!session);
 
           if (session && !hasNavigated.current) {
-            console.log("Session established, redirecting to dashboard...");
+            console.log("Session established, checking user profile completion...");
+            
+            // Check if user has completed company profile
+            const { data: user } = await supabase.auth.getUser();
+            const { data: profile } = await supabase
+              .from("company_profiles")
+              .select("company_profile_completed")
+              .eq("created_by_user_id", user.user?.id)
+              .single();
+            
             hasNavigated.current = true;
-            navigate("/dashboard", { replace: true });
+            
+            // If company profile is not completed, redirect to company setup
+            if (!profile?.company_profile_completed) {
+              console.log("Company profile not completed, redirecting to post-signup...");
+              navigate("/post-signup", { replace: true });
+            } else {
+              console.log("Company profile completed, redirecting to dashboard...");
+              navigate("/dashboard", { replace: true });
+            }
           } else if (!session && !hasNavigated.current) {
             console.log("No session found, redirecting to login...");
             hasNavigated.current = true;

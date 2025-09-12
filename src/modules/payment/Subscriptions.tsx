@@ -78,7 +78,7 @@ export const Subscriptions: React.FC = () => {
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold mb-2">Start Free, Upgrade Anytime</h2>
           <p className="text-gray-600">
-            Try all features free for 7 days. Cancel anytime before your trial ends.
+            Try all features free for 14 days. Cancel anytime before your trial ends.
           </p>
         </div>
       )}
@@ -172,7 +172,7 @@ export const Subscriptions: React.FC = () => {
               <div className="space-y-3">
                   <Button 
                     className="flex w-full bg-gradient-to-r from-teal to-teal/90 hover:from-teal/90 hover:to-teal text-white py-3 text-lg font-bold rounded-xl shadow-xl shadow-teal/40 hover:scale-105 active:scale-95 transition-all duration-300"
-                    aria-label="Start free trial with Launch Plan - 20 AI interviews per month, first 5 candidates free"
+                    aria-label="Start free trial with Launch Plan - 20 AI interviews per month, 14 day free trial"
                     onClick={() => wrapper(plans[0].title, isYearly)}
                   >
                     <div className="flex items-center gap-2">
@@ -181,7 +181,7 @@ export const Subscriptions: React.FC = () => {
                     </div>
                   </Button>
                 <div className="text-center space-y-1">
-                  <p className="text-xs text-muted-foreground">First 5 candidates free</p>
+                  <p className="text-xs text-muted-foreground">14 Days Free Trial</p>
                 </div>
               </div>
             </div>
@@ -269,7 +269,7 @@ export const Subscriptions: React.FC = () => {
                     </div>
                   </Button>
                 <div className="text-center space-y-1">
-                  <p className="text-xs text-muted-foreground">First 5 candidates free</p>
+                  <p className="text-xs text-muted-foreground">14 Days Free Trial</p>
                 </div>
               </div>
             </div>
