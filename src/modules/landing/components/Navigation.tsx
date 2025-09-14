@@ -182,18 +182,18 @@ export function Navigation({ isNavVisible = true }: { isNavVisible?: boolean }) 
               className="relative group"
             >
               <div className="absolute -inset-1 bg-gradient-to-r from-gold via-terracotta to-teal rounded-xl blur opacity-20 group-hover:opacity-40 transition duration-300"></div>
-              <Button 
-                size="sm"
-                className="relative bg-gradient-to-r from-gold to-gold/90 hover:from-terracotta hover:to-terracotta/90 text-white px-6 py-2.5 text-sm font-bold rounded-lg shadow-lg shadow-gold/30 hover:shadow-terracotta/40 hover:scale-105 active:scale-95 transition-all duration-300"
-              >
-                <Link to="/signup">
-                <div className="flex items-center gap-2">
-                    <Zap className="w-4 h-4 group-hover:animate-pulse" />
-                    Start for Free
-                    <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse opacity-80"></div>
-                </div>
-                  </Link>
-              </Button>
+              <Link to="/signup">
+                <Button 
+                  size="sm"
+                  className="relative bg-gradient-to-r from-gold to-gold/90 hover:from-terracotta hover:to-terracotta/90 text-white px-6 py-2.5 text-sm font-bold rounded-lg shadow-lg shadow-gold/30 hover:shadow-terracotta/40 hover:scale-105 active:scale-95 transition-all duration-300"
+                >
+                  <div className="flex items-center gap-2">
+                      <Zap className="w-4 h-4 group-hover:animate-pulse" />
+                      Start for Free
+                      <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse opacity-80"></div>
+                  </div>
+                </Button>
+              </Link>
             </motion.div>
           </div>
 
