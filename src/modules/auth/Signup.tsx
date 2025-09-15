@@ -9,12 +9,8 @@ export function Signup() {
   const { signUp } = useAuth();
 
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    companyName: "",
     email: "",
     password: "",
-    confirmPassword: "",
   });
 
   const [error, setError] = useState("");
@@ -23,7 +19,6 @@ export function Signup() {
   const [showPasswordRequirements, setShowPasswordRequirements] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   
   // Set meta title and description
   React.useEffect(() => {
@@ -90,21 +85,14 @@ export function Signup() {
     form.classList.remove('was-validated');
 
     const {
-      firstName,
-      lastName,
-      companyName,
       email,
       password,
-      confirmPassword,
     } = formData;
 
     if (
-      !firstName ||
-      !lastName ||
-      !companyName ||
       !email ||
       !password ||
-      !confirmPassword
+      !acceptTerms
     ) {
       setError("Please fill in all fields");
       setIsLoading(false);
@@ -119,11 +107,11 @@ export function Signup() {
       return;
     }
 
-    if (password !== confirmPassword) {
-      setError("Passwords do not match");
-      setIsLoading(false);
-      return;
-    }
+    // if (password !== confirmPassword) {
+    //   setError("Passwords do not match");
+    //   setIsLoading(false);
+    //   return;
+    // }
 
     // Check password requirements
     const passwordValidationErrors = validatePassword(password);
@@ -143,10 +131,7 @@ export function Signup() {
     try {
       const { error: signUpError } = await signUp(
         email,
-        password,
-        firstName,
-        lastName,
-        companyName
+        password
       );
 
       if (signUpError) {

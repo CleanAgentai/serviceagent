@@ -15,9 +15,6 @@ interface AuthContextType {
   signUp: (
     email: string,
     password: string,
-    firstName: string,
-    lastName: string,
-    companyName: string
   ) => Promise<{ error: AuthError | null }>;
   signIn: (
     email: string,
@@ -59,26 +56,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signUp = async (
     email: string,
     password: string,
-    firstName: string,
-    lastName: string,
-    companyName: string
   ) => {
     console.log("Starting sign up process...", {
       email,
-      firstName,
-      lastName,
-      companyName,
     });
     try {
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
-          data: {
-            first_name: firstName,
-            last_name: lastName,
-            company_name: companyName,
-          },
           emailRedirectTo: `${getSiteUrl()}/auth/callback`,
         },
       });
@@ -96,9 +82,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const { error: profileError } = await supabase
         .from("profiles")
         .update({
-          first_name: firstName,
-          last_name: lastName,
-          company_name: companyName,
           email: email, // 
         })
         .eq("id", userId); // `auth.users.id`와 동일한 row 업데이트
