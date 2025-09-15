@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Mail, Lock, ArrowRight, Eye, EyeOff } from "lucide-react";
+import { Mail, Lock, ArrowRight, Eye, EyeOff, Check } from "lucide-react";
 import { useAuth } from "@/app/providers/AuthContext";
 import { supabase } from "@/app/lib/supabase";
 
@@ -149,36 +149,34 @@ export function Login() {
                     className="block w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="••••••••"
                   />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors duration-200"
-                  >
-                    {showPassword ? (
-                      <Eye className="h-5 w-5" />
-                    ) : (
-                      <EyeOff className="h-5 w-5" />
-                    )}
-                  </button>
+                <div className="absolute inset-y-0 right-0 flex items-center pr-1">
+                      <button
+                        type="button"
+                        className="px-3 flex items-center text-xs bg-white text-gray-500 hover:text-gray-700 transition-all duration-200"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? "Hide Password" : "Show Password"}
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              </div>
 
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <input
-                    id="remember-me"
-                    name="remember-me"
-                    type="checkbox"
-                    checked={rememberMe}
-                    onChange={(e) => setRememberMe(e.target.checked)}
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                  />
-                  <label
-                    htmlFor="remember-me"
-                    className="ml-2 block text-sm text-gray-700"
+                  <button
+                    type="button"
+                    onClick={() => setRememberMe(!rememberMe)}
+                    className={`flex items-center justify-center h-6 w-6 rounded-xl border-2 transition-all duration-200 ${
+                      rememberMe
+                        ? 'bg-blue-600 border-blue-600 text-white'
+                        : 'bg-white border-gray-300 text-transparent hover:border-blue-600'
+                    }`}
                   >
+                    <Check className="h-3 w-3" />
+                  </button>
+                  <span className="ml-2 block text-sm text-gray-700">
                     Remember me
-                  </label>
+                  </span>
                 </div>
                 <Link
                   to="/forgot-password"
@@ -191,7 +189,7 @@ export function Login() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full flex items-center justify-center  bg-blue-600 hover:bg-blue-700 bg-clip-padding text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 border border-white/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                className=" group w-full flex items-center justify-center  bg-blue-600 hover:bg-blue-700 bg-clip-padding text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 border border-white/20 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isLoading ? (
                   <>
@@ -201,7 +199,7 @@ export function Login() {
                 ) : (
                   <>
                     Sign in
-                    <ArrowRight className="ml-2 h-5 w-5" />
+                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
                   </>
                 )}
               </button>
