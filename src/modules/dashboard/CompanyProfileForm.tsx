@@ -35,7 +35,7 @@ export function CompanyProfileForm({
   const [error, setError] = useState<string | null>(null);
   const [companyName, setCompanyName] = useState("");
   const [companyLocation, setCompanyLocation] = useState("");
-  const [companyNiche, setCompanyNiche] = useState("default");
+  const [companyNiche, setCompanyNiche] = useState("");
   const [companyWebsite, setCompanyWebsite] = useState("");
   const [companyPrimaryColour, setCompanyPrimaryColour] = useState("#0693e3");
   const [companySecondaryColour, setCompanySecondaryColour] =
@@ -268,6 +268,9 @@ export function CompanyProfileForm({
         if(companyNiche == "Restaurants and Food"){
           niche = "food";
         }
+        if(companyNiche == "Other"){
+          niche = "default";
+        }
       }
 
       // ✅ 6. company_profiles update(already the row is existing)
@@ -344,18 +347,40 @@ export function CompanyProfileForm({
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="companyNiche">Niche *</Label>
+            <div className="space-y-2 relative">
+              <Label htmlFor="companyNiche">Industry *</Label>
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <button
-                    id="companyNiche"
+                    id="companyNicheDisplay"
                     className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50"
                   >
-                    {companyNiche || "Select a niche"}
+                    {companyNiche || "Select an industry"}
                   </button>
                 </DropdownMenuTrigger>
+
+                {/* Invisible native select overlay to leverage browser required validation with same styling */}
+                <select
+                  id="companyNiche"
+                  value={companyNiche}
+                  onChange={(e) => setCompanyNiche(e.target.value)}
+                  required
+                  className="absolute inset-x-0 top-6 h-10 w-full opacity-0 cursor-pointer z-10"
+                >
+                  <option value="" disabled>
+                    Select an industry
+                  </option>
+                  <option value="Cleaning">Cleaning</option>
+                  <option value="Restaurants and Food">Restaurants and Food</option>
+                  <option value="HVAC">HVAC</option>
+                  <option value="Staffing">Staffing</option>
+                  <option value="Franchises">Franchises</option>
+                  <option value="Healthcare">Healthcare</option>
+                  <option value="Manufacturing">Manufacturing</option>
+                  <option value="Warehouses">Warehouses</option>
+                  <option value="Other">Other</option>
+                </select>
 
                 <DropdownMenuContent className="w-[400px]">
                   <DropdownMenuItem onClick={() => setCompanyNiche("Cleaning")}>
@@ -381,6 +406,9 @@ export function CompanyProfileForm({
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => setCompanyNiche("Warehouses")}>
                     Warehouses
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setCompanyNiche("Other")}>
+                    Other
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
