@@ -33,6 +33,8 @@ export function CompanyProfileForm({
 }: CompanyProfileFormProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [companyLocation, setCompanyLocation] = useState("");
   const [companyNiche, setCompanyNiche] = useState("default");
@@ -63,11 +65,10 @@ export function CompanyProfileForm({
           .eq("created_by_user_id", user.id)
           .single();
 
-        // Also fetch company_name from profiles table (might be redundant if also in company_profiles)
-        // Consider consolidating if possible in the future
+        // Also fetch user data from profiles table
         const { data: basicProfile, error: basicProfileError } = await supabase
           .from("profiles")
-          .select("company_name")
+          .select("first_name, last_name, company_name")
           .eq("id", user.id)
           .single();
 
@@ -95,6 +96,8 @@ export function CompanyProfileForm({
         if (basicProfileError && basicProfileError.code !== "PGRST116") {
           console.error("Error loading basic profile:", basicProfileError);
         } else if (basicProfile) {
+          setFirstName(basicProfile.first_name || "");
+          setLastName(basicProfile.last_name || "");
           setCompanyName(basicProfile.company_name || "");
         }
       } catch (error) {
@@ -151,6 +154,18 @@ export function CompanyProfileForm({
 
     try {
       // Validate required fields
+      if (!firstName) {
+        setError("First name is required");
+        setLoading(false);
+        return;
+      }
+
+      if (!lastName) {
+        setError("Last name is required");
+        setLoading(false);
+        return;
+      }
+
       if (!companyName) {
         setError("Company name is required");
         setLoading(false);
@@ -200,9 +215,11 @@ export function CompanyProfileForm({
         }
       }
 
-      // Update profile with just company name
+      // Update profile with first name, last name, and company name
       const profileData = {
         id: user.id,
+        first_name: firstName,
+        last_name: lastName,
         company_name: companyName,
       };
 
@@ -310,6 +327,30 @@ export function CompanyProfileForm({
               {error}
             </div>
           )}
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <Label htmlFor="firstName">First Name *</Label>
+              <Input
+                id="firstName"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                placeholder="John"
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="lastName">Last Name *</Label>
+              <Input
+                id="lastName"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                placeholder="Doe"
+                required
+              />
+            </div>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">

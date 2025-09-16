@@ -91,8 +91,7 @@ export function Signup() {
 
     if (
       !email ||
-      !password ||
-      !acceptTerms
+      !password
     ) {
       setError("Please fill in all fields");
       setIsLoading(false);
