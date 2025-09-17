@@ -235,6 +235,24 @@ export function CompanyProfileForm({
         );
       }
 
+      // Update the user's display name in Supabase Auth metadata
+      const fullName = `${firstName} ${lastName}`.trim();
+      const { error: updateUserError } = await supabase.auth.updateUser({
+        data: {
+          full_name: fullName,
+          display_name: fullName,
+          first_name: firstName,
+          last_name: lastName
+        }
+      });
+
+      if (updateUserError) {
+        console.error("Error updating user metadata:", updateUserError);
+        // Don't throw error here - profile was saved successfully, metadata update is secondary
+      } else {
+        console.log("Successfully updated user display name to:", fullName);
+      }
+
       const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
       const endpoint =

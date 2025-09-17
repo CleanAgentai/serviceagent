@@ -72,6 +72,10 @@ export default defineConfig(({ mode }) => {
         'date-fns',
         'uuid'
       ],
+      exclude: [
+        'chunk-KGX24KK4',
+        'chunk-JLZYMQ2Y'
+      ],
       esbuildOptions: {
         target: 'esnext'
       }
