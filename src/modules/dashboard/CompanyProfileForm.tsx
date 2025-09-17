@@ -13,12 +13,12 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { toast } from "sonner";
-import { ColorPicker } from "@/components/ui/color-picker";
+} from '@/components/ui/card';
+import { toast } from 'sonner';
+import { ColorPicker } from '@/components/ui/color-picker';
 
 interface CompanyProfileFormProps {
-  mode: "create" | "update";
+  mode: 'create' | 'update';
   onComplete?: () => void;
 }
 
@@ -28,6 +28,8 @@ export function CompanyProfileForm({
 }: CompanyProfileFormProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [companyLocation, setCompanyLocation] = useState("");
   const [companyNiche, setCompanyNiche] = useState("");
@@ -54,9 +56,9 @@ export function CompanyProfileForm({
 
         // Fetch data from company_profiles table
         const { data: companyProfile, error: profileError } = await supabase
-          .from("company_profiles")
-          .select("*") // Select all columns
-          .eq("created_by_user_id", user.id)
+          .from('company_profiles')
+          .select('*') // Select all columns
+          .eq('created_by_user_id', user.id)
           .single();
 
         // Also fetch company_name from profiles table (might be redundant if also in company_profiles)
@@ -69,37 +71,37 @@ export function CompanyProfileForm({
 
         if (!isMounted) return; // Check again after async calls
 
-        if (profileError && profileError.code !== "PGRST116") {
+        if (profileError && profileError.code !== 'PGRST116') {
           // Ignore 'PGRST116' (single row not found)
-          console.error("Error loading company profile:", profileError);
-          setError("Failed to load company profile.");
+          console.error('Error loading company profile:', profileError);
+          setError('Failed to load company profile.');
         } else if (companyProfile) {
           // Set state from company_profiles data
-          setCompanyLocation(companyProfile.company_location || "");
-          setCompanyWebsite(companyProfile.company_website || "");
-          setCompanyNiche(companyProfile.company_niche || "");
+          setCompanyLocation(companyProfile.company_location || '');
+          setCompanyWebsite(companyProfile.company_website || '');
+          setCompanyNiche(companyProfile.company_niche || '');
           setCompanyPrimaryColour(
-            companyProfile.company_primary_colour || "#0693e3"
+            companyProfile.company_primary_colour || '#0693e3',
           );
           setCompanySecondaryColour(
-            companyProfile.company_secondary_colour || "#8ed1fc"
+            companyProfile.company_secondary_colour || '#8ed1fc',
           );
           setLogoPreview(companyProfile.company_logo_url || null);
           setWilloKey(companyProfile.willo_company_key || null);
         }
 
-        if (basicProfileError && basicProfileError.code !== "PGRST116") {
-          console.error("Error loading basic profile:", basicProfileError);
+        if (basicProfileError && basicProfileError.code !== 'PGRST116') {
+          console.error('Error loading basic profile:', basicProfileError);
         } else if (basicProfile) {
           setCompanyName(basicProfile.company_name || "");
         }
       } catch (error) {
-        console.error("Error in loadProfile:", error);
+        console.error('Error in loadProfile:', error);
         if (isMounted) {
           setError(
             error instanceof Error
               ? error.message
-              : "An unexpected error occurred while loading profile."
+              : 'An unexpected error occurred while loading profile.',
           );
         }
       } finally {
@@ -123,7 +125,7 @@ export function CompanyProfileForm({
 
         // Check file size (max 5MB)
         if (file.size > 5 * 1024 * 1024) {
-          toast.error("Logo file size must be less than 5MB");
+          toast.error('Logo file size must be less than 5MB');
           return;
         }
 
@@ -137,7 +139,7 @@ export function CompanyProfileForm({
         reader.readAsDataURL(file);
       }
     },
-    []
+    [],
   );
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -147,8 +149,20 @@ export function CompanyProfileForm({
 
     try {
       // Validate required fields
+      if (!firstName) {
+        setError("First name is required");
+        setLoading(false);
+        return;
+      }
+
+      if (!lastName) {
+        setError("Last name is required");
+        setLoading(false);
+        return;
+      }
+
       if (!companyName) {
-        setError("Company name is required");
+        setError('Company name is required');
         setLoading(false);
         return;
       }
@@ -159,7 +173,7 @@ export function CompanyProfileForm({
       } = await supabase.auth.getUser();
 
       if (!user) {
-        setError("You must be logged in to save your company profile");
+        setError('You must be logged in to save your company profile');
         setLoading(false);
         return;
       }
@@ -169,15 +183,15 @@ export function CompanyProfileForm({
 
       if (companyLogo) {
         try {
-          const bucketName = "company-assets";
-          const fileExt = companyLogo.name.split(".").pop();
+          const bucketName = 'company-assets';
+          const fileExt = companyLogo.name.split('.').pop();
           const fileName = `${user.id}-logo-${Date.now()}.${fileExt}`;
 
           const { data: uploadData, error: uploadError } =
             await supabase.storage
               .from(bucketName)
               .upload(fileName, companyLogo, {
-                cacheControl: "3600",
+                cacheControl: '3600',
                 upsert: true,
               });
 
@@ -191,47 +205,56 @@ export function CompanyProfileForm({
 
           logoUrl = publicUrlData.publicUrl;
         } catch (logoError) {
-          console.error("Error handling logo upload:", logoError);
-          toast.error("Failed to upload logo.");
+          console.error('Error handling logo upload:', logoError);
+          toast.error('Failed to upload logo.');
         }
       }
 
       // Update profile with just company name
       const profileData = {
         id: user.id,
+        first_name: firstName,
+        last_name: lastName,
         company_name: companyName,
       };
 
       const { error: upsertError } = await supabase
-        .from("profiles")
-        .upsert(profileData, { onConflict: "id" });
+        .from('profiles')
+        .upsert(profileData, { onConflict: 'id' });
 
       if (upsertError) {
-        console.error("Error updating profile - Full error:", upsertError);
-        console.error("Profile data being sent:", profileData);
+        console.error('Error updating profile - Full error:', upsertError);
+        console.error('Profile data being sent:', profileData);
         throw new Error(
-          `Failed to update company profile: ${upsertError.message}`
+          `Failed to update company profile: ${upsertError.message}`,
         );
       }
 
-      const {data: upsertTrial, error: upsertTrialError} = await supabase
-        .from("customerio")
-        .upsert({"user_id" : user.id});
+      const fullName = `${firstName} ${lastName}`.trim();
+      const { error: updateUserError } = await supabase.auth.updateUser({
+        data: {
+          full_name: fullName,
+          display_name: fullName,
+          first_name: firstName,
+          last_name: lastName
+        }
+      });
 
-      if (upsertTrialError) {
-        console.error("Error inserting user:", upsertTrialError.message);
+      if (updateUserError) {
+        console.error("Error updating user metadata:", updateUserError);
+        // Don't throw error here - profile was saved successfully, metadata update is secondary
       } else {
-        console.log("User inserted successfully:", upsertTrial);
+        console.log("Successfully updated user display name to:", fullName);
       }
 
       const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
       const endpoint =
-        mode === "update" && willoKey
+        mode === 'update' && willoKey
           ? `${apiBaseUrl}/api/departments/${willoKey}`
           : `${apiBaseUrl}/api/departments`;
 
-      const method = mode === "update" ? "PATCH" : "POST";
+      const method = mode === 'update' ? 'PATCH' : 'POST';
 
       console.log(endpoint);
 
@@ -239,7 +262,7 @@ export function CompanyProfileForm({
       const departmentRes = await fetch(endpoint, {
         method,
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           companyName,
@@ -253,16 +276,16 @@ export function CompanyProfileForm({
 
       const departmentData = await departmentRes.json();
       if (!departmentRes.ok) {
-        throw new Error(departmentData?.error || "Failed to create department");
+        throw new Error(departmentData?.error || 'Failed to create department');
       }
 
       let niche = companyNiche;
 
-      if(companyNiche){
+      if (companyNiche) {
         niche = niche.toLowerCase();
-        
-        if(companyNiche == "Restaurants and Food"){
-          niche = "food";
+
+        if (companyNiche == 'Restaurants and Food') {
+          niche = 'food';
         }
         if(companyNiche == "Other"){
           niche = "default";
@@ -271,7 +294,7 @@ export function CompanyProfileForm({
 
       // ✅ 6. company_profiles update(already the row is existing)
       const { error: companyProfileError } = await supabase
-        .from("company_profiles")
+        .from('company_profiles')
         .update({
           willo_company_key: departmentData.data.key,
           company_location: companyLocation,
@@ -282,22 +305,22 @@ export function CompanyProfileForm({
           company_profile_completed: true,
           company_niche: niche,
         })
-        .eq("created_by_user_id", user.id); // 트리거로 만든 row 타겟팅
+        .eq('created_by_user_id', user.id); // 트리거로 만든 row 타겟팅
 
       if (companyProfileError) {
-        console.error("Supabase update error details:", companyProfileError);
-        throw new Error("Failed to update company_profiles with Willow key");
+        console.error('Supabase update error details:', companyProfileError);
+        throw new Error('Failed to update company_profiles with Willow key');
       }
 
-      toast.success("Company profile saved successfully");
+      toast.success('Company profile saved successfully');
 
       if (onComplete) {
         onComplete();
       }
     } catch (error) {
-      console.error("Error in handleSubmit:", error);
+      console.error('Error in handleSubmit:', error);
       setError(
-        error instanceof Error ? error.message : "An unexpected error occurred"
+        error instanceof Error ? error.message : 'An unexpected error occurred',
       );
     } finally {
       setLoading(false);
@@ -326,6 +349,30 @@ export function CompanyProfileForm({
               {error}
             </div>
           )}
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <Label htmlFor="firstName">First Name <span className="text-red-500">*</span></Label>
+              <Input
+                id="firstName"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                placeholder="John"
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="lastName">Last Name <span className="text-red-500">*</span></Label>
+              <Input
+                id="lastName"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                placeholder="Doe"
+                required
+              />
+            </div>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
