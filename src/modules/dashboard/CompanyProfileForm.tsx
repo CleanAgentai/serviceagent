@@ -1,16 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Building, Upload, Trash2 } from "lucide-react";
+import { Building, Upload, Trash2, ArrowRight, ChevronRight } from "lucide-react";
 import { supabase } from "@/app/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu"
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import {
   Card,
   CardContent,
@@ -33,11 +28,9 @@ export function CompanyProfileForm({
 }: CompanyProfileFormProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [companyLocation, setCompanyLocation] = useState("");
-  const [companyNiche, setCompanyNiche] = useState("default");
+  const [companyNiche, setCompanyNiche] = useState("");
   const [companyWebsite, setCompanyWebsite] = useState("");
   const [companyPrimaryColour, setCompanyPrimaryColour] = useState("#0693e3");
   const [companySecondaryColour, setCompanySecondaryColour] =
@@ -45,6 +38,7 @@ export function CompanyProfileForm({
   const [companyLogo, setCompanyLogo] = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const [willoKey, setWilloKey] = useState<string | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   // Load existing profile data if available
   useEffect(() => {
@@ -65,10 +59,11 @@ export function CompanyProfileForm({
           .eq("created_by_user_id", user.id)
           .single();
 
-        // Also fetch user data from profiles table
+        // Also fetch company_name from profiles table (might be redundant if also in company_profiles)
+        // Consider consolidating if possible in the future
         const { data: basicProfile, error: basicProfileError } = await supabase
           .from("profiles")
-          .select("first_name, last_name, company_name")
+          .select("company_name")
           .eq("id", user.id)
           .single();
 
@@ -96,8 +91,6 @@ export function CompanyProfileForm({
         if (basicProfileError && basicProfileError.code !== "PGRST116") {
           console.error("Error loading basic profile:", basicProfileError);
         } else if (basicProfile) {
-          setFirstName(basicProfile.first_name || "");
-          setLastName(basicProfile.last_name || "");
           setCompanyName(basicProfile.company_name || "");
         }
       } catch (error) {
@@ -154,18 +147,6 @@ export function CompanyProfileForm({
 
     try {
       // Validate required fields
-      if (!firstName) {
-        setError("First name is required");
-        setLoading(false);
-        return;
-      }
-
-      if (!lastName) {
-        setError("Last name is required");
-        setLoading(false);
-        return;
-      }
-
       if (!companyName) {
         setError("Company name is required");
         setLoading(false);
@@ -215,11 +196,9 @@ export function CompanyProfileForm({
         }
       }
 
-      // Update profile with first name, last name, and company name
+      // Update profile with just company name
       const profileData = {
         id: user.id,
-        first_name: firstName,
-        last_name: lastName,
         company_name: companyName,
       };
 
@@ -233,6 +212,16 @@ export function CompanyProfileForm({
         throw new Error(
           `Failed to update company profile: ${upsertError.message}`
         );
+      }
+
+      const {data: upsertTrial, error: upsertTrialError} = await supabase
+        .from("customerio")
+        .upsert({"user_id" : user.id});
+
+      if (upsertTrialError) {
+        console.error("Error inserting user:", upsertTrialError.message);
+      } else {
+        console.log("User inserted successfully:", upsertTrial);
       }
 
       const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
@@ -275,6 +264,9 @@ export function CompanyProfileForm({
         if(companyNiche == "Restaurants and Food"){
           niche = "food";
         }
+        if(companyNiche == "Other"){
+          niche = "default";
+        }
       }
 
       // ✅ 6. company_profiles update(already the row is existing)
@@ -312,14 +304,21 @@ export function CompanyProfileForm({
     }
   };
 
+  const cardClassName = [
+    "w-full max-w-4xl mx-auto border-0 transition-all duration-300",
+    mode === "create" ? "mt-8" : "shadow-lg hover:shadow-xl",
+  ].join(" ");
+
   return (
-    <Card className="w-full max-w-4xl mx-auto border-0 shadow-lg hover:shadow-xl transition-all duration-300">
-      <CardHeader>
-        <CardTitle>Company Profile</CardTitle>
-        <CardDescription>
-          Set up your company profile to customize your experience
-        </CardDescription>
-      </CardHeader>
+    <Card className={cardClassName}>
+      {mode === "update" && (
+        <CardHeader>
+          <CardTitle>Company Profile</CardTitle>
+          <CardDescription>
+            Set up your company profile to customize your experience
+          </CardDescription>
+        </CardHeader>
+      )}
       <form onSubmit={handleSubmit}>
         <CardContent className="space-y-6">
           {error && (
@@ -330,160 +329,162 @@ export function CompanyProfileForm({
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <Label htmlFor="firstName">First Name *</Label>
-              <Input
-                id="firstName"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                placeholder="John"
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="lastName">Last Name *</Label>
-              <Input
-                id="lastName"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                placeholder="Doe"
-                required
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <Label htmlFor="companyName">Company Name *</Label>
+              <div>
+                <Label htmlFor="companyName">Company Name <span className="text-red-500">*</span></Label>
+                <p className="text-xs text-gray-500 mt-1">Shown to candidates and on your hiring portal.</p>
+              </div>
               <Input
                 id="companyName"
                 value={companyName}
                 onChange={(e) => setCompanyName(e.target.value)}
-                placeholder="Acme Inc."
+                placeholder="Your Company Name"
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="companyLocation">Location *</Label>
+              <div>
+                <Label htmlFor="companyLocation">Location <span className="text-red-500">*</span></Label>
+                <p className="text-xs text-gray-500 mt-1">Shown to candidates and on your hiring portal.</p>
+              </div>
               <Input
                 id="companyLocation"
                 value={companyLocation}
                 onChange={(e) => setCompanyLocation(e.target.value)}
-                placeholder="City, Country"
+                placeholder="City, State"
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="companyNiche">Niche *</Label>
-
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button
-                    id="companyNiche"
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50"
-                  >
-                    {companyNiche || "Select a niche"}
-                  </button>
-                </DropdownMenuTrigger>
-
-                <DropdownMenuContent className="w-[400px]">
-                  <DropdownMenuItem onClick={() => setCompanyNiche("Cleaning")}>
-                    Cleaning
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setCompanyNiche("Restaurants and Food")}>
-                    Restaurants and Food
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setCompanyNiche("HVAC")}>
-                    HVAC
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setCompanyNiche("Staffing")}>
-                    Staffing
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setCompanyNiche("Franchises")}>
-                    Franchises
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setCompanyNiche("Healthcare")}>
-                    Healthcare
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setCompanyNiche("Manufacturing")}>
-                    Manufacturing
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setCompanyNiche("Warehouses")}>
-                    Warehouses
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="companyWebsite">Website (Optional)</Label>
-              <Input
-                id="companyWebsite"
-                value={companyWebsite}
-                onChange={(e) => setCompanyWebsite(e.target.value)}
-                placeholder="https://example.com"
-                type="url"
+              <div>
+                <Label htmlFor="companyNiche">Industry <span className="text-red-500">*</span></Label>
+                <p className="text-xs text-gray-500 mt-1">We’ll tailor interviews to your industry.</p>
+              </div>
+              {/* Hidden input to preserve required semantics */}
+              <input
+                id="companyNicheHidden"
+                className="sr-only"
+                value={companyNiche}
+                onChange={() => {}}
+                required
               />
+                <Select value={companyNiche} onValueChange={setCompanyNiche}>
+                  <SelectTrigger id="companyNiche" className="text-[16px] text-gray-500">
+                    <SelectValue placeholder="Select your industry" />
+                  </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Cleaning">Cleaning</SelectItem>
+                  <SelectItem value="Restaurants and Food">Restaurants and Food</SelectItem>
+                  <SelectItem value="HVAC">HVAC</SelectItem>
+                  <SelectItem value="Staffing">Staffing</SelectItem>
+                  <SelectItem value="Franchises">Franchises</SelectItem>
+                  <SelectItem value="Healthcare">Healthcare</SelectItem>
+                  <SelectItem value="Manufacturing">Manufacturing</SelectItem>
+                  <SelectItem value="Warehouses">Warehouses</SelectItem>
+                  <SelectItem value="Other">Other</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <Label htmlFor="companyPrimaryColour">
-                Primary Color (Optional)
-              </Label>
-              <ColorPicker
-                id="companyPrimaryColour"
-                value={companyPrimaryColour}
-                onChange={setCompanyPrimaryColour}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="companySecondaryColour">
-                Secondary Color (Optional)
-              </Label>
-              <ColorPicker
-                id="companySecondaryColour"
-                value={companySecondaryColour}
-                onChange={setCompanySecondaryColour}
-              />
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="companyLogo">Company Logo (Optional)</Label>
-            <div className="flex items-center gap-4">
-              {logoPreview && (
-                <div className="w-16 h-16 rounded overflow-hidden border border-gray-200">
-                  <img
-                    src={logoPreview}
-                    alt="Company logo preview"
-                    className="w-full h-full object-contain"
+          <div>
+            <details className="mt-6" onToggle={(e) => setIsOpen((e.target as HTMLDetailsElement).open)}>
+              <summary className="group flex items-center space-x-3 cursor-pointer text-gray-700 font-medium hover:text-blue-600 transition-colors duration-200">
+                <div className="flex-shrink-0 w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-sm font-semibold group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
+                  <ChevronRight className={`w-3.5 h-3.5 text-blue-500 group-hover:text-white transition-all duration-200 ${isOpen ? 'rotate-90' : 'rotate-0'}`} />
+                </div>
+                 <div className="space-y-1"> 
+                 <span className="text-sm whitespace-nowrap hyphens-none break-words">Advanced Settings (Optional)</span>
+                 {isOpen && <p className="text-xs text-gray-500">Don't worry, you can always do this later in Settings.</p>}
+                 </div>
+              </summary>
+              <div className="mt-4 space-y-6">
+                <div className="space-y-2 pr-6">
+                  <Label htmlFor="companyWebsite">Website (Optional)</Label>
+                  <Input
+                    id="companyWebsite"
+                    value={companyWebsite}
+                    onChange={(e) => setCompanyWebsite(e.target.value)}
+                    placeholder="https://example.com"
+                    type="url"
+                    className="h-10"
                   />
                 </div>
-              )}
-              <Input
-                id="companyLogo"
-                type="file"
-                accept="image/*"
-                onChange={handleLogoChange}
-                className="flex-1"
-              />
-            </div>
-            <p className="text-xs text-gray-500 mt-1">
-              Maximum file size: 5MB. Recommended formats: PNG, JPG, SVG.
-            </p>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="companyPrimaryColour">
+                      Primary Color (Optional)
+                    </Label>
+                    <ColorPicker
+                      id="companyPrimaryColour"
+                      value={companyPrimaryColour}
+                      onChange={setCompanyPrimaryColour}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="companySecondaryColour">
+                      Secondary Color (Optional)
+                    </Label>
+                    <ColorPicker
+                      id="companySecondaryColour"
+                      value={companySecondaryColour}
+                      onChange={setCompanySecondaryColour}
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div>
+                  <Label htmlFor="companyLogo">Company Logo (Optional)</Label>
+                  <p className="text-xs text-gray-500 mt-1">Used on your hiring portal and candidate emails.</p>
+                  </div>
+                  <div className="space-y-4 pr-6">
+                    {logoPreview && (
+                      <div className="w-16 h-16 rounded overflow-hidden border border-gray-200">
+                        <img
+                          src={logoPreview}
+                          alt="Company logo preview"
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                    )}
+                    <Input
+                      id="companyLogo"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleLogoChange}
+                    />
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Maximum file size: 5MB. Recommended formats: PNG, JPG, SVG.
+                  </p>
+                </div>
+              </div>
+            </details>
           </div>
+
         </CardContent>
 
+
+        <div className="px-6 space-y-2 sticky bottom-0 bg-white border-t border-gray-200 p-4 md:relative md:border-t-0 md:bg-transparent">
+          <p className="text-xs text-gray-500 text-center">Takes ~60 seconds. This helps personalize your AI Hiring Assistant.</p>
+        
         <CardFooter className="flex justify-end gap-2">
-          <Button type="submit" disabled={loading} className="w-full flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-md px-6 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed">
-            {loading ? "Saving..." : "Save Company Profile"}
+          <Button type="submit" disabled={loading} className="group w-full inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed">
+            <span className="inline-flex items-center gap-2">
+              {loading ? "Saving..." : mode === "create" ? "Continue to Dashboard" : "Save Company Profile"}
+              {mode === "create" && !loading && (
+                <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+              )}
+            </span>
           </Button>
+
+
         </CardFooter>
+        </div>
       </form>
     </Card>
   );

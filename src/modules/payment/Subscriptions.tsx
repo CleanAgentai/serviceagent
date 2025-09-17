@@ -1,6 +1,6 @@
 import { StripeCheckoutBox } from "@/components/stripe/StripeCheckoutBox";
 import React, { useState } from "react";
-import { CheckCircle, ArrowRight, Zap, TrendingUp, Users, Star, Sparkles, Check } from "lucide-react";
+import { CheckCircle, ArrowRight, Zap, TrendingUp, Users, Star, Sparkles, Check, ChevronDown } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -13,10 +13,35 @@ export const Subscriptions: React.FC = () => {
   const [isYearly, setIsYearly] = useState(false);
   const currency = "$";
 
+  // Compute 14-day trial end date for display
+  const trialEndDisplay = (() => {
+    const date = new Date();
+    date.setDate(date.getDate() + 14);
+    return date.toLocaleDateString(undefined, {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
+  })();
+
   function wrapper(plan, yearly) {
     setSelectedPlan(plan);
     setSelectedYearly(yearly);
   }
+
+  // Resolve price for the selected plan and billing interval
+  const getSelectedPrice = () => {
+    if (!selectedPlan) return "";
+    const plan = selectedPlan.toUpperCase();
+    const yearly = !!selectedYearly;
+    if (plan === "LAUNCH") {
+      return yearly ? "$119.00" : "$149.00";
+    }
+    if (plan === "SCALE") {
+      return yearly ? "$479.00" : "$599.00";
+    }
+    return "";
+  };
 
   // Launch and Scale plans for new design
   const plans = [
@@ -28,10 +53,12 @@ export const Subscriptions: React.FC = () => {
       description: "Perfect for small businesses getting started",
       features: [
         "20 AI interviews/month",
-        "4 job posts/week",
-        "Interview transcripts",
-        "Ranking system (trained on 1M+ hires)",
-        "Email support"
+        "Create unlimited job posts",
+        "Candidates ranked for you",
+        "Interview videos, transcripts + analytics",
+        "Your logo + branding for candidates",
+        "Email support",
+        "Save 15+ hours/month on hiring"
       ],
       popular: false,
       key: "LAUNCH"
@@ -43,15 +70,34 @@ export const Subscriptions: React.FC = () => {
       period: isYearly ? "/month (billed yearly)" : "/month",
       description: "For growing companies with higher volume",
       features: [
-        "100 interviews/month",
-        "20 job posts/week",
-        "Custom branding",
-        "10+ languages supported",
+        "Everything included in Launch Plan, plus",
+        "100 AI interviews/month",
+        "Integration with your ATS",
+        "Exportable interview data",
         "Priority support",
-        "Analytics dashboard"
+        "Save 50+ hours/month on hiring"
       ],
       popular: true,
       key: "SCALE"
+    }
+  ];
+
+  const faqs = [
+
+    {
+      id: "1",
+      question: "Do I need a credit card?",
+      answer: "Yes, we require a card to activate your free trial. You won’t be charged unless you continue after 14 days."
+    },
+    {
+      id: "2",
+      question: "Can I cancel anytime?",
+      answer: "Yes. Cancel within your trial and you’ll never be billed."
+    },
+    {
+      id: "3",
+      question: "What happens after the trial?",
+      answer: "You’ll automatically move into your selected plan. You can upgrade, downgrade, or cancel at any time."
     }
   ];
 
@@ -77,14 +123,16 @@ export const Subscriptions: React.FC = () => {
       {!selectedPlan && (
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold mb-2">Start Free, No Risk</h2>
-          <p className="text-gray-600">
-          Enjoy all features free for 14 days. <br />Cancel anytime — no charges if you cancel before your trial ends.
+          <div className="flex flex-col [min-height:0!important] items-center max-sm:justify-center text-muted-foreground">
+            <p className="text-gray-600 hyphens-none min-h-0">Join 150+ service businesses already using ServiceAgent.<br />
+            <span className="text-xs sm:text-sm text-gray-500">14 days free. Cancel anytime. No risk.</span>
           </p>
+          </div>
         </div>
       )}
       {!selectedPlan && (
         <>
-          <div className="flex justify-center items-center mb-20">
+          <div className="flex justify-center items-center mb-12 lg:mb-20">
         <span className={`mr-4 font-medium transition-all duration-300 ${isYearly ? 'text-slate-900' : 'text-slate-600'}`}>
       Yearly (Save 20%)
     </span>
@@ -113,15 +161,15 @@ export const Subscriptions: React.FC = () => {
             className="group opacity-0 animate-fade-in max-md:mb-16"
             style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}
           >
-            <div className="relative bg-gradient-to-br from-card to-teal/5 rounded-3xl p-8 border border-teal/20 shadow-xl hover:shadow-3xl hover:-translate-y-3 hover:border-teal/40 transition-all duration-500 h-full flex flex-col">
+            <div className="relative bg-gradient-to-br from-teal/5 to-teal/10 rounded-3xl p-8 border-2 border-teal/30 shadow-xl hover:shadow-3xl hover:-translate-y-3 hover:border-teal/50 transition-all duration-500 h-full flex flex-col hover:scale-[1.02]">
               {/* Header */}
               <div className="text-center mb-8">
-                <div className="w-16 h-16 bg-gradient-to-br from-teal to-teal/80 rounded-full flex items-center justify-center mx-auto shadow-xl shadow-teal/40 group-hover:scale-110 transition-transform duration-300 mb-4">
+                <div className="w-16 h-16 bg-gradient-to-br from-teal to-teal/80 rounded-full flex items-center justify-center mx-auto shadow-2xl shadow-teal/40 group-hover:scale-110 transition-transform duration-300 mb-4">
                   <Zap className="w-8 h-8 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold text-primary group-hover:text-teal transition-colors duration-300 mb-2">{plans[0].title} Plan</h3>
                 <p className="text-muted-foreground text-sm mb-4">
-                  For small businesses getting started
+                  Perfect for small businesses getting started
                 </p>
 
                 <div className="text-center mb-8">
@@ -175,13 +223,14 @@ export const Subscriptions: React.FC = () => {
                     aria-label="Start free trial with Launch Plan - 20 AI interviews per month, 14 day free"
                     onClick={() => wrapper(plans[0].title, isYearly)}
                   >
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center text-sm gap-2">
                       <Zap className="w-5 h-5" />
-                      Start for Free
+                      Start Free 14-Day Trial
                     </div>
                   </Button>
-                <div className="text-center space-y-1">
-                  <p className="text-xs text-muted-foreground">No charges today. Cancel anytime.</p>
+                <div className="text-center space-y-2">
+                  <p className="text-xs text-muted-foreground font-semibold hyphens-none break-words">No charges today. 
+                    <br />Cancel anytime before trial ends.</p>
                 </div>
               </div>
             </div>
@@ -263,13 +312,13 @@ export const Subscriptions: React.FC = () => {
                     aria-label="Start free trial with Scale Plan - 100 AI interviews per month, most popular choice"
                     onClick={() => wrapper(plans[1].title, isYearly)}
                   >
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center text-sm gap-2">
                       <Sparkles className="w-5 h-5" />
-                      Start for Free
+                      Start Free 14-Day Trial
                     </div>
                   </Button>
-                <div className="text-center space-y-1">
-                  <p className="text-xs text-muted-foreground">No charges today. Cancel anytime.</p>
+                <div className="text-center space-y-2">
+                  <p className="text-xs text-muted-foreground font-semibold hyphens-none break-words">No charges today. <br />Cancel anytime before trial ends.</p>
                 </div>
               </div>
             </div>
@@ -333,7 +382,7 @@ export const Subscriptions: React.FC = () => {
                     variant="outline"
                     className="w-full border-terracotta/30 text-terracotta hover:bg-terracotta hover:text-white py-3 text-lg font-bold rounded-xl hover:scale-105 active:scale-95 transition-all duration-300"
                   >
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center text-sm gap-2">
                       <Users className="w-5 h-5" />
                       Book a Demo
                     </div>
@@ -349,18 +398,35 @@ export const Subscriptions: React.FC = () => {
           
           {/* Selection Note */}
           <div className="text-center mt-12 max-w-2xl mx-auto">
-            <p className="text-sm text-slate-600">
-              All plans include all features during your trial. You can change your plan at any time.
+            <p className="text-sm text-slate-600 font-semibold">
+              All plans include every feature during your 14-day trial. You can switch plans anytime.
             </p>
           </div>
+
+          {/* Trust Badges */}
+          <div className="flex justify-center items-center gap-8 mt-8">
+            <div className="flex items-center gap-2 text-slate-600">
+              <img src="/Powered by Stripe - blurple.svg" alt="Stripe" className="w-full max-sm:w-[30vw] h-4 md:h-10" />
+            </div>
+            <div className="flex items-center gap-2 text-slate-600">
+              <div className="w-5 h-5 bg-blue-100 rounded-full flex items-center justify-center">
+                <svg className="w-3 h-3 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <span className="text-sm font-medium">SSL Encrypted</span>
+            </div>
+          </div>
+
         </>
       )}
       {selectedPlan && (
         <div className="max-w-xl mx-auto p-6 rounded-lg">
-          <div className="text-center mb-4">
-            <p className="text-sm text-gray-700 mb-2">
-              Selected Plan: <span className="font-semibold">{selectedPlan}</span>
-            </p>
+          <div className="text-center mb-4 bg-white p-6 rounded-xl shadow-lg">
+            <h3 className=" text-left text-lg text-gray-700 mb-2">
+              Selected Plan: <span className="font-semibold">{selectedPlan} {selectedYearly ? "(Yearly)" : "(Monthly)"}</span>
+            </h3>
+            <p className="text-left text-sm text-muted-foreground mb-2">Then <span className="font-semibold">{getSelectedPrice()}</span> {selectedYearly ? "per year" : "per month"} after trial ends on {trialEndDisplay}</p>
             <button
               onClick={() => wrapper(null, null)}
               className="text-sm text-blue-600 underline hover:text-blue-800"
@@ -374,12 +440,111 @@ export const Subscriptions: React.FC = () => {
           
           {/* Security Note */}
           <div className="text-center mt-6">
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-gray-500 hyphens-none break-words">
               Payments are processed securely via Stripe. Your data is encrypted and protected.
             </p>
           </div>
         </div>
       )}
+
+      {/* FAQ Section - Always visible */}
+      <div className="container mx-auto px-12 relative">
+
+      <div className="absolute top-1/4 left-0 w-72 h-72 bg-terracotta/3 rounded-full blur-3xl" />
+      <div className="absolute bottom-1/4 right-0 w-80 h-80 bg-gold/3 rounded-full blur-3xl" />
+      <div className="mt-16 mx-auto">
+        <div className="text-center mb-8">
+          <h3 className="text-2xl font-bold text-slate-900 mb-2">Frequently Asked Questions</h3>
+          <p className="text-slate-600">Everything you need to know about your free trial</p>
+        </div>
+        
+        <div className="bg-card/80 backdrop-blur-sm rounded-3xl border border-border/50 shadow-xl overflow-hidden">
+          <div className="divide-y divide-border/30">
+            {faqs.map((item, index) => (
+              <div
+                key={item.id}
+                className={`group p-8 hover:bg-gradient-to-r hover:from-teal/5 hover:to-gold/5 transition-all duration-300 opacity-0 animate-fade-in ${
+                  index === 0 ? 'rounded-t-3xl' : ''
+                } ${index === faqs.length - 1 ? 'rounded-b-3xl' : ''}`}
+                style={{ 
+                  animationDelay: `${0.2 + index * 0.1}s`, 
+                  animationFillMode: 'forwards' 
+                }}
+              >
+                <details className="group/details open:block">
+                  <summary className="flex items-center justify-between cursor-pointer list-none group-hover:text-primary transition-colors duration-200 w-full">
+                    <div className="flex items-start gap-4">
+                      <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-teal/20 to-gold/20 rounded-full flex items-center justify-center mt-1 group-hover:from-teal/30 group-hover:to-gold/30 transition-all duration-300">
+                        <span className="text-sm font-bold text-teal">{index + 1}</span>
+                      </div>
+                      <h3 className="text-lg md:text-xl font-semibold text-foreground leading-tight pr-4 hyphens-none break-words min-w-0 flex-1">
+                        {item.question}
+                      </h3>
+                    </div>
+                    <div className="flex-shrink-0 ml-4">
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-gold/20 to-terracotta/20 flex items-center justify-center group-hover:from-gold/30 group-hover:to-terracotta/30 transition-all duration-300 group-open/details:rotate-45">
+                        <ChevronDown className="w-5 h-5 text-gold transition-transform duration-300 group-open/details:rotate-180" />
+                      </div>
+                    </div>
+                  </summary>
+                  
+                  <div className="mt-6 ml-12 pr-4">
+                    <div className="relative">
+                      <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-teal/30 via-gold/30 to-terracotta/30 rounded-full"></div>
+                      <p className="text-base md:text-lg text-muted-foreground leading-relaxed pl-6 py-2 hyphens-none break-words">
+                        {item.answer}
+                      </p>
+                    </div>
+                  </div>
+                </details>
+              </div>
+            ))}
+          </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Testimonial Section */}
+      <div className="container mx-auto px-6 relative">
+      <div className="mt-16 max-w-4xl mx-auto">
+
+      <div className="absolute top-1/4 left-0 w-72 h-72 bg-terracotta/3 rounded-full blur-3xl" />
+      <div className="absolute bottom-1/4 right-0 w-80 h-80 bg-gold/3 rounded-full blur-3xl" />
+        <div className="bg-gradient-to-br from-card to-background/50 border border-border/50 rounded-3xl shadow-xl p-12 text-center">
+          <div className="space-y-8">
+            {/* Quote Icon */}
+            <div className="flex justify-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-gold/20 to-gold/10 rounded-full flex items-center justify-center">
+                <span className="text-3xl text-gold">"</span>
+              </div>
+            </div>
+            <div className="flex justify-center hover:scale-110 transition-all duration-300">
+                 <div className="relative w-20 h-20 rounded-full overflow-hidden ring-4 ring-terracotta/20 shadow-lg">
+                    <img
+                      src="/workers/Porter_Testimonial.png"
+                      alt=""
+                      className="w-full h-full rounded-full object-cover object-center scale-125 border-4 border-terracotta/20 shadow-lg overflow-hidden"
+                    />
+                   {/* <div className="z-10 absolute -bottom-2 -right-2 w-8 h-8 bg-gradient-to-br from-terracotta to-terracotta/80 rounded-full flex items-center justify-center">
+                     <Check className="w-4 h-4 text-white" />
+                   </div> */}
+                 </div>
+               </div>
+            
+            {/* Quote */}
+            <blockquote className="text-2xl md:text-3xl font-medium text-primary leading-relaxed max-w-3xl mx-auto">
+              To hire 1 cleaner, I had to spend 18+ hours interviewing 35 candidates. I started using ServiceAgent to interview cleaners and now I spend 2 hours/month reviewing the top candidates who I actually want to hire.
+            </blockquote>
+            
+            {/* Attribution */}
+            <div className="space-y-2">
+              <p className="text-lg font-bold text-primary">Porter S.</p>
+              <p className="text-muted-foreground font-medium">Owner at Clementine's Cleaning</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
     </div>
   );
 };
