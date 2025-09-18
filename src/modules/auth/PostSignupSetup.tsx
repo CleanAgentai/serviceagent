@@ -100,10 +100,8 @@ export function PostSignupSetup() {
         <img src="/logos/Brandmark.svg" alt="ServiceAgent Icon" className="h-20 w-20 max-w-none object-contain" />
       </div>
       <div className="text-center mb-4">
-        <h1 className="text-3xl font-bold mb-2">Tell Us About Your Business</h1>
-        <p className="text-gray-600">
-          This helps us tailor ServiceAgent for you.
-        </p>
+        <h1 className="text-3xl font-bold mb-2">Welcome to ServiceAgent!</h1>
+        <p className="text-gray-600 mb-4">Let’s set up your account in under 1 minute.</p>
       </div>
       <CompanyProfileForm mode="create" onComplete={handleComplete} />
     </div>

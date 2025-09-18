@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { User, Mail, Lock, Building2, ArrowRight, Eye, EyeOff } from "lucide-react";
+import { User, Mail, Lock, Building2, ArrowRight, Eye, EyeOff, Check } from "lucide-react";
 import { useAuth } from "@/app/providers/AuthContext";
 import { supabase } from "@/app/lib/supabase";
 
@@ -9,12 +9,8 @@ export function Signup() {
   const { signUp } = useAuth();
 
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    companyName: "",
     email: "",
     password: "",
-    confirmPassword: "",
   });
 
   const [error, setError] = useState("");
@@ -23,7 +19,6 @@ export function Signup() {
   const [showPasswordRequirements, setShowPasswordRequirements] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   
   // Set meta title and description
   React.useEffect(() => {
@@ -90,21 +85,13 @@ export function Signup() {
     form.classList.remove('was-validated');
 
     const {
-      firstName,
-      lastName,
-      companyName,
       email,
       password,
-      confirmPassword,
     } = formData;
 
     if (
-      !firstName ||
-      !lastName ||
-      !companyName ||
       !email ||
-      !password ||
-      !confirmPassword
+      !password
     ) {
       setError("Please fill in all fields");
       setIsLoading(false);
@@ -119,11 +106,11 @@ export function Signup() {
       return;
     }
 
-    if (password !== confirmPassword) {
-      setError("Passwords do not match");
-      setIsLoading(false);
-      return;
-    }
+    // if (password !== confirmPassword) {
+    //   setError("Passwords do not match");
+    //   setIsLoading(false);
+    //   return;
+    // }
 
     // Check password requirements
     const passwordValidationErrors = validatePassword(password);
@@ -143,10 +130,7 @@ export function Signup() {
     try {
       const { error: signUpError } = await signUp(
         email,
-        password,
-        firstName,
-        lastName,
-        companyName
+        password
       );
 
       if (signUpError) {
@@ -193,7 +177,7 @@ export function Signup() {
   };
 
   return (
-    <div className="relative min-h-screen w-full flex flex-col mt-[-2rem]">
+    <div className="relative min-h-screen w-full flex flex-col">
       <div className="fixed inset-0 w-full h-full bg-gradient-to-b from-gray-50 to-white -z-10" />
       <main className="flex-grow">
         <div className="max-w-2xl mx-auto px-4 py-12">
@@ -206,11 +190,10 @@ export function Signup() {
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Start Free Today
+            Start Your Free 14-Day Trial
             </h1>
             <p className="text-gray-600">
-              Create your account in seconds.
-              Get instant access to all features.
+            No charges today, cancel anytime.
             </p>
           </div>
 
@@ -234,7 +217,7 @@ export function Signup() {
           <div className="bg-transparent rounded-xl p-8 pt-0">
             <form onSubmit={handleSubmit} className="space-y-6" noValidate>
               {/* Name Fields */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label
                     htmlFor="firstName"
@@ -280,10 +263,10 @@ export function Signup() {
                     />
                   </div>
                 </div>
-              </div>
+              </div> */}
 
               {/* Company Name */}
-              <div>
+              {/* <div>
                 <label
                   htmlFor="companyName"
                   className="block text-sm font-medium text-gray-700 mb-1"
@@ -305,7 +288,7 @@ export function Signup() {
                     placeholder="Your Cleaning Company"
                   />
                 </div>
-              </div>
+              </div> */}
 
               {/* Email */}
               <div>
@@ -328,13 +311,13 @@ export function Signup() {
                     autoComplete="email"
                     required
                     className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="you@example.com"
+                    placeholder="Enter your work email"
                   />
                 </div>
               </div>
 
               {/* Password Fields */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1">
                 <div>
                   <label
                     htmlFor="password"
@@ -354,24 +337,22 @@ export function Signup() {
                       onChange={handleChange}
                       onFocus={() => setShowPasswordRequirements(true)}
                       required
-                      className={`block w-full pl-10 pr-10 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+                      className={`block w-full pl-10 pr-24 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
                         passwordErrors.length > 0 && formData.password.length > 0
                           ? 'border-red-300 focus:ring-red-500 focus:border-red-500'
                           : 'border-gray-300'
                       }`}
                       placeholder="••••••••"
                     />
-                    <button
-                      type="button"
-                      className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                      onClick={() => setShowPassword(!showPassword)}
-                    >
-                      {showPassword ? (
-                        <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
-                      ) : (
-                        <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
-                      )}
-                    </button>
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-1">
+                      <button
+                        type="button"
+                        className="px-3 flex items-center text-xs bg-white text-gray-500 hover:text-gray-700 transition-all duration-200"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? "Hide Password" : "Show Password"}
+                      </button>
+                    </div>
                   </div>
                   
                   {/* Password Requirements */}
@@ -415,7 +396,7 @@ export function Signup() {
                   )}
                 </div>
 
-                <div>
+                {/* <div>
                   <label
                     htmlFor="confirmPassword"
                     className="block text-sm font-medium text-gray-700 mb-1"
@@ -469,24 +450,24 @@ export function Signup() {
                       )}
                     </div>
                   )}
-                </div>
+                </div> */}
               </div>
 
               {/* Terms Checkbox */}
               <div className="flex items-center">
-                <div className="flex items-center justify-center h-5">
-                  <input
-                    id="acceptTerms"
-                    name="acceptTerms"
-                    type="checkbox"
-                    required
-                    checked={acceptTerms}
-                    onChange={handleChange}
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                  />
-                </div>
+                <button
+                  type="button"
+                  onClick={() => setAcceptTerms(!acceptTerms)}
+                  className={`flex items-center justify-center h-6 w-6 rounded-xl border-2 transition-all duration-200 ${
+                    acceptTerms
+                      ? 'bg-blue-600 border-blue-600 text-white'
+                      : 'bg-white border-gray-300 text-transparent hover:border-blue-600'
+                  }`}
+                >
+                  <Check className="h-3 w-3" />
+                </button>
                 <div className="ml-3 text-sm">
-                  <label htmlFor="acceptTerms" className="text-gray-600">
+                  <span className="text-gray-600">
                     I agree to the{" "}
                     <Link
                       to="/terms-of-service"
@@ -501,17 +482,23 @@ export function Signup() {
                     >
                       Privacy Policy
                     </Link>
-                  </label>
+                  </span>
                 </div>
               </div>
 
               <button
                 type="submit"
-                className="w-full flex items-center justify-center bg-blue-600 hover:bg-blue-700 bg-clip-padding text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 border border-white/20"
+                className="w-full flex items-center justify-center bg-blue-600 hover:bg-blue-700 bg-clip-padding text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 border border-white/20 group"
               >
-                Create Account
-                <ArrowRight className="ml-2 h-5 w-5" />
+                Start Free Trial
+                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
               </button>
+              
+              {/* Reassurance Copy */}
+
+                <p className=" text-center text-sm text-muted-foreground hyphens-none break-words italic">
+                  No charges today · Cancel anytime · 14 days free
+                </p>
             </form>
 
             {/* <div className="mt-6">
