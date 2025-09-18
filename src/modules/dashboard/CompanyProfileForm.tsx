@@ -61,11 +61,10 @@ export function CompanyProfileForm({
           .eq('created_by_user_id', user.id)
           .single();
 
-        // Also fetch company_name from profiles table (might be redundant if also in company_profiles)
-        // Consider consolidating if possible in the future
+        // Also fetch user profile data from profiles table
         const { data: basicProfile, error: basicProfileError } = await supabase
           .from("profiles")
-          .select("company_name")
+          .select("company_name, first_name, last_name")
           .eq("id", user.id)
           .single();
 
@@ -79,7 +78,30 @@ export function CompanyProfileForm({
           // Set state from company_profiles data
           setCompanyLocation(companyProfile.company_location || '');
           setCompanyWebsite(companyProfile.company_website || '');
-          setCompanyNiche(companyProfile.company_niche || '');
+          
+          // Convert stored niche back to display format
+          let displayNiche = companyProfile.company_niche || '';
+          if (displayNiche === 'food') {
+            displayNiche = 'Restaurants and Food';
+          } else if (displayNiche === 'default') {
+            displayNiche = 'Other';
+          } else if (displayNiche === 'cleaning') {
+            displayNiche = 'Cleaning';
+          } else if (displayNiche === 'hvac') {
+            displayNiche = 'HVAC';
+          } else if (displayNiche === 'staffing') {
+            displayNiche = 'Staffing';
+          } else if (displayNiche === 'franchises') {
+            displayNiche = 'Franchises';
+          } else if (displayNiche === 'healthcare') {
+            displayNiche = 'Healthcare';
+          } else if (displayNiche === 'manufacturing') {
+            displayNiche = 'Manufacturing';
+          } else if (displayNiche === 'warehouses') {
+            displayNiche = 'Warehouses';
+          }
+          setCompanyNiche(displayNiche);
+          
           setCompanyPrimaryColour(
             companyProfile.company_primary_colour || '#0693e3',
           );
@@ -94,6 +116,8 @@ export function CompanyProfileForm({
           console.error('Error loading basic profile:', basicProfileError);
         } else if (basicProfile) {
           setCompanyName(basicProfile.company_name || "");
+          setFirstName(basicProfile.first_name || "");
+          setLastName(basicProfile.last_name || "");
         }
       } catch (error) {
         console.error('Error in loadProfile:', error);
