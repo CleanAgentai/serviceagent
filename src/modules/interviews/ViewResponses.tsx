@@ -47,6 +47,7 @@ export function ViewResponses() {
   const [showPdf, setShowPdf] = useState(false);
   const [selectedAttemptPdfUrl, setSelectedAttemptPdfUrl] = useState<string | null>(null);
   const [planLimit, setPlanLimit] = useState<number | null>(null);
+  const [upgrading, setUpgrading] = useState(false);
   const launchLimit = 20; //move to config
   const scaleLimit = 100; //move to config
   const customLimit = 100000; //fix to unlimited
@@ -338,6 +339,66 @@ export function ViewResponses() {
       toast.error("Failed to delete response");
     } finally {
       setDeleteConfirmation({ show: false, attemptId: "", candidateName: "" });
+    }
+  };
+
+  const handleUpgradeSubscription = async () => {
+    try {
+      setUpgrading(true);
+      
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+
+      if (userError || !user) {
+        toast.error("Please log in to upgrade your subscription");
+        return;
+      }
+
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+      
+      const response = await fetch(`${apiBaseUrl}/api/upgrade`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: user.id,
+          billingCycle: 'monthly' // change based on user preference
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Upgrade failed");
+      }
+
+      if (data.session_id && data.client_secret) {
+        // Redirect to Stripe checkout
+        const stripe = await import('@stripe/stripe-js').then(module => module.loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY!));
+        
+        if (stripe) {
+          const { error } = await stripe.redirectToCheckout({
+            sessionId: data.session_id
+          });
+          
+          if (error) {
+            console.error('Stripe checkout error:', error);
+            toast.error("Failed to redirect to checkout");
+          }
+        }
+      } else {
+        toast.success("Upgrade successful!");
+        // Refresh the page or refetch data
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error("Upgrade error:", error);
+      toast.error(error instanceof Error ? error.message : "Failed to upgrade subscription");
+    } finally {
+      setUpgrading(false);
     }
   };
 
@@ -637,10 +698,11 @@ export function ViewResponses() {
                 You've reached your plan's interview response limit.
               </p>
               <Button
-                onClick={() => navigate("/payment/subscription")}
-                className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 px-6 py-3"
+                onClick={handleUpgradeSubscription}
+                disabled={upgrading}
+                className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 px-6 py-3 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Upgrade Plan to View More
+                {upgrading ? "Upgrading..." : "Upgrade Plan to View More"}
               </Button>
             </div>
           </div>
