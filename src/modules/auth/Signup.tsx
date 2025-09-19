@@ -179,9 +179,9 @@ export function Signup() {
   return (
     <div className="relative min-h-screen w-full flex flex-col">
       <div className="fixed inset-0 w-full h-full bg-gradient-to-b from-gray-50 to-white -z-10" />
+      {/* Logo above header */}
       <main className="flex-grow">
         <div className="max-w-2xl mx-auto px-4 py-12">
-          {/* Logo above header */}
           <div className="flex justify-center mb-4">
             <Link to="/" className="block">
               <img src="/logos/Brandmark.svg" alt="ServiceAgent Icon" className="h-20 w-20 max-w-none object-contain" />
@@ -197,100 +197,17 @@ export function Signup() {
             </p>
           </div>
 
-          {/* Error Display */}
-          {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <div className="ml-3">
-                  <p className="text-sm text-red-800">{error}</p>
-                </div>
-              </div>
-            </div>
-          )}
-
+  
           {/* Signup Form */}
-          <div className="bg-transparent rounded-xl !pt-0 p-8">
+          <div className="bg-transparent rounded-xl p-8 pt-0">
             <form onSubmit={handleSubmit} className="space-y-6" noValidate>
-              {/* Name Fields */}
-              {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label
-                    htmlFor="firstName"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                  >
-                    First name
-                  </label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <User className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <input
-                      id="firstName"
-                      name="firstName"
-                      type="text"
-                      value={formData.firstName}
-                      onChange={handleChange}
-                      className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="John"
-                    />
-                  </div>
+            {error && (
+                <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg">
+                  {error}
                 </div>
-
-                <div>
-                  <label
-                    htmlFor="lastName"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                  >
-                    Last name
-                  </label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <User className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <input
-                      id="lastName"
-                      name="lastName"
-                      type="text"
-                      value={formData.lastName}
-                      onChange={handleChange}
-                      className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="Doe"
-                    />
-                  </div>
-                </div>
-              </div> */}
-
-              {/* Company Name */}
-              {/* <div>
-                <label
-                  htmlFor="companyName"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                  Company name
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Building2 className="h-5 w-5 text-gray-400" />
-                  </div>
-                  <input
-                    id="companyName"
-                    name="companyName"
-                    type="text"
-                    value={formData.companyName}
-                    onChange={handleChange}
-                    required
-                    className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="Your Cleaning Company"
-                  />
-                </div>
-              </div> */}
-
+              )}
               {/* Email */}
+              <div className="grid grid-cols-1 gap-6">
               <div>
                 <label
                   htmlFor="email"
@@ -314,6 +231,7 @@ export function Signup() {
                     placeholder="Enter your work email"
                   />
                 </div>
+              </div>
               </div>
 
               {/* Password Fields */}
@@ -395,62 +313,6 @@ export function Signup() {
                     </div>
                   )}
                 </div>
-
-                {/* <div>
-                  <label
-                    htmlFor="confirmPassword"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                  >
-                    Confirm password
-                  </label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Lock className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <input
-                      id="confirmPassword"
-                      name="confirmPassword"
-                      type={showConfirmPassword ? "text" : "password"}
-                      value={formData.confirmPassword}
-                      onChange={handleChange}
-                      required
-                      className={`block w-full pl-10 pr-10 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                        formData.confirmPassword.length > 0 && formData.password !== formData.confirmPassword
-                          ? 'border-red-300 focus:ring-red-500 focus:border-red-500'
-                          : formData.confirmPassword.length > 0 && formData.password === formData.confirmPassword
-                          ? 'border-green-300 focus:ring-green-500 focus:border-green-500'
-                          : 'border-gray-300'
-                      }`}
-                      placeholder="••••••••"
-                    />
-                    <button
-                      type="button"
-                      className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    >
-                      {showConfirmPassword ? (
-                        <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
-                      ) : (
-                        <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
-                      )}
-                    </button>
-                  </div>
-                  {formData.confirmPassword.length > 0 && (
-                    <div className="mt-1 transition-all duration-300">
-                      {formData.password === formData.confirmPassword ? (
-                        <p className="text-xs text-green-600 flex items-center transition-colors duration-300">
-                          <span className="mr-1 transition-all duration-300">✓</span>
-                          Passwords match
-                        </p>
-                      ) : (
-                        <p className="text-xs text-red-600 flex items-center transition-colors duration-300">
-                          <span className="mr-1 transition-all duration-300">✗</span>
-                          Passwords do not match
-                        </p>
-                      )}
-                    </div>
-                  )}
-                </div> */}
               </div>
 
               {/* Terms Checkbox */}
@@ -494,12 +356,11 @@ export function Signup() {
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
               </button>
               
-              {/* Reassurance Copy */}
-
-                <p className=" text-center text-sm text-muted-foreground hyphens-none break-words italic">
-                  No charges today · Cancel anytime · 14 days free
-                </p>
             </form>
+              {/* Reassurance Copy */}
+              <p className="mt-6 text-center text-sm text-muted-foreground hyphens-none break-words italic">
+                No charges today · Cancel anytime · 14 days free
+              </p>
 
             {/* <div className="mt-6">
               <div className="relative">
