@@ -179,9 +179,11 @@ export function ViewResponses() {
           .single();
         
         console.log('Plan data: ', plan);
-        setPlanLimit(plan.subscription == 'Launch' ? launchLimit : 
-          (plan.subscription == 'Scale' ? scaleLimit : 
-            (plan.subscription == 'Custom' ? customLimit : 1))); //default limit set to 1 to avoid /0 error
+        // Handle trial users (no subscription data) vs subscribed users
+        const currentPlan = plan?.subscription || 'Free Trial';
+        setPlanLimit(currentPlan == 'Launch' ? launchLimit : 
+          (currentPlan == 'Scale' ? scaleLimit : 
+            (currentPlan == 'Custom' ? customLimit : 1))); //default limit set to 1 for trial users
 
         const { data, error } = await supabase
           .from("interview_attempts")
@@ -200,9 +202,9 @@ export function ViewResponses() {
           )
           .eq("department_key", companyKey)
           .order("created_at", { ascending: false })
-          .limit(plan.subscription == 'Launch' ? launchLimit : 
-            (plan.subscription == 'Scale' ? scaleLimit : 
-              (plan.subscription == 'Custom' ? customLimit : 1)));
+          .limit(currentPlan == 'Launch' ? launchLimit : 
+            (currentPlan == 'Scale' ? scaleLimit : 
+              (currentPlan == 'Custom' ? customLimit : 1)));
 
         console.log("[ViewResponses] Attempts Fetch Result:", { data, error });
 
@@ -356,6 +358,27 @@ export function ViewResponses() {
         return;
       }
 
+      // Get current subscription to determine upgrade target
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("subscription")
+        .eq("id", user.id)
+        .single();
+
+      // Determine target plan based on current subscription
+      // Handle trial users (no subscription data) vs subscribed users
+      const currentSubscription = profile?.subscription || 'Free Trial';
+      let targetPlan = 'SCALE'; // default to Scale
+      
+      if (!profile?.subscription || currentSubscription === 'Free Trial') {
+        targetPlan = 'LAUNCH'; // Free trial users should upgrade to Launch first
+      } else if (currentSubscription === 'Launch') {
+        targetPlan = 'SCALE'; // Launch users upgrade to Scale
+      } else if (currentSubscription === 'Scale') {
+        toast.info("You're already on the Scale plan!");
+        return;
+      }
+
       const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
       
       const response = await fetch(`${apiBaseUrl}/api/upgrade`, {
@@ -365,6 +388,7 @@ export function ViewResponses() {
         },
         body: JSON.stringify({
           user_id: user.id,
+          targetPlan: targetPlan,
           billingCycle: 'monthly' // change based on user preference
         }),
       });
