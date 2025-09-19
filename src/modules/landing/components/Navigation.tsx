@@ -278,7 +278,7 @@ export function Navigation({ isNavVisible = true }: { isNavVisible?: boolean }) 
                     >
                       <div className="flex items-center justify-center gap-3">
                         <Zap className="w-4 h-4" />
-                        Start for Free
+                        Start Free Trial
                         <Sparkles className="w-5 h-5" />
                       </div>
                     </Button>
