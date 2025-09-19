@@ -21,7 +21,7 @@ import { VideoEmbed } from "../ui/video";
 
 const steps = [
   { id: "create", title: "Create Interview", icon: Rocket },
-  { id: "copy", title: "Copy Interview Link", icon: ClipboardCopy },
+  { id: "copy", title: "Share Interview Link", icon: ClipboardCopy },
   { id: "candidate", title: "First Candidate", icon: User },
   { id: "edit", title: "Edit Interview Link (Optional)", icon: Pencil },
   { id: "connect", title: "Connect ATS (Optional)", icon: Plug },
@@ -333,8 +333,8 @@ function CopyInterviewLink({
   return (
     <div className="space-y-4">
       <h2 className="text-3xl text-left font-semibold hyphens-none break-words">Step 2: Share Your Interview Link</h2>
-      <h3 className="text-md text-left text-gray-700 mb-8 hyphens-none break-words">Copy your link and send it to candidates to start receiving responses.</h3>
-      <ResponsiveVideo src="https://www.loom.com/embed/395e38d76853447fb6d673be2e2f36ce?sid=5d9b2bf7-7572-4a34-895e-3fad4d2f86be" title="How To Share Your Interview Link" />
+      <h3 className="text-md text-left text-gray-700 mb-8 hyphens-none break-words">Share your link and send it to candidates to start receiving responses.</h3>
+      <ResponsiveVideo src="https://www.loom.com/embed/2890b9551424470c939b5d37b8479d9f?sid=6ffae14c-e0fa-4a0e-998d-58a48634e155" title="How To Share Your Interview Link" />
       <div className="space-y-4">
       {loading ? (
         <p>Loading...</p>
@@ -432,7 +432,7 @@ function EditInterview({
     <div className="space-y-4">
       <h2 className="text-3xl text-left font-semibold hyphens-none break-words">Step 4: Edit Your Interview Link (Optional)</h2>
       <h3 className="text-md text-left text-gray-700 mb-8 hyphens-none break-words">Make changes to your interview questions or details anytime.</h3>
-      <ResponsiveVideo src="https://www.loom.com/embed/650a5ef732684cc5a63f72dbb8cfcdd8?sid=c453200f-84ef-427c-ac4e-e7bfa8316150" title="How To Edit Your Interview Link" />
+      <ResponsiveVideo src="https://www.loom.com/embed/9c8ee85cba654b99b09cd9e4e911cb8f?sid=938903e9-75db-4977-bf0b-b88751b75010" title="How To Edit Your Interview Link" />
 
       {firstInterviewId ? (
         <div className="space-y-4">
@@ -484,7 +484,7 @@ function FirstCandidate({
     <div className="space-y-4">
       <h2 className="text-3xl text-left font-semibold hyphens-none break-words">Step 3: Review Your First Candidate</h2>
       <h3 className="text-md text-left text-gray-700 mb-8 hyphens-none break-words">See candidate responses and AI scores as soon as candidates complete your interview.</h3>
-      <ResponsiveVideo src="https://www.loom.com/embed/650a5ef732684cc5a63f72dbb8cfcdd8?sid=c453200f-84ef-427c-ac4e-e7bfa8316150" title="How To View Your First Candidate" />
+      <ResponsiveVideo src="https://www.loom.com/embed/1e6af556cdbe48c0ba45df67a0687f45?sid=3110a7a9-e2f8-44e5-94ac-ad24947b65ca" title="How To View Your First Candidate" />
       
       <p className="max-w-4xl text-gray-700 leading-relaxed hyphens-none break-words">Once a candidate submits their interview, you’ll see their responses, AI score, and analysis in the <Link className="inline-block hyphens-none break-words p-0 m-0 font-semibold text-blue-600 hover:text-blue-700 hover:underline transition-colors duration-200 cursor-pointer" to="/interviews/responses">Candidates</Link> tab. <br />Use this to quickly decide who to advance or reject. Click the button below or on the left side of your navigation bar to view your candidates.</p>
       
