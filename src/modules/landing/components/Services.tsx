@@ -185,12 +185,12 @@ const Services = () => {
                   >
                     <div className="flex items-center gap-2">
                       <Zap className="w-5 h-5" />
-                      Start for Free
+                      Start Free Trial
                     </div>
                   </Button>
                 </Link>
                 <div className="text-center space-y-1">
-                  <p className="text-xs text-muted-foreground">14 Days Free</p>
+                  <p className="text-xs text-muted-foreground font-semibold">14 Days Free</p>
                 </div>
               </div>
             </div>
@@ -274,12 +274,12 @@ const Services = () => {
                   >
                     <div className="flex items-center gap-2">
                       <Sparkles className="w-5 h-5" />
-                      Start for Free
+                      Start Free Trial
                     </div>
                   </Button>
                 </Link>
                 <div className="text-center space-y-1">
-                  <p className="text-xs text-muted-foreground">14 Days Free</p>
+                  <p className="text-xs text-muted-foreground font-semibold">14 Days Free</p>
                 </div>
               </div>
             </div>
@@ -350,7 +350,7 @@ const Services = () => {
                   </Button>
                 </a>
                 <div className="text-center">
-                  <p className="text-xs text-muted-foreground">Custom pricing available</p>
+                  <p className="text-xs text-muted-foreground font-semibold">Custom pricing available</p>
                 </div>
               </div>
             </div>

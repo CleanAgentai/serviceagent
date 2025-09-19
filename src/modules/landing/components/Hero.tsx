@@ -57,7 +57,7 @@ const Hero = () => {
                 className="max-md:mt-8 max-md:flex max-md:justify-center max-md:items-center opacity-0 animate-fade-in"
                 style={{ animationDelay: '0.1s', animationFillMode: 'forwards' }}
               >
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-teal/20 via-primary/15 to-gold/20 text-primary rounded-full text-sm font-medium border border-gradient-to-r from-teal/30 to-gold/30 shadow-xl shadow-primary/20">
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-teal/20 via-primary/15 to-gold/20 text-primary rounded-full text-sm font-medium border border-gradient-to-r  shadow-xl shadow-primary/20">
                   <Sparkles className="w-4 h-4" />
                   AI-Powered Hiring Platform
                 </div>
@@ -68,7 +68,7 @@ const Hero = () => {
                 className="space-y-6 opacity-0 animate-fade-in"
                 style={{ animationDelay: '0.3s', animationFillMode: 'forwards' }}
               >
-                <h1 className="text-6xl lg:text-7xl font-bold leading-tight">
+                <h1 className="text-6xl text-center md:text-left lg:text-7xl font-bold leading-tight">
                   <span className="text-foreground">Hiring Sucks.</span><br />
                   <span className="text-foreground">We Make It</span>{' '}
                   <span className="relative inline-block">
@@ -77,7 +77,7 @@ const Hero = () => {
                   </span>
                 </h1>
                 <p className="text-xl lg:text-2xl max-md:text-center max-md:px-8 text-muted-foreground leading-relaxed break-words hyphens-none">
-                  ServiceAgent uses AI to interview candidates, score them perfectly, and save the videos so you can quickly review and hire only the best talent.
+                Save 15+ hours per hire with AI powered interviews. Every applicant is interviewed, scored, and recorded so you only review the best.
                 </p>
               </div>
               
@@ -94,7 +94,7 @@ const Hero = () => {
                         className="shrink-0 bg-gradient-to-r from-gold to-gold/90 hover:from-terracotta hover:to-terracotta/90 text-white px-8 py-6 text-xl font-bold rounded-xl shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300"
                         aria-label="Start for Free"
                       >
-                        Start for Free
+                        Start Free Trial
                       </Button>
                     </Link>
                     <p className="text-[10px] font-semibold uppercase text-muted-foreground text-center">

@@ -233,7 +233,7 @@ export const Subscriptions: React.FC = () => {
                   >
                     <div className="flex items-center text-sm gap-2 px-2">
                       <Zap className="w-5 h-5" />
-                      <p className="whitespace-nowrap">Start Free <span className="inline lg:hidden [@media(min-width:1284px)]:inline">14-Day </span>Trial</p>
+                      Start Free Trial
                     </div>
                   </Button>
                 <div className="text-center space-y-2">
@@ -322,7 +322,7 @@ export const Subscriptions: React.FC = () => {
                   >
                     <div className="flex items-center text-sm gap-2 px-2">
                       <Sparkles className="w-5 h-5" />
-                      <p className="whitespace-nowrap">Start Free <span className="inline lg:hidden [@media(min-width:1284px)]:inline">14-Day </span>Trial</p>
+                      Start Free Trial
                     </div>
                   </Button>
                 <div className="text-center space-y-2">

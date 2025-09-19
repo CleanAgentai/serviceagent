@@ -189,7 +189,7 @@ export function Navigation({ isNavVisible = true }: { isNavVisible?: boolean }) 
                 >
                   <div className="flex items-center gap-2">
                       <Zap className="w-4 h-4 group-hover:animate-pulse" />
-                      Start for Free
+                      Start Free Trial
                       <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse opacity-80"></div>
                   </div>
                 </Button>
