@@ -3,8 +3,8 @@
 /* Improve tap targets */
 @media (max-width: 768px) {
   a, button, input[type="button"], input[type="submit"], input[type="reset"], select {
-    min-height: 44px;
-    min-width: 44px;
+    /* min-height: 44px;
+    min-width: 44px; */
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -25,24 +25,24 @@
   /* Optimize text for mobile reading */
   p, li, span {
     word-wrap: break-word;
-    hyphens: auto;
+    hyphens: none;
   }
   
   /* Prevent large images from breaking layout */
-  img, svg, video, canvas, iframe {
+  img, svg, video, canvas {
     max-width: 100% !important;
     height: auto !important;
   }
   
   /* Improve spacing and readability in text blocks */
   .prose {
-    font-size: 0.9375rem !important;
+    font-size: 1rem !important;
     line-height: 1.6 !important;
   }
   
   .prose h1, .prose h2, .prose h3 {
-    margin-top: 1.5em !important;
-    margin-bottom: 0.5em !important;
+    margin-top: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
   }
   
   /* Make forms more mobile-friendly */
@@ -77,9 +77,9 @@
   }
   
   /* Center align headings */
-  h1, h2, h3 {
+  /* h1, h2, h3 {
     text-align: center;
-  }
+  } */
   
   /* Make gradient text more legible */
   .bg-clip-text {

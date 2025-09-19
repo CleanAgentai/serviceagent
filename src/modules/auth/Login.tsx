@@ -152,7 +152,7 @@ export function Login() {
                 <div className="absolute inset-y-0 right-0 flex items-center pr-1">
                       <button
                         type="button"
-                        className="px-3 flex items-center text-xs bg-white text-gray-500 hover:text-gray-700 transition-all duration-200"
+                        className="px-3 h-4 flex items-center text-xs rounded-lg bg-transparent text-gray-500 hover:text-gray-700 transition-all duration-200"
                         onClick={() => setShowPassword(!showPassword)}
                       >
                         {showPassword ? "Hide Password" : "Show Password"}
@@ -166,13 +166,13 @@ export function Login() {
                   <button
                     type="button"
                     onClick={() => setRememberMe(!rememberMe)}
-                    className={`flex items-center justify-center h-6 w-6 rounded-xl border-2 transition-all duration-200 ${
+                    className={`flex items-center justify-center !min-h-0 !min-w-0 h-8 w-8 rounded-3xl border-2 transition-all duration-200 ${
                       rememberMe
                         ? 'bg-blue-600 border-blue-600 text-white'
                         : 'bg-white border-gray-300 text-transparent hover:border-blue-600'
                     }`}
                   >
-                    <Check className="h-3 w-3" />
+                    <Check className="h-4 w-4" />
                   </button>
                   <span className="ml-2 block text-sm text-gray-700">
                     Remember me

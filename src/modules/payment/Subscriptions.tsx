@@ -1,6 +1,6 @@
 import { StripeCheckoutBox } from "@/components/stripe/StripeCheckoutBox";
 import React, { useState } from "react";
-import { CheckCircle, ArrowRight, Zap, TrendingUp, Users, Star, Sparkles, Check, ChevronDown } from "lucide-react";
+import { CheckCircle, ArrowRight, Zap, TrendingUp, Users, Star, Sparkles, Check, ChevronDown, ArrowLeft } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -27,6 +27,14 @@ export const Subscriptions: React.FC = () => {
   function wrapper(plan, yearly) {
     setSelectedPlan(plan);
     setSelectedYearly(yearly);
+    
+    requestAnimationFrame(() => {
+      const el = document.getElementById("checkout");
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      else window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+    
+    
   }
 
   // Resolve price for the selected plan and billing interval
@@ -85,7 +93,7 @@ export const Subscriptions: React.FC = () => {
   const faqs = [
 
     {
-      id: "1",
+      id: "1", 
       question: "Do I need a credit card?",
       answer: "Yes, we require a card to activate your free trial. You won’t be charged unless you continue after 14 days."
     },
@@ -116,7 +124,7 @@ export const Subscriptions: React.FC = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-6 py-0 md:py-2 flex flex-col">
+    <div className="max-w-5xl mt-4 mx-auto px-6 py-0 md:py-2 flex flex-col">
       <div className="flex justify-center mb-4">
         <img src="/logos/Brandmark.svg" alt="ServiceAgent Icon" className="h-20 w-20 max-w-none object-contain" />
       </div>
@@ -219,13 +227,13 @@ export const Subscriptions: React.FC = () => {
               {/* CTA Button */}
               <div className="space-y-3">
                   <Button 
-                    className="flex w-full bg-gradient-to-r from-teal to-teal/90 hover:from-teal/90 hover:to-teal text-white py-3 text-lg font-bold rounded-xl shadow-xl shadow-teal/40 hover:scale-105 active:scale-95 transition-all duration-300"
+                    className="flex w-full bg-gradient-to-r from-teal to-teal/90 hover:from-teal/90 hover:to-teal text-white py-3 px-2 text-lg font-bold rounded-xl shadow-xl shadow-teal/40 hover:scale-105 active:scale-95 transition-all duration-300"
                     aria-label="Start free trial with Launch Plan - 20 AI interviews per month, 14 day free"
                     onClick={() => wrapper(plans[0].title, isYearly)}
                   >
-                    <div className="flex items-center text-sm gap-2">
+                    <div className="flex items-center text-sm gap-2 px-2">
                       <Zap className="w-5 h-5" />
-                      Start Free 14-Day Trial
+                      <p className="whitespace-nowrap">Start Free <span className="inline lg:hidden [@media(min-width:1284px)]:inline">14-Day </span>Trial</p>
                     </div>
                   </Button>
                 <div className="text-center space-y-2">
@@ -308,13 +316,13 @@ export const Subscriptions: React.FC = () => {
               {/* CTA Button */}
               <div className="space-y-3">
                   <Button 
-                    className="flex w-full bg-gradient-to-r from-gold to-gold/90 hover:from-terracotta hover:to-terracotta/90 text-white py-3 text-lg font-bold rounded-xl shadow-xl shadow-gold/40 hover:shadow-terracotta/50 hover:scale-105 active:scale-95 transition-all duration-300"
+                    className="flex w-full bg-gradient-to-r from-gold to-gold/90 hover:from-terracotta hover:to-terracotta/90 text-white py-3 px-2 text-lg font-bold rounded-xl shadow-xl shadow-gold/40 hover:shadow-terracotta/50 hover:scale-105 active:scale-95 transition-all duration-300"
                     aria-label="Start free trial with Scale Plan - 100 AI interviews per month, most popular choice"
                     onClick={() => wrapper(plans[1].title, isYearly)}
                   >
-                    <div className="flex items-center text-sm gap-2">
+                    <div className="flex items-center text-sm gap-2 px-2">
                       <Sparkles className="w-5 h-5" />
-                      Start Free 14-Day Trial
+                      <p className="whitespace-nowrap">Start Free <span className="inline lg:hidden [@media(min-width:1284px)]:inline">14-Day </span>Trial</p>
                     </div>
                   </Button>
                 <div className="text-center space-y-2">
@@ -389,7 +397,7 @@ export const Subscriptions: React.FC = () => {
                   </Button>
                 </a>
                 <div className="text-center space-y-1">
-                  <p className="text-xs text-muted-foreground">Custom pricing available.</p>
+                  <p className="text-xs text-muted-foreground font-semibold hyphens-none break-words">Custom pricing available.</p>
                 </div>
               </div>
             </div>
@@ -426,15 +434,16 @@ export const Subscriptions: React.FC = () => {
             <h3 className=" text-left text-lg text-gray-700 mb-2">
               Selected Plan: <span className="font-semibold">{selectedPlan} {selectedYearly ? "(Yearly)" : "(Monthly)"}</span>
             </h3>
-            <p className="text-left text-sm text-muted-foreground mb-2">Then <span className="font-semibold">{getSelectedPrice()}</span> {selectedYearly ? "per year" : "per month"} after trial ends on {trialEndDisplay}</p>
+            <p className="text-left text-sm text-muted-foreground mb-2">Then <span className="font-semibold">{getSelectedPrice()}</span> {selectedYearly ? "per year" : "per month"} after trial ends on <br className="hidden md:block lg:hidden" />{trialEndDisplay}</p>
             <button
               onClick={() => wrapper(null, null)}
-              className="text-sm text-blue-600 underline hover:text-blue-800"
+              className=" group text-sm text-blue-600 hover:underline hover:text-blue-700 flex items-center gap-2"
             >
-              ← Change plan
+              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-300" />
+              Change plan
             </button>
           </div>
-          <div id="checkout">
+          <div id="checkout" className=" !h-full shadow-lg rounded-xl">
             <StripeCheckoutBox planName={selectedPlan} yearly={selectedYearly} />
           </div>
           
@@ -506,7 +515,7 @@ export const Subscriptions: React.FC = () => {
 
       {/* Testimonial Section */}
       <div className="container mx-auto px-6 relative">
-      <div className="mt-16 max-w-4xl mx-auto">
+      <div className="my-16 max-w-4xl mx-auto">
 
       <div className="absolute top-1/4 left-0 w-72 h-72 bg-terracotta/3 rounded-full blur-3xl" />
       <div className="absolute bottom-1/4 right-0 w-80 h-80 bg-gold/3 rounded-full blur-3xl" />

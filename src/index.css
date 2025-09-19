@@ -142,13 +142,13 @@ img {
 
 /* Medium mobile devices up to tablets */
 @media screen and (max-width: 768px) {
-  button,
+  /* button,
   a.inline-flex,
   input,
   textarea,
   select {
-    min-height: 44px; /* Minimum touch target size */
-  }
+    min-height: 44px;
+  } */
 
   /* Improve touch targets */
   .flex-col > * {
@@ -168,7 +168,7 @@ img {
 
   /* Reduce card spacings */
   .p-8 {
-    padding: 1.5rem !important;
+    padding: 1.5rem;
   }
 
   /* Grid columns on mobile */

@@ -46,6 +46,10 @@ export default function DashboardLayout() {
     return "?";
   };
 
+  const isCheckout = /^\/(payment\/subscription|billing\/checkout)(\/|$)/.test(
+    location.pathname
+  );
+
   // Navigation items
   const navItems = [
     { path: "/dashboard", icon: <Home size={20} />, label: "Dashboard" },
@@ -82,7 +86,12 @@ export default function DashboardLayout() {
   };
 
   return (
-    <div className="flex h-screen bg-background overflow-x-hidden">
+    <div
+    className={[
+      "flex bg-background overflow-x-hidden",
+      isCheckout ? "min-h-[100svh]" : "overflow-y-auto",
+    ].join(" ")}
+  >
       {/* Desktop Sidebar - Added border-r back */}
       <div className="hidden md:flex md:w-56 md:flex-col md:fixed md:inset-y-0 border-r">
         <div className="flex flex-col flex-grow overflow-y-auto">

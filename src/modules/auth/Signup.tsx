@@ -214,7 +214,7 @@ export function Signup() {
           )}
 
           {/* Signup Form */}
-          <div className="bg-transparent rounded-xl p-8 pt-0">
+          <div className="bg-transparent rounded-xl !pt-0 p-8">
             <form onSubmit={handleSubmit} className="space-y-6" noValidate>
               {/* Name Fields */}
               {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -344,10 +344,10 @@ export function Signup() {
                       }`}
                       placeholder="••••••••"
                     />
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-1">
+                    <div className="absolute py-3 inset-y-0 right-0 flex items-center pr-1">
                       <button
                         type="button"
-                        className="px-3 flex items-center text-xs bg-white text-gray-500 hover:text-gray-700 transition-all duration-200"
+                        className="px-3 h-4 flex items-center text-xs rounded-lg bg-transparent text-gray-500 hover:text-gray-700 transition-all duration-200"
                         onClick={() => setShowPassword(!showPassword)}
                       >
                         {showPassword ? "Hide Password" : "Show Password"}
@@ -458,13 +458,13 @@ export function Signup() {
                 <button
                   type="button"
                   onClick={() => setAcceptTerms(!acceptTerms)}
-                  className={`flex items-center justify-center h-6 w-6 rounded-xl border-2 transition-all duration-200 ${
+                  className={`flex items-center justify-center !min-h-0 !min-w-0 h-8 w-8 rounded-3xl border-2 transition-all duration-200 ${
                     acceptTerms
                       ? 'bg-blue-600 border-blue-600 text-white'
                       : 'bg-white border-gray-300 text-transparent hover:border-blue-600'
                   }`}
                 >
-                  <Check className="h-3 w-3" />
+                  <Check className="h-4 w-4" />
                 </button>
                 <div className="ml-3 text-sm">
                   <span className="text-gray-600">

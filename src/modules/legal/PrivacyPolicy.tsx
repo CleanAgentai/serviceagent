@@ -15,18 +15,18 @@ export function PrivacyPolicy() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="bg-transparent">
       <Navigation />
       {/* Content */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <article className="prose prose-lg max-w-none bg-white rounded-xl shadow-sm p-8 sm:p-12">
+      <div className="max-w-7xl mx-auto px-4 mt-24 !text-left">
+        <article className="prose prose-md max-w-none bg-white rounded-xl p-4 sm:p-12">
           <h1>Privacy Policy</h1>
           <div className="text-sm text-gray-500 mb-8">
-            <p>Effective Date: February 18, 2025</p>
-            <p>Last Updated: February 19, 2025</p>
+            <p className="!mb-0">Effective Date: February 18, 2025</p>
+            <p className="!mt-0">Last Updated: February 19, 2025</p>
           </div>
 
-          <p className="lead">
+          <p>
             Welcome to ServiceAgent, a service provided by CleanAgent, LLC ("Company," "we," "us," or "our"). We respect your privacy and are committed to protecting it through this Privacy Policy.
           </p>
           <p>
@@ -36,39 +36,41 @@ export function PrivacyPolicy() {
           <h2>1. Information We Collect</h2>
           <p>We collect several types of information from and about users of our Website and Services, including:</p>
           
+          <div className="ml-8">
           <h3>A. Information You Provide to Us</h3>
           <ul>
-            <li><strong>Account Information:</strong> When you sign up for our Services, we collect personal details such as your name, email address, phone number, company name, and payment details.</li>
-            <li><strong>Communications:</strong> If you contact us, we may collect information such as your name, email address, and any other details you provide.</li>
-            <li><strong>Content You Submit:</strong> If you provide feedback, testimonials, or other content, we may collect this information.</li>
+            <li><p><strong>Account Information:</strong> When you sign up for our Services, we collect personal details such as your name, email address, phone number, company name, and payment details.</p></li>
+            <li><p><strong>Communications:</strong> If you contact us, we may collect information such as your name, email address, and any other details you provide.</p></li>
+            <li><p><strong>Content You Submit:</strong> If you provide feedback, testimonials, or other content, we may collect this information.</p></li>
           </ul>
 
           <h3>B. Information Collected Automatically</h3>
           <ul>
-            <li><strong>Usage Data:</strong> We may collect information about your interactions with our Website, such as IP address, browser type, operating system, referring URLs, pages viewed, and the dates/times of visits.</li>
-            <li><strong>Cookies & Tracking Technologies:</strong> We use cookies, beacons, and similar technologies to enhance user experience and analyze Website traffic.</li>
+            <li><p><strong>Usage Data:</strong> We may collect information about your interactions with our Website, such as IP address, browser type, operating system, referring URLs, pages viewed, and the dates/times of visits.</p></li>
+            <li><p><strong>Cookies & Tracking Technologies:</strong> We use cookies, beacons, and similar technologies to enhance user experience and analyze Website traffic.</p></li>
           </ul>
 
           <h3>C. Information from Third Parties</h3>
           <p>We may receive data from third-party service providers, business partners, and publicly available sources.</p>
+          </div>
 
           <h2>2. How We Use Your Information</h2>
           <ul>
-            <li>To provide, maintain, and improve our Services.</li>
-            <li>To personalize your experience and deliver relevant content.</li>
-            <li>To process payments and manage subscriptions.</li>
+            <li><p>To provide, maintain, and improve our Services.</p></li>
+            <li><p>To personalize your experience and deliver relevant content.</p></li>
+            <li><p>To process payments and manage subscriptions.</p></li>
             <li>To communicate with you, including responding to inquiries and sending updates.</li>
-            <li>To detect, prevent, and address security issues, fraud, and abuse.</li>
-            <li>To comply with legal obligations and enforce our terms.</li>
+            <li><p>To detect, prevent, and address security issues, fraud, and abuse.</p></li>
+            <li><p>To comply with legal obligations and enforce our terms.</p></li>
           </ul>
 
           <h2>3. Sharing and Disclosure of Information</h2>
           <p>We do not sell your personal information. However, we may share information in the following circumstances:</p>
           <ul>
-            <li><strong>With Service Providers:</strong> We may share your information with third-party vendors who help us operate our business (e.g., payment processors, hosting providers, analytics services).</li>
-            <li><strong>For Legal Compliance:</strong> We may disclose information to comply with legal obligations, protect our rights, or respond to legal requests.</li>
-            <li><strong>Business Transfers:</strong> In the event of a merger, sale, or acquisition, your information may be transferred as part of the transaction.</li>
-            <li><strong>With Your Consent:</strong> We may share information with third parties when we have your explicit consent.</li>
+            <li><p><strong>With Service Providers:</strong> We may share your information with third-party vendors who help us operate our business (e.g., payment processors, hosting providers, analytics services).</p></li>
+            <li><p><strong>For Legal Compliance:</strong> We may disclose information to comply with legal obligations, protect our rights, or respond to legal requests.</p></li>
+            <li><p><strong>Business Transfers:</strong> In the event of a merger, sale, or acquisition, your information may be transferred as part of the transaction.</p></li>
+            <li><p><strong>With Your Consent:</strong> We may share information with third parties when we have your explicit consent.</p></li>
           </ul>
 
           <h2>4. Data Security</h2>
@@ -77,10 +79,10 @@ export function PrivacyPolicy() {
           <h2>5. Your Rights & Choices</h2>
           <p>Depending on your location, you may have the following rights regarding your personal data:</p>
           <ul>
-            <li><strong>Access & Correction:</strong> You can request access to your data and correct inaccuracies.</li>
-            <li><strong>Deletion:</strong> You may request that we delete your personal information.</li>
-            <li><strong>Opt-Out:</strong> You can opt out of marketing emails by following the unsubscribe link.</li>
-            <li><strong>Cookies:</strong> You can manage cookie preferences through your browser settings.</li>
+            <li><p><strong>Access & Correction:</strong> You can request access to your data and correct inaccuracies.</p></li>
+            <li><p><strong>Deletion:</strong> You may request that we delete your personal information.</p></li>
+            <li><p><strong>Opt-Out:</strong> You can opt out of marketing emails by following the unsubscribe link.</p></li>
+            <li><p><strong>Cookies:</strong> You can manage cookie preferences through your browser settings.</p></li>
           </ul>
           <p>To exercise these rights, please contact us at support@serviceagent.ai.</p>
 
@@ -100,16 +102,16 @@ export function PrivacyPolicy() {
           <p>We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated effective date. We encourage users to review this policy periodically.</p>
 
           <h2>11. Contact Us</h2>
-          <div className="bg-gray-50 p-6 rounded-lg mt-8">
+
             <p className="font-medium mb-4">If you have any questions about this Privacy Policy or our data practices, please contact us at:</p>
-            <address className="not-italic">
+            <address className="not-italic ml-4">
               <p className="font-bold">CleanAgent, LLC</p>
               <p>209 Turner Street</p>
               <p>Clearwater, Florida 33756</p>
               <p>Email: <a href="mailto:admin@fsagent.com">admin@fsagent.com</a></p>
               <p>Phone: <a href="tel:+18137505308">813-750-5308</a></p>
             </address>
-          </div>
+          
         </article>
       </div>
     </div>

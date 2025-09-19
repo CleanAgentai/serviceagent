@@ -112,7 +112,8 @@ const ManageSubscriptions = () => {
           <button
             onClick={() => setShowConfirm(true)}
             disabled={!hasActiveSub || loading}
-            className={`w-full py-2 font-medium transition duration-200 rounded-md shadow-lg hover:shadow-xl focus:z-10 relative ${
+            className={`w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-full
+            border-0 shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:z-10 focus:border-transparent${
               !hasActiveSub
                 ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                 : "bg-red-600 hover:bg-red-700 text-white"
@@ -163,10 +164,11 @@ const ManageSubscriptions = () => {
           <button
             onClick={() => navigate("/payment/subscription")}
             disabled={hasActiveSub}
-            className={`w-full py-2 font-medium transition duration-200 rounded-md shadow-lg hover:shadow-xl focus:z-10 relative ${
+            className={`w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-full
+border-0 shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:z-10 focus:border-transparent ${
               hasActiveSub
                 ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                : "bg-[#004aad] hover:bg-[#004aad]/80 text-white"
+                : "bg-blue-600 hover:bg-blue-700 text-white"
             }`}
           >
             Add a Subscription
