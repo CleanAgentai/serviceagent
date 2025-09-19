@@ -85,8 +85,8 @@ export const StripeCheckoutBox: React.FC<StripeCheckoutBoxProps> = ({planName, y
   }, []);
   
   return (
-    <div className="max-w-7xl mx-auto mt-12 bg-white p-6 rounded-lg">
-      <div id="checkout">
+    <div className="max-w-7xl mt-12 bg-white p-6 rounded-lg">
+      <div id="checkout" className="overflow-y-auto">
         <EmbeddedCheckoutProvider 
           stripe={stripePromise} 
           options={{fetchClientSecret : () => fetchClientSecret(planName, yearly)}}

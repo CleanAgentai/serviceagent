@@ -29,7 +29,7 @@ const steps = [
 
 function ResponsiveVideo({ src, title }: { src: string; title: string }) {
   return (
-    <div className="relative min-w-80 max-w-4xl aspect-[16/9] bg-card border-2 border-primary/20 rounded-3xl shadow-3xl overflow-hidden hover:border-primary/40 hover:shadow-[0_25px_80px_-12px_rgba(0,0,0,0.25)] hover:-translate-y-2 transition-all duration-500 max-sm:pb-[56.25%]">
+    <div className="relative min-w-80 max-w-4xl aspect-[16/9] bg-card border-2 border-primary/20 rounded-3xl shadow-3xl overflow-hidden hover:border-primary/40 hover:shadow-[0_25px_80px_-12px_rgba(0,0,0,0.25)] hover:-translate-y-2 transition-all duration-500 max-sm:pb-[54.270833333333336%]">
       <iframe
         src={src}
         title={title}
@@ -198,7 +198,7 @@ function CreateInterview({ hasInterview, setActiveStep }: { hasInterview: boolea
     <div className="space-y-4">
       <h2 className="text-3xl text-left font-semibold hyphens-none break-words">Step 1: Create Your First Interview</h2>
       <h3 className="text-md text-left text-gray-700 mb-8 hyphens-none break-words">This only takes 3–5 minutes. We’ll guide you through the basics, and you can customize later.</h3>
-      <ResponsiveVideo src="https://www.loom.com/embed/dbf03e1878d5497389971199c7b2419d?sid=95f31335-a69f-4861-9d4c-5096515f686c" title="How To Create An Interview" />
+      <ResponsiveVideo src="https://www.loom.com/embed/92a3d28944824836b1972930104e3ffc?sid=1a1c6339-3789-4b6a-973a-42da5f36ab23" title="How To Create An Interview" />
 
       <div className="space-y-6">
         <div className="flex items-center space-x-3">
