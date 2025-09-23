@@ -354,12 +354,15 @@ export function Signup() {
               >
                 Start Free Trial
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
-              </button>
-              
+              </button>  
             </form>
               {/* Reassurance Copy */}
+              <p className="mt-4 text-center text-sm text-muted-foreground hyphens-none break-words">
+              Takes less than 2 minutes to set up.
+              </p>
+
               <p className="mt-6 text-center text-sm text-muted-foreground hyphens-none break-words italic">
-                No charges today · Cancel anytime · 14 days free
+                <span className="font-semibold">No charges today </span> · Cancel anytime · 14 days free
               </p>
 
             {/* <div className="mt-6">
