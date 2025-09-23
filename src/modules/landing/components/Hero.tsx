@@ -101,15 +101,6 @@ const Hero = () => {
                     <span className="mr-[2px]">🎁</span> 14 Days Free
                     </p>
                   </div>
-                  
-                  <Button 
-                    variant="outline" 
-                    size="lg" 
-                    className="shrink-0 px-8 py-6 text-xl font-bold border-2 border-teal/30 text-teal hover:bg-teal/10 hover:border-teal/50 hover:text-teal transition-all duration-300 shadow-lg hover:shadow-teal/20"
-                    onClick={() => document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' })}
-                  >
-                    Watch Demo
-                  </Button>
                 </div>
               </div>
               

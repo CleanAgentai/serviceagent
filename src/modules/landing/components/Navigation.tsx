@@ -156,22 +156,22 @@ export function Navigation({ isNavVisible = true }: { isNavVisible?: boolean }) 
               transition={{ duration: 0.5, delay: 0.35 }}
               className="group"
             >
-              <a 
-                href="https://calendly.com/serviceagent/25min"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+            
                 <Button 
                   variant="outline" 
                   size="sm" 
                   className="border-teal/30 text-teal font-medium transition-all duration-300 group-hover:shadow-lg group-hover:shadow-teal/20"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleScrollTo("demo");
+                  }}
                 >
                   <div className="flex items-center gap-2">
-                    Get a Demo
+                    Watch Demo
                     <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform duration-300" />
                   </div>
                 </Button>
-              </a>
+  
             </motion.div>
 
             {/* Start for Free - Exciting Button */}
@@ -290,23 +290,22 @@ export function Navigation({ isNavVisible = true }: { isNavVisible?: boolean }) 
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.7 }}
                   >
-                    <a 
-                      href="https://calendly.com/serviceagent/25min"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block"
-                    >
                       <Button 
                         variant="ghost" 
-                        className="w-full h-16 text-teal bg-background rounded-none text-lg font-semibold" 
+                        className="w-full h-16 text-teal bg-background rounded-none text-lg font-semibold"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleScrollTo("demo");
+                          toggleMenu();
+                        }}
                       >
                         <div className="flex items-center justify-center gap-3">
                           <Video className="w-4 h-4" />
-                          Get a Demo
+                          Watch Demo
                           <ArrowRight className="w-4 h-4" />
                         </div>
                       </Button>
-                    </a>
+                
                   </motion.div>
 
                   <motion.div
