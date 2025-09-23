@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Building, Upload, Trash2, ArrowRight, ChevronRight } from "lucide-react";
 import { supabase } from "@/app/lib/supabase";
 import { Button } from "@/components/ui/button";
@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/card';
 import { toast } from 'sonner';
 import { ColorPicker } from '@/components/ui/color-picker';
+import { Loader } from "@googlemaps/js-api-loader"; 
 
 interface CompanyProfileFormProps {
   mode: 'create' | 'update';
@@ -41,6 +42,10 @@ export function CompanyProfileForm({
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const [willoKey, setWilloKey] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [formData, setFormData] = useState({ location: "" });
+  const locationInputRef = useRef<HTMLInputElement | null>(null);
+  const googleAPIKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+
 
   // Load existing profile data if available
   useEffect(() => {
@@ -61,10 +66,11 @@ export function CompanyProfileForm({
           .eq('created_by_user_id', user.id)
           .single();
 
-        // Also fetch user profile data from profiles table
+        // Also fetch company_name from profiles table (might be redundant if also in company_profiles)
+        // Consider consolidating if possible in the future
         const { data: basicProfile, error: basicProfileError } = await supabase
           .from("profiles")
-          .select("company_name, first_name, last_name")
+          .select("company_name")
           .eq("id", user.id)
           .single();
 
@@ -78,30 +84,7 @@ export function CompanyProfileForm({
           // Set state from company_profiles data
           setCompanyLocation(companyProfile.company_location || '');
           setCompanyWebsite(companyProfile.company_website || '');
-          
-          // Convert stored niche back to display format
-          let displayNiche = companyProfile.company_niche || '';
-          if (displayNiche === 'food') {
-            displayNiche = 'Restaurants and Food';
-          } else if (displayNiche === 'default') {
-            displayNiche = 'Other';
-          } else if (displayNiche === 'cleaning') {
-            displayNiche = 'Cleaning';
-          } else if (displayNiche === 'hvac') {
-            displayNiche = 'HVAC';
-          } else if (displayNiche === 'staffing') {
-            displayNiche = 'Staffing';
-          } else if (displayNiche === 'franchises') {
-            displayNiche = 'Franchises';
-          } else if (displayNiche === 'healthcare') {
-            displayNiche = 'Healthcare';
-          } else if (displayNiche === 'manufacturing') {
-            displayNiche = 'Manufacturing';
-          } else if (displayNiche === 'warehouses') {
-            displayNiche = 'Warehouses';
-          }
-          setCompanyNiche(displayNiche);
-          
+          setCompanyNiche(companyProfile.company_niche || '');
           setCompanyPrimaryColour(
             companyProfile.company_primary_colour || '#0693e3',
           );
@@ -116,8 +99,6 @@ export function CompanyProfileForm({
           console.error('Error loading basic profile:', basicProfileError);
         } else if (basicProfile) {
           setCompanyName(basicProfile.company_name || "");
-          setFirstName(basicProfile.first_name || "");
-          setLastName(basicProfile.last_name || "");
         }
       } catch (error) {
         console.error('Error in loadProfile:', error);
@@ -141,6 +122,40 @@ export function CompanyProfileForm({
       isMounted = false;
     };
   }, []);
+  useEffect(() => {
+    if (!googleAPIKey) return;
+
+    const loader = new Loader({
+      apiKey: googleAPIKey,
+      libraries: ["places"],
+    });
+
+    loader.importLibrary("places").then((placesLib: any) => {
+      if (!locationInputRef.current) return;
+
+      // Attach autocomplete to the existing input
+      const autocomplete = new placesLib.Autocomplete(locationInputRef.current, {
+        types: ["(cities)"],   // uncomment if you only want cities
+        componentRestrictions: { country: "us" }, // restrict to US 
+      });
+
+      // Listen for selection
+      autocomplete.addListener("place_changed", () => {
+        const place = autocomplete.getPlace();
+        if (!place) return;
+
+        const address = place.formatted_address || place.name || "";
+
+        // ✅ This updates React state AFTER Google updates the DOM
+        setCompanyLocation(address);
+      });
+    });
+  }, [googleAPIKey]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+};
+
 
   const handleLogoChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -419,11 +434,14 @@ export function CompanyProfileForm({
                 <p className="text-xs text-gray-500 mt-1">Shown to candidates and on your hiring portal.</p>
               </div>
               <Input
+                ref={locationInputRef}  // ✅ Google Autocomplete attaches here
                 id="companyLocation"
-                value={companyLocation}
+                defaultValue={companyLocation}
                 onChange={(e) => setCompanyLocation(e.target.value)}
-                placeholder="City, State"
+                placeholder="Enter your location"
                 required
+                className=" pr-3 py-2 border border-gray-300 rounded-lg
+                            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
 
