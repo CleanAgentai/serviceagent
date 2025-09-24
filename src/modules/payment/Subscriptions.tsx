@@ -24,6 +24,8 @@ export const Subscriptions: React.FC = () => {
     });
   })();
 
+  console.log("Subscriptions");
+
   function wrapper(plan, yearly) {
     setSelectedPlan(plan);
     setSelectedYearly(yearly);
