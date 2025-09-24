@@ -34,6 +34,27 @@ export const Subscriptions: React.FC = () => {
     });
   }
 
+=======
+  // Resolve price for the selected plan and billing interval
+  const getSelectedPrice = () => {
+    if (!selectedPlan) return "";
+    const plan = selectedPlan.toUpperCase();
+    const yearly = !!selectedYearly;
+    if (plan === "LAUNCH") {
+      return yearly ? "$119.00" : "$149.00";
+    }
+
+    if(plan === "STARTER") {
+      return yearly ? "79.00" : "99.00"
+    }
+
+    if (plan === "SCALE") {
+      return yearly ? "$479.00" : "$599.00";
+    }
+    return "";
+  };
+
+  // Launch and Scale plans for new design
   const plans = [
     {
       title: "Starter",
