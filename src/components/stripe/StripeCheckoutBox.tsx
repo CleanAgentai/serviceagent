@@ -46,12 +46,14 @@ export const StripeCheckoutBox: React.FC<StripeCheckoutBoxProps> = ({planName, y
 
     if (yearly) {
       lookupKeyMap = {
+        STARTER: "starter_yearly",
         LAUNCH: "launch_yearly",
         SCALE: "scale_yearly",
         ENTERPRISE: "TODO",
       };
     } else {
       lookupKeyMap = {
+        STARTER: "starter_monthly",
         LAUNCH: "launch_monthly",
         SCALE: "scale_monthly",
         ENTERPRISE: "TODO",
