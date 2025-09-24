@@ -13,6 +13,7 @@ export const Subscriptions: React.FC = () => {
   const [isYearly, setIsYearly] = useState(false);
   const currency = "$";
 
+  // Potentially pull from backend
   // Compute 14-day trial end date for display
   const trialEndDisplay = (() => {
     const date = new Date();
@@ -41,7 +42,7 @@ export const Subscriptions: React.FC = () => {
       headline: "Begin hassle-free hiring", // Edit Starter Plan headline
       yearPrice: "$950",
       period: isYearly ? "/month (billed yearly)" : "/month",
-      cost_per_candidate: isYearly ? "≈ $8/candidate" : "≈ $10/candidate",
+      cost_per_candidate: isYearly ? "$8/candidate" : "$10/candidate",
       description: "Best for getting started",
       features: [
         "10 candidates/month",
@@ -61,7 +62,7 @@ export const Subscriptions: React.FC = () => {
       headline: "Save 15+ hours per hire",
       yearPrice: "$1,430",
       period: isYearly ? "/month (billed yearly)" : "/month",
-      cost_per_candidate: isYearly ? "≈ $6/candidate" : "≈ $7/candidate",
+      cost_per_candidate: isYearly ? "$6/candidate" : "$7/candidate",
       description: "For companies hiring on a monthly basis",
       features: [
         "20 candidates/month",
@@ -81,7 +82,7 @@ export const Subscriptions: React.FC = () => {
       headline: "Hire 5× faster",
       yearPrice: "$5,750",
       period: isYearly ? "/month (billed yearly)" : "/month",
-      cost_per_candidate: isYearly ? "≈ $4/candidate" : "≈ $5/candidate",
+      cost_per_candidate: isYearly ? "$4/candidate" : "$5/candidate",
       description: "For growing companies with higher volume",
       features: [
         "100 candidates/month",
@@ -111,20 +112,19 @@ export const Subscriptions: React.FC = () => {
       "100% no-risk free trial",
       "Pay nothing for the first 14 days",
       "Cancel anytime, hassle-free",
-      "Get access to all features",
       "10 candidates/month",
-      "Save 15+ hours per hire with AI interviewing",
-      "Only $3/day - $0 due today!",
+      `Only ${starterPlan?.cost_per_candidate} - $0 due today!`,
       "Expert support included",
     ],
     LAUNCH: [
       "100% no-risk free trial",
       "Pay nothing for the first 14 days",
       "Cancel anytime, hassle-free",
-      "Get access to all features",
       "20 candidates/month",
-      "Save 15+ hours per hire with AI interviewing",
-      "Only $5/day - $0 due today!",
+      "Save 15+ hours per month with AI interviewing",
+      "Candidate transcript and analysis as PDF",
+      "Custom branding for candidates",
+      `Only ${launchPlan?.cost_per_candidate} - $0 due today!`,
       "Expert support included",
     ],
     SCALE: [
@@ -132,12 +132,11 @@ export const Subscriptions: React.FC = () => {
       "Pay nothing for the first 14 days",
       "Cancel anytime, hassle-free",
       "Get access to all features",
-      "Everything in Launch Plan",
       "100 candidates/month",
-      "Save 50+ hours per hire with AI interviewing",
+      "Save 50+ hours per month with AI interviewing",
       "ATS integration",
-      "Only $20/day - $0 due today!",
-      "Priority expert support",
+      `Only ${scalePlan?.cost_per_candidate} - $0 due today!`,
+      "Priority phone support",
     ],
   };
 
@@ -252,11 +251,11 @@ export const Subscriptions: React.FC = () => {
                     </div>
                     {!isYearly && (
                       <>
-                        <div className="text-sm text-muted-foreground">(billed monthly) <span className="font-bold">{starterPlan?.cost_per_candidate}</span></div>
+                        <div className="text-sm text-muted-foreground">(billed monthly) <span className="font-bold">≈ {starterPlan?.cost_per_candidate}</span></div>
                       </>
                     )}
                     {isYearly && (
-                      <div className="text-sm text-muted-foreground">(billed yearly) <span className="font-bold">{starterPlan?.cost_per_candidate}</span></div>
+                      <div className="text-sm text-muted-foreground">(billed yearly) <span className="font-bold">≈ {starterPlan?.cost_per_candidate}</span></div>
                     )}
                   </div>
                 </div>
@@ -328,11 +327,11 @@ export const Subscriptions: React.FC = () => {
                     </div>
                     {!isYearly && (
                       <>
-                        <div className="text-sm text-muted-foreground">(billed monthly) <span className="font-bold">{launchPlan?.cost_per_candidate}</span></div>
+                        <div className="text-sm text-muted-foreground">(billed monthly) <span className="font-bold">≈ {launchPlan?.cost_per_candidate}</span></div>
                       </>
                     )}
                     {isYearly && (
-                      <div className="text-sm text-muted-foreground">(billed yearly) <span className="font-bold">{launchPlan?.cost_per_candidate}</span></div>
+                      <div className="text-sm text-muted-foreground">(billed yearly) <span className="font-bold">≈ {launchPlan?.cost_per_candidate}</span></div>
                     )}
                   </div>
                 </div>
@@ -394,11 +393,11 @@ export const Subscriptions: React.FC = () => {
                     </div>
                     {!isYearly && (
                       <>
-                        <div className="text-sm text-muted-foreground">(billed monthly) <span className="font-bold">{scalePlan?.cost_per_candidate}</span></div>
+                        <div className="text-sm text-muted-foreground">(billed monthly) <span className="font-bold">≈ {scalePlan?.cost_per_candidate}</span></div>
                       </>
                     )}
                     {isYearly && (
-                      <div className="text-sm text-muted-foreground">(billed yearly) <span className="font-bold">{scalePlan?.cost_per_candidate}</span></div>
+                      <div className="text-sm text-muted-foreground">(billed yearly) <span className="font-bold">≈ {scalePlan?.cost_per_candidate}</span></div>
                     )}
                   </div>
                 </div>
@@ -622,14 +621,19 @@ export const Subscriptions: React.FC = () => {
                           </h3>
                         </div>
                         <div className="flex-shrink-0 ml-4">
-                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-gold/20 to-terracotta/20 flex items-center justify-center">
-                            <ChevronDown className="w-5 h-5 text-gold transition-transform duration-300 group-open/details:rotate-180" />
-                          </div>
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-gold/20 to-terracotta/20 flex items-center justify-center group-hover:from-gold/30 group-hover:to-terracotta/30 transition-all duration-300 group-open/details:rotate-45">
+                        <ChevronDown className="w-5 h-5 text-gold transition-transform duration-300 group-open/details:rotate-180" />
+                      </div>
                         </div>
                       </summary>
-                      <div className="mt-4 ml-11 pr-2">
-                        <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{item.answer}</p>
-                      </div>
+                      <div className="mt-6 ml-12 pr-4">
+                    <div className="relative">
+                      <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-teal/30 via-gold/30 to-terracotta/30 rounded-full"></div>
+                      <p className="text-base md:text-lg text-muted-foreground leading-relaxed pl-6 py-2 hyphens-none break-words">
+                        {item.answer}
+                      </p>
+                    </div>
+                  </div>
                     </details>
                   </div>
                 ))}
