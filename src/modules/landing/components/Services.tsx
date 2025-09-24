@@ -134,31 +134,23 @@ const Services = () => {
                 )}
 
                 <div className="text-center mb-8">
-                  {plans[0].price === "Custom Pricing" ? (
-                    <span className="text-4xl font-extrabold text-slate-900">
-                      {plans[0].price}
-                    </span>
-                  ) : (
-                    <div>
-                      <div className="flex items-center justify-center gap-1 mb-2">
-                        <span className="text-4xl font-bold text-primary">
-                          {plans[0].price}
-                        </span>
-                        <span className="text-muted-foreground">
-                          /month
-                        </span>
-                      </div>
-                      {!isYearly && (
-                        <>
-                        <div className="text-sm text-muted-foreground">(billed monthly)</div>
-                          <div className="text-sm text-muted-foreground mt-1">{plans[0].cost_per_day}</div>
-                        </>
-                      )}
-                      {isYearly && (
-                        <div className="text-sm text-muted-foreground">(billed yearly)</div>
-                      )}
+                  <div>
+                    <div className="flex items-center justify-center gap-1 mb-2">
+                      <span className="text-4xl font-bold text-primary">
+                        {plans[0].price}
+                      </span>
+                      <span className="text-muted-foreground">/month</span>
                     </div>
-                  )}
+                    {!isYearly && (
+                      <>
+                        <div className="text-sm text-muted-foreground">(billed monthly)</div>
+                        <div className="text-sm text-muted-foreground mt-1">{plans[0].cost_per_day}</div>
+                      </>
+                    )}
+                    {isYearly && (
+                      <div className="text-sm text-muted-foreground">(billed yearly)</div>
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -212,31 +204,23 @@ const Services = () => {
 
 
                 <div className="text-center mb-8">
-                  {plans[1].price === "Custom Pricing" ? (
-                    <span className="text-4xl font-extrabold text-slate-900">
-                      {plans[1].price}
-                    </span>
-                  ) : (
-                    <div>
-                      <div className="flex items-center justify-center gap-1 mb-2">
-                        <span className="text-4xl font-bold text-primary">
-                          {plans[1].price}
-                        </span>
-                        <span className="text-muted-foreground">
-                          /month
-                        </span>
-                      </div>
-                      {!isYearly && (
-                        <>
-                        <div className="text-sm text-muted-foreground">(billed monthly)</div>
-                          <div className="text-sm text-muted-foreground mt-1">{plans[1].cost_per_day}</div>
-                        </>
-                      )}
-                      {isYearly && (
-                        <div className="text-sm text-muted-foreground">(billed yearly)</div>
-                      )}
+                  <div>
+                    <div className="flex items-center justify-center gap-1 mb-2">
+                      <span className="text-4xl font-bold text-primary">
+                        {plans[1].price}
+                      </span>
+                      <span className="text-muted-foreground">/month</span>
                     </div>
-                  )}
+                    {!isYearly && (
+                      <>
+                        <div className="text-sm text-muted-foreground">(billed monthly)</div>
+                        <div className="text-sm text-muted-foreground mt-1">{plans[1].cost_per_day}</div>
+                      </>
+                    )}
+                    {isYearly && (
+                      <div className="text-sm text-muted-foreground">(billed yearly)</div>
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -271,7 +255,8 @@ const Services = () => {
             </div>
           </div>
       </div>
-      <div className="max-w-xl mx-auto mt-4 md:mt-16">
+      
+      <div className="max-w-6xl mx-auto mt-16 lg:mt-20">
             <div className="group opacity-0 animate-fade-in" style={{ animationDelay: '0.8s', animationFillMode: 'forwards' }}>
               <div className="relative bg-gradient-to-br from-card to-terracotta/5 rounded-3xl p-8 border border-terracotta/20 shadow-xl hover:shadow-3xl hover:-translate-y-1 hover:border-terracotta/40 transition-all duration-500">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
