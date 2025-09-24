@@ -34,7 +34,6 @@ export const Subscriptions: React.FC = () => {
     });
   }
 
-=======
   // Resolve price for the selected plan and billing interval
   const getSelectedPrice = () => {
     if (!selectedPlan) return "";
