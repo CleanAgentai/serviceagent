@@ -12,9 +12,10 @@ export function OAuthCallback() {
         // 1️⃣ 현재 로그인한 사용자 정보 가져오기
         const { data: sessionData, error: sessionError } =
           await supabase.auth.getUser();
-        if (sessionError) throw sessionError;
 
         const user = sessionData?.user;
+
+        console.log("User:", user);
         if (!user || !user.id)
           throw new Error("OAuth login failed: No valid user info");
 
@@ -25,11 +26,11 @@ export function OAuthCallback() {
           .eq("id", user.id)
           .single();
 
-        if (profileError) throw profileError;
+        console.log("Existing profile:", profileError);
 
         if (!existingProfile || !existingProfile.company_name) {
           // ❌ 회사명이 없으면 추가 정보 입력 페이지로 이동
-          navigate("/complete-profile", { state: { user } });
+          navigate("/plan-onboarding", { state: { user } });
           return;
         }
 

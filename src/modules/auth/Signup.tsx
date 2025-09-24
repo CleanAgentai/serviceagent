@@ -7,6 +7,7 @@ import { supabase } from "@/app/lib/supabase";
 export function Signup() {
   const navigate = useNavigate();
   const { signUp } = useAuth();
+  const { signIn, signInWithGoogle } = useAuth();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -150,6 +151,35 @@ export function Signup() {
     }
 
     // Handle signup logic
+  };
+
+  const handleOAuthSignUp = async (provider: "google") => {
+    setIsLoading(true);
+    try {
+      const redirectUri = `${window.location.origin}/oauth-callback`;
+      console.log("Redirecting to:", redirectUri);
+
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider,
+        options: {
+          redirectTo: redirectUri,
+          queryParams: {
+            prompt: "select_account",
+          },
+        },
+      });
+
+      if (error) throw error;
+
+      const { data: { user } } = await supabase.auth.getUser();
+      console.log("User:", user);
+      // The redirect will happen automatically
+    } catch (error: any) {
+      setError("OAuth login failed. Please try again.");
+      console.error("OAuth login failed:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleSocialSignup = async () => {
@@ -364,6 +394,34 @@ export function Signup() {
               <p className="mt-6 text-center text-sm text-muted-foreground hyphens-none break-words italic">
                 <span className="font-semibold">No charges today </span> · Cancel anytime · 14 days free
               </p>
+
+              <div className="mt-6">
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-gray-300" />
+                  </div>
+                  <div className="relative flex justify-center text-sm">
+                    <span className="px-2 bg-white text-gray-500">
+                      Or continue with
+                    </span>
+                  </div>
+                </div>
+
+                <div className="mt-6">
+                  <button
+                    onClick={() => handleOAuthSignUp("google")}
+                    disabled={isLoading}
+                    className="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <img
+                      className="h-5 w-5 mr-2"
+                      src="https://www.svgrepo.com/show/475656/google-color.svg"
+                      alt="Google logo"
+                    />
+                    <span>Google</span>
+                  </button>
+                </div>
+              </div>
 
             {/* <div className="mt-6">
               <div className="relative">
