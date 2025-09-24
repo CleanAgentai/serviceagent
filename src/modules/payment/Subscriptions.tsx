@@ -548,13 +548,15 @@ export const Subscriptions: React.FC = () => {
             const theme = planThemes[selected.key];
             return (
               <div className={`mt-6 border-2 rounded-2xl p-6 bg-card ${theme.borderClass}`}>
-                <p className="text-md text-muted-foreground mb-1">Current Plan</p>
                 <div className="flex items-center justify-between">
-                  <div className="font-bold text-xl">{selectedPlan} Plan</div>
+                <p className="text-md text-muted-foreground mb-1">Current Plan</p>
+                <div className="text-xs line-through text-slate-400">
+                  {selectedYearly ? selected.yearPrice : selected.price}
+                </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="font-bold text-xl">{selectedPlan} Plan {selectedYearly ? "(Yearly)" : "(Monthly)"}</div>
                   <div className="text-right">
-                    <div className="text-xs line-through text-slate-400">
-                      {selectedYearly ? selected.yearPrice : selected.price}
-                    </div>
                     <div className={`text-lg font-bold ${theme.highlightText}`}>$0 due today</div>
                   </div>
                 </div>
