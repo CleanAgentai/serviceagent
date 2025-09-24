@@ -59,10 +59,10 @@ const Services = () => {
     },
     {
       title: "Scale",
-      price: isYearly ? "$479" : "$599",
-      originalPrice: isYearly ? "$599" : null,
+      price: isYearly ? "$399" : "$499",
+      originalPrice: isYearly ? "$499" : null,
       headline: "Hire 5× faster",
-      yearPrice: "$5,750",
+      yearPrice: "$4,790",
       period: isYearly ? "/month (billed yearly)" : "/month",
       cost_per_candidate: isYearly ? "$4/candidate" : "$5/candidate",
       description: "For growing companies with higher volume",
