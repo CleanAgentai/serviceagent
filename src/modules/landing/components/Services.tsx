@@ -210,7 +210,7 @@ const Services = () => {
                   <Button 
                     className="flex w-full bg-gradient-to-r from-teal to-teal/90 hover:from-teal/90 hover:to-teal text-white py-3 px-2 text-lg font-bold rounded-xl shadow-xl shadow-teal/40 hover:scale-105 active:scale-95 transition-all duration-300"
                     aria-label="Start free trial with Starter Plan - 10 AI interviews per month, 14 days free"
-                    onClick={() => navigate(starterPlan?.ctaLink)}
+                    onClick={() => navigate(starterPlan?.ctaLink, { state: { plan: 'STARTER' } })}
                   >
                     <div className="flex items-center text-sm gap-2 px-2">
                       <Zap className="w-5 h-5" />
@@ -286,7 +286,7 @@ const Services = () => {
                   <Button 
                     className="flex w-full bg-gradient-to-r from-gold to-gold/90 text-white py-3 px-2 text-lg font-bold rounded-xl shadow-xl shadow-gold/40 hover:shadow-gold/50 hover:scale-105 active:scale-95 transition-all duration-300"
                     aria-label="Start free trial with Launch Plan - 20 AI interviews per month, 14 days free"
-                    onClick={() => navigate(launchPlan?.ctaLink)}
+                    onClick={() => navigate(launchPlan?.ctaLink, { state: { plan: 'LAUNCH' } })}
                   >
                     <div className="flex items-center text-sm gap-2 px-2">
                       <Sparkles className="w-5 h-5" />
@@ -352,7 +352,7 @@ const Services = () => {
                   <Button 
                     className="flex w-full bg-gradient-to-r from-terracotta to-terracotta/90 hover:from-terracotta/90 hover:to-terracotta text-white py-3 px-2 text-lg font-bold rounded-xl shadow-xl shadow-terracotta/50 hover:scale-105 active:scale-95 transition-all duration-300"
                     aria-label="Start free trial with Scale Plan - 100 AI interviews per month, most popular choice"
-                    onClick={() => navigate(scalePlan?.ctaLink)}
+                    onClick={() => navigate(scalePlan?.ctaLink, { state: { plan: 'SCALE' } })}
                   >
                     <div className="flex items-center text-sm gap-2 px-2">
                       <Sparkles className="w-5 h-5" />
