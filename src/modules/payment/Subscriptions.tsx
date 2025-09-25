@@ -26,6 +26,7 @@ export const Subscriptions: React.FC = () => {
       if (planTitle) {
         setSelectedPlan(planTitle);
         setSelectedYearly(false);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     }
   }, [location.state]);
