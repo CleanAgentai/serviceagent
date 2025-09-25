@@ -1,12 +1,17 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { User, Mail, Lock, Building2, ArrowRight, Eye, EyeOff, Check } from "lucide-react";
 import { useAuth } from "@/app/providers/AuthContext";
 import { supabase } from "@/app/lib/supabase";
 
 export function Signup() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { signUp } = useAuth();
+  
+  // Get selected plan from navigation state or localStorage fallback
+  const selectedPlan = (location.state as any)?.plan || localStorage.getItem('selectedPlan') || 'LAUNCH';
+  
 
   const [formData, setFormData] = useState({
     email: "",
@@ -140,8 +145,11 @@ export function Signup() {
           throw signUpError;
         }
       } else {
-        // Navigate to payment selection upon successful signup
-        navigate("/plan-onboarding");
+        // Persist plan selection and navigate to checkout
+        if ((location.state as any)?.plan) {
+          localStorage.setItem('selectedPlan', (location.state as any).plan);
+        }
+        navigate("/plan-onboarding", { state: { plan: selectedPlan } });
       }
     } catch (err: any) {
       setError(err.message || "회원가입 중 오류가 발생했습니다.");

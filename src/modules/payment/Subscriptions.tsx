@@ -1,18 +1,37 @@
 import { StripeCheckoutBox } from "@/components/stripe/StripeCheckoutBox";
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { CheckCircle, ArrowRight, Zap, TrendingUp, Users, Star, Sparkles, Check, ChevronDown, ArrowLeft, Leaf, Rocket } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FormControlLabel } from "@mui/material";
 import { Switch } from "@mui/material";
 
 export const Subscriptions: React.FC = () => {
+  const location = useLocation();
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const [selectedYearly, setSelectedYearly] = useState<boolean | null>(null);
   const [isYearly, setIsYearly] = useState(false);
   const currency = "$";
 
+  useEffect(() => {
+    const inboundPlan = (location.state as any)?.plan || localStorage.getItem('selectedPlan');
+    if (inboundPlan) {
+      const planMap: Record<string, string> = {
+        'STARTER': 'Starter',
+        'LAUNCH': 'Launch', 
+        'SCALE': 'Scale'
+      };
+      const planTitle = planMap[inboundPlan.toUpperCase()];
+      if (planTitle) {
+        setSelectedPlan(planTitle);
+        setSelectedYearly(false);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+  }, [location.state]);
+
+  
   // Potentially pull from backend
   // Compute 14-day trial end date for display
   const trialEndDisplay = (() => {
@@ -33,25 +52,6 @@ export const Subscriptions: React.FC = () => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
   }
-
-  // Resolve price for the selected plan and billing interval
-  const getSelectedPrice = () => {
-    if (!selectedPlan) return "";
-    const plan = selectedPlan.toUpperCase();
-    const yearly = !!selectedYearly;
-    if (plan === "LAUNCH") {
-      return yearly ? "$119.00" : "$149.00";
-    }
-
-    if(plan === "STARTER") {
-      return yearly ? "79.00" : "99.00"
-    }
-
-    if (plan === "SCALE") {
-      return yearly ? "$479.00" : "$599.00";
-    }
-    return "";
-  };
 
   // Launch and Scale plans for new design
   const plans = [
