@@ -19,17 +19,33 @@ if (!supabaseUrl || !supabaseAnonKey) {
 
 console.log('Initializing Supabase client with URL:', supabaseUrl);
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+export let supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     autoRefreshToken: true,
     persistSession: true,
     detectSessionInUrl: true,
-    flowType: 'pkce'
+    flowType: 'pkce',
+    storage: false ? localStorage : sessionStorage,
+    
   }
 });
 
+// export const initSupabase = (rememberMe) => {
+//   supabase = createClient(supabaseUrl, supabaseAnonKey, {
+//     auth: {
+//       autoRefreshToken: true,
+//       persistSession: true,
+//       detectSessionInUrl: true,
+//       flowType: 'pkce',
+//       storage: rememberMe ? localStorage : sessionStorage,
+//     }
+//   });
+// };
+
 // Export auth-related functions
 export const signOut = async () => {
+  localStorage.removeItem('sb-sngxzcoviqrfsxqzbbmv-auth-token');
+  sessionStorage.removeItem('sb-sngxzcoviqrfsxqzbbmv-auth-token');
   const { error } = await supabase.auth.signOut();
   return { error };
 };

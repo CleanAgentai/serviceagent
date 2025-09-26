@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, ArrowRight, Eye, EyeOff, Check } from "lucide-react";
 import { useAuth } from "@/app/providers/AuthContext";
 import { supabase } from "@/app/lib/supabase";
+// import { initSupabase } from "@/app/lib/supabase";
+import { RememberMe } from "@mui/icons-material";
 
 export function Login() {
   const navigate = useNavigate();
@@ -13,7 +15,8 @@ export function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
+  // console.log(rememberMe)
+  // initSupabase(RememberMe)
   // Set meta title and description
   React.useEffect(() => {
     document.title = "Sign In - ServiceAgent";
@@ -31,9 +34,12 @@ export function Login() {
     e.preventDefault();
     setError("");
     setIsLoading(true);
-
+    console.log(rememberMe)
     try {
-      const { error: signInError } = await signIn(email, password);
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
       if (signInError) throw signInError;
       navigate("/dashboard");
     } catch (err: any) {
