@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/app/lib/supabase";
 
 const CheckoutSuccess = () => {
   const [status, setStatus] = useState<"verifying" | "success" | "error">("verifying");
@@ -23,13 +24,41 @@ const CheckoutSuccess = () => {
         if (!res.ok) throw new Error("Verification failed");
         return res.json();
       })
-      .then((data) => {
+      .then(async (data) => {
         if (data.paid) {
           setStatus("success");
-          // Redirect to company profile setup after successful payment
-          setTimeout(() => {
-            navigate("/post-signup");
-          }, 3000);
+          
+          // Check if company profile is already completed
+          try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+              const { data: profile } = await supabase
+                .from("company_profiles")
+                .select("company_profile_completed")
+                .eq("created_by_user_id", user.id)
+                .single();
+              
+              // Redirect based on profile completion status
+              setTimeout(() => {
+                if (profile?.company_profile_completed) {
+                  navigate("/dashboard");
+                } else {
+                  navigate("/post-signup");
+                }
+              }, 3000);
+            } else {
+              // Fallback to post-signup if user not found
+              setTimeout(() => {
+                navigate("/post-signup");
+              }, 3000);
+            }
+          } catch (error) {
+            console.error("Error checking profile completion:", error);
+            // Fallback to post-signup on error
+            setTimeout(() => {
+              navigate("/post-signup");
+            }, 3000);
+          }
         } else {
           setStatus("error");
         }
@@ -53,13 +82,7 @@ const CheckoutSuccess = () => {
         {status === "success" && (
           <>
             <h2 className="text-2xl font-bold text-green-600">Payment Successful</h2>
-            <p className="text-gray-600 mt-2">Thank you for your subscription.</p>
-            <button
-              onClick={() => navigate("/post-signup")}
-              className="mt-6 px-4 py-2 bg-black text-white rounded hover:bg-gray-800"
-            >
-              Complete Your Profile
-            </button>
+            <p className="text-gray-600 mt-2">Thank you for your subscription. Redirecting you now...</p>
           </>
         )}
 
