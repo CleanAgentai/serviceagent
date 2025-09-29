@@ -3,7 +3,7 @@ import { supabase } from "@/app/lib/supabase";
 import { useParams, useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Video, X, Star, MessageCircle, ArrowRight, Eye } from "lucide-react";
+import { ArrowLeft, Video, X, Star, MessageCircle, ArrowRight, Eye, Upload, CheckCircle, AlertCircle, RefreshCw, ExternalLink } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import {
@@ -63,18 +63,28 @@ interface QuestionData {
   video_url: string | null;
 }
 
+interface ATSStatus {
+  success: boolean;
+  targetATS?: string;
+}
+
 export function ResponseDetails() {
   const { responseId } = useParams();
   const navigate = useNavigate();
   const [response, setResponse] = useState<Response | null>(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<"questions" | "reviews" | "pdf" | "transcript">("questions");
+  const [activeTab, setActiveTab] = useState<"questions" | "reviews" | "pdf" | "transcript" | "ats">("questions");
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const [transcriptUrl, setTranscriptUrl] = useState<string | null>(null);
   const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);
   const [selectedMetric, setSelectedMetric] = useState<string | null>(null);
   const [plan, setPlan] = useState<string | null>(null);
   const [evaluationData, setEvaluationData] = useState<any | null>(null);
+  const [atsStatus, setAtsStatus] = useState<ATSStatus>({
+    success: false,
+    targetATS: 'Unknown ATS'
+  });
+  const [hasShownConfirmation, setHasShownConfirmation] = useState(false);
   const location = useLocation();
   const { candidateName: passedName, interviewTitle: passedTitle } =
     location.state || {};
@@ -138,6 +148,66 @@ export function ResponseDetails() {
         if (evalError || !evalData)
           throw evalError || new Error("Evaluation data not found");
 
+        // Fetch ATS status and company info
+        const { data: atsData, error: atsError } = await supabase
+          .from("interview_attempts")
+          .select(`
+            id,
+            department_key,
+            ats_upload_success
+          `)
+          .eq("id", responseId)
+          .single();
+
+        // Fetch company profile separately using the department_key
+        let companyProfile = null;
+        if (atsData && !atsError && atsData.department_key) {
+          const { data: companyData, error: companyError } = await supabase
+            .from("company_profiles")
+            .select("knit_app_id")
+            .eq("willo_company_key", atsData.department_key)
+            .single();
+          
+          if (companyData && !companyError) {
+            companyProfile = companyData;
+          } else {
+            console.log("❌ Company profile fetch error:", companyError);
+          }
+        }
+
+        if (atsData && !atsError) {
+          console.log("🔍 ATS Data fetched:", atsData);
+          console.log("🔍 Company Profile:", companyProfile);
+          console.log("🔍 knit_app_id:", companyProfile?.knit_app_id);
+          
+          // Map knit_app_id to ATS system name
+          const atsSystemMap: { [key: string]: string } = {
+            'bamboo_hr': 'BambooHR',
+            'workday': 'Workday',
+            'greenhouse': 'Greenhouse',
+            'lever': 'Lever',
+            'jazz_hr': 'JazzHR',
+            'smart_recruiters': 'SmartRecruiters',
+            'icims': 'iCIMS',
+            'jobvite': 'Jobvite',
+            'bullhorn': 'Bullhorn',
+            'salesforce': 'Salesforce',
+            'breezy': 'Breezy'
+          };
+          
+          const atsSystemName = atsSystemMap[companyProfile?.knit_app_id as string] || 'Unknown ATS';
+          
+          console.log("🔍 ATS System Name:", atsSystemName);
+          console.log("🔍 ATS Upload Success:", atsData.ats_upload_success);
+          
+          setAtsStatus({
+            success: atsData.ats_upload_success || false,
+            targetATS: atsSystemName
+          });
+        } else {
+          console.log("❌ ATS Data fetch error:", atsError);
+        }
+
         // Mock data - replace with actual API data
         setResponse({
           id: responseId || "",
@@ -184,6 +254,35 @@ export function ResponseDetails() {
 
     fetchResponse();
   }, [responseId]);
+
+  // Refresh ATS status periodically when ATS tab is active
+  useEffect(() => {
+    if (activeTab === 'ats') {
+      const interval = setInterval(async () => {
+        try {
+          const { data: atsData, error: atsError } = await supabase
+            .from("interview_attempts")
+            .select("ats_upload_success")
+            .eq("id", responseId)
+            .single();
+
+          if (atsData && !atsError) {
+            console.log("🔄 ATS Status refresh:", atsData.ats_upload_success);
+            setAtsStatus(prev => ({
+              ...prev,
+              success: atsData.ats_upload_success || false
+            }));
+          } else {
+            console.log("❌ ATS Status refresh error:", atsError);
+          }
+        } catch (error) {
+          console.error("Error refreshing ATS status:", error);
+        }
+      }, 5000); // Check every 5 seconds
+
+      return () => clearInterval(interval);
+    }
+  }, [activeTab, responseId]);
 
   const getColorForScore = (score) => {
     if (score >= 8) return '#4caf50';       // Green
@@ -254,6 +353,11 @@ export function ResponseDetails() {
     } catch (err) {
       console.error(`Error downloading ${type} PDF:`, err);
     }
+  };
+
+  const handleRetryATS = async () => {
+    // TODO: Implement retry logic with backend API
+    console.log('Retry ATS upload - not implemented yet');
   };
 
   if (loading) {
@@ -487,6 +591,97 @@ export function ResponseDetails() {
                   />
               </div>
             );
+          } else if (activeTab === "ats") {
+            return (
+              <div className="space-y-6">
+                <Card className="p-6 shadow-lg">
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-xl font-semibold">ATS PDF Upload Status</h2>
+                    <div className="flex items-center gap-2">
+                      <ExternalLink className="w-4 h-4 text-gray-500" />
+                      <span className="text-sm text-gray-600">Target: {atsStatus.targetATS}</span>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    {/* Status Display */}
+                    <div className={`flex items-center gap-3 p-4 rounded-lg border ${
+                      atsStatus.success ? 'border-green-200 bg-green-50' : 'border-gray-200 bg-gray-50'
+                    }`}>
+                      {atsStatus.success ? (
+                        <div className="flex items-center gap-3 text-green-600">
+                          <CheckCircle className="w-6 h-6" />
+                          <div>
+                            <p className="font-medium">PDFs Successfully Sent to ATS</p>
+                            <p className="text-sm text-gray-600">PDFs have been uploaded to your ATS system</p>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-3 text-gray-600">
+                          <Upload className="w-6 h-6" />
+                          <div>
+                            <p className="font-medium">Ready to Send</p>
+                            <p className="text-sm text-gray-600">PDFs are ready to be uploaded to your ATS</p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex gap-3">
+                      {!atsStatus.success && (
+                        <Button 
+                          onClick={handleRetryATS}
+                          className="bg-blue-600 hover:bg-blue-700 text-white"
+                        >
+                          <Upload className="w-4 h-4 mr-2" />
+                          Send to ATS
+                        </Button>
+                      )}
+                      
+                      {atsStatus.success && (
+                        <Button 
+                          onClick={handleRetryATS}
+                          disabled={true}
+                          variant="outline"
+                          className="border-gray-400 text-gray-400 cursor-not-allowed"
+                          title="Retry functionality not implemented yet"
+                        >
+                          <RefreshCw className="w-4 h-4 mr-2" />
+                          Send Again (Coming Soon)
+                        </Button>
+                      )}
+                    </div>
+
+                    {/* PDF Files Info */}
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <h3 className="font-medium text-gray-900 mb-2">Files to be sent:</h3>
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 text-sm text-gray-600">
+                          <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                          Interview Analysis PDF
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-gray-600">
+                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                          Interview Transcript PDF
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Integration Info */}
+                    <div className="bg-blue-50 p-4 rounded-lg">
+                      <h3 className="font-medium text-blue-900 mb-2">Integration Details</h3>
+                      <div className="text-sm text-blue-800">
+                        <p>Connected to: <span className="font-medium">{atsStatus.targetATS}</span></p>
+                        <p className="text-xs text-blue-600 mt-1">
+                          PDFs will be attached to the candidate's profile in your ATS
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+            );
           }
   }
 
@@ -606,6 +801,29 @@ export function ResponseDetails() {
                 <Eye className="w-4 h-4 inline-block mr-2" />
                 View Analysis PDF
               </button>
+
+            <button
+              className={cn(
+                "px-4 py-2 font-medium whitespace-nowrap relative",
+                plan != "Scale" && plan != "Custom"
+                  ? "text-gray-400 cursor-not-allowed"
+                  : activeTab === "ats"
+                  ? "text-purple-500 border-b-2 border-purple-500"
+                  : "text-gray-600 hover:text-purple-500"
+              )}
+              disabled={plan != "Scale" && plan != "Custom"}
+              title={plan != "Scale" && plan != "Custom" ? "Upgrade your plan to access ATS integration" : ""}
+              onClick={() => {
+                if (plan != "Scale" && plan != "Custom") return;
+                setActiveTab("ats");
+              }}
+            >
+              <Upload className="w-4 h-4 inline-block mr-2" />
+              ATS Upload PDF
+              {atsStatus.success && (
+                <CheckCircle className="w-3 h-3 inline-block ml-1 text-green-500" />
+              )}
+            </button>
             </div>
           </div>
         </div>

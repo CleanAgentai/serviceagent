@@ -61,9 +61,9 @@ export const useSubscription = (): SubscriptionData => {
   };
 };
 
-// Helper function to check if user has Scale plan
+// Helper function to check if user has Scale or Custom plan
 export const isScalePlan = (subscription: string | null): boolean => {
-  return subscription === 'Scale';
+  return subscription === 'Scale' || subscription === 'Custom';
 };
 
 // Helper function to check if user has a paid plan (not free trial)

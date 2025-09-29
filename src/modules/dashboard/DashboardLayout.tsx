@@ -69,7 +69,7 @@ export default function DashboardLayout() {
       icon: <Plug size={20} />,
       label: "Integrations",
       disabled: !hasScalePlan,
-      tooltipMessage: "ATS Integration is only available on Scale plan. Upgrade to Scale to unlock.",
+      tooltipMessage: "ATS Integration is only available on Scale or Custom plans. Upgrade to Scale to unlock.",
     },
     {
       path: "/dashboard/onboarding",

@@ -370,10 +370,10 @@ const Integrations: React.FC = () => {
               <AlertCircle className="h-8 w-8 text-amber-600 flex-shrink-0 mt-1" />
               <div className="flex-1">
                 <h2 className="text-2xl font-bold text-amber-900 mb-2">
-                  ATS Integration Requires Scale Plan
+                  ATS Integration Requires Scale or Custom Plan
                 </h2>
                 <p className="text-amber-800 mb-6 text-lg">
-                  ATS Integration is only available on Scale plan. Upgrade to Scale to unlock powerful integrations with your Applicant Tracking System.
+                  ATS Integration is only available on Scale or Custom plans. Upgrade to Scale to unlock powerful integrations with your Applicant Tracking System.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Button 
