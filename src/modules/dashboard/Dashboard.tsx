@@ -281,7 +281,7 @@ const Dashboard = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Create Interview Card */}
             <Card
-              className="p-6 cursor-pointer hover:bg-gray-50 transition-all duration-300 shadow-lg border-0 bg-white hover:shadow-xl hover:scale-105"
+              className="p-6 cursor-pointer hover:bg-gray-50 transition-all duration-300 shadow-lg border-0 bg-white hover:shadow-xl hover:scale-[1.01]"
               onClick={() => navigate("/interviews/create")}
             >
               <div className="flex items-center gap-4">
@@ -299,7 +299,7 @@ const Dashboard = () => {
 
             {/* View Responses Card */}
             <Card
-              className="p-6 cursor-pointer hover:bg-gray-50 transition-all duration-300 shadow-lg border-0 bg-white hover:shadow-xl hover:scale-105"
+              className="p-6 cursor-pointer hover:bg-gray-50 transition-all duration-300 shadow-lg border-0 bg-white hover:shadow-xl hover:scale-[1.01]"
               onClick={() => navigate("/interviews/responses")}
             >
               <div className="flex items-center gap-4">

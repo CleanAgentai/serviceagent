@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/app/lib/supabase";
+import { usePlan } from "@/hooks/usePlan";
 import { useParams, useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Video, X, Star, MessageCircle, ArrowRight, Eye } from "lucide-react";
+import { ArrowLeft, Video, X, Star, MessageCircle, ArrowRight, Eye, Lock } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   Dialog,
   DialogContent,
@@ -73,13 +75,14 @@ export function ResponseDetails() {
   const [transcriptUrl, setTranscriptUrl] = useState<string | null>(null);
   const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);
   const [selectedMetric, setSelectedMetric] = useState<string | null>(null);
-  const [plan, setPlan] = useState<string | null>(null);
+  const { hasAccess } = usePlan();
   const [evaluationData, setEvaluationData] = useState<any | null>(null);
   const location = useLocation();
   const { candidateName: passedName, interviewTitle: passedTitle } =
     location.state || {};
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
   const [fileName, setFileName] = useState<string | null>(null);
+  const canDownload = hasAccess('TEST');
 
   useEffect(() => {
     // TODO: Replace with actual API call
@@ -91,13 +94,7 @@ export function ResponseDetails() {
           error: userError,
         } = await supabase.auth.getUser();
 
-        const { data: plan, error: planError } = await supabase
-          .from("profiles")
-          .select("subscription")
-          .eq("id", user.id)
-          .single();
-
-        setPlan(plan.subscription);
+      
 
         // Simulate API call
         await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -218,9 +215,8 @@ export function ResponseDetails() {
     <ProgressOnLoad rating={rating} />
   );
 
-  const downloadPdf = async (type: 'transcript' | 'analysis') => {
-    if (plan != "Scale" && plan != "Custom") return;
-    
+ 
+    const downloadPdf = async (type: 'transcript' | 'analysis') => {
     try {
       const fileName = `${responseId}.pdf`;
       const bucket = type === 'transcript' ? 'interview-transcripts' : 'interview-pdfs';
@@ -555,19 +551,21 @@ export function ResponseDetails() {
 
             {/* Right side labels */}
             <div className="flex gap-4">
+              <TooltipProvider>
+              <Tooltip>
+              <TooltipTrigger asChild>
               <button
                 className={cn(
                   "px-4 py-2 font-medium whitespace-nowrap",
-                  plan != "Scale" && plan != "Custom"
+                  !canDownload
                     ? "text-gray-400 cursor-not-allowed"
                     : activeTab === "transcript"
                     ? "text-green-500 border-b-2 border-green-500"
                     : "text-gray-600 hover:text-green-500"
                 )}
-                disabled={plan != "Scale" && plan != "Custom"}
-                title={plan != "Scale" && plan != "Custom" ? "Upgrade your plan to access transcript PDF" : ""}
+                disabled={!canDownload}
                 onClick={async () => {
-                  if (plan != "Scale" && plan != "Custom") return;
+                  if (!canDownload) return;
                   setActiveTab("transcript");
                   const candidateName = passedName || response?.candidateName || 'Candidate';
                   const position = passedTitle || response?.appliedPosition || 'Interview';
@@ -577,23 +575,33 @@ export function ResponseDetails() {
                   setFileName(customFileName);
                 }}
               >
-                <Eye className="w-4 h-4 inline-block mr-2" />
-                View Transcript PDF
+                {(!canDownload
+                  ? <Lock className="w-4 h-4 inline-block mr-2 text-red-500" />
+                  : <Eye className="w-4 h-4 inline-block mr-2" />)}
+                View Transcript PDF 
               </button>
+              </TooltipTrigger>
+              {!canDownload && (
+                <TooltipContent>Upgrade to Launch</TooltipContent>
+              )}
+              </Tooltip>
+              </TooltipProvider>
 
+              <TooltipProvider>
+              <Tooltip>
+              <TooltipTrigger asChild>
               <button
                 className={cn(
                   "px-4 py-2 font-medium whitespace-nowrap",
-                  plan != "Scale" && plan != "Custom"
+                  !canDownload
                     ? "text-gray-400 cursor-not-allowed"
                     : activeTab === "pdf"
                     ? "text-orange-500 border-b-2 border-orange-500"
                     : "text-gray-600 hover:text-orange-500"
                 )}
-                disabled={plan != "Scale" && plan != "Custom"}
-                title={plan != "Scale" && plan != "Custom" ? "Upgrade your plan to access analysis PDF" : ""}
+                disabled={!canDownload}
                 onClick={async () => {
-                  if (plan != "Scale" && plan != "Custom") return;
+                  if (!canDownload) return;
                   setActiveTab("pdf");
                   const candidateName = passedName || response?.candidateName || 'Candidate';
                   const position = passedTitle || response?.appliedPosition || 'Interview';
@@ -603,9 +611,17 @@ export function ResponseDetails() {
                   setFileName(customFileName);
                 }}
               >
-                <Eye className="w-4 h-4 inline-block mr-2" />
+                {(!canDownload
+                  ? <Lock className="w-4 h-4 inline-block mr-2 text-red-500" />
+                  : <Eye className="w-4 h-4 inline-block mr-2" />)}
                 View Analysis PDF
               </button>
+              </TooltipTrigger>
+              {!canDownload && (
+                <TooltipContent>Upgrade to Launch</TooltipContent>
+              )}
+              </Tooltip>
+              </TooltipProvider>
             </div>
           </div>
         </div>

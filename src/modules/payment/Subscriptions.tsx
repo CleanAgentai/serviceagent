@@ -1,3 +1,4 @@
+import { buildPlanPerks, planThemes } from './planConfig';
 import { StripeCheckoutBox } from "@/components/stripe/StripeCheckoutBox";
 import React, { useState, useMemo, useEffect } from "react";
 import { CheckCircle, ArrowRight, Zap, TrendingUp, Users, Star, Sparkles, Check, ChevronDown, ArrowLeft, Leaf, Rocket } from "lucide-react";
@@ -127,61 +128,14 @@ export const Subscriptions: React.FC = () => {
   const launchPlan = useMemo(() => planByKey('LAUNCH'), [plans, isYearly]);
   const scalePlan = useMemo(() => planByKey('SCALE'), [plans, isYearly]);
 
-   /* Perks to display on payment page */
-   const planPerks: Record<string, string[]> = {
-    // Edit Starter Perks with real features
-    STARTER: [
-      "100% no-risk free trial",
-      "Pay nothing for the first 14 days",
-      "Cancel anytime, hassle-free",
-      "10 candidates/month",
-      `Only ${starterPlan?.cost_per_candidate} - $0 due today!`,
-      "Expert support included",
-    ],
-    LAUNCH: [
-      "100% no-risk free trial",
-      "Pay nothing for the first 14 days",
-      "Cancel anytime, hassle-free",
-      "20 candidates/month",
-      "Save 15+ hours per month with AI interviewing",
-      "Candidate transcript and analysis as PDF",
-      "Custom branding for candidates",
-      `Only ${launchPlan?.cost_per_candidate} - $0 due today!`,
-      "Expert support included",
-    ],
-    SCALE: [
-      "100% no-risk free trial",
-      "Pay nothing for the first 14 days",
-      "Cancel anytime, hassle-free",
-      "Get access to all features",
-      "100 candidates/month",
-      "Save 50+ hours per month with AI interviewing",
-      "ATS integration",
-      `Only ${scalePlan?.cost_per_candidate} - $0 due today!`,
-      "Priority phone support",
-    ],
-  };
 
-  const planThemes: Record<string, { checkGradient: string; bannerGradient: string; highlightText: string; borderClass: string }> = {
-    STARTER: {
-      checkGradient: "bg-gradient-to-br from-teal to-teal/80",
-      bannerGradient: "bg-teal/5",
-      highlightText: "text-teal",
-      borderClass: "border-teal/30",
-    },
-    LAUNCH: {
-      checkGradient: "bg-gradient-to-br from-gold to-gold/80",
-      bannerGradient: "bg-gold/5",
-      highlightText: "text-gold",
-      borderClass: "border-gold/40",
-    },
-    SCALE: {
-      checkGradient: "bg-gradient-to-br from-terracotta to-terracotta/40",
-      bannerGradient: "bg-terracotta/5",
-      highlightText: "text-terracotta",
-      borderClass: "border-terracotta/40",
-    },
-  };
+  const planPerks = buildPlanPerks({
+    STARTER: starterPlan?.cost_per_candidate,
+    LAUNCH: launchPlan?.cost_per_candidate,
+    SCALE: scalePlan?.cost_per_candidate,
+  });
+
+  // planThemes imported from shared config
 
   /* Memoized handle for selected plan for payment page construction */
   const selected = useMemo(() => {

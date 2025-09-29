@@ -6,6 +6,7 @@ import React, {
 } from "react";
 import { Plug } from "lucide-react";
 import { supabase } from "../lib/supabase";
+import { FeatureGate } from "@/modules/dashboard/FeatureGate";
 
 interface CurrentUser {
   id: string;
@@ -348,6 +349,7 @@ const Integrations: React.FC = () => {
   ]);
 
   return (
+    <FeatureGate requiredPlan="SCALE" featureName="ATS integrations" title="Scale Your Hiring with Powerful ATS Integrations" >
     <div style={{ 
       minHeight: '100vh', 
       backgroundColor: '#ffffff',
@@ -376,13 +378,8 @@ const Integrations: React.FC = () => {
         </div>
 
         {/* Title and Description */}
-        <h1 style={{ 
-          fontSize: '48px', 
-          fontWeight: '700', 
-          color: '#1e293b',
-          margin: '0 0 16px 0',
-          lineHeight: '1.1'
-        }}>
+        <h1 className="text-2xl sm:text-3xl mb-4 font-bold">
+        
           Integrations
         </h1>
         
@@ -420,32 +417,11 @@ const Integrations: React.FC = () => {
             <button
               slot="trigger"
               disabled={loading}
-              style={{
-                padding: "16px 32px",
-                fontSize: '18px',
-                fontWeight: '600',
-                borderRadius: '12px',
-                background: loading ? "#94a3b8" : "#3b82f6",
-                color: "white",
-                border: "none",
-                cursor: loading ? "not-allowed" : "pointer",
-                transition: 'all 0.2s ease',
-                boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
-              }}
-              onMouseEnter={(e) => {
-                if (!loading) {
-                  e.currentTarget.style.background = '#2563eb';
-                  e.currentTarget.style.transform = 'translateY(-1px)';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!loading) {
-                  e.currentTarget.style.background = '#3b82f6';
-                  e.currentTarget.style.transform = 'translateY(0)';
-                }
-              }}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full font-bold
+              border-0 shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               {loading ? "Loading..." : connectedIntegrations.size > 0 ? "Edit Integration" : "Connect an Integration"}
+              
             </button>
           </knit-auth>
 
@@ -597,6 +573,7 @@ const Integrations: React.FC = () => {
         )}
       </div>
     </div>
+    </FeatureGate>
   );
 };
 

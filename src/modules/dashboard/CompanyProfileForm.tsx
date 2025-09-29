@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/card';
 import { toast } from 'sonner';
 import { ColorPicker } from '@/components/ui/color-picker';
+import { FeatureGate } from "./FeatureGate";
 
 interface CompanyProfileFormProps {
   mode: 'create' | 'update';
@@ -279,9 +280,7 @@ export function CompanyProfileForm({
           : `${apiBaseUrl}/api/departments`;
 
       const method = mode === 'update' ? 'PATCH' : 'POST';
-
-      console.log(endpoint);
-
+    
       //  Willow BackendAPI Call
       const departmentRes = await fetch(endpoint, {
         method,
@@ -459,6 +458,7 @@ export function CompanyProfileForm({
             </div>
           </div>
 
+          <FeatureGate requiredPlan="TEST" showGate={false} >
           <div>
             <details className="mt-6" onToggle={(e) => setIsOpen((e.target as HTMLDetailsElement).open)}>
               <summary className="group flex items-center space-x-3 cursor-pointer text-gray-700 font-medium hover:text-blue-600 transition-colors duration-200">
@@ -470,6 +470,7 @@ export function CompanyProfileForm({
                  {isOpen && <p className="text-xs text-gray-500">Don't worry, you can always do this later in Settings.</p>}
                  </div>
               </summary>
+              
               <div className="mt-4 space-y-6">
                 <div className="space-y-2 pr-6">
                   <Label htmlFor="companyWebsite">Website (Optional)</Label>
@@ -536,6 +537,7 @@ export function CompanyProfileForm({
               </div>
             </details>
           </div>
+          </FeatureGate>
 
         </CardContent>
 
