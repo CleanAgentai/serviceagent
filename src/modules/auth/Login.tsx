@@ -2,18 +2,23 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, ArrowRight, Eye, EyeOff, Check } from "lucide-react";
 import { useAuth } from "@/app/providers/AuthContext";
-import { supabase } from "@/app/lib/supabase";
+import { reInitSupabase,supabase } from "@/app/lib/supabase";
 // import { initSupabase } from "@/app/lib/supabase";
 import { RememberMe } from "@mui/icons-material";
+import { useDispatch, useSelector } from 'react-redux'
+import type { RootState } from '@/app/store/store'
+import { setRememberMe } from '@/app/store/rememberSlice'
 
 export function Login() {
+  const dispatch = useDispatch()
+  const rememberMe = useSelector((state: RootState) => state.remember.rememberMe)
   const navigate = useNavigate();
   const { signIn, signInWithGoogle } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
+  // const [rememberMe, setRememberMe] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   // console.log(rememberMe)
   // initSupabase(RememberMe)
@@ -32,9 +37,10 @@ export function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    reInitSupabase()
     setError("");
     setIsLoading(true);
-    console.log(rememberMe)
+    // console.log(rememberMe)
     try {
       const { error: signInError } = await supabase.auth.signInWithPassword({
       email,
@@ -171,7 +177,7 @@ export function Login() {
                 <div className="flex items-center">
                   <button
                     type="button"
-                    onClick={() => setRememberMe(!rememberMe)}
+                    onClick={() => dispatch(setRememberMe(!rememberMe))}
                     className={`flex items-center justify-center !min-h-0 !min-w-0 h-8 w-8 rounded-3xl border-2 transition-all duration-200 ${
                       rememberMe
                         ? 'bg-blue-600 border-blue-600 text-white'

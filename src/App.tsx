@@ -50,6 +50,11 @@ import GettingStarted from "./components/onboarding/GettingStarted";
 import WelcomePopupController from "@/components/onboarding/PopupController";
 import LoggedInConfetti from "./components/onboarding/Confetti";
 
+//Redux Components
+import { Provider } from 'react-redux'
+import { store } from './app/store/store'
+import ReactDOM from 'react-dom/client'
+
 // Sales Routes
 const SalesRoutes = React.lazy(() => import("@/pages/sales/setup"));
 
@@ -92,6 +97,7 @@ const App = () => {
   }, []);
 
   return (
+    <Provider store={store}>
     <UserPreferencesProvider>
       <AuthProvider>
         <BrowserRouter>
@@ -232,6 +238,7 @@ const App = () => {
         </BrowserRouter>
       </AuthProvider>
     </UserPreferencesProvider>
+    </Provider>
   );
 };
 
