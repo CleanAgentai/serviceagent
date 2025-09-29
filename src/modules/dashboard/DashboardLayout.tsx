@@ -137,7 +137,7 @@ export default function DashboardLayout() {
                   label={item.label}
                   path={item.path}
                   onClick={closeSidebar}
-                  disabled={item.disabled}
+                  // disabled={item.disabled}
                   tooltipMessage={item.tooltipMessage}
                 />
               ))}
@@ -197,7 +197,7 @@ export default function DashboardLayout() {
                   label={item.label}
                   path={item.path}
                   onClick={closeSidebar}
-                  disabled={item.disabled}
+                  //disabled={item.disabled} 
                   tooltipMessage={item.tooltipMessage}
                 />
               ))}
