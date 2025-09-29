@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, Video, X, Star, MessageCircle, ArrowRight, Eye, Upload, CheckCircle, AlertCircle, RefreshCw, ExternalLink } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { useSubscription, isScalePlan } from "@/app/hooks/useSubscription";
 import {
   Dialog,
   DialogContent,
@@ -86,6 +87,7 @@ export function ResponseDetails() {
   });
   const [hasShownConfirmation, setHasShownConfirmation] = useState(false);
   const location = useLocation();
+  const { subscription } = useSubscription();
   const { candidateName: passedName, interviewTitle: passedTitle } =
     location.state || {};
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
@@ -318,7 +320,7 @@ export function ResponseDetails() {
   );
 
   const downloadPdf = async (type: 'transcript' | 'analysis') => {
-    if (plan != "Scale" && plan != "Custom") return;
+    if (!isScalePlan(subscription)) return;
     
     try {
       const fileName = `${responseId}.pdf`;
@@ -753,16 +755,16 @@ export function ResponseDetails() {
               <button
                 className={cn(
                   "px-4 py-2 font-medium whitespace-nowrap",
-                  plan != "Scale" && plan != "Custom"
+                  !isScalePlan(subscription)
                     ? "text-gray-400 cursor-not-allowed"
                     : activeTab === "transcript"
                     ? "text-green-500 border-b-2 border-green-500"
                     : "text-gray-600 hover:text-green-500"
                 )}
-                disabled={plan != "Scale" && plan != "Custom"}
-                title={plan != "Scale" && plan != "Custom" ? "Upgrade your plan to access transcript PDF" : ""}
+                disabled={!isScalePlan(subscription)}
+                title={!isScalePlan(subscription) ? "Upgrade your plan to access transcript PDF" : ""}
                 onClick={async () => {
-                  if (plan != "Scale" && plan != "Custom") return;
+                  if (!isScalePlan(subscription)) return;
                   setActiveTab("transcript");
                   const candidateName = passedName || response?.candidateName || 'Candidate';
                   const position = passedTitle || response?.appliedPosition || 'Interview';
@@ -779,16 +781,16 @@ export function ResponseDetails() {
               <button
                 className={cn(
                   "px-4 py-2 font-medium whitespace-nowrap",
-                  plan != "Scale" && plan != "Custom"
+                  !isScalePlan(subscription)
                     ? "text-gray-400 cursor-not-allowed"
                     : activeTab === "pdf"
                     ? "text-orange-500 border-b-2 border-orange-500"
                     : "text-gray-600 hover:text-orange-500"
                 )}
-                disabled={plan != "Scale" && plan != "Custom"}
-                title={plan != "Scale" && plan != "Custom" ? "Upgrade your plan to access analysis PDF" : ""}
+                disabled={!isScalePlan(subscription)}
+                title={!isScalePlan(subscription) ? "Upgrade your plan to access analysis PDF" : ""}
                 onClick={async () => {
-                  if (plan != "Scale" && plan != "Custom") return;
+                  if (!isScalePlan(subscription)) return;
                   setActiveTab("pdf");
                   const candidateName = passedName || response?.candidateName || 'Candidate';
                   const position = passedTitle || response?.appliedPosition || 'Interview';
@@ -805,16 +807,16 @@ export function ResponseDetails() {
             <button
               className={cn(
                 "px-4 py-2 font-medium whitespace-nowrap relative",
-                plan != "Scale" && plan != "Custom"
+                !isScalePlan(subscription)
                   ? "text-gray-400 cursor-not-allowed"
                   : activeTab === "ats"
                   ? "text-purple-500 border-b-2 border-purple-500"
                   : "text-gray-600 hover:text-purple-500"
               )}
-              disabled={plan != "Scale" && plan != "Custom"}
-              title={plan != "Scale" && plan != "Custom" ? "Upgrade your plan to access ATS integration" : ""}
+              disabled={!isScalePlan(subscription)}
+              title={!isScalePlan(subscription) ? "Upgrade your plan to access ATS integration" : ""}
               onClick={() => {
-                if (plan != "Scale" && plan != "Custom") return;
+                if (!isScalePlan(subscription)) return;
                 setActiveTab("ats");
               }}
             >
