@@ -4,9 +4,12 @@ import React, {
   useRef,
   useCallback,
 } from "react";
-import { Plug } from "lucide-react";
+import { Plug, AlertCircle, ArrowRight } from "lucide-react";
 import { supabase } from "../lib/supabase";
+import { useSubscription, isScalePlan, hasPaidPlan } from "@/app/hooks/useSubscription";
 import { FeatureGate } from "@/modules/dashboard/FeatureGate";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface CurrentUser {
   id: string;
@@ -78,6 +81,11 @@ const Integrations: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [connectedIntegrations, setConnectedIntegrations] = useState<Set<string>>(new Set());
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+  const { subscription, loading: subscriptionLoading } = useSubscription();
+  
+  // Check if user has Scale plan
+  const hasScalePlan = isScalePlan(subscription);
+  const isFreeTrial = !hasPaidPlan(subscription);
 
   // 1) Fetch existing integrations from backend
   const fetchExistingIntegrations = useCallback(async () => {
@@ -347,6 +355,50 @@ const Integrations: React.FC = () => {
     handleDeactivate,
     handleClose,
   ]);
+
+  // Show upgrade message for non-Scale users
+  if (!hasScalePlan && !subscriptionLoading) {
+    return (
+      <div style={{ 
+        maxWidth: '1200px', 
+        margin: '0 auto', 
+        padding: '32px 24px',
+        fontFamily: 'system-ui, -apple-system, sans-serif'
+      }}>
+        <Card className="border-amber-200 bg-amber-50">
+          <CardContent className="p-8">
+            <div className="flex items-start gap-4">
+              <AlertCircle className="h-8 w-8 text-amber-600 flex-shrink-0 mt-1" />
+              <div className="flex-1">
+                <h2 className="text-2xl font-bold text-amber-900 mb-2">
+                  ATS Integration Requires Scale Plan
+                </h2>
+                <p className="text-amber-800 mb-6 text-lg">
+                  ATS Integration is only available on Scale plan. Upgrade to Scale to unlock powerful integrations with your Applicant Tracking System.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Button 
+                    className="bg-amber-600 hover:bg-amber-700 text-white"
+                    onClick={() => window.location.href = '/dashboard/settings'}
+                  >
+                    Upgrade to Scale
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    className="border-amber-300 text-amber-700 hover:bg-amber-100"
+                    onClick={() => window.history.back()}
+                  >
+                    Go Back
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <FeatureGate requiredPlan="SCALE" featureName="ATS integrations" title="Scale Your Hiring with Powerful ATS Integrations" >

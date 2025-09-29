@@ -71,6 +71,7 @@ export default function DashboardLayout() {
     location.pathname
   );
 
+
   // Navigation items
   const navItems = [
     { path: "/dashboard", icon: <Home size={20} />, label: "Dashboard" },
@@ -84,6 +85,7 @@ export default function DashboardLayout() {
       path: "/integrations",
       icon: <Plug size={20} />,
       label: "Integrations",
+      tooltipMessage: "ATS Integration is only available on Scale plan. Upgrade to Scale to unlock.",
     },
     {
       path: "/dashboard/onboarding",
@@ -135,6 +137,8 @@ export default function DashboardLayout() {
                   label={item.label}
                   path={item.path}
                   onClick={closeSidebar}
+                  disabled={item.disabled}
+                  tooltipMessage={item.tooltipMessage}
                 />
               ))}
             </nav>
@@ -193,6 +197,8 @@ export default function DashboardLayout() {
                   label={item.label}
                   path={item.path}
                   onClick={closeSidebar}
+                  disabled={item.disabled}
+                  tooltipMessage={item.tooltipMessage}
                 />
               ))}
             </nav>
