@@ -25,11 +25,13 @@ import { SheetContent, SheetTrigger, Sheet } from "@/components/ui/sheet";
 import { useAuth } from "@/app/providers/AuthContext";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import SidebarItem from "./SidebarItem";
+import { useSubscription, isScalePlan, hasPaidPlan } from "@/app/hooks/useSubscription";
 
 export default function DashboardLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
   const { user, logout } = useAuth();
+  const { subscription, loading: subscriptionLoading } = useSubscription();
 
   // Get initials or first letter of user's name/email for avatar
   const getInitials = () => {
@@ -50,6 +52,9 @@ export default function DashboardLayout() {
     location.pathname
   );
 
+  // Check if user has Scale plan
+  const hasScalePlan = isScalePlan(subscription);
+
   // Navigation items
   const navItems = [
     { path: "/dashboard", icon: <Home size={20} />, label: "Dashboard" },
@@ -63,6 +68,8 @@ export default function DashboardLayout() {
       path: "/integrations",
       icon: <Plug size={20} />,
       label: "Integrations",
+      disabled: !hasScalePlan,
+      tooltipMessage: "ATS Integration is only available on Scale plan. Upgrade to Scale to unlock.",
     },
     {
       path: "/dashboard/onboarding",
@@ -114,6 +121,8 @@ export default function DashboardLayout() {
                   label={item.label}
                   path={item.path}
                   onClick={closeSidebar}
+                  disabled={item.disabled}
+                  tooltipMessage={item.tooltipMessage}
                 />
               ))}
             </nav>
@@ -158,6 +167,8 @@ export default function DashboardLayout() {
                   label={item.label}
                   path={item.path}
                   onClick={closeSidebar}
+                  disabled={item.disabled}
+                  tooltipMessage={item.tooltipMessage}
                 />
               ))}
             </nav>
