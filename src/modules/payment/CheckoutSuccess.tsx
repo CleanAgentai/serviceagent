@@ -1,3 +1,4 @@
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -41,8 +42,8 @@ const CheckoutSuccess = () => {
   }, [sessionId]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white px-4">
-      <div className="max-w-md w-full text-center bg-white p-8 rounded-lg shadow">
+    <div className="min-h-screen flex items-center justify-center bg-transparent px-4">
+      <div className="max-w-md w-full text-center p-8 rounded-lg">
         {status === "verifying" && (
           <>
             <h2 className="text-xl font-semibold">Verifying your payment...</h2>
@@ -56,9 +57,11 @@ const CheckoutSuccess = () => {
             <p className="text-gray-600 mt-2">Thank you for your subscription.</p>
             <button
               onClick={() => navigate("/post-signup")}
-              className="mt-6 px-4 py-2 bg-black text-white rounded hover:bg-gray-800"
+              className="mx-auto w-full group flex items-center justify-center mt-6 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-full
+              border-0 shadow-lg hover:shadow-xl transition-all duration-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none"
             >
               Complete Your Profile
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
             </button>
           </>
         )}
@@ -69,8 +72,10 @@ const CheckoutSuccess = () => {
             <p className="text-gray-600 mt-2">Please contact support or try again.</p>
             <button
               onClick={() => navigate("/")}
-              className="mt-6 px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600"
+              className="mx-auto w-full group flex items-center justify-center mt-6 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-full
+              border-0 shadow-lg hover:shadow-xl transition-all duration-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none"
             >
+              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-300" />
               Back to Home
             </button>
           </>

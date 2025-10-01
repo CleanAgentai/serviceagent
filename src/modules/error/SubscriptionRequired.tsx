@@ -18,7 +18,7 @@ import { usePlan } from '@/hooks/usePlan';
 
 type PlanKey = 'STARTER' | 'LAUNCH' | 'SCALE' | 'CUSTOM' | 'TEST';
 
-export function SubscriptionRequired({ requiredPlanKey, featureName, title }: { requiredPlanKey?: PlanKey; featureName?: string; title?: string }) {
+export function SubscriptionRequired({ requiredPlanKey, featureName, title, extra }: { requiredPlanKey?: PlanKey; featureName?: string; title?: string; extra?: React.ReactNode }) {
   const navigate = useNavigate();
   const { isLoading, hasPlan } = usePlan();
 
@@ -58,11 +58,16 @@ export function SubscriptionRequired({ requiredPlanKey, featureName, title }: { 
             <div className="mt-6 inline-flex items-center gap-3 rounded-xl border border-terracotta/30 bg-terracotta/10 px-4 py-2 text-terracotta">
               <Lock className="w-4 h-4" />
               <span>
-                This feature requires the <strong>{requiredPlanLabel}</strong> plan.
+                This feature requires the <strong>{requiredPlanLabel} Plan</strong>.
               </span>
             </div>
           )}
         </div>
+        {extra && (
+          <div className="mt-6 flex justify-center">
+            {extra}
+          </div>
+        )}
         {/* <div className="text-center">
             <Button onClick={() => navigate('/payment/subscription')} className="bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-full
           border-0 shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">

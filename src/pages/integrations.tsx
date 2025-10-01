@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { Plug } from "lucide-react";
+import { ArrowRight, Plug } from "lucide-react";
+import ATSGrid, { atsIntegrations as defaultAtsIntegrations } from "@/pages/ATSGrid";
 import { supabase } from "../lib/supabase";
 import { FeatureGate } from "@/modules/dashboard/FeatureGate";
 import { usePlan } from "@/hooks/usePlan";
@@ -346,12 +347,8 @@ const Integrations: React.FC = () => {
   ]);
 
   return (
-    <FeatureGate requiredPlan="SCALE" featureName="ATS integrations" title="Scale Your Hiring with Powerful ATS Integrations" >
-    <div style={{ 
-      minHeight: '100vh', 
-      backgroundColor: '#ffffff',
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
-    }}>
+    <FeatureGate requiredPlan="SCALE" featureName="ATS integrations" title="Scale Your Hiring with Powerful ATS Integrations" extra={<ATSGrid items={atsIntegrations.slice(0, 12)} title="Available Integrations" />}>
+    <div className="min-h-[100vh] bg-background/95">
       {/* Main Content Container */}
       <div style={{ 
         maxWidth: '800px', 
@@ -414,13 +411,22 @@ const Integrations: React.FC = () => {
             <button
               slot="trigger"
               disabled={loading}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full font-bold
-              border-0 shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="group bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full font-bold
+              border-0 shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent inline-flex items-center gap-2"
             >
               {loading ? "Loading..." : connectedIntegrations.size > 0 ? "Edit Integration" : "Connect an Integration"}
-              
+              {!loading && (
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+              )}
             </button>
           </knit-auth>
+
+           {/* Show message when no integrations connected */}
+        {connectedIntegrations.size === 0 && (
+          <p className="text-center text-sm text-gray-500 font-italic mt-4">
+            No integrations connected yet.
+          </p>
+        )}
 
           {/* Checkmark under button */}
           {connectedIntegrations.size > 0 && (
@@ -494,80 +500,11 @@ const Integrations: React.FC = () => {
         </div>
 
         {/* Available Integrations Showcase */}
-        <div style={{ marginBottom: '64px' }}>
-          <h2 style={{ 
-            fontSize: '24px', 
-            fontWeight: '600', 
-            color: '#1e293b',
-            margin: '0 0 32px 0'
-          }}>
-            Available Integrations
-          </h2>
-          
-          {/* Logos Grid - Visual Only */}
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', 
-            gap: '24px',
-            marginBottom: '32px',
-            maxWidth: '600px',
-            margin: '0 auto 32px auto'
-          }}>
-            {atsIntegrations.slice(0, 12).map((integration) => (
-              <div
-                key={integration.id}
-                style={{
-                  backgroundColor: '#f8fafc',
-                  border: '1px solid #e2e8f0',
-                  borderRadius: '12px',
-                  padding: '20px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: '8px'
-                }}
-              >
-                <img
-                  src={integration.logo}
-                  alt={integration.name}
-                  style={{
-                    width: '40px',
-                    height: '40px',
-                    borderRadius: '8px',
-                    objectFit: 'cover'
-                  }}
-                />
-                <span style={{
-                  fontSize: '12px',
-                  fontWeight: '500',
-                  color: '#64748b',
-                  textAlign: 'center'
-                }}>
-                  {integration.name}
-                </span>
-              </div>
-            ))}
-          </div>
-          
-          <p style={{
-            fontSize: '14px',
-            color: '#64748b',
-            fontStyle: 'italic'
-          }}>
-            + more integrations available
-          </p>
-        </div>
+        <ATSGrid
+          items={atsIntegrations.slice(0, 12)}
+          title="Available Integrations"
+        />
 
-        {/* Show message when no integrations connected */}
-        {connectedIntegrations.size === 0 && (
-          <p style={{
-            fontSize: '16px',
-            color: '#64748b',
-            margin: 0
-          }}>
-            No integrations connected yet.
-          </p>
-        )}
       </div>
     </div>
     </FeatureGate>

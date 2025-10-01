@@ -1,4 +1,3 @@
-import { buildPlanPerks, planThemes } from './planConfig';
 import { StripeCheckoutBox } from "@/components/stripe/StripeCheckoutBox";
 import React, { useState, useMemo, useEffect } from "react";
 import { CheckCircle, ArrowRight, Zap, TrendingUp, Users, Star, Sparkles, Check, ChevronDown, ArrowLeft, Leaf, Rocket } from "lucide-react";
@@ -7,12 +6,16 @@ import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "react-router-dom";
 import { FormControlLabel } from "@mui/material";
 import { Switch } from "@mui/material";
+import { getPlans, planPerks, planThemes } from './planConfig.tsx';
+
 
 export const Subscriptions: React.FC = () => {
   const location = useLocation();
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const [selectedYearly, setSelectedYearly] = useState<boolean | null>(null);
   const [isYearly, setIsYearly] = useState(false);
+  const plans = getPlans(isYearly);
+  
   const currency = "$";
 
   useEffect(() => {
@@ -56,69 +59,6 @@ export const Subscriptions: React.FC = () => {
     });
   }
 
-  // Launch and Scale plans for new design
-  const plans = [
-    {
-      title: "Starter",
-      price: isYearly ? "$79" : "$99",
-      originalPrice: null,
-      headline: "Begin hassle-free hiring", // Edit Starter Plan headline
-      yearPrice: "$950",
-      period: isYearly ? "/month (billed yearly)" : "/month",
-      cost_per_candidate: isYearly ? "$8/candidate" : "$10/candidate",
-      description: "Best for getting started",
-      features: [
-        "10 candidates/month",
-        "Create unlimited job posts",
-        "Ranked candidates (1-10)",
-        "Qualified vs. unqualified scoring",
-        "Candidate videos + transcripts",
-        "Email support",
-      ],
-      popular: false,
-      key: "STARTER"
-    },
-    {
-      title: "Launch",
-      price: isYearly ? "$119" : "$149",
-      originalPrice: isYearly ? "$149" : null,
-      headline: "Save 15+ hours per hire",
-      yearPrice: "$1,430",
-      period: isYearly ? "/month (billed yearly)" : "/month",
-      cost_per_candidate: isYearly ? "$6/candidate" : "$7/candidate",
-      description: "For companies hiring on a monthly basis",
-      features: [
-        "20 candidates/month",
-        "Everything included in Starter Plan",
-        "Export candidate analysis as PDF",
-        "Export candidate transcript as PDF",
-        "Custom branding for candidates", 
-        "Save 15+ hours/month on hiring"
-      ],
-      popular: true,
-      key: "LAUNCH"
-    },
-    {
-      title: "Scale",
-      price: isYearly ? "$399" : "$499",
-      originalPrice: isYearly ? "$499" : null,
-      headline: "Hire 5× faster",
-      yearPrice: "$4,790",
-      period: isYearly ? "/month (billed yearly)" : "/month",
-      cost_per_candidate: isYearly ? "$4/candidate" : "$5/candidate",
-      description: "For growing companies with higher volume",
-      features: [
-        "100 candidates/month",
-        "Everything included in Launch Plan",
-        "ATS Integration",
-        "Priority Phone Support",
-        "Save 50+ hours/month on hiring"
-      ],
-      popular: false,
-      key: "SCALE",
-    },
-  ];
-
   const planByKey = useMemo(() => {
     const map = new Map(plans.map((p) => [p.key, p] as const));
     return (key: string) => map.get(key) || null;
@@ -129,7 +69,7 @@ export const Subscriptions: React.FC = () => {
   const scalePlan = useMemo(() => planByKey('SCALE'), [plans, isYearly]);
 
 
-  const planPerks = buildPlanPerks({
+  const perks = planPerks({
     STARTER: starterPlan?.cost_per_candidate,
     LAUNCH: launchPlan?.cost_per_candidate,
     SCALE: scalePlan?.cost_per_candidate,
@@ -558,10 +498,10 @@ export const Subscriptions: React.FC = () => {
             <h4 className="text-sm font-semibold text-slate-700 mb-3">Your plan comes with</h4>
             {(() => {
               const theme = planThemes[selected.key];
-              const perks = planPerks[selected.key];
+              const planPerksList = perks[selected.key];
               return (
                 <ul className="space-y-3">
-                  {perks.map((f) => (
+                  {planPerksList.map((f) => (
                     <li key={f} className="flex items-start gap-3">
                       <span
                         className={`mt-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full shadow ${theme.checkGradient}`}

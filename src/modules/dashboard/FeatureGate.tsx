@@ -10,15 +10,16 @@ type FeatureGateProps = {
   fallback?: ReactNode;
   featureName?: string;
   title?: string;
+  extra?: ReactNode;
 };
 
-export function FeatureGate({ requiredPlan, children, fallback, featureName, title, showGate = true }: FeatureGateProps) {
+export function FeatureGate({ requiredPlan, children, fallback, featureName, title, extra, showGate = true }: FeatureGateProps) {
   const { isLoading, hasAccess } = usePlan();
 
   if (isLoading) return <Loading />;
   if (!hasAccess(requiredPlan)) {
     if (!showGate) return null;
-    return <>{fallback ?? <SubscriptionRequired requiredPlanKey={requiredPlan} featureName={featureName} title={title} />}</>;
+    return <>{fallback ?? <SubscriptionRequired requiredPlanKey={requiredPlan} featureName={featureName} title={title} extra={extra} />}</>;
   }
   return <>{children}</>;
 }

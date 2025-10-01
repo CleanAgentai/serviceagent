@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import ProgressBar from "@/components/stripe/ProgressBar";
+import PlanUsage from "@/modules/dashboard/PlanUsage";
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
@@ -494,16 +495,7 @@ export function ViewResponses() {
    <div className="mx-auto w-full px-2 sm:px-4 md:px-6 lg:px-8 sm:max-w-screen-md md:max-w-screen-lg lg:max-w-screen-xl">
       <div className="flex sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <h1 className="text-2xl sm:text-3xl font-bold">Candidates</h1>
-        <div className="flex items-center space-x-2">
-          {planLimit != customLimit && (
-            <div>
-            <p className="text-sm font-medium text-gray-700 whitespace-nowrap">
-              Plan Usage:
-            </p>
-            <ProgressBar used={attempts.length} limit={planLimit} />
-            </div>
-          )}
-        </div>
+        <PlanUsage />
       </div>
 
         <Card className="p-4 mb-6 border-0 shadow-lg hover:shadow-xl transition-all duration-300">

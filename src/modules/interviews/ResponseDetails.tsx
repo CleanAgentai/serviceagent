@@ -82,7 +82,8 @@ export function ResponseDetails() {
     location.state || {};
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
   const [fileName, setFileName] = useState<string | null>(null);
-  const canDownload = hasAccess('TEST');
+  
+  const canDownload = hasAccess('LAUNCH');
 
   useEffect(() => {
     // TODO: Replace with actual API call
@@ -558,7 +559,7 @@ export function ResponseDetails() {
                 className={cn(
                   "px-4 py-2 font-medium whitespace-nowrap",
                   !canDownload
-                    ? "text-gray-400 cursor-not-allowed"
+                    ? "text-gray-400"
                     : activeTab === "transcript"
                     ? "text-green-500 border-b-2 border-green-500"
                     : "text-gray-600 hover:text-green-500"
@@ -576,13 +577,13 @@ export function ResponseDetails() {
                 }}
               >
                 {(!canDownload
-                  ? <Lock className="w-4 h-4 inline-block mr-2 text-red-500" />
+                  ? <Lock className="w-4 h-4 inline-block mr-2 text-red-500 cursor-pointer" />
                   : <Eye className="w-4 h-4 inline-block mr-2" />)}
                 View Transcript PDF 
               </button>
               </TooltipTrigger>
               {!canDownload && (
-                <TooltipContent>Upgrade to Launch</TooltipContent>
+                <TooltipContent>Upgrade to Launch to unlock this feature</TooltipContent>
               )}
               </Tooltip>
               </TooltipProvider>
@@ -594,7 +595,7 @@ export function ResponseDetails() {
                 className={cn(
                   "px-4 py-2 font-medium whitespace-nowrap",
                   !canDownload
-                    ? "text-gray-400 cursor-not-allowed"
+                    ? "text-gray-400"
                     : activeTab === "pdf"
                     ? "text-orange-500 border-b-2 border-orange-500"
                     : "text-gray-600 hover:text-orange-500"
@@ -612,13 +613,13 @@ export function ResponseDetails() {
                 }}
               >
                 {(!canDownload
-                  ? <Lock className="w-4 h-4 inline-block mr-2 text-red-500" />
+                  ? <Lock className="w-4 h-4 inline-block mr-2 text-red-500 cursor-pointer" />
                   : <Eye className="w-4 h-4 inline-block mr-2" />)}
                 View Analysis PDF
               </button>
               </TooltipTrigger>
               {!canDownload && (
-                <TooltipContent>Upgrade to Launch</TooltipContent>
+                <TooltipContent>Upgrade to Launch to unlock this feature</TooltipContent>
               )}
               </Tooltip>
               </TooltipProvider>
