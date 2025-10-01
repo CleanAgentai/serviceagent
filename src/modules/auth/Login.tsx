@@ -27,6 +27,26 @@ export function Login() {
     window.scrollTo(0, 0);
   }, []);
 
+  const handleCustomerio = async (event: string) => {
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+    const { data: { user } } = await supabase.auth.getUser();
+    try {
+      const trackRes = await fetch(`${apiBaseUrl}/api/customerio/track`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: user.id,
+          event: event,
+          traits: { last_seen_at: new Date().toISOString() },
+        }),
+      });
+      if (!trackRes.ok) throw new Error(`track failed: ${trackRes.status}`);
+
+    } catch (cioErr) {
+      console.error("Customer.io backend calls failed:", cioErr);
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -35,6 +55,7 @@ export function Login() {
     try {
       const { error: signInError } = await signIn(email, password);
       if (signInError) throw signInError;
+      handleCustomerio("login");
       navigate("/dashboard");
     } catch (err: any) {
       setError(err.message || "Invalid email or password. Please try again.");
@@ -62,6 +83,8 @@ export function Login() {
       });
 
       if (error) throw error;
+
+      handleCustomerio("login");
       // The redirect will happen automatically
     } catch (error: any) {
       setError("OAuth login failed. Please try again.");

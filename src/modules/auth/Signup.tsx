@@ -38,6 +38,36 @@ export function Signup() {
     window.scrollTo(0, 0);
   }, []);
 
+  const handleCustomerio = async (event: string) => {
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+    const { data: { user } } = await supabase.auth.getUser();
+    try {
+      const identifyRes = await fetch(`${apiBaseUrl}/api/customerio/identify`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: user.id,
+          traits: { email: user.email, plan_status: "onboarding", last_seen_at: new Date().toISOString() },
+        }),
+      });
+      if (!identifyRes.ok) throw new Error(`identify failed: ${identifyRes.status}`);
+
+      const trackRes = await fetch(`${apiBaseUrl}/api/customerio/track`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: user.id,
+          event: event,
+          traits: { plan_status: "onboarding", last_seen_at: new Date().toISOString() },
+        }),
+      });
+      if (!trackRes.ok) throw new Error(`track failed: ${trackRes.status}`);
+
+    } catch (cioErr) {
+      console.error("Customer.io backend calls failed:", cioErr);
+    }
+  }
+
   const validatePassword = (password: string) => {
     const errors: string[] = [];
     
@@ -145,6 +175,7 @@ export function Signup() {
           throw signUpError;
         }
       } else {
+        handleCustomerio("trial_started");
         // Persist plan selection and navigate to checkout
         if ((location.state as any)?.plan) {
           localStorage.setItem('selectedPlan', (location.state as any).plan);
@@ -180,6 +211,7 @@ export function Signup() {
 
       const { data: { user } } = await supabase.auth.getUser();
       console.log("User:", user);
+      handleCustomerio("trial_started");
       // The redirect will happen automatically
     } catch (error: any) {
       setError("OAuth login failed. Please try again.");
