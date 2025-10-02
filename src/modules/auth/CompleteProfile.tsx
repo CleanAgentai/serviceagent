@@ -45,25 +45,6 @@ export function CompleteProfile() {
     }));
   };
 
-  const handleCustomerio = async () => {
-    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
-    const { data: { user } } = await supabase.auth.getUser();
-    try {
-      const identifyRes = await fetch(`${apiBaseUrl}/api/customerio/identify`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userId: user.id,
-          traits: { first_name: formData.firstName || "", last_seen_at: new Date().toISOString() },
-        }),
-      });
-      if (!identifyRes.ok) throw new Error(`identify failed: ${identifyRes.status}`);
-
-    } catch (cioErr) {
-      console.error("Customer.io backend calls failed:", cioErr);
-    }
-  }
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -105,7 +86,6 @@ export function CompleteProfile() {
       alert("Error updating profile. Please try again.");
       console.error(error);
     } else {
-      handleCustomerio();
       navigate("/post-signup");
     }
   };
