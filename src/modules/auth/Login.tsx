@@ -83,8 +83,6 @@ export function Login() {
       });
 
       if (error) throw error;
-
-      handleCustomerio("login");
       // The redirect will happen automatically
     } catch (error: any) {
       setError("OAuth login failed. Please try again.");

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/app/lib/supabase";
 
 const CheckoutSuccess = () => {
   const [status, setStatus] = useState<"verifying" | "success" | "error">("verifying");
@@ -7,6 +8,36 @@ const CheckoutSuccess = () => {
 
   const sessionId = new URLSearchParams(window.location.search).get("session_id");
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
+  const handleCustomerio = async (event: string) => {
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+    const { data: { user } } = await supabase.auth.getUser();
+    try {
+      const identifyRes = await fetch(`${apiBaseUrl}/api/customerio/identify`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: user.id,
+          traits: { first_name: user.user_metadata?.full_name?.split(" ")[0] || "", plan_status: "onboarding", last_seen_at: new Date().toISOString() },
+        }),
+      });
+      if (!identifyRes.ok) throw new Error(`identify failed: ${identifyRes.status}`);
+
+      const trackRes = await fetch(`${apiBaseUrl}/api/customerio/track`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: user.id,
+          event: event,
+          traits: { },
+        }),
+      });
+      if (!trackRes.ok) throw new Error(`track failed: ${trackRes.status}`);
+
+    } catch (cioErr) {
+      console.error("Customer.io backend calls failed:", cioErr);
+    }
+  }
 
 
   useEffect(() => {
@@ -28,6 +59,7 @@ const CheckoutSuccess = () => {
           setStatus("success");
           // Redirect to company profile setup after successful payment
           setTimeout(() => {
+            handleCustomerio("trial_started");
             navigate("/post-signup");
           }, 3000);
         } else {

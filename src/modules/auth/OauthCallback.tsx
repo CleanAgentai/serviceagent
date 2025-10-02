@@ -6,7 +6,38 @@ export function OAuthCallback() {
   const navigate = useNavigate();
   const [error, setError] = useState("");
 
+  const handleCustomerio = async (event: string) => {
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+    const { data: { user } } = await supabase.auth.getUser();
+    try {
+      const identifyRes = await fetch(`${apiBaseUrl}/api/customerio/identify`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: user.id,
+          traits: { last_seen_at: new Date().toISOString() },
+        }),
+      });
+      if (!identifyRes.ok) throw new Error(`identify failed: ${identifyRes.status}`);
+
+      const trackRes = await fetch(`${apiBaseUrl}/api/customerio/track`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: user.id,
+          event: event,
+          traits: { },
+        }),
+      });
+      if (!trackRes.ok) throw new Error(`track failed: ${trackRes.status}`);
+
+    } catch (cioErr) {
+      console.error("Customer.io backend calls failed:", cioErr);
+    }
+  }
+
   useEffect(() => {
+
     const checkUserProfile = async () => {
       try {
         // 1️⃣ 현재 로그인한 사용자 정보 가져오기
@@ -35,6 +66,7 @@ export function OAuthCallback() {
         }
 
         // ✅ 회사명이 있으면 대시보드로 이동
+        handleCustomerio("login");
         navigate("/dashboard");
       } catch (error: any) {
         setError("OAuth authentication failed. Please try again.");
