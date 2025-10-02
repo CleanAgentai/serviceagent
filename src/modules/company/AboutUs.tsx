@@ -184,8 +184,8 @@ export function AboutUs() {
             </div>
             
             <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 bg-gradient-to-r from-purple-100 to-purple-200 rounded-lg flex items-center justify-center mb-4">
-                <Heart className="w-6 h-6 text-purple-600" />
+              <div className="w-12 h-12 bg-gradient-to-br from-red-100 to-red-200 rounded-lg flex items-center justify-center mb-4">
+                <Heart className="w-6 h-6 text-red-500" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Stronger Communities</h3>
               <p className="text-gray-600">
@@ -203,7 +203,8 @@ export function AboutUs() {
             Join Us in Changing Hiring
           </h2>
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Hiring doesn't have to hold your business back. ServiceAgent is here to help you grow with confidence.
+            Hiring doesn't have to hold your business back. <br />
+            ServiceAgent is here to help you grow with confidence.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
