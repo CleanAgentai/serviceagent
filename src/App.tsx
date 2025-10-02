@@ -34,7 +34,7 @@ import EditInterview from "@/modules/interviews/EditInterview";
 
 // Public Pages
 import LandingPage from "@/modules/landing/LandingPage";
-import { AboutUs } from "./modules/company/AboutUs";
+import { AboutUs } from "@/modules/company/AboutUs";
 import { Contact } from "./modules/company/Contact";
 import { Blog, BlogPost } from "./modules/blog";
 import { ForgotPassword } from "./modules/auth/ForgotPassword";

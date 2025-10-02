@@ -1,22 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Brain, Target, Zap, Users, Rocket, ExternalLink } from "lucide-react";
-
-interface ValueCardProps {
-  title: string;
-  description: string;
-  icon: React.ReactNode;
-}
-
-const ValueCard: React.FC<ValueCardProps> = ({ title, description, icon }) => (
-  <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-    <div className="h-12 w-12 bg-gradient-to-r from-blue-100 to-teal-100 rounded-lg flex items-center justify-center mb-4">
-      {icon}
-    </div>
-    <h3 className="text-lg font-semibold text-gray-900 mb-2">{title}</h3>
-    <p className="text-gray-600">{description}</p>
-  </div>
-);
+import { ArrowRight, Quote, Users, Target, Zap, Heart, Building2, Wrench, Sparkles, ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 export function AboutUs() {
   // Set meta title and description and scroll to top
@@ -27,178 +13,224 @@ export function AboutUs() {
     if (metaDescription) {
       metaDescription.setAttribute(
         "content",
-        "Learn about ServiceAgent, our mission to revolutionize service businesses with AI-powered automation."
+        "Learn about ServiceAgent's mission to empower service businesses with AI-powered hiring tools. Read Porter Stanley's founder letter and discover how we're changing hiring for America's backbone businesses."
       );
     }
   }, []);
 
+  const navigate = useNavigate();
+
+  // Helper for smooth scroll
+  const handleScrollTo = (id: string) => {
+    setTimeout(() => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      } else {
+        // If not on landing, go home and scroll after navigation
+        navigate(`/#${id}`);
+        setTimeout(() => {
+          const el2 = document.getElementById(id);
+          if (el2) el2.scrollIntoView({ behavior: "smooth" });
+        }, 500);
+      }
+    }, 100);
+  };
+
+  // Helper for navigation
+  const handleNavigation = (href: string) => {
+    if (href === "demo") {
+      navigate("/");
+      handleScrollTo("demo");
+    } else {
+      handleScrollTo(href);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen pt-20">
       {/* Hero Section */}
-      <div className="bg-gradient-to-b from-gray-50 to-white py-16 sm:py-24">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-6">
-            Revolutionizing the Field Service Industry with{" "}
-            <span className="bg-gradient-to-r from-[#4FC3DC] to-[#1E529D] bg-clip-text text-transparent">
-              AI-Powered Automation
-            </span>
-          </h1>
-          <p className="text-xl text-gray-600">
-            We're on a mission to help field service businesses eliminate
-            tedious tasks and scale effortlessly.
-          </p>
+      <div className="relative overflow-hidden">
+        <div className="max-w-7xl mx-auto py-20 bg-gradient-to-br from-blue-50 via-white to-teal-50">
+          <div className="text-center">
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-teal-500 rounded-full mb-8 shadow-lg">
+              <Target className="w-10 h-10 text-white" />
+            </div>
+            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+              Our Mission
+            </h1>
+            <p className="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed font-medium">
+              To empower the backbone of America by giving service businesses the tools to hire faster, hire better, and finally scale without being crippled by turnover.
+            </p>
+          </div>
         </div>
       </div>
 
-      {/* Our Story Section */}
-      <section className="py-16 bg-white">
+      {/* Founder's Letter Section */}
+      <div className="py-16 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Story</h2>
-            <p className="text-lg text-gray-600">
-              ServiceAgent was founded by Porter Stanley, a serial entrepreneur
-              with a background in AI and software development. After selling
-              his first software company, he started a service business as a fun
-              side project. What started as a simple venture quickly turned into
-              an eye-opening experience—highlighting inefficiencies in hiring,
-              operations, and marketing within the service industry.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-gray-50 rounded-xl p-8">
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                The Problem
-              </h3>
-              <p className="text-gray-600">
-                Hiring was the biggest headache. At one point, Porter had to
-                interview 44 candidates to hire just one employee. The process
-                was time-consuming, frustrating, and inefficient. He knew there
-                had to be a better way.
-              </p>
-            </div>
-            <div className="bg-blue-50 rounded-xl p-8">
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                The Solution
-              </h3>
-              <p className="text-gray-600">
-                Leveraging his expertise in AI and automation, Porter built
-                tools to streamline the hiring process. What started as an
-                internal solution quickly evolved into a full-scale
-                platform—ServiceAgent AI—designed to automate hiring, optimize
-                job postings, manage onboarding, and streamline marketing and
-                sales for service businesses.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Mission Section */}
-      <section className="py-16 bg-gradient-to-b from-gray-50 to-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Mission</h2>
-          <p className="text-xl text-gray-600">
-            We believe AI is the future of business automation. Our mission is
-            simple: to revolutionize service businesses with AI-powered
-            automation. We help business owners eliminate tedious administrative
-            tasks and optimize operations, so they can focus on what
-            matters—growing their business.
-          </p>
-        </div>
-      </section>
-
-      {/* Founder Section */}
-      <section className="py-16 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-gradient-to-r from-blue-50 to-teal-50 rounded-2xl p-8 sm:p-12">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">
-                Meet Our Founder
-              </h2>
-              <p className="text-lg text-gray-600 mb-6">
-                Porter Stanley is an entrepreneur with a passion for AI,
-                automation, and problem-solving. With a successful track record
-                of building and exiting tech companies, he is now dedicated to
-                helping service-based businesses scale effortlessly.
-              </p>
-              <a
-                href="https://www.linkedin.com/in/porterstanley"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center px-6 py-3 text-base font-medium rounded-lg text-white bg-gradient-to-r from-[#3DA6C7] to-[#1E529D] hover:opacity-90 transition-all duration-300 hover:scale-105"
-              >
-                Connect on LinkedIn
-                <ExternalLink className="h-5 w-5 ml-2" />
-              </a>
-            </div>
-            <div className="relative w-56 mx-auto">
-              <div className="aspect-w-4 aspect-h-5 rounded-xl overflow-hidden shadow-lg">
-                <div className="bg-gradient-to-br from-gray-800 to-gray-900 w-full h-full opacity-90" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <Users className="h-24 w-24 text-white opacity-90" />
-                  <img
-                    src="/p.jpg"
-                    alt="Founder Portrait"
-                    className="object-cover w-full h-full"
-                  />
-                </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">
+              A Letter From Our Founder
+            </h2>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-gray-600">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-teal-100 rounded-full flex items-center justify-center">
+                <Users className="w-8 h-8 text-blue-600" />
+              </div>
+              <div className="text-center sm:text-left">
+                <h3 className="text-lg font-semibold text-gray-900">Porter Stanley</h3>
+                <p className="text-sm text-gray-500">Founder & CEO, ServiceAgent</p>
               </div>
             </div>
           </div>
+
+          {/* Pull Quote */}
+          <div className="bg-gradient-to-br from-card to-gold/10 border-l-4 border-gold p-6 mb-8 rounded-r-lg">
+            <Quote className="w-8 h-8 text-gold mb-4" />
+            <blockquote className="text-lg md:text-xl font-medium text-gray-700 italic">
+              "What should have been a moment of growth for the business became a drain on my time and energy."
+            </blockquote>
+          </div>
+
+          {/* Letter Content */}
+          <div className="prose prose-lg max-w-none text-gray-700 leading-relaxed">
+            <p className="mb-6">
+              My name is Porter Stanley and I am the founder and CEO of ServiceAgent. 
+              I know firsthand how painful hiring can be because I lived it. 
+              Before starting ServiceAgent, I launched a commercial cleaning business. 
+              In just a few months we grew from zero to twenty five employees. 
+              Growth was exciting but the hardest part was not landing new contracts or managing operations. 
+              It was hiring.
+            </p>
+
+            <p className="mb-6">
+              I spent more than twenty five hours interviewing thirty five people just to fill a single role. 
+              Most applicants were not qualified. Many never showed up at all. 
+              The person I finally hired quit before their first day. 
+              Meanwhile, job boards filled my inbox with resumes that had no real connection to the work we needed done. 
+              The process was exhausting and broken.
+            </p>
+
+            <p className="mb-6">
+              What should have been a moment of growth for the business became a drain on my time and energy. 
+              That experience stayed with me. I realized that if I was struggling this much with hiring, 
+              thousands of other business owners were going through the exact same pain. 
+              Owners who are already stretched thin, wearing every hat, and doing whatever it takes to 
+              keep their companies alive. I knew there had to be a better way.
+            </p>
+
+            <p className="mb-6">
+              That was the beginning of ServiceAgent. We built an AI Hiring Assistant designed specifically for service businesses. 
+              Instead of wasting hours chasing candidates, our system interviews every applicant instantly through chat and video, scores them from one to ten, 
+              and creates a ranked shortlist with transcripts and clips. Business owners only need to review the best candidates, saving 15+ hours for every hire. 
+              More importantly, they get people who actually show up and stick.
+            </p>
+
+            <p className="mb-6">
+            But ServiceAgent is not just about efficiency. It is about giving small and mid sized businesses the same hiring edge that large companies have with advanced technology. 
+            These businesses are the backbone of America. They clean our buildings, repair our homes, maintain our communities, and create millions of jobs. 
+            Yet they have been left behind when it comes to modern tools.
+            </p>
+
+            <p className="mb-6">
+            Our mission is to change that. We want to level the playing field so that America's businesses can hire with confidence, grow with stability, and finally scale without being crippled by constant turnover. 
+            We believe that when service businesses thrive, local communities thrive, and the country as a whole becomes stronger.
+            </p>
+
+            <p className="mb-8">
+              Thank you for taking the time to learn about us. ServiceAgent exists to serve you, the business owner, and to make sure that hiring is no longer the thing holding you back.
+            </p>
+
+            <div className="border-t border-gray-200 pt-6">
+              <p className="text-gray-600 mb-2">Sincerely,</p>
+              <p className="text-lg font-semibold text-gray-900">Porter Stanley</p>
+              <p className="text-gray-600">Founder and CEO, ServiceAgent</p>
+            </div>
+          </div>
         </div>
-      </section>
+      </div>
 
       {/* Values Section */}
-      <section className="py-16 bg-gradient-to-b from-white to-gray-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
-            What We Believe
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <ValueCard
-              icon={<Zap className="h-6 w-6 text-blue-600" />}
-              title="Less busywork, more growth"
-              description="Business owners shouldn't be bogged down by hiring, admin, and marketing tasks. AI can handle it."
-            />
-            <ValueCard
-              icon={<Target className="h-6 w-6 text-teal-600" />}
-              title="Automation should be simple"
-              description="Our tools integrate seamlessly into your business without complexity."
-            />
-            <ValueCard
-              icon={<Rocket className="h-6 w-6 text-purple-600" />}
-              title="Your success is our priority"
-              description="We're here to help field service businesses scale effortlessly."
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Join Us</h2>
-          <p className="text-xl text-gray-600 mb-8">
-            We're just getting started, and we'd love for you to be a part of
-            this journey. Whether you're a service business owner looking to
-            scale or an entrepreneur seeking AI-driven solutions, ServiceAgent
-            AI is here to help.
-          </p>
-          <div className="space-y-4">
-            <Link
-              to="/contact"
-              className="inline-flex items-center px-8 py-3 text-base font-medium rounded-lg text-white bg-gradient-to-r from-[#3DA6C7] to-[#1E529D] hover:opacity-90 transition-all duration-300 hover:scale-105"
-            >
-              Get in Touch
-              <ExternalLink className="h-5 w-5 ml-2" />
-            </Link>
-            <p className="text-sm text-gray-500">
-              Got questions? Want to see ServiceAgent in action?
+      <div className="py-16 bg-gradient-to-br from-gray-50 to-blue-50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Why We Exist
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Service businesses are the backbone of America, yet they've been left behind when it comes to modern hiring tools.
             </p>
           </div>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+              <div className="w-12 h-12 bg-gradient-to-r from-blue-100 to-blue-200 rounded-lg flex items-center justify-center mb-4">
+                <Building2 className="w-6 h-6 text-blue-600" />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">The Backbone of America</h3>
+              <p className="text-gray-600">
+                Service businesses clean our buildings, repair our homes, maintain our communities, and create millions of jobs. They deserve the same advanced technology that large companies have.
+              </p>
+            </div>
+            
+            <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+              <div className="w-12 h-12 bg-gradient-to-r from-teal-100 to-teal-200 rounded-lg flex items-center justify-center mb-4">
+                <Zap className="w-6 h-6 text-teal-600" />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Level the Playing Field</h3>
+              <p className="text-gray-600">
+                We give small and mid-sized businesses the same hiring edge that large companies have with AI-powered technology designed specifically for service industries.
+              </p>
+            </div>
+            
+            <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+              <div className="w-12 h-12 bg-gradient-to-r from-purple-100 to-purple-200 rounded-lg flex items-center justify-center mb-4">
+                <Heart className="w-6 h-6 text-purple-600" />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Stronger Communities</h3>
+              <p className="text-gray-600">
+                When service businesses thrive, local communities thrive, and the country as a whole becomes stronger. We're building tools that make this vision a reality.
+              </p>
+            </div>
+          </div>
         </div>
-      </section>
+      </div>
+
+      {/* CTA Section */}
+      <div className="py-16 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl font-bold text-gray-900 mb-6">
+            Join Us in Changing Hiring
+          </h2>
+          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+            Hiring doesn't have to hold your business back. ServiceAgent is here to help you grow with confidence.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Link to="/signup">
+              <Button 
+                size="lg"
+                className="group bg-gradient-to-r from-gold to-gold/90 hover:from-terracotta hover:to-terracotta/90 text-white px-8 py-4 text-lg font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+              >
+                <Sparkles className="w-5 h-5 mr-2" />
+                Get Started
+                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
+              </Button>
+            </Link>
+              <Button 
+                variant="outline" 
+                size="lg"
+                className="bg-gradient-to-r from-teal/10 to-teal/20 border-teal/30 text-teal group-hover:shadow-lg group-hover:shadow-teal/20 group-hover:scale-105 px-8 py-4 text-lg font-semibold rounded-lg transition-all duration-300"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavigation("demo");
+                }}
+              >
+                Watch Demo
+              </Button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

@@ -115,6 +115,9 @@ const Footer = () => {
                 Company
               </h4>
               <nav className="space-y-3">
+              <Link to="/about-us" className="block text-muted-foreground hover:text-gold transition-all duration-200 hover:translate-x-1">
+                  About Us
+                </Link>
                 <Link to="/blog" className="block text-muted-foreground hover:text-gold transition-all duration-200 hover:translate-x-1">
                   Blog
                 </Link>
