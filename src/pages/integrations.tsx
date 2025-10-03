@@ -1,14 +1,9 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useCallback,
-} from "react";
-import { Plug, AlertCircle, ArrowRight } from "lucide-react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { ArrowRight, Plug } from "lucide-react";
+import ATSGrid, { atsIntegrations as defaultAtsIntegrations } from "@/pages/ATSGrid";
 import { supabase } from "../lib/supabase";
-import { useSubscription, isScalePlan, hasPaidPlan } from "@/app/hooks/useSubscription";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { FeatureGate } from "@/modules/dashboard/FeatureGate";
+import { usePlan } from "@/hooks/usePlan";
 
 interface CurrentUser {
   id: string;
@@ -80,12 +75,8 @@ const Integrations: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [connectedIntegrations, setConnectedIntegrations] = useState<Set<string>>(new Set());
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
-  const { subscription, loading: subscriptionLoading } = useSubscription();
+  const { hasPlan, isLoading, hasAccess } = usePlan();
   
-  // Check if user has Scale plan
-  const hasScalePlan = isScalePlan(subscription);
-  const isFreeTrial = !hasPaidPlan(subscription);
-
   // 1) Fetch existing integrations from backend
   const fetchExistingIntegrations = useCallback(async () => {
     try {
@@ -355,56 +346,9 @@ const Integrations: React.FC = () => {
     handleClose,
   ]);
 
-  // Show upgrade message for non-Scale users
-  if (!hasScalePlan && !subscriptionLoading) {
-    return (
-      <div style={{ 
-        maxWidth: '1200px', 
-        margin: '0 auto', 
-        padding: '32px 24px',
-        fontFamily: 'system-ui, -apple-system, sans-serif'
-      }}>
-        <Card className="border-amber-200 bg-amber-50">
-          <CardContent className="p-8">
-            <div className="flex items-start gap-4">
-              <AlertCircle className="h-8 w-8 text-amber-600 flex-shrink-0 mt-1" />
-              <div className="flex-1">
-                <h2 className="text-2xl font-bold text-amber-900 mb-2">
-                  ATS Integration Requires Scale Plan
-                </h2>
-                <p className="text-amber-800 mb-6 text-lg">
-                  ATS Integration is only available on Scale plan. Upgrade to Scale to unlock powerful integrations with your Applicant Tracking System.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Button 
-                    className="bg-amber-600 hover:bg-amber-700 text-white"
-                    onClick={() => window.location.href = '/dashboard/settings'}
-                  >
-                    Upgrade to Scale
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    className="border-amber-300 text-amber-700 hover:bg-amber-100"
-                    onClick={() => window.history.back()}
-                  >
-                    Go Back
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
   return (
-    <div style={{ 
-      minHeight: '100vh', 
-      backgroundColor: '#ffffff',
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
-    }}>
+    <FeatureGate requiredPlan="SCALE" featureName="ATS integrations" title="Scale Your Hiring with Powerful ATS Integrations" extra={<ATSGrid items={atsIntegrations.slice(0, 12)} title="Available Integrations" />}>
+    <div className="min-h-[100vh] bg-background/95">
       {/* Main Content Container */}
       <div style={{ 
         maxWidth: '800px', 
@@ -428,13 +372,8 @@ const Integrations: React.FC = () => {
         </div>
 
         {/* Title and Description */}
-        <h1 style={{ 
-          fontSize: '48px', 
-          fontWeight: '700', 
-          color: '#1e293b',
-          margin: '0 0 16px 0',
-          lineHeight: '1.1'
-        }}>
+        <h1 className="text-2xl sm:text-3xl mb-4 font-bold">
+        
           Integrations
         </h1>
         
@@ -472,34 +411,22 @@ const Integrations: React.FC = () => {
             <button
               slot="trigger"
               disabled={loading}
-              style={{
-                padding: "16px 32px",
-                fontSize: '18px',
-                fontWeight: '600',
-                borderRadius: '12px',
-                background: loading ? "#94a3b8" : "#3b82f6",
-                color: "white",
-                border: "none",
-                cursor: loading ? "not-allowed" : "pointer",
-                transition: 'all 0.2s ease',
-                boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
-              }}
-              onMouseEnter={(e) => {
-                if (!loading) {
-                  e.currentTarget.style.background = '#2563eb';
-                  e.currentTarget.style.transform = 'translateY(-1px)';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!loading) {
-                  e.currentTarget.style.background = '#3b82f6';
-                  e.currentTarget.style.transform = 'translateY(0)';
-                }
-              }}
+              className="group bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full font-bold
+              border-0 shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent inline-flex items-center gap-2"
             >
               {loading ? "Loading..." : connectedIntegrations.size > 0 ? "Edit Integration" : "Connect an Integration"}
+              {!loading && (
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+              )}
             </button>
           </knit-auth>
+
+           {/* Show message when no integrations connected */}
+        {connectedIntegrations.size === 0 && (
+          <p className="text-center text-sm text-gray-500 font-italic mt-4">
+            No integrations connected yet.
+          </p>
+        )}
 
           {/* Checkmark under button */}
           {connectedIntegrations.size > 0 && (
@@ -573,82 +500,14 @@ const Integrations: React.FC = () => {
         </div>
 
         {/* Available Integrations Showcase */}
-        <div style={{ marginBottom: '64px' }}>
-          <h2 style={{ 
-            fontSize: '24px', 
-            fontWeight: '600', 
-            color: '#1e293b',
-            margin: '0 0 32px 0'
-          }}>
-            Available Integrations
-          </h2>
-          
-          {/* Logos Grid - Visual Only */}
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', 
-            gap: '24px',
-            marginBottom: '32px',
-            maxWidth: '600px',
-            margin: '0 auto 32px auto'
-          }}>
-            {atsIntegrations.slice(0, 12).map((integration) => (
-              <div
-                key={integration.id}
-                style={{
-                  backgroundColor: '#f8fafc',
-                  border: '1px solid #e2e8f0',
-                  borderRadius: '12px',
-                  padding: '20px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: '8px'
-                }}
-              >
-                <img
-                  src={integration.logo}
-                  alt={integration.name}
-                  style={{
-                    width: '40px',
-                    height: '40px',
-                    borderRadius: '8px',
-                    objectFit: 'cover'
-                  }}
-                />
-                <span style={{
-                  fontSize: '12px',
-                  fontWeight: '500',
-                  color: '#64748b',
-                  textAlign: 'center'
-                }}>
-                  {integration.name}
-                </span>
-              </div>
-            ))}
-          </div>
-          
-          <p style={{
-            fontSize: '14px',
-            color: '#64748b',
-            fontStyle: 'italic'
-          }}>
-            + more integrations available
-          </p>
-        </div>
+        <ATSGrid
+          items={atsIntegrations.slice(0, 12)}
+          title="Available Integrations"
+        />
 
-        {/* Show message when no integrations connected */}
-        {connectedIntegrations.size === 0 && (
-          <p style={{
-            fontSize: '16px',
-            color: '#64748b',
-            margin: 0
-          }}>
-            No integrations connected yet.
-          </p>
-        )}
       </div>
     </div>
+    </FeatureGate>
   );
 };
 

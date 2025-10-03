@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Download, FileText } from 'lucide-react';
+import { usePlan } from '@/hooks/usePlan';
 
 export interface DataTableColumn {
   key: string;
@@ -29,6 +30,7 @@ export const DataTable: React.FC<DataTableProps> = ({
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const { isLoading, hasAccess } = usePlan();
 
   // Calculate pagination
   const totalPages = Math.ceil(data.length / pageSize);
@@ -74,6 +76,10 @@ export const DataTable: React.FC<DataTableProps> = ({
 
   // Export to PDF (simplified - in a real app, you'd use a library like jsPDF)
   const exportToPDF = () => {
+    if (!hasAccess('LAUNCH')) {
+      alert('Upgrade to Launch to export as PDF');
+      return;
+    }
     alert('PDF export would be implemented with a library like jsPDF');
     // In a real implementation, you would:
     // 1. Use jsPDF or similar library
@@ -119,8 +125,9 @@ export const DataTable: React.FC<DataTableProps> = ({
           </button>
           <button
             onClick={exportToPDF}
-            className="flex items-center px-3 py-1.5 bg-white border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-50"
-            title="Export as PDF"
+            className={`flex items-center px-3 py-1.5 border rounded text-sm hover:bg-gray-50 ${!isLoading && hasAccess('LAUNCH') ? 'bg-white border-gray-300 text-gray-700' : 'bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed'}`}
+            title={(!isLoading && hasAccess('LAUNCH')) ? 'Export as PDF' : 'Upgrade to Launch to export as PDF'}
+            disabled={isLoading || !hasAccess('LAUNCH')}
           >
             <Download className="h-4 w-4 mr-1" />
             PDF

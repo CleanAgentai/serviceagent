@@ -25,13 +25,32 @@ import { SheetContent, SheetTrigger, Sheet } from "@/components/ui/sheet";
 import { useAuth } from "@/app/providers/AuthContext";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import SidebarItem from "./SidebarItem";
-import { useSubscription, isScalePlan, hasPaidPlan } from "@/app/hooks/useSubscription";
+import { usePlan } from "@/hooks/usePlan";
 
 export default function DashboardLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
   const { user, logout } = useAuth();
-  const { subscription, loading: subscriptionLoading } = useSubscription();
+  const { plan, isLoading, hasPlan } = usePlan();
+
+  const planLabel = ((): string => {
+    if (!plan) return "";
+    const upper = plan.toUpperCase();
+    if (upper === "STARTER") return "Starter";
+    if (upper === "LAUNCH") return "Launch";
+    if (upper === "SCALE") return "Scale";
+    if (upper === "CUSTOM") return "Custom";
+    return plan;
+  })();
+
+  const planBadgeClasses = ((): string => {
+    const upper = (plan || "").toUpperCase();
+    if (upper === "STARTER") return "bg-teal/10 text-teal border border-teal/30";
+    if (upper === "LAUNCH") return "bg-gold/10 text-gold border border-gold/30";
+    if (upper === "SCALE") return "bg-terracotta/10 text-terracotta border border-terracotta/30";
+    if (upper === "CUSTOM") return "bg-orange-50 text-orange-500 border border-orange-200";
+    return "bg-gray-100 text-gray-700 border border-gray-200";
+  })();
 
   // Get initials or first letter of user's name/email for avatar
   const getInitials = () => {
@@ -52,8 +71,6 @@ export default function DashboardLayout() {
     location.pathname
   );
 
-  // Check if user has Scale plan
-  const hasScalePlan = isScalePlan(subscription);
 
   // Navigation items
   const navItems = [
@@ -68,7 +85,6 @@ export default function DashboardLayout() {
       path: "/integrations",
       icon: <Plug size={20} />,
       label: "Integrations",
-      disabled: !hasScalePlan,
       tooltipMessage: "ATS Integration is only available on Scale plan. Upgrade to Scale to unlock.",
     },
     {
@@ -95,7 +111,7 @@ export default function DashboardLayout() {
   return (
     <div
     className={[
-      "flex bg-background overflow-x-hidden",
+      "flex overflow-x-hidden bg-background/95 min-h-[100svh]",
       isCheckout ? "min-h-[100svh]" : "overflow-y-auto",
     ].join(" ")}
   >
@@ -121,12 +137,24 @@ export default function DashboardLayout() {
                   label={item.label}
                   path={item.path}
                   onClick={closeSidebar}
-                  disabled={item.disabled}
+                  // disabled={item.disabled}
                   tooltipMessage={item.tooltipMessage}
                 />
               ))}
             </nav>
           </div>
+          {!isLoading && (
+            <div className="px-4">
+              <div
+                className={[
+                  "mb-3 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium",
+                  hasPlan ? planBadgeClasses : "bg-gray-100 text-gray-600 border border-gray-200",
+                ].join(" ")}
+              >
+                Current plan: {hasPlan ? planLabel : "None"}
+              </div>
+            </div>
+          )}
           <div className="p-4 border-t">
             <Button
               variant="outline"
@@ -145,15 +173,17 @@ export default function DashboardLayout() {
         <SheetContent side="left" className="p-0 w-56 sm:max-w-sm">
           <ScrollArea className="h-full p-4">
             <div className="flex items-center justify-between mb-4">
-              <img
-                src="/Banner_SA_new.svg"
+            <img
+                src="/logos/Brandmark.svg"
                 alt="ServiceAgent Logo"
-                className="h-10 w-auto"
+                className="w-10 h-10"
                 draggable={false}
               />
               <Button
                 variant="ghost"
                 size="icon"
+                className="hover:bg-terracotta"
+                aria-label="Close sidebar"
                 onClick={() => setIsSidebarOpen(false)}
               >
                 <X size={20} />
@@ -167,11 +197,23 @@ export default function DashboardLayout() {
                   label={item.label}
                   path={item.path}
                   onClick={closeSidebar}
-                  disabled={item.disabled}
+                  //disabled={item.disabled} 
                   tooltipMessage={item.tooltipMessage}
                 />
               ))}
             </nav>
+            {!isLoading && (
+              <div className="px-0 pb-2">
+                <div
+                  className={[
+                    "mb-3 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium",
+                    hasPlan ? planBadgeClasses : "bg-gray-100 text-gray-600 border border-gray-200",
+                  ].join(" ")}
+                >
+                  Current plan: {hasPlan ? planLabel : "None"}
+                </div>
+              </div>
+            )}
             <div className="pt-4 border-t">
               <Button
                 variant="outline"
@@ -189,7 +231,7 @@ export default function DashboardLayout() {
       {/* Main Content */}
       <div className="md:pl-56 flex flex-col flex-1 min-w-0">
         {/* Top Navigation - Added border-b back */}
-        <div className="sticky top-0 z-10 flex-shrink-0 h-24 md:h-16 bg-background/95 backdrop-blur-sm border-b flex items-center">
+        <div className="sticky top-0 z-10 flex-shrink-0 h-24 md:h-16 backdrop-blur-sm border-b flex items-center">
           {/* Mobile menu button */}
           <Button
             variant="ghost"

@@ -7,78 +7,17 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import { getPlans, planThemes } from '@/modules/payment/planConfig';
 
 const Services = () => {
   const [isYearly, setIsYearly] = useState(false);
   const navigate = useNavigate();
 
-  const plans = [
-    {
-      title: "Starter",
-      price: isYearly ? "$79" : "$99",
-      originalPrice: null,
-      headline: "Begin hassle-free hiring",
-      yearPrice: "$950",
-      period: isYearly ? "/month (billed yearly)" : "/month",
-      cost_per_candidate: isYearly ? "$8/candidate" : "$10/candidate",
-      description: "Best for getting started",
-      features: [
-        "10 candidates/month",
-        "Create unlimited job posts",
-        "Ranked candidates (1-10)",
-        "Qualified vs. unqualified scoring",
-        "Candidate videos + transcripts",
-        "Email support",
-      ],
-      popular: false,
-      key: "STARTER",
-      cta: "Start for Free",
-      ctaLink: "/signup"
-    },
-    {
-      title: "Launch",
-      price: isYearly ? "$119" : "$149",
-      originalPrice: isYearly ? "$149" : null,
-      headline: "Save 15+ hours per hire",
-      yearPrice: "$1,430",
-      period: isYearly ? "/month (billed yearly)" : "/month",
-      cost_per_candidate: isYearly ? "$6/candidate" : "$7/candidate",
-      description: "For companies hiring on a monthly basis",
-      features: [
-        "20 candidates/month",
-        "Everything included in Starter Plan",
-        "Export candidate analysis as PDF",
-        "Export candidate transcript as PDF",
-        "Custom branding for candidates", 
-        "Save 15+ hours/month on hiring"
-      ],
-      popular: true,
-      key: "LAUNCH",
-      cta: "Start for Free",
-      ctaLink: "/signup"
-    },
-    {
-      title: "Scale",
-      price: isYearly ? "$399" : "$499",
-      originalPrice: isYearly ? "$499" : null,
-      headline: "Hire 5× faster",
-      yearPrice: "$4,790",
-      period: isYearly ? "/month (billed yearly)" : "/month",
-      cost_per_candidate: isYearly ? "$4/candidate" : "$5/candidate",
-      description: "For growing companies with higher volume",
-      features: [
-        "100 candidates/month",
-        "Everything included in Launch Plan",
-        "ATS Integration",
-        "Priority Phone Support",
-        "Save 50+ hours/month on hiring"
-      ],
-      popular: false,
-      key: "SCALE",
-      cta: "Start for Free",
-      ctaLink: "/signup"
-    },
-  ];
+  const plans = getPlans(isYearly).map(plan => ({
+    ...plan,
+    cta: "Start for Free",
+    ctaLink: "/signup"
+  }));
 
   const planByKey = useMemo(() => {
     const map = new Map(plans.map((p) => [p.key, p] as const));
@@ -89,26 +28,6 @@ const Services = () => {
   const launchPlan = useMemo(() => planByKey('LAUNCH'), [plans, isYearly]);
   const scalePlan = useMemo(() => planByKey('SCALE'), [plans, isYearly]);
 
-  const planThemes: Record<string, { checkGradient: string; bannerGradient: string; highlightText: string; borderClass: string }> = {
-    STARTER: {
-      checkGradient: "bg-gradient-to-br from-teal to-teal/80",
-      bannerGradient: "bg-teal/5",
-      highlightText: "text-teal",
-      borderClass: "border-teal/30",
-    },
-    LAUNCH: {
-      checkGradient: "bg-gradient-to-br from-gold to-gold/80",
-      bannerGradient: "bg-gold/5",
-      highlightText: "text-gold",
-      borderClass: "border-gold/40",
-    },
-    SCALE: {
-      checkGradient: "bg-gradient-to-br from-terracotta to-terracotta/40",
-      bannerGradient: "bg-terracotta/5",
-      highlightText: "text-terracotta",
-      borderClass: "border-terracotta/40",
-    },
-  };
 
   return (
     <section id="pricing" className="py-24 bg-gradient-to-b from-background to-muted/20 relative overflow-hidden">

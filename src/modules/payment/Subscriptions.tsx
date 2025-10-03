@@ -6,12 +6,16 @@ import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "react-router-dom";
 import { FormControlLabel } from "@mui/material";
 import { Switch } from "@mui/material";
+import { getPlans, planPerks, planThemes } from './planConfig.tsx';
+
 
 export const Subscriptions: React.FC = () => {
   const location = useLocation();
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const [selectedYearly, setSelectedYearly] = useState<boolean | null>(null);
   const [isYearly, setIsYearly] = useState(false);
+  const plans = getPlans(isYearly);
+  
   const currency = "$";
 
   useEffect(() => {
@@ -55,69 +59,6 @@ export const Subscriptions: React.FC = () => {
     });
   }
 
-  // Launch and Scale plans for new design
-  const plans = [
-    {
-      title: "Starter",
-      price: isYearly ? "$79" : "$99",
-      originalPrice: null,
-      headline: "Begin hassle-free hiring", // Edit Starter Plan headline
-      yearPrice: "$950",
-      period: isYearly ? "/month (billed yearly)" : "/month",
-      cost_per_candidate: isYearly ? "$8/candidate" : "$10/candidate",
-      description: "Best for getting started",
-      features: [
-        "10 candidates/month",
-        "Create unlimited job posts",
-        "Ranked candidates (1-10)",
-        "Qualified vs. unqualified scoring",
-        "Candidate videos + transcripts",
-        "Email support",
-      ],
-      popular: false,
-      key: "STARTER"
-    },
-    {
-      title: "Launch",
-      price: isYearly ? "$119" : "$149",
-      originalPrice: isYearly ? "$149" : null,
-      headline: "Save 15+ hours per hire",
-      yearPrice: "$1,430",
-      period: isYearly ? "/month (billed yearly)" : "/month",
-      cost_per_candidate: isYearly ? "$6/candidate" : "$7/candidate",
-      description: "For companies hiring on a monthly basis",
-      features: [
-        "20 candidates/month",
-        "Everything included in Starter Plan",
-        "Export candidate analysis as PDF",
-        "Export candidate transcript as PDF",
-        "Custom branding for candidates", 
-        "Save 15+ hours/month on hiring"
-      ],
-      popular: true,
-      key: "LAUNCH"
-    },
-    {
-      title: "Scale",
-      price: isYearly ? "$399" : "$499",
-      originalPrice: isYearly ? "$499" : null,
-      headline: "Hire 5× faster",
-      yearPrice: "$4,790",
-      period: isYearly ? "/month (billed yearly)" : "/month",
-      cost_per_candidate: isYearly ? "$4/candidate" : "$5/candidate",
-      description: "For growing companies with higher volume",
-      features: [
-        "100 candidates/month",
-        "Everything included in Launch Plan",
-        "ATS Integration",
-        "Priority Phone Support",
-        "Save 50+ hours/month on hiring"
-      ],
-      popular: false,
-      key: "SCALE",
-    },
-  ];
-
   const planByKey = useMemo(() => {
     const map = new Map(plans.map((p) => [p.key, p] as const));
     return (key: string) => map.get(key) || null;
@@ -127,61 +68,14 @@ export const Subscriptions: React.FC = () => {
   const launchPlan = useMemo(() => planByKey('LAUNCH'), [plans, isYearly]);
   const scalePlan = useMemo(() => planByKey('SCALE'), [plans, isYearly]);
 
-   /* Perks to display on payment page */
-   const planPerks: Record<string, string[]> = {
-    // Edit Starter Perks with real features
-    STARTER: [
-      "100% no-risk free trial",
-      "Pay nothing for the first 14 days",
-      "Cancel anytime, hassle-free",
-      "10 candidates/month",
-      `Only ${starterPlan?.cost_per_candidate} - $0 due today!`,
-      "Expert support included",
-    ],
-    LAUNCH: [
-      "100% no-risk free trial",
-      "Pay nothing for the first 14 days",
-      "Cancel anytime, hassle-free",
-      "20 candidates/month",
-      "Save 15+ hours per month with AI interviewing",
-      "Candidate transcript and analysis as PDF",
-      "Custom branding for candidates",
-      `Only ${launchPlan?.cost_per_candidate} - $0 due today!`,
-      "Expert support included",
-    ],
-    SCALE: [
-      "100% no-risk free trial",
-      "Pay nothing for the first 14 days",
-      "Cancel anytime, hassle-free",
-      "Get access to all features",
-      "100 candidates/month",
-      "Save 50+ hours per month with AI interviewing",
-      "ATS integration",
-      `Only ${scalePlan?.cost_per_candidate} - $0 due today!`,
-      "Priority phone support",
-    ],
-  };
 
-  const planThemes: Record<string, { checkGradient: string; bannerGradient: string; highlightText: string; borderClass: string }> = {
-    STARTER: {
-      checkGradient: "bg-gradient-to-br from-teal to-teal/80",
-      bannerGradient: "bg-teal/5",
-      highlightText: "text-teal",
-      borderClass: "border-teal/30",
-    },
-    LAUNCH: {
-      checkGradient: "bg-gradient-to-br from-gold to-gold/80",
-      bannerGradient: "bg-gold/5",
-      highlightText: "text-gold",
-      borderClass: "border-gold/40",
-    },
-    SCALE: {
-      checkGradient: "bg-gradient-to-br from-terracotta to-terracotta/40",
-      bannerGradient: "bg-terracotta/5",
-      highlightText: "text-terracotta",
-      borderClass: "border-terracotta/40",
-    },
-  };
+  const perks = planPerks({
+    STARTER: starterPlan?.cost_per_candidate,
+    LAUNCH: launchPlan?.cost_per_candidate,
+    SCALE: scalePlan?.cost_per_candidate,
+  });
+
+  // planThemes imported from shared config
 
   /* Memoized handle for selected plan for payment page construction */
   const selected = useMemo(() => {
@@ -604,10 +498,10 @@ export const Subscriptions: React.FC = () => {
             <h4 className="text-sm font-semibold text-slate-700 mb-3">Your plan comes with</h4>
             {(() => {
               const theme = planThemes[selected.key];
-              const perks = planPerks[selected.key];
+              const planPerksList = perks[selected.key];
               return (
                 <ul className="space-y-3">
-                  {perks.map((f) => (
+                  {planPerksList.map((f) => (
                     <li key={f} className="flex items-start gap-3">
                       <span
                         className={`mt-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full shadow ${theme.checkGradient}`}

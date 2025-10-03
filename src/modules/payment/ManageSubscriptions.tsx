@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "@/app/lib/supabase";
 import { useNavigate } from "react-router-dom";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 const ManageSubscriptions = () => {
   const [loading, setLoading] = useState(false);
@@ -109,25 +110,29 @@ const ManageSubscriptions = () => {
         </h1>
 
         <div className="relative group w-full">
-          <button
-            onClick={() => setShowConfirm(true)}
-            disabled={!hasActiveSub || loading}
-            className={`w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-full
-            border-0 shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:z-10 focus:border-transparent${
-              !hasActiveSub
-                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                : "bg-red-600 hover:bg-red-700 text-white"
-            } disabled:opacity-50`}
-          >
-            {loading ? "Cancelling..." : "Cancel Subscription"}
-          </button>
-
-          {/* Tooltip when no active subscription */}
-          {!hasActiveSub && (
-            <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-72 bg-gray-800 text-white text-xs rounded px-3 py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none text-center z-10">
-              You don't have an active subscription to cancel.
-            </div>
-          )}
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  onClick={() => setShowConfirm(true)}
+                  disabled={!hasActiveSub || loading}
+                  className={`w-full bg-red-600 hover:bg-red-700 font-medium text-white py-3 rounded-full
+                  border-0 shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:z-10 focus:border-transparent${
+                    !hasActiveSub
+                      ? "bg-gray-300 text-gray-500"
+                      : "bg-red-600 hover:bg-red-700 text-white"
+                  } disabled:opacity-50`}
+                >
+                  {loading ? "Cancelling..." : "Cancel Subscription"}
+                </button>
+              </TooltipTrigger>
+              {!hasActiveSub && (
+                <TooltipContent>
+                  You don't have an active subscription to cancel.
+                </TooltipContent>
+              )}
+            </Tooltip>
+          </TooltipProvider>
         </div>
 
         {showConfirm && (
@@ -161,24 +166,29 @@ const ManageSubscriptions = () => {
         )}
 
         <div className="relative group w-full mt-4">
-          <button
-            onClick={() => navigate("/payment/subscription")}
-            disabled={hasActiveSub}
-            className={`w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-full
-border-0 shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:z-10 focus:border-transparent ${
-              hasActiveSub
-                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                : "bg-blue-600 hover:bg-blue-700 text-white"
-            }`}
-          >
-            Add a Subscription
-          </button>
-
-          {hasActiveSub && (
-            <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-64 bg-gray-800 text-white text-xs rounded px-3 py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 text-center">
-              You have an active subscription. Cancel it first to change to a new one.
-            </div>
-          )}
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  onClick={() => navigate("/payment/subscription")}
+                  disabled={hasActiveSub}
+                  className={`w-full bg-blue-600 hover:bg-blue-700 font-medium text-white py-3 rounded-full
+                  border-0 shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:z-10 focus:border-transparent ${
+                    hasActiveSub
+                      ? "bg-gray-300 text-gray-500"
+                      : "bg-blue-600 hover:bg-blue-700 text-white"
+                  }`}
+                >
+                  Add a Subscription
+                </button>
+              </TooltipTrigger>
+              {hasActiveSub && (
+                <TooltipContent>
+                  You have an active subscription. Cancel it first to change to a new one.
+                </TooltipContent>
+              )}
+            </Tooltip>
+          </TooltipProvider>
         </div>
 
         {message && (
