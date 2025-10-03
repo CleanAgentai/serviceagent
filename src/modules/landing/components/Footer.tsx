@@ -6,21 +6,35 @@ const Footer = () => {
   const navigate = useNavigate()
   const location = useLocation()
 
+  const handleScrollTo = (id: string) => {
+    setTimeout(() => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      } else {
+        // If not on landing, go home and scroll after navigation
+        navigate('/');
+        setTimeout(() => {
+          const el2 = document.getElementById(id);
+          if (el2) el2.scrollIntoView({ behavior: "smooth" });
+        }, 500);
+      }
+    }, 100);
+  };
+
+  // Helper for navigation
   const handleNavigation = (href: string) => {
-    if (location.pathname !== '/') {
-      // If not on home page, navigate to home first then scroll
-      navigate('/')
-      // Use timeout to allow navigation to complete before scrolling
-      setTimeout(() => {
-        const element = document.querySelector(href)
-        element?.scrollIntoView({ behavior: 'smooth' })
-      }, 100)
-    } else {
-      // If on home page, just scroll
-      const element = document.querySelector(href)
-      element?.scrollIntoView({ behavior: 'smooth' })
+    if (location.pathname === "/about-us") {
+      navigate("/");
+      handleScrollTo(href);
     }
-  }
+    if (href === "demo") {
+      navigate("/");
+      handleScrollTo("demo");
+    } else {
+      handleScrollTo(href);
+    }
+  };
 
   const handleStartForFree = () => {
     if (location.pathname !== '/') {
@@ -81,25 +95,25 @@ const Footer = () => {
               <nav className="space-y-3">
                 <button 
                   className="block text-left text-muted-foreground hover:text-teal transition-all duration-200 hover:translate-x-1"
-                  onClick={() => handleNavigation("#howitworks")}
+                  onClick={() => handleNavigation("howitworks")}
                 >
                   How It Works
                 </button>
                 <button 
                   className="block text-left text-muted-foreground hover:text-teal transition-all duration-200 hover:translate-x-1"
-                  onClick={() => handleNavigation("#features")}
+                  onClick={() => handleNavigation("features")}
                 >
                   Features
                 </button>
                 <button 
                   className="block text-left text-muted-foreground hover:text-gold transition-all duration-200 hover:translate-x-1"
-                  onClick={() => handleNavigation("#pricing")}
+                  onClick={() => handleNavigation("pricing")}
                 >
                   Pricing
                 </button>
                 <button 
                   className="block text-left text-muted-foreground hover:text-terracotta transition-all duration-200 hover:translate-x-1"
-                  onClick={() => handleNavigation("#industries")}
+                  onClick={() => handleNavigation("industries")}
                 >
                   Industries
                 </button>
@@ -115,6 +129,9 @@ const Footer = () => {
                 Company
               </h4>
               <nav className="space-y-3">
+              <Link to="/about-us" className="block text-muted-foreground hover:text-gold transition-all duration-200 hover:translate-x-1">
+                  About Us
+                </Link>
                 <Link to="/blog" className="block text-muted-foreground hover:text-gold transition-all duration-200 hover:translate-x-1">
                   Blog
                 </Link>

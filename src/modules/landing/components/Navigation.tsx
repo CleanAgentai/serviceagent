@@ -7,6 +7,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export function Navigation({ isNavVisible = true }: { isNavVisible?: boolean }) {
   const [isOpen, setIsOpen] = useState(false)
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 1090)
 
   const toggleMenu = () => setIsOpen(!isOpen)
 
@@ -38,8 +39,11 @@ export function Navigation({ isNavVisible = true }: { isNavVisible?: boolean }) 
     // Auto-close mobile menu when resizing to desktop
     useEffect(() => {
       const handleResize = () => {
-        if (window.innerWidth >= 768) {
+        const mobile = window.innerWidth < 1090;
+        setIsMobile(mobile);
+        if (!mobile) {
           setMobileMenuOpen(false);
+          setIsOpen(false);
         }
       };
       window.addEventListener("resize", handleResize);
@@ -58,13 +62,23 @@ export function Navigation({ isNavVisible = true }: { isNavVisible?: boolean }) 
           el.scrollIntoView({ behavior: "smooth" });
         } else {
           // If not on landing, go home and scroll after navigation
-          navigate(`/#${id}`);
+          navigate('/');
           setTimeout(() => {
             const el2 = document.getElementById(id);
             if (el2) el2.scrollIntoView({ behavior: "smooth" });
           }, 500);
         }
       }, 100);
+    };
+
+    // Helper for navigation
+    const handleNavigation = (href: string) => {
+      if (href === "about-us") {
+        navigate("/about-us");
+        setIsOpen(false);
+      } else {
+        handleScrollTo(href);
+      }
     };
 
   return (
@@ -104,12 +118,14 @@ export function Navigation({ isNavVisible = true }: { isNavVisible?: boolean }) 
           </motion.a>
           
           {/* Desktop Navigation - Center */}
-          <nav className="hidden lg:flex flex-1 items-center justify-center space-x-2">
+          {!isMobile && (
+            <nav className="flex flex-1 items-center justify-center space-x-2">
             {[
               { name: "How It Works", href: "howitworks", delay: 0.1 },
               { name: "Features", href: "features", delay: 0.15 },
               { name: "Pricing", href: "pricing", delay: 0.2 },
               { name: "Industries", href: "industries", delay: 0.25 },
+              { name: "About Us", href: "about-us", delay: 0.3 },
             ].map((item, index) => (
               <motion.div
                 key={item.name}
@@ -120,7 +136,7 @@ export function Navigation({ isNavVisible = true }: { isNavVisible?: boolean }) 
               >
                 <button 
                   className="relative px-4 py-2 text-sm font-medium text-muted-foreground hover:text-primary transition-all duration-300 rounded-lg hover:bg-primary/5"
-                  onClick={(e) => handleScrollTo(item.href)}
+                  onClick={(e) => handleNavigation(item.href)}
                 >
                   {item.name}
                   <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 group-hover:w-8 h-0.5 bg-gradient-to-r from-teal to-gold transition-all duration-300 rounded-full"></div>
@@ -128,9 +144,11 @@ export function Navigation({ isNavVisible = true }: { isNavVisible?: boolean }) 
               </motion.div>
             ))}
           </nav>
+          )}
 
           {/* Desktop CTA Buttons - Right Aligned */}
-          <div className="hidden lg:flex items-center space-x-4">
+          {!isMobile && (
+            <div className="flex items-center space-x-4">
             {/* Login */}
             {!isSignIn && (
             <Link to="/signin">
@@ -163,7 +181,7 @@ export function Navigation({ isNavVisible = true }: { isNavVisible?: boolean }) 
                   className="border-teal/30 text-teal font-medium transition-all duration-300 group-hover:shadow-lg group-hover:shadow-teal/20"
                   onClick={(e) => {
                     e.preventDefault();
-                    handleScrollTo("demo");
+                    handleNavigation("demo");
                   }}
                 >
                   <div className="flex items-center gap-2">
@@ -195,10 +213,12 @@ export function Navigation({ isNavVisible = true }: { isNavVisible?: boolean }) 
               </Button>
             </motion.div>
           </div>
+          )}
 
           {/* Mobile Menu Button */}
-          <motion.button 
-            className="lg:hidden relative p-2 rounded-lg hover:bg-primary/10 transition-colors duration-300" 
+          {isMobile && (
+            <motion.button 
+              className="relative p-2 rounded-lg hover:bg-primary/10 transition-colors duration-300" 
             onClick={toggleMenu} 
             aria-label={isOpen ? "Close menu" : "Open menu"}
             whileTap={{ scale: 0.95 }}
@@ -212,13 +232,14 @@ export function Navigation({ isNavVisible = true }: { isNavVisible?: boolean }) 
               <Menu className="h-6 w-6 text-primary" />
             )}
           </motion.button>
+          )}
       </div>
 
       {/* Enhanced Mobile Menu Overlay */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed left-0 right-0 top-20 bottom-0 z-50 lg:hidden bg-background"
+            className="fixed left-0 right-0 top-20 bottom-0 z-50 bg-background"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -237,6 +258,7 @@ export function Navigation({ isNavVisible = true }: { isNavVisible?: boolean }) 
                     { name: "Features", href: "features" },
                     { name: "Pricing", href: "pricing" },
                     { name: "Industries", href: "industries" },
+                    { name: "About Us", href: "about-us" },
                   ].map((item, index) => (
                     <motion.div
                       key={item.name}
@@ -248,8 +270,7 @@ export function Navigation({ isNavVisible = true }: { isNavVisible?: boolean }) 
                         className="w-full flex items-center justify-between p-6 bg-background border-b border-border text-foreground transition-colors duration-200 active:bg-muted"
                         onClick={(e) => {
                           e.preventDefault();
-                          handleScrollTo(item.href);
-                          toggleMenu();
+                          handleNavigation(item.href);
                         }}
                       >
                         <span className="text-lg font-medium">
