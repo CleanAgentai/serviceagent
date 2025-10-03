@@ -18,7 +18,7 @@ const CheckoutSuccess = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           userId: user.id,
-          traits: { first_name: user.user_metadata?.full_name?.split(" ")[0] || "", plan_status: "onboarding", last_seen_at: new Date().toISOString() },
+          traits: { email: user.email,first_name: user.user_metadata?.full_name?.split(" ")[0] || "", plan_status: "onboarding", last_seen_at: new Date().toISOString() },
         }),
       });
       if (!identifyRes.ok) throw new Error(`identify failed: ${identifyRes.status}`);
