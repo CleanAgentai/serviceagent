@@ -571,7 +571,7 @@ export const Subscriptions: React.FC = () => {
                 <div className="flex justify-center">
                   <div className="relative w-20 h-20 rounded-full overflow-hidden ring-4 ring-terracotta/20 shadow-lg">
                     <img
-                      src="/workers/Porter_Testimonial.png"
+                      src="/workers/testimonials/EllieH_Testimonial.jpg"
                       alt=""
                       className="w-full h-full rounded-full object-cover object-center scale-125 border-4 border-terracotta/20 shadow-lg overflow-hidden"
                     />
@@ -581,8 +581,8 @@ export const Subscriptions: React.FC = () => {
                   To hire 1 cleaner, I had to spend 18+ hours interviewing 35 candidates. I started using ServiceAgent to interview cleaners and now I spend 2 hours/month reviewing the top candidates who I actually want to hire.
                 </blockquote>
                 <div className="space-y-1">
-                  <p className="text-base font-bold text-primary">Porter S.</p>
-                  <p className="text-muted-foreground font-medium">Owner at Clementine's Cleaning</p>
+                  <p className="text-base font-bold text-primary">Ellie H.</p>
+                  <p className="text-muted-foreground font-medium">Ops Manager at Clementine's Cleaning</p>
                 </div>
               </div>
             </div>
@@ -671,7 +671,7 @@ export const Subscriptions: React.FC = () => {
             <div className="flex justify-center hover:scale-110 transition-all duration-300">
                  <div className="relative w-20 h-20 rounded-full overflow-hidden ring-4 ring-terracotta/20 shadow-lg">
                     <img
-                      src="/workers/Porter_Testimonial.png"
+                      src="/workers/testimonials/EllieH_Testimonial.jpg"
                       alt=""
                       className="w-full h-full rounded-full object-cover object-center scale-125 border-4 border-terracotta/20 shadow-lg overflow-hidden"
                     />
@@ -688,8 +688,8 @@ export const Subscriptions: React.FC = () => {
             
             {/* Attribution */}
             <div className="space-y-2">
-              <p className="text-lg font-bold text-primary">Porter S.</p>
-              <p className="text-muted-foreground font-medium">Owner at Clementine's Cleaning</p>
+              <p className="text-lg font-bold text-primary">Ellie H.</p>
+              <p className="text-muted-foreground font-medium">Ops Manager at Clementine's Cleaning</p>
             </div>
           </div>
         </div>
