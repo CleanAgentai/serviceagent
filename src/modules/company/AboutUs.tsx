@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Quote, Users, Target, Zap, Heart, Building2, Wrench, Sparkles, ArrowLeft } from "lucide-react";
+import { ArrowRight, Quote, Users, Target, Zap, Heart, Building2, Wrench, Sparkles, ArrowLeft, Lightbulb } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 
@@ -54,7 +54,7 @@ export function AboutUs() {
         <div className="max-w-7xl mx-auto py-20 bg-gradient-to-br from-blue-50 via-white to-teal-50">
           <div className="text-center">
             <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-teal-500 rounded-full mb-8 shadow-lg">
-              <Target className="w-10 h-10 text-white" />
+              <Lightbulb className="w-10 h-10 text-white" />
             </div>
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
               Our Mission
