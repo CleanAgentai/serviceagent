@@ -14,6 +14,14 @@ export function Login() {
   const [rememberMe, setRememberMe] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
+  React.useEffect(() => {
+  // On component mount, check if there is a saved email
+    const savedEmail = localStorage.getItem('rememberedEmail');
+    if (savedEmail) {
+      setEmail(savedEmail);
+      setRememberMe(true);
+    }
+  }, []);
   // Set meta title and description
   React.useEffect(() => {
     document.title = "Sign In - ServiceAgent";
@@ -26,9 +34,20 @@ export function Login() {
     }
     window.scrollTo(0, 0);
   }, []);
+  // const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setEmail(e.target.value);
+  // };
+  // const handleRememberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setRememberMe(e.target.checked);
+  // };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (rememberMe) {
+      localStorage.setItem('rememberedEmail', email);
+    } else {
+      localStorage.removeItem('rememberedEmail');
+    }
     setError("");
     setIsLoading(true);
 
@@ -166,6 +185,7 @@ export function Login() {
                   <button
                     type="button"
                     onClick={() => setRememberMe(!rememberMe)}
+                    // onChange={handleRememberChange}
                     className={`flex items-center justify-center !min-h-0 !min-w-0 h-8 w-8 rounded-3xl border-2 transition-all duration-200 ${
                       rememberMe
                         ? 'bg-blue-600 border-blue-600 text-white'

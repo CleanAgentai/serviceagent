@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { ArrowRight, ChevronRight, Lock } from "lucide-react";
+import React, { useState, useEffect, useCallback,useRef } from "react";
+import { Building, Upload, Trash2, ArrowRight, ChevronRight, Lock } from "lucide-react";
 import { supabase } from "@/app/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import { Loader } from "@googlemaps/js-api-loader"; 
 import {
   Card,
   CardContent,
@@ -45,7 +46,9 @@ export function CompanyProfileForm({
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const [willoKey, setWilloKey] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
-  const { hasAccess } = usePlan();
+  const [formData, setFormData] = useState({ location: "" });
+  const locationInputRef = useRef<HTMLInputElement | null>(null);
+  const googleAPIKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
   // Load existing profile data if available
   useEffect(() => {
@@ -146,6 +149,41 @@ export function CompanyProfileForm({
       isMounted = false;
     };
   }, []);
+
+  useEffect(() => {
+    if (!googleAPIKey) return;
+
+    const loader = new Loader({
+      apiKey: googleAPIKey,
+      libraries: ["places"],
+    });
+
+    loader.importLibrary("places").then((placesLib: any) => {
+      if (!locationInputRef.current) return;
+
+      // Attach autocomplete to the existing input
+      const autocomplete = new placesLib.Autocomplete(locationInputRef.current, {
+        types: ["(cities)"],   // uncomment if you only want cities
+        componentRestrictions: { country: "us" }, // restrict to US 
+      });
+
+      // Listen for selection
+      autocomplete.addListener("place_changed", () => {
+        const place = autocomplete.getPlace();
+        if (!place) return;
+
+        const address = place.formatted_address || place.name || "";
+
+        // ✅ This updates React state AFTER Google updates the DOM
+        setCompanyLocation(address);
+      });
+    });
+  }, [googleAPIKey]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+};
+
 
   const handleLogoChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -422,11 +460,16 @@ export function CompanyProfileForm({
                 <p className="text-xs text-gray-500 mt-1">Shown to candidates and on your hiring portal.</p>
               </div>
               <Input
+                ref={locationInputRef}  // ✅ Google Autocomplete attaches here
                 id="companyLocation"
-                value={companyLocation}
+                // value={companyLocation}
+                defaultValue={companyLocation}
                 onChange={(e) => setCompanyLocation(e.target.value)}
-                placeholder="City, State"
+                // placeholder="City, State"
+                placeholder="Enter your location"
                 required
+                className=" pr-3 py-2 border border-gray-300 rounded-lg
+                            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
 
