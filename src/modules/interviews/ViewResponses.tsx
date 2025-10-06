@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import ProgressBar from "@/components/stripe/ProgressBar";
+import PlanUsage from "@/modules/dashboard/PlanUsage";
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
@@ -48,6 +49,7 @@ export function ViewResponses() {
   const [selectedAttemptPdfUrl, setSelectedAttemptPdfUrl] = useState<string | null>(null);
   const [planLimit, setPlanLimit] = useState<number | null>(null);
   const [upgrading, setUpgrading] = useState(false);
+  const starterLimit = 10; //move to config
   const launchLimit = 20; //move to config
   const scaleLimit = 100; //move to config
   const customLimit = 100000; //fix to unlimited
@@ -181,9 +183,10 @@ export function ViewResponses() {
         console.log('Plan data: ', plan);
         // Handle trial users (no subscription data) vs subscribed users
         const currentPlan = plan?.subscription || 'Free Trial';
-        setPlanLimit(currentPlan == 'Launch' ? launchLimit : 
-          (currentPlan == 'Scale' ? scaleLimit : 
-            (currentPlan == 'Custom' ? customLimit : 1))); //default limit set to 1 for trial users
+        setPlanLimit(currentPlan == 'Starter' ? starterLimit :
+          (currentPlan == 'Launch' ? launchLimit : 
+            (currentPlan == 'Scale' ? scaleLimit : 
+              (currentPlan == 'Custom' ? customLimit : 1)))); //default limit set to 1 for trial users
 
         const { data, error } = await supabase
           .from("interview_attempts")
@@ -202,9 +205,10 @@ export function ViewResponses() {
           )
           .eq("department_key", companyKey)
           .order("created_at", { ascending: false })
-          .limit(currentPlan == 'Launch' ? launchLimit : 
-            (currentPlan == 'Scale' ? scaleLimit : 
-              (currentPlan == 'Custom' ? customLimit : 1)));
+          .limit(currentPlan == 'Starter' ? starterLimit :
+            (currentPlan == 'Launch' ? launchLimit : 
+              (currentPlan == 'Scale' ? scaleLimit : 
+                (currentPlan == 'Custom' ? customLimit : 1))));
 
         console.log("[ViewResponses] Attempts Fetch Result:", { data, error });
 
@@ -371,7 +375,9 @@ export function ViewResponses() {
       let targetPlan = 'SCALE'; // default to Scale
       
       if (!profile?.subscription || currentSubscription === 'Free Trial') {
-        targetPlan = 'LAUNCH'; // Free trial users should upgrade to Launch first
+        targetPlan = 'STARTER'; // Free trial users should upgrade to Starter first
+      } else if (currentSubscription === 'Starter') {
+        targetPlan = 'LAUNCH'; // Starter users upgrade to Launch
       } else if (currentSubscription === 'Launch') {
         targetPlan = 'SCALE'; // Launch users upgrade to Scale
       } else if (currentSubscription === 'Scale') {
@@ -489,16 +495,7 @@ export function ViewResponses() {
    <div className="mx-auto w-full px-2 sm:px-4 md:px-6 lg:px-8 sm:max-w-screen-md md:max-w-screen-lg lg:max-w-screen-xl">
       <div className="flex sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <h1 className="text-2xl sm:text-3xl font-bold">Candidates</h1>
-        <div className="flex items-center space-x-2">
-          {planLimit != customLimit && (
-            <div>
-            <p className="text-sm font-medium text-gray-700 whitespace-nowrap">
-              Plan Usage:
-            </p>
-            <ProgressBar used={attempts.length} limit={planLimit} />
-            </div>
-          )}
-        </div>
+        <PlanUsage />
       </div>
 
         <Card className="p-4 mb-6 border-0 shadow-lg hover:shadow-xl transition-all duration-300">

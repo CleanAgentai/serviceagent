@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback,useRef } from "react";
-import { Building, Upload, Trash2, ArrowRight, ChevronRight } from "lucide-react";
+import { Building, Upload, Trash2, ArrowRight, ChevronRight, Lock } from "lucide-react";
 import { supabase } from "@/app/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,6 +17,10 @@ import {
 } from '@/components/ui/card';
 import { toast } from 'sonner';
 import { ColorPicker } from '@/components/ui/color-picker';
+import { FeatureGate } from "./FeatureGate";
+import { usePlan } from "@/hooks/usePlan";
+import { LockedSection, LockedLabel } from "@/components/ui/locked-label";
+
 
 interface CompanyProfileFormProps {
   mode: 'create' | 'update';
@@ -318,9 +322,7 @@ export function CompanyProfileForm({
           : `${apiBaseUrl}/api/departments`;
 
       const method = mode === 'update' ? 'PATCH' : 'POST';
-
-      console.log(endpoint);
-
+    
       //  Willow BackendAPI Call
       const departmentRes = await fetch(endpoint, {
         method,
@@ -413,7 +415,7 @@ export function CompanyProfileForm({
             </div>
           )}
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <Label htmlFor="firstName">First Name <span className="text-red-500">*</span></Label>
               <Input
@@ -485,7 +487,7 @@ export function CompanyProfileForm({
                 required
               />
                 <Select value={companyNiche} onValueChange={setCompanyNiche}>
-                  <SelectTrigger id="companyNiche" className="text-[16px] text-gray-500">
+                  <SelectTrigger id="companyNiche" className="text-[16px">
                     <SelectValue placeholder="Select your industry" />
                   </SelectTrigger>
                 <SelectContent>
@@ -514,9 +516,10 @@ export function CompanyProfileForm({
                  {isOpen && <p className="text-xs text-gray-500">Don't worry, you can always do this later in Settings.</p>}
                  </div>
               </summary>
+              
               <div className="mt-4 space-y-6">
                 <div className="space-y-2 pr-6">
-                  <Label htmlFor="companyWebsite">Website (Optional)</Label>
+                <LockedLabel htmlFor="companyWebsite" locked={!hasAccess('LAUNCH')} tooltip="Upgrade to Launch to unlock this feature">Website (Optional)</LockedLabel>
                   <Input
                     id="companyWebsite"
                     value={companyWebsite}
@@ -524,38 +527,38 @@ export function CompanyProfileForm({
                     placeholder="https://example.com"
                     type="url"
                     className="h-10"
-                  />
+                    disabled={!hasAccess('LAUNCH')}
+                  />    
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <Label htmlFor="companyPrimaryColour">
-                      Primary Color (Optional)
-                    </Label>
-                    <ColorPicker
-                      id="companyPrimaryColour"
-                      value={companyPrimaryColour}
-                      onChange={setCompanyPrimaryColour}
-                    />
+                    <LockedLabel htmlFor="companyPrimaryColour" locked={!hasAccess('LAUNCH') }>Primary Color (Optional)</LockedLabel>
+                      <LockedSection locked={!hasAccess('LAUNCH')}>
+                        <ColorPicker id="companyPrimaryColour" value={companyPrimaryColour} onChange={setCompanyPrimaryColour} />
+                      </LockedSection>
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="companySecondaryColour">
+                    <LockedLabel htmlFor="companySecondaryColour" locked={!hasAccess('LAUNCH') }>
                       Secondary Color (Optional)
-                    </Label>
+                    </LockedLabel>
+                    <LockedSection locked={!hasAccess('LAUNCH')}>
                     <ColorPicker
                       id="companySecondaryColour"
                       value={companySecondaryColour}
                       onChange={setCompanySecondaryColour}
                     />
+                    </LockedSection>
                   </div>
                 </div>
 
                 <div className="space-y-2">
                   <div>
-                  <Label htmlFor="companyLogo">Company Logo (Optional)</Label>
-                  <p className="text-xs text-gray-500 mt-1">Used on your hiring portal and candidate emails.</p>
+                  <LockedLabel htmlFor="companyLogo" locked={!hasAccess('LAUNCH') }>Company Logo (Optional)</LockedLabel>
+                  <p className={`text-xs mt-1 ${!hasAccess('LAUNCH') ? 'text-gray-400' : 'text-gray-500'}`}>Used on your hiring portal and candidate emails.</p>
                   </div>
+                  <LockedSection locked={!hasAccess('LAUNCH')}>
                   <div className="space-y-4 pr-6">
                     {logoPreview && (
                       <div className="w-16 h-16 rounded overflow-hidden border border-gray-200">
@@ -572,10 +575,9 @@ export function CompanyProfileForm({
                       accept="image/*"
                       onChange={handleLogoChange}
                     />
-                  </div>
-                  <p className="text-xs text-gray-500 mt-1">
-                    Maximum file size: 5MB. Recommended formats: PNG, JPG, SVG.
-                  </p>
+                    </div>
+                  </LockedSection>
+                  <p className={`text-xs mt-1 ${!hasAccess('LAUNCH') ? 'text-gray-400' : 'text-gray-500'}`}>Maximum file size: 5MB. Recommended formats: PNG, JPG, SVG.</p>
                 </div>
               </div>
             </details>

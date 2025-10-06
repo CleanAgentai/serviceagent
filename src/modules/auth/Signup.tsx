@@ -1,12 +1,17 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { User, Mail, Lock, Building2, ArrowRight, Eye, EyeOff, Check } from "lucide-react";
 import { useAuth } from "@/app/providers/AuthContext";
 import { supabase } from "@/app/lib/supabase";
 
 export function Signup() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { signUp } = useAuth();
+
+  // Get selected plan from navigation state or localStorage fallback
+  const selectedPlan = (location.state as any)?.plan || localStorage.getItem('selectedPlan') || 'LAUNCH';
+  
 
   const [formData, setFormData] = useState({
     email: "",
@@ -140,8 +145,11 @@ export function Signup() {
           throw signUpError;
         }
       } else {
-        // Navigate to payment selection upon successful signup
-        navigate("/plan-onboarding");
+        // Persist plan selection and navigate to checkout
+        if ((location.state as any)?.plan) {
+          localStorage.setItem('selectedPlan', (location.state as any).plan);
+        }
+        navigate("/plan-onboarding", { state: { plan: selectedPlan } });
       }
     } catch (err: any) {
       setError(err.message || "회원가입 중 오류가 발생했습니다.");
@@ -150,6 +158,35 @@ export function Signup() {
     }
 
     // Handle signup logic
+  };
+
+  const handleOAuthSignUp = async (provider: "google") => {
+    setIsLoading(true);
+    try {
+      const redirectUri = `${window.location.origin}/oauth-callback`;
+      console.log("Redirecting to:", redirectUri);
+
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider,
+        options: {
+          redirectTo: redirectUri,
+          queryParams: {
+            prompt: "select_account",
+          },
+        },
+      });
+
+      if (error) throw error;
+
+      const { data: { user } } = await supabase.auth.getUser();
+      console.log("User:", user);
+      // The redirect will happen automatically
+    } catch (error: any) {
+      setError("OAuth login failed. Please try again.");
+      console.error("OAuth login failed:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleSocialSignup = async () => {
@@ -354,13 +391,44 @@ export function Signup() {
               >
                 Start Free Trial
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
-              </button>
-              
+              </button>  
             </form>
               {/* Reassurance Copy */}
-              <p className="mt-6 text-center text-sm text-muted-foreground hyphens-none break-words italic">
-                No charges today · Cancel anytime · 14 days free
+              <p className="mt-4 text-center text-sm text-muted-foreground hyphens-none break-words">
+              Takes less than 2 minutes to set up.
               </p>
+
+              <p className="mt-6 text-center text-sm text-muted-foreground hyphens-none break-words italic">
+                <span className="font-semibold">No charges today </span> · Cancel anytime · 14 days free
+              </p>
+
+              <div className="mt-6">
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-gray-300" />
+                  </div>
+                  <div className="relative flex justify-center text-sm">
+                    <span className="px-2 bg-white text-gray-500">
+                      Or continue with
+                    </span>
+                  </div>
+                </div>
+
+                <div className="mt-6">
+                  <button
+                    onClick={() => handleOAuthSignUp("google")}
+                    disabled={isLoading}
+                    className="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <img
+                      className="h-5 w-5 mr-2"
+                      src="https://www.svgrepo.com/show/475656/google-color.svg"
+                      alt="Google logo"
+                    />
+                    <span>Google</span>
+                  </button>
+                </div>
+              </div>
 
             {/* <div className="mt-6">
               <div className="relative">

@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ChevronDown, Clock, DollarSign, Users, ChevronsDown, Sparkles, Zap } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 
 const Hero = () => {
+  const navigate = useNavigate();
   const [isNavVisible, setIsNavVisible] = useState(true);
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
   const [hoursCount, setHoursCount] = useState(0);
@@ -88,28 +89,18 @@ const Hero = () => {
               >
                 <div className="flex flex-col md:flex-row justify-center md:justify-start items-center md:items-start gap-4">
                   <div className="flex flex-col items-center gap-2">
-                    <Link to="/signup">
-                      <Button 
-                        size="lg" 
-                        className="shrink-0 bg-gradient-to-r from-gold to-gold/90 hover:from-terracotta hover:to-terracotta/90 text-white px-8 py-6 text-xl font-bold rounded-xl shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300"
-                        aria-label="Start for Free"
-                      >
-                        Start Free Trial
-                      </Button>
-                    </Link>
+                    <Button 
+                      size="lg" 
+                      className="shrink-0 bg-gradient-to-r from-gold to-gold/90 hover:from-terracotta hover:to-terracotta/90 text-white px-8 py-6 text-xl font-bold rounded-xl shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300"
+                      aria-label="Start for Free"
+                      onClick={() => navigate('/signup', { state: { plan: 'LAUNCH' } })}
+                    >
+                      Start Free Trial
+                    </Button>
                     <p className="text-[10px] font-semibold uppercase text-muted-foreground text-center">
                     <span className="mr-[2px]">🎁</span> 14 Days Free
                     </p>
                   </div>
-                  
-                  <Button 
-                    variant="outline" 
-                    size="lg" 
-                    className="shrink-0 px-8 py-6 text-xl font-bold border-2 border-teal/30 text-teal hover:bg-teal/10 hover:border-teal/50 hover:text-teal transition-all duration-300 shadow-lg hover:shadow-teal/20"
-                    onClick={() => document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' })}
-                  >
-                    Watch Demo
-                  </Button>
                 </div>
               </div>
               
@@ -218,7 +209,10 @@ const Hero = () => {
               {/* <div className="max-md:hidden relative"> */}
                 {/* Main Dashboard - 440px desktop, doubled height */}
                 <div className="relative w-full lg:w-[440px] md:w-[280px] max-w-[320px] sm:max-w-[440px] hover:scale-105 transition-all duration-300">
-                  <Link to="/signup" className="block">
+                  <div 
+                    className="block cursor-pointer"
+                    onClick={() => navigate('/signup', { state: { plan: 'LAUNCH' } })}
+                  >
                   <img 
                     src="/DashboardWorker.png" 
                     alt="ServiceAgent worker with hard hat in active call showing professional hiring assistance" 
@@ -230,7 +224,7 @@ const Hero = () => {
                     }}
                     loading="eager"
                   />
-                  </Link>
+                  </div>
                   
                   {/* Notification Card - Enhanced size and styling */}
                   <div 

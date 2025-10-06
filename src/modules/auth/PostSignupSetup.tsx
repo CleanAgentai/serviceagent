@@ -34,10 +34,15 @@ export function PostSignupSetup() {
           return;
         }
 
-        // Check if user already has a company profile in user metadata
-        // This is more reliable than checking the profiles table which might have schema issues
-        if (user.user_metadata?.company_profile_completed === true) {
-          // User has completed their profile according to metadata, redirect to dashboard
+        // Check if user already has a completed company profile
+        const { data: companyProfile } = await supabase
+          .from("company_profiles")
+          .select("company_profile_completed")
+          .eq("created_by_user_id", user.id)
+          .single();
+
+        if (companyProfile?.company_profile_completed === true) {
+          // User has completed their company profile, redirect to dashboard
           navigate(routes.dashboard);
           return;
         }
