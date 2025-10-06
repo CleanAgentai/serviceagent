@@ -186,13 +186,13 @@ export function Login() {
                     type="button"
                     onClick={() => setRememberMe(!rememberMe)}
                     // onChange={handleRememberChange}
-                    className={`flex items-center justify-center !min-h-0 !min-w-0 h-8 w-8 rounded-3xl border-2 transition-all duration-200 ${
+                    className={`flex items-center justify-center !min-h-0 !min-w-0 h-6 w-6 rounded-3xl border-2 transition-all duration-200 ${
                       rememberMe
                         ? 'bg-blue-600 border-blue-600 text-white'
                         : 'bg-white border-gray-300 text-transparent hover:border-blue-600'
                     }`}
                   >
-                    <Check className="h-4 w-4" />
+                    <Check className="h-3 w-3" />
                   </button>
                   <span className="ml-2 block text-sm text-gray-700">
                     Remember me
