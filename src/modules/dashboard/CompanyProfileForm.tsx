@@ -31,6 +31,7 @@ export function CompanyProfileForm({
   mode,
   onComplete,
 }: CompanyProfileFormProps) {
+  const { hasAccess } = usePlan();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [firstName, setFirstName] = useState("");
