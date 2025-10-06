@@ -175,7 +175,7 @@ export function CompanyProfileForm({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           userId: user.id,
-          traits: { first_name: firstName || "", last_seen_at: new Date().toISOString() },
+          traits: { first_name: firstName || "", last_seen_at: new Date().toISOString(), niche: companyNiche},
         }),
       });
       if (!identifyRes.ok) throw new Error(`identify failed: ${identifyRes.status}`);
