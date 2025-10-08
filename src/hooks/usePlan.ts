@@ -22,6 +22,8 @@ export interface UserPlan {
   getPlanLimit: (planKey?: string | null) => number | null;
   /* Fetch current usage (attempts count) for the company, to compute progress */
   fetchPlanUsage: () => Promise<number>;
+  /* Force refresh of plan data (clears cache and refetches) */
+  refreshPlan: () => Promise<void>;
 }
 
 export function usePlan(): UserPlan {
@@ -176,6 +178,43 @@ export function usePlan(): UserPlan {
     }
   };
 
+  const refreshPlan = async (): Promise<void> => {
+    if (!user) return;
+    
+    // Clear cache
+    const storageKey = `sa:userPlan:${user.id}`;
+    localStorage.removeItem(storageKey);
+    
+    // Refetch plan data
+    setIsLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('subscription')
+        .eq('id', user.id)
+        .single();
+
+      if (error) {
+        console.error('Error refreshing user plan:', error);
+        setPlan(null);
+      } else {
+        const nextPlan = data?.subscription || null;
+        setPlan(nextPlan);
+        setPlanLimit(getPlanLimit(nextPlan));
+        // Update cache
+        try {
+          localStorage.setItem(storageKey, JSON.stringify({ plan: nextPlan, ts: Date.now() }));
+        } catch {}
+      }
+    } catch (error) {
+      console.error('Error refreshing user plan:', error);
+      setPlan(null);
+      setPlanLimit(getPlanLimit(null));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return {
     plan,
     isLoading,
@@ -186,5 +225,6 @@ export function usePlan(): UserPlan {
     planLimit,
     getPlanLimit,
     fetchPlanUsage,
+    refreshPlan,
   };
 }

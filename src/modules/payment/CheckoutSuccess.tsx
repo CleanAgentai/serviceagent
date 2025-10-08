@@ -29,6 +29,17 @@ const CheckoutSuccess = () => {
         if (data.paid) {
           setStatus("success");
           
+          // Clear the cached plan data to force refresh after upgrade
+          try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+              const storageKey = `sa:userPlan:${user.id}`;
+              localStorage.removeItem(storageKey);
+            }
+          } catch (error) {
+            console.error("Error clearing plan cache:", error);
+          }
+          
           // Check if company profile is already completed
           try {
             const { data: { user } } = await supabase.auth.getUser();
