@@ -1,7 +1,11 @@
+import React, { useEffect, useState } from 'react';
+import { Link } from "react-router-dom";
+import { client } from "../../app/lib/sanityClient";
+import { POSTS_QUERY, estimateReadTime, type Post } from "@/modules/blog/post";
+
 
 import { Helmet } from "react-helmet";
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+
 import { Calendar, Clock, ArrowRight, User, Sparkles, Zap, TrendingUp, BookOpen, Search } from 'lucide-react';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -10,135 +14,89 @@ import { Navigation } from "../landing/components/Navigation";
 import { Footer } from "../landing/components/Footer";
 import { motion } from 'framer-motion';
 
-interface BlogPost {
-  id: string;
-  author: string;
-  title: string;
-  excerpt: string;
-  date: string;
-  readTime: string;
-  category: string;
-  image: string;
-  tags: string[];
-  featured: boolean;
+export async function loader() {
+  return { posts: await client.fetch<Post[]>(POSTS_QUERY)};
 }
 
-// Sample blog posts data (replace with real data)
-const blogPosts = [
-  {
-    id: 'ai-hiring-revolution-2025',
-    title: 'The AI Hiring Revolution: How Technology is Transforming Service Industry Recruitment',
-    excerpt: 'Discover how AI-powered hiring platforms are helping service businesses reduce time-to-hire by 75% while improving candidate quality.',
-    date: '2025-01-15',
-    author: 'Sarah Johnson',
-    readTime: '8 min read',
-    image: '/blog/ai-efficiency.jpg',
-    category: 'AI Hiring',
-    featured: true
-  },
-  {
-    id: 'automated-interviews-guide',
-    title: 'Complete Guide to Automated Interviews: Best Practices for Service Businesses',
-    excerpt: 'Learn how to implement automated interviews that candidates love while maintaining the human touch your business needs.',
-    date: '2025-01-10',
-    author: 'Michael Chen',
-    readTime: '6 min read',
-    image: '/blog/hiring.jpg',
-    category: 'Best Practices'
-  },
-  {
-    id: 'candidate-scoring-systems',
-    title: 'Building Effective Candidate Scoring Systems: Data-Driven Hiring Decisions',
-    excerpt: 'Explore how modern scoring algorithms help identify top talent while eliminating unconscious bias in the hiring process.',
-    date: '2025-01-05',
-    author: 'Emma Rodriguez',
-    readTime: '7 min read',
-    image: '/blog/ai-efficiency.jpg',
-    category: 'Analytics'
-  },
-  {
-    id: 'service-industry-hiring-trends',
-    title: '2025 Service Industry Hiring Trends: What Business Owners Need to Know',
-    excerpt: 'Stay ahead of the curve with insights into emerging hiring trends, wage expectations, and talent acquisition strategies.',
-    date: '2024-12-28',
-    author: 'David Park',
-    readTime: '9 min read',
-    image: '/blog/hiring.jpg',
-    category: 'Industry Trends'
-  },
-  {
-    id: 'roi-automated-hiring',
-    title: 'Calculating ROI on Automated Hiring: Real Numbers from Service Businesses',
-    excerpt: 'See actual case studies showing how ServiceAgent customers achieved 300% ROI through automated hiring processes.',
-    date: '2024-12-20',
-    author: 'Lisa Thompson',
-    readTime: '5 min read',
-    image: '/blog/ai-efficiency.jpg',
-    category: 'Case Studies'
-  },
-  {
-    id: 'interview-questions-guide',
-    title: 'The Ultimate Guide to Service Industry Interview Questions',
-    excerpt: 'Download our comprehensive list of proven interview questions designed specifically for service industry roles.',
-    date: '2024-12-15',
-    author: 'Robert Kim',
-    readTime: '10 min read',
-    image: '/blog/hiring.jpg',
-    category: 'Resources'
+export const Blog: React.FC = () => {
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [err, setErr] = useState<string | null>(null);
+
+  useEffect(() => {
+    let alive = true;
+    (async () => {
+      try {
+        const data = await client.fetch<Post[]>(POSTS_QUERY);
+        if (alive) setPosts(data);
+      } catch (e: any) {
+        if (alive) setErr(e?.message ?? 'Failed to load posts');
+      }
+    })();
+    return () => { alive = false; };
+  }, []);
+
+  useEffect(() => { window.scrollTo(0, 0); }, []);
+
+  if (err) return <div className="p-6 text-red-500">Error: {err}</div>;
+  if (!posts) return <div className="p-6">Loading…</div>;
+
+  if (posts.length === 0) {
+    return (
+      <>
+        <Helmet>
+          <title>Blog | ServiceAgent – No posts yet</title>
+          <meta name="robots" content="noindex" />
+        </Helmet>
+        <Navigation />
+        <div className="min-h-screen mt-16 flex items-center justify-center bg-background px-6">
+          <Card className="max-w-xl w-full text-center border-dashed">
+            <CardHeader>
+              <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                <Search className="w-6 h-6 text-primary" />
+              </div>
+              <h2 className="text-2xl font-semibold mt-4">No articles yet</h2>
+            </CardHeader>
+            <CardContent className="text-muted-foreground">
+              Our team is writing the first posts. Check back soon for AI hiring insights, product updates, and case studies.
+            </CardContent>
+          </Card>
+        </div>
+        <Footer />
+      </>
+    );
   }
-];
 
-const categories = [
-  "All Categories",
-  "AI & Automation",
-  "HR & Recruitment",
-  "Business Growth",
-  "Industry Trends",
-  "Best Practices",
-];
-
-export const Blog = () => {
-    // Auto-scroll to top when component mounts
-    useEffect(() => {
-      window.scrollTo(0, 0);
-    }, []);
-  
+  const featured = posts.filter(p => p.featured);
+  const rest = posts.filter(p => !p.featured);    
     // SEO structured data
     const structuredData = {
       "@context": "https://schema.org",
       "@type": "Blog",
       "name": "ServiceAgent Blog",
       "description": "AI hiring insights, product updates, and case studies for service businesses",
-      "url": "https://serviceagent.ai/blog",
+      "url": "https://fsagent.com/blog",
       "publisher": {
         "@type": "Organization",
         "name": "ServiceAgent",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://serviceagent.ai/logo.png"
+          "url": "https://fsagent.com/logo.svg"
         }
       },
-      "blogPost": blogPosts.map(post => ({
+      "blogPost": posts.map(post => ({
         "@type": "BlogPosting",
         "headline": post.title,
-        "description": post.excerpt,
+        "description": post.description,
         "image": post.image,
-        "datePublished": post.date,
+        "datePublished": post.publishedAt,
         "author": {
           "@type": "Person",
           "name": post.author
         },
-        "url": `https://serviceagent.ai/blog/${post.id}`
+        "url": `https://fsagent.com/blog/${post.slug}`
       }))
     };
 
-    const fmtDate = (iso: string, opts?: Intl.DateTimeFormatOptions) => {
-      const d = new Date(iso);
-      return Number.isNaN(d.getTime())
-        ? "" // or the raw string
-        : d.toLocaleDateString("en-US", opts);
-  };
-  
     return (
       <>
         <Helmet>
@@ -155,10 +113,10 @@ export const Blog = () => {
           <meta name="twitter:card" content="summary_large_image" />
           
           {/* Structured Data */}
-          <script
+          {/* <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-          />
+          /> */}
         </Helmet>
   
         <Navigation />
@@ -201,13 +159,13 @@ export const Blog = () => {
                   transition={{ duration: 0.8, delay: 0.2 }}
                   className="space-y-4"
                 >
-                  <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent leading-tight">
+                  <h1 className="text-5xl md:text-6xl text-foreground font-bold bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text leading-tight">
                     Blog
                   </h1>
                   
                   {/* Animated underline */}
                   <div className="flex justify-center">
-                    <div className="w-20 h-1 bg-gradient-to-r from-primary via-gold to-teal rounded-full animate-pulse" />
+                    <div className="w-20 h-1 bg-gradient-to-r from-terracotta via-gold to-teal rounded-full animate-pulse" />
                   </div>
                 </motion.div>
   
@@ -229,11 +187,11 @@ export const Blog = () => {
             {/* Bottom gradient overlay */}
             <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-background to-transparent" />
           </section>
-  
+            
           {/* Featured Post */}
-          {blogPosts.filter(post => post.featured).map((post, index) => (
+          {featured && featured.map((post, index) => (
             <motion.section 
-              key={post.id} 
+              key={post._id} 
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
@@ -262,11 +220,11 @@ export const Blog = () => {
                       <div className="flex items-center gap-6 text-sm text-muted-foreground">
                         <div className="flex items-center gap-2 group">
                           <Calendar className="w-4 h-4 group-hover:text-primary transition-colors" />
-                          <span>{fmtDate(post.date, { year: "numeric", month: "long", day: "numeric" })}</span>
+                          <span>{new Date(post.publishedAt).toLocaleDateString()}</span>
                         </div>
                         <div className="flex items-center gap-2 group">
                           <Clock className="w-4 h-4 group-hover:text-gold transition-colors" />
-                          <span>{post.readTime}</span>
+                          <span>{estimateReadTime(post.bodyText)}</span>
                         </div>
                         <div className="flex items-center gap-2 group">
                           <User className="w-4 h-4 group-hover:text-teal transition-colors" />
@@ -279,11 +237,11 @@ export const Blog = () => {
                       </h2>
                       
                       <p className="text-lg text-muted-foreground leading-relaxed">
-                        {post.excerpt}
+                        {post.description}
                       </p>
                       
                       <Link 
-                        to={`/blog/${post.id}`}
+                        to={`/blog/${post.slug}`}
                         className="group inline-flex items-center gap-3 bg-gradient-to-r from-primary to-primary/80 hover:from-gold hover:to-gold/80 text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg shadow-primary/30 hover:shadow-gold/40 transition-all duration-300 hover:scale-105"
                       >
                         Read Full Article
@@ -334,9 +292,9 @@ export const Blog = () => {
                 </motion.p>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {blogPosts.filter(post => !post.featured).map((post, index) => (
+                  {rest && rest.map((post, index) => (
                     <motion.div
-                      key={post.id}
+                      key={post._id}
                       initial={{ opacity: 0, y: 50 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.6, delay: index * 0.1 }}
@@ -353,7 +311,7 @@ export const Blog = () => {
                             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                             <div className="absolute top-4 left-4">
                               <Badge variant="secondary" className="bg-background/90 backdrop-blur-sm border-primary/20 text-primary font-medium">
-                                {post.category}
+                                {post.categoryTitle} 
                               </Badge>
                             </div>
                           </div>
@@ -363,11 +321,11 @@ export const Blog = () => {
                           <div className="flex items-center gap-4 text-xs text-muted-foreground">
                             <div className="flex items-center gap-1 group/date">
                               <Calendar className="w-3 h-3 group-hover/date:text-primary transition-colors" />
-                              <span>{fmtDate(post.date, { year: "numeric", month: "long", day: "numeric" })}</span>
+                              <span>{new Date(post.publishedAt).toLocaleDateString()}</span>
                             </div>
                             <div className="flex items-center gap-1 group/time">
                               <Clock className="w-3 h-3 group-hover/time:text-gold transition-colors" />
-                              <span>{post.readTime}</span>
+                              <span>{estimateReadTime(post.bodyText)}</span>
                             </div>
                           </div>
                           
@@ -376,7 +334,7 @@ export const Blog = () => {
                           </h3>
                           
                           <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3">
-                            {post.excerpt}
+                            {post.description}
                           </p>
                           
                           <div className="flex items-center gap-2 text-xs text-muted-foreground">
@@ -387,7 +345,7 @@ export const Blog = () => {
                         
                         <CardFooter className="p-6 pt-0">
                           <Link 
-                            to={`/blog/${post.id}`}
+                            to={`/blog/${post.slug}`}
                             className="inline-flex items-center gap-2 text-primary hover:text-gold font-semibold text-sm transition-all duration-300 group/link hover:scale-105"
                           >
                             Read More
@@ -438,3 +396,68 @@ export const Blog = () => {
   };
   
   export default Blog;
+
+
+  const blogPosts = [
+    {
+      id: 'ai-hiring-revolution-2025',
+      title: 'The AI Hiring Revolution: How Technology is Transforming Service Industry Recruitment',
+      excerpt: 'Discover how AI-powered hiring platforms are helping service businesses reduce time-to-hire by 75% while improving candidate quality.',
+      date: '2025-01-15',
+      author: 'Sarah Johnson',
+      readTime: '8 min read',
+      image: '/blog/ai-efficiency.jpg',
+      category: 'AI Hiring',
+      featured: true
+    },
+    {
+      id: 'automated-interviews-guide',
+      title: 'Complete Guide to Automated Interviews: Best Practices for Service Businesses',
+      excerpt: 'Learn how to implement automated interviews that candidates love while maintaining the human touch your business needs.',
+      date: '2025-01-10',
+      author: 'Michael Chen',
+      readTime: '6 min read',
+      image: '/blog/hiring.jpg',
+      category: 'Best Practices'
+    },
+    {
+      id: 'candidate-scoring-systems',
+      title: 'Building Effective Candidate Scoring Systems: Data-Driven Hiring Decisions',
+      excerpt: 'Explore how modern scoring algorithms help identify top talent while eliminating unconscious bias in the hiring process.',
+      date: '2025-01-05',
+      author: 'Emma Rodriguez',
+      readTime: '7 min read',
+      image: '/blog/ai-efficiency.jpg',
+      category: 'Analytics'
+    },
+    {
+      id: 'service-industry-hiring-trends',
+      title: '2025 Service Industry Hiring Trends: What Business Owners Need to Know',
+      excerpt: 'Stay ahead of the curve with insights into emerging hiring trends, wage expectations, and talent acquisition strategies.',
+      date: '2024-12-28',
+      author: 'David Park',
+      readTime: '9 min read',
+      image: '/blog/hiring.jpg',
+      category: 'Industry Trends'
+    },
+    {
+      id: 'roi-automated-hiring',
+      title: 'Calculating ROI on Automated Hiring: Real Numbers from Service Businesses',
+      excerpt: 'See actual case studies showing how ServiceAgent customers achieved 300% ROI through automated hiring processes.',
+      date: '2024-12-20',
+      author: 'Lisa Thompson',
+      readTime: '5 min read',
+      image: '/blog/ai-efficiency.jpg',
+      category: 'Case Studies'
+    },
+    {
+      id: 'interview-questions-guide',
+      title: 'The Ultimate Guide to Service Industry Interview Questions',
+      excerpt: 'Download our comprehensive list of proven interview questions designed specifically for service industry roles.',
+      date: '2024-12-15',
+      author: 'Robert Kim',
+      readTime: '10 min read',
+      image: '/blog/hiring.jpg',
+      category: 'Resources'
+    }
+  ];

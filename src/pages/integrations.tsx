@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { ArrowRight, Plug } from "lucide-react";
 import ATSGrid, { atsIntegrations as defaultAtsIntegrations } from "@/pages/ATSGrid";
-import { supabase } from "../lib/supabase";
+import { supabase } from "@/app/lib/supabase";
 import { FeatureGate } from "@/modules/dashboard/FeatureGate";
 import { usePlan } from "@/hooks/usePlan";
 
