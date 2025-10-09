@@ -67,23 +67,26 @@ const ManageSubscriptions = () => {
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/stripe/cancel-subscription`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ subToDel }),
+        body: JSON.stringify({ subToDel, user_id: user.id }),
       });
 
       const data = await response.json();
 
       if (response.ok && data.success) {
         setMessage("Subscription cancelled successfully.");
-        const { data, error: update_error } = await supabase
-          .from('profiles')
-          .update({subscription: "", subscription_id: ""})
-          .eq('id', user.id)
-          .select('*');
-        if (update_error) {
-          console.log(update_error);
-        }
+        
+        // Clear the cached plan data to force refresh
+        const storageKey = `sa:userPlan:${user.id}`;
+        localStorage.removeItem(storageKey);
+        
+        // Update local state immediately
         setHasActiveSub(false);
         setSubName("None");
+        
+        // Trigger a page refresh to update all components
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       } else {
         if (subName == 'Custom') {
           setMessage("You have a custom plan.")
