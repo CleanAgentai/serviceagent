@@ -23,6 +23,29 @@ const CheckoutSuccess = () => {
       });
       if (!identifyRes.ok) throw new Error(`identify failed: ${identifyRes.status}`);
 
+      const rowAdd = [{
+        created_at: new Date().toISOString(),
+        user_id: user.id,
+        plan_status: "onboarding",
+        trial_ends_at: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
+      }];
+
+      try {
+        const { data, error } = await supabase
+          .from('customerio')
+          .insert(rowAdd)
+          .select();
+      
+        if (error) {
+          console.error('Insert customerio error:', error);
+          throw error;
+        }
+      
+        console.log('Inserted customerio data:', data);
+      } catch (err) {
+        console.error('Error:', err);
+      }
+
       const trackRes = await fetch(`${apiBaseUrl}/api/customerio/track`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
