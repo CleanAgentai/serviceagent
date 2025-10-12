@@ -54,7 +54,27 @@ export function Login() {
     try {
       const { error: signInError } = await signIn(email, password);
       if (signInError) throw signInError;
-      navigate("/dashboard");
+      
+      // After successful login, check subscription status
+      const { data: user } = await supabase.auth.getUser();
+      if (user.user) {
+        const { data: userProfile } = await supabase
+          .from("profiles")
+          .select("subscription")
+          .eq("id", user.user.id)
+          .single();
+        
+        const hasSubscription = userProfile?.subscription && userProfile.subscription.trim() !== '';
+        
+        if (!hasSubscription) {
+          console.log("No active subscription found, redirecting to payment page...");
+          navigate("/plan-onboarding", { replace: true });
+        } else {
+          navigate("/dashboard", { replace: true });
+        }
+      } else {
+        navigate("/dashboard", { replace: true });
+      }
     } catch (err: any) {
       setError(err.message || "Invalid email or password. Please try again.");
     } finally {
