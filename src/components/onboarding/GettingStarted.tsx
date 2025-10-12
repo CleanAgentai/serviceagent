@@ -18,6 +18,56 @@ import { supabase } from "@/app/lib/supabase";
 import { useAuth } from "@/app/providers/AuthContext";
 import { Button } from "@/components/ui/button";
 import { VideoEmbed } from "../ui/video";
+import { useCallback } from 'react';
+import confetti from 'canvas-confetti';
+import { Settings } from "lucide-react";
+
+export const useConfetti = () => {
+  const triggerConfetti = useCallback(() => {
+    const count = 200;
+    const defaults = {
+      origin: { y: 0.7 },
+      zIndex: 1000,
+    };
+
+    function fire(particleRatio: number, opts: any) {
+      confetti({
+        ...defaults,
+        ...opts,
+        particleCount: Math.floor(count * particleRatio),
+      });
+    }
+
+    fire(0.25, {
+      spread: 26,
+      startVelocity: 55,
+    });
+
+    fire(0.2, {
+      spread: 60,
+    });
+
+    fire(0.35, {
+      spread: 100,
+      decay: 0.91,
+      scalar: 0.8,
+    });
+
+    fire(0.1, {
+      spread: 120,
+      startVelocity: 25,
+      decay: 0.92,
+      scalar: 1.2,
+    });
+
+    fire(0.1, {
+      spread: 120,
+      startVelocity: 45,
+    });
+  }, []);
+
+  return triggerConfetti;
+};
 
 const steps = [
   { id: "create", title: "Create Interview", icon: Rocket },
@@ -42,8 +92,17 @@ function ResponsiveVideo({ src, title }: { src: string; title: string }) {
 }
 
 export default function GettingStarted() {
+  const triggerConfetti = useConfetti();
   const { user } = useAuth();
   const [activeStep, setActiveStep] = useState("create");
+  const [showResetOption, setShowResetOption] = useState(false);
+
+  const resetPopupPreference = () => {
+    localStorage.removeItem("hide_welcome_popup");
+    sessionStorage.removeItem("hide_welcome_popup_this_session");
+    alert("Popup preference reset! The welcome popup will show again.");
+    setShowResetOption(false);
+  };
 
   // Completion states
   const [firstInterviewId, setFirstInterviewId] = useState<string | null>(null);
@@ -107,21 +166,63 @@ export default function GettingStarted() {
     connect: completionBitmask[3] === "1",
   };
 
-  const updateBitmask = async (index: number) => {
+  const updateBitmask = async (index: number, newValue: boolean) => {
     if (!companyProfileId) return;
 
     const newBits = completionBitmask.split("");
-    if (newBits[index] === "1") return;
-
-    newBits[index] = "1";
+    newBits[index] = newValue ? "1" : "0";
     const updated = newBits.join("");
 
     setCompletionBitmask(updated);
+
+    // Only trigger confetti when completing a task, not when unchecking
+    if (newValue) {
+      triggerConfetti();
+    }
 
     await supabase
       .from("company_profiles")
       .update({ completion_bitmask: updated })
       .eq("id", companyProfileId);
+  };
+
+  const getStepBitmaskIndex = (stepId: string): number => {
+    const stepMapping: { [key: string]: number } = {
+      create: 0,    // This should already be completed when interview is created
+      copy: 0,      // Bitmask index 0
+      candidate: 1, // Bitmask index 1
+      edit: 2,      // Bitmask index 2
+      connect: 3,   // Bitmask index 3
+    };
+    return stepMapping[stepId];
+  };  
+
+  const resetAllProgress = async () => {
+    if (!companyProfileId) return;
+
+    // Reset bitmask to all zeros
+    const resetBitmask = "0000";
+    setCompletionBitmask(resetBitmask);
+    
+    // Update in database
+    await supabase
+      .from("company_profiles")
+      .update({ 
+        completion_bitmask: resetBitmask,
+      })
+      .eq("id", companyProfileId);
+
+    // Reset local states
+    setHasCandidate(false);
+    setAttemptId(null);
+  };
+
+  const toggleStepCompletion = (stepId: string) => {
+    const stepIndex = getStepBitmaskIndex(stepId);
+    const isStepCompleted = isCompleted[stepId as keyof typeof isCompleted];
+    
+    // Toggle the completion status
+    updateBitmask(stepIndex, !isStepCompleted);
   };
 
   return (
@@ -131,32 +232,70 @@ export default function GettingStarted() {
         <p className="text-xs text-gray-500 mb-4 leading-relaxed hyphens-none break-words">
           Follow these quick steps to set up ServiceAgent and start hiring with AI.
         </p>
+{/*         
+        <button
+          onClick={resetAllProgress}
+          className="text-xs text-gray-500 hover:text-red-600 transition-colors duration-200 mb-4"
+          title="Reset all progress"
+        >
+          Reset All Progress
+        </button> */}
+        
         <ul className="space-y-4">
-          {steps.map(({ id, title, icon: Icon }) => (
-            <li
-              key={id}
-              onClick={() => setActiveStep(id)}
-              className={`flex items-center justify-between p-2 rounded cursor-pointer transition ${
-                activeStep === id
-                  ? "bg-blue-100 text-blue-800 font-medium"
-                  : "hover:bg-gray-100"
-              }`}
-            >
-              <div className="flex items-center space-x-2">
-                <Icon className="w-5 h-5 shrink-0" />
-                <span className="text-sm break-words hyphens-none whitespace-wrap pr-4">{title}</span>
-              </div>
-              <div className={`w-6 h-6 flex items-center justify-center rounded-xl shrink-0 ${
-                isCompleted[id as keyof typeof isCompleted] 
-                  ? 'bg-green-600' 
-                  : 'bg-gray-200'
-              }`}>
-                {isCompleted[id as keyof typeof isCompleted] && (
-                  <Check className="w-4 h-4 text-white" />
-                )}
-              </div>
-            </li>
-          ))}
+          {steps.map(({ id, title, icon: Icon }) => {
+            const isStepCompleted = isCompleted[id as keyof typeof isCompleted];
+            const isActiveStep = activeStep === id;
+            
+            return (
+              <li
+                key={id}
+                className={`flex items-center justify-between p-2 rounded cursor-pointer transition ${
+                  isActiveStep
+                    ? "bg-blue-100 text-blue-800 font-medium"
+                    : "hover:bg-gray-100"
+                }`}
+              >
+                <div 
+                  className="flex items-center space-x-2 flex-1"
+                  onClick={() => setActiveStep(id)}
+                >
+                  <Icon className="w-5 h-5 shrink-0" />
+                  <span className="text-sm break-words hyphens-none whitespace-wrap pr-4">
+                    {title}
+                  </span>
+                </div>
+                
+                {/* Checkbox - Only enabled when step is active */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (isActiveStep) {
+                      toggleStepCompletion(id);
+                    }
+                  }}
+                  className={`w-6 h-6 flex items-center justify-center rounded-xl shrink-0 transition-all duration-300 ${
+                    isStepCompleted 
+                      ? 'bg-green-600 hover:bg-red-600 cursor-pointer' 
+                      : isActiveStep
+                      ? 'bg-gray-200 hover:bg-gray-300 cursor-pointer hover:scale-110'
+                      : 'bg-gray-100 cursor-not-allowed opacity-50'
+                  }`}
+                  title={
+                    !isActiveStep 
+                      ? "Select this step to mark as complete" 
+                      : isStepCompleted 
+                      ? "Click to mark as incomplete" 
+                      : "Click to mark as complete"
+                  }
+                  disabled={!isActiveStep}
+                >
+                  {isStepCompleted && (
+                    <Check className="w-4 h-4 text-white" />
+                  )}
+                </button>
+              </li>
+            );
+          })}
         </ul>
       </aside>
 
@@ -165,25 +304,25 @@ export default function GettingStarted() {
         {activeStep === "copy" && (
           <CopyInterviewLink
             firstInterviewId={firstInterviewId}
-            onComplete={() => updateBitmask(0)}
+            onComplete={() => updateBitmask(0, true)}
           />
         )}
         {activeStep === "candidate" && (
           <FirstCandidate
             hasCandidate={hasCandidate}
             attemptId={attemptId}
-            onComplete={() => updateBitmask(1)}
+            onComplete={() => updateBitmask(1, true)}
             setActiveStep={setActiveStep}
           />
         )}
         {activeStep === "edit" && (
           <EditInterview
             firstInterviewId={firstInterviewId}
-            onComplete={() => updateBitmask(2)}
+            onComplete={() => updateBitmask(2, true)}
           />
         )}
         {activeStep === "connect" && (
-          <ConnectATS onComplete={() => updateBitmask(3)} />
+          <ConnectATS onComplete={() => updateBitmask(3, true)} />
         )}
       </main>
     </div>
@@ -197,7 +336,7 @@ function CreateInterview({ hasInterview, setActiveStep }: { hasInterview: boolea
   return (
     <div className="space-y-4">
       <h2 className="text-3xl text-left font-semibold hyphens-none break-words">Step 1: Create Your First Interview</h2>
-      <h3 className="text-md text-left text-gray-700 mb-8 hyphens-none break-words">This only takes 3–5 minutes. We’ll guide you through the basics, and you can customize later.</h3>
+      <h3 className="text-md text-left text-gray-700 mb-8 hyphens-none break-words">This only takes 3–5 minutes. We'll guide you through the basics, and you can customize later.</h3>
       <ResponsiveVideo src="https://www.loom.com/embed/92a3d28944824836b1972930104e3ffc?sid=1a1c6339-3789-4b6a-973a-42da5f36ab23" title="How To Create An Interview" />
 
       <div className="space-y-6">
@@ -486,7 +625,7 @@ function FirstCandidate({
       <h3 className="text-md text-left text-gray-700 mb-8 hyphens-none break-words">See candidate responses and AI scores as soon as candidates complete your interview.</h3>
       <ResponsiveVideo src="https://www.loom.com/embed/1e6af556cdbe48c0ba45df67a0687f45?sid=3110a7a9-e2f8-44e5-94ac-ad24947b65ca" title="How To View Your First Candidate" />
       
-      <p className="max-w-4xl text-gray-700 leading-relaxed hyphens-none break-words">Once a candidate submits their interview, you’ll see their responses, AI score, and analysis in the <Link className="inline-block hyphens-none break-words p-0 m-0 font-semibold text-blue-600 hover:text-blue-700 hover:underline transition-colors duration-200 cursor-pointer" to="/interviews/responses">Candidates</Link> tab. <br />Use this to quickly decide who to advance or reject. Click the button below or on the left side of your navigation bar to view your candidates.</p>
+      <p className="max-w-4xl text-gray-700 leading-relaxed hyphens-none break-words">Once a candidate submits their interview, you'll see their responses, AI score, and analysis in the <Link className="inline-block hyphens-none break-words p-0 m-0 font-semibold text-blue-600 hover:text-blue-700 hover:underline transition-colors duration-200 cursor-pointer" to="/interviews/responses">Candidates</Link> tab. <br />Use this to quickly decide who to advance or reject. Click the button below or on the left side of your navigation bar to view your candidates.</p>
       
        <button 
          onClick={() => setActiveStep("copy")}
