@@ -16,7 +16,7 @@ export const postType = defineType({
         type: 'reference',
         to: [{ type: 'category' }],
         options: {
-          disableNew: false, // Allow users to create new categories directly from the dropdown
+          disableNew: false,
         },
         validation: (rule) => rule.required(),
     }),
@@ -45,6 +45,7 @@ export const postType = defineType({
     defineField({
       name: 'image',
       type: 'image',
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'featured',
@@ -54,7 +55,29 @@ export const postType = defineType({
     defineField({
       name: 'body',
       type: 'array',
-      of: [{type: 'block'}, {type: 'image'}],
+      of: [
+        {type: 'block'}, 
+        {
+          type: 'image',
+          options: {
+            hotspot: true,
+          },
+          fields: [
+            {
+              name: 'caption',
+              type: 'string',
+              title: 'Caption',
+              description: 'Optional caption for the image',
+            },
+            {
+              name: 'alt',
+              type: 'string',
+              title: 'Alt Text',
+              description: 'Alternative text for accessibility',
+            }
+          ]
+        }
+      ],
     }),
   ],
 })

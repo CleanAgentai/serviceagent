@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import { client } from "../../app/lib/sanityClient";
-import { POSTS_QUERY, estimateReadTime, type Post } from "@/modules/blog/post";
+import { POSTS_COUNT_QUERY, POSTS_QUERY, estimateReadTime, type Post } from "@/modules/blog/post";
 
 
 import { Helmet } from "react-helmet";
@@ -11,29 +11,37 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Navigation } from "../landing/components/Navigation";
-import { Footer } from "../landing/components/Footer";
+
 import { motion } from 'framer-motion';
 
-export async function loader() {
-  return { posts: await client.fetch<Post[]>(POSTS_QUERY)};
-}
 
 export const Blog: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [err, setErr] = useState<string | null>(null);
 
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPosts, setTotalPosts] = useState(0);
+  const postsPerPage = currentPage === 0 ? 7 : 6; // First page: 1 featured + 6 grid, Other pages: 6 grid
+
+
   useEffect(() => {
     let alive = true;
     (async () => {
       try {
-        const data = await client.fetch<Post[]>(POSTS_QUERY);
-        if (alive) setPosts(data);
+        const [postsData, count] = await Promise.all([
+          client.fetch<Post[]>(POSTS_QUERY(currentPage, postsPerPage)),
+          client.fetch<number>(POSTS_COUNT_QUERY)
+        ]);
+        if (alive) {
+          setPosts(postsData);
+          setTotalPosts(count);
+        }
       } catch (e: any) {
         if (alive) setErr(e?.message ?? 'Failed to load posts');
       }
     })();
     return () => { alive = false; };
-  }, []);
+  }, [currentPage]);
 
   useEffect(() => { window.scrollTo(0, 0); }, []);
 
@@ -61,13 +69,26 @@ export const Blog: React.FC = () => {
             </CardContent>
           </Card>
         </div>
-        <Footer />
       </>
     );
   }
 
+  // With the updated query, featured posts are prioritized on page 0
   const featured = posts.filter(p => p.featured);
-  const rest = posts.filter(p => !p.featured);    
+  const latestFeatured = featured.length > 0 ? [featured[0]] : posts.length > 0 ? [posts[0]] : [];
+  const rest = featured.length > 0 
+    ? posts.filter(p => !p.featured)
+    : posts.length > 0 
+      ? posts.slice(1) 
+      : [];
+      
+    // Calculate total pages - simplified approach
+    // Page 0: 7 posts (1 featured + 6 grid), Page 1+: 6 posts each
+    const totalPages = Math.ceil(totalPosts / 6) + 1; // +1 for page 0
+  //   const totalPages =
+  // totalPosts <= 7 ? 1 : 1 + Math.ceil((totalPosts - 7) / 6);
+    const hasNextPage = currentPage < totalPages - 1;
+    const hasPrevPage = currentPage > 0;
     // SEO structured data
     const structuredData = {
       "@context": "https://schema.org",
@@ -113,10 +134,10 @@ export const Blog: React.FC = () => {
           <meta name="twitter:card" content="summary_large_image" />
           
           {/* Structured Data */}
-          {/* <script
+          <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-          /> */}
+          />
         </Helmet>
   
         <Navigation />
@@ -189,7 +210,7 @@ export const Blog: React.FC = () => {
           </section>
             
           {/* Featured Post */}
-          {featured && featured.map((post, index) => (
+          {latestFeatured && latestFeatured.map((post, index) => (
             <motion.section 
               key={post._id} 
               initial={{ opacity: 0, y: 50 }}
@@ -232,7 +253,8 @@ export const Blog: React.FC = () => {
                         </div>
                       </div>
                       
-                      <h2 className="text-4xl md:text-5xl font-bold text-foreground leading-tight">
+                      <h2 className="text-4xl md:text-5xl font-bold text-foreground leading-tight"
+                      title={post.title}>
                         {post.title}
                       </h2>
                       
@@ -298,14 +320,15 @@ export const Blog: React.FC = () => {
                       initial={{ opacity: 0, y: 50 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.6, delay: index * 0.1 }}
-                    >
-                      <Card className="group hover:shadow-xl transition-all duration-300 border-border/50 hover:border-primary/30 bg-card/50 backdrop-blur-sm hover:bg-card/80 h-full">
+                    ><Link to={`/blog/${post.slug}`} className="block">
+                      <Card className="group hover:shadow-xl transition-all duration-300 border-border/50 hover:border-primary/30 bg-card/50 backdrop-blur-sm hover:bg-card/80 min-h-full flex flex-col flex-grow">
                         <CardHeader className="p-0">
                           <div className="relative overflow-hidden rounded-t-lg">
+                            
                             <img 
                               src={post.image} 
                               alt={post.title}
-                              className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                              className="w-full !h-48 object-cover group-hover:scale-110 transition-transform duration-500"
                               loading="lazy"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
@@ -317,7 +340,8 @@ export const Blog: React.FC = () => {
                           </div>
                         </CardHeader>
                         
-                        <CardContent className="p-6 space-y-4 flex-grow">
+                        
+                        <CardContent className="p-6 space-y-4 flex-grow flex flex-col">
                           <div className="flex items-center gap-4 text-xs text-muted-foreground">
                             <div className="flex items-center gap-1 group/date">
                               <Calendar className="w-3 h-3 group-hover/date:text-primary transition-colors" />
@@ -329,15 +353,16 @@ export const Blog: React.FC = () => {
                             </div>
                           </div>
                           
-                          <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-tight">
+                          <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-tight"
+                          title={post.title}>
                             {post.title}
                           </h3>
                           
-                          <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3">
+                          <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3 flex-grow">
                             {post.description}
                           </p>
                           
-                          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                          <div className="flex items-center gap-2 text-xs text-muted-foreground mt-auto">
                             <User className="w-3 h-3" />
                             <span>by {post.author}</span>
                           </div>
@@ -353,6 +378,7 @@ export const Blog: React.FC = () => {
                           </Link>
                         </CardFooter>
                       </Card>
+                      </Link>
                     </motion.div>
                   ))}
                 </div>
@@ -370,18 +396,21 @@ export const Blog: React.FC = () => {
             <div className="container mx-auto px-6">
               <div className="flex justify-center items-center gap-4">
                 <Button 
-                  disabled 
+                  disabled={!hasPrevPage}
                   variant="outline"
-                  className="px-6 py-2 text-sm border-border text-muted-foreground cursor-not-allowed opacity-50"
+                  className={`px-6 py-2 text-sm border-border ${!hasPrevPage ? 'text-muted-foreground cursor-not-allowed opacity-50' : 'text-primary hover:border-white hover:bg-blue-600 transition-all duration-300'}`}
+                  onClick={() => setCurrentPage(currentPage - 1)}
                 >
                   Previous
                 </Button>
                 <Button className="px-6 py-2 text-sm bg-gradient-to-r from-primary to-primary/80 text-white font-medium rounded-lg shadow-lg shadow-primary/30">
-                  1
+                  {currentPage + 1} of {totalPages}
                 </Button>
                 <Button 
                   variant="outline"
-                  className="px-6 py-2 text-sm border-border hover:border-primary hover:bg-primary/5 transition-all duration-300"
+                  className={`px-6 py-2 text-sm border-border ${!hasNextPage ? 'text-muted-foreground cursor-not-allowed opacity-50' : 'text-primary hover:border-white hover:bg-blue-600 transition-all duration-300'}`}
+                  onClick={() => setCurrentPage(currentPage + 1)}
+                  disabled={!hasNextPage}
                 >
                   Next
                 </Button>
@@ -389,8 +418,6 @@ export const Blog: React.FC = () => {
             </div>
           </motion.section>
         </div>
-        
-        <Footer />
       </>
     );
   };

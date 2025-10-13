@@ -6,7 +6,37 @@ import { Button } from '@/components/ui/button';
 import { Navigation } from '../landing/components/Navigation';
 import { client } from '../../app/lib/sanityClient';
 import { PortableText } from '@portabletext/react';
+import imageUrlBuilder from '@sanity/image-url';
 import { POST_BY_SLUG_QUERY, type Post, estimateReadTime } from "@/modules/blog/post";
+import { Helmet } from 'react-helmet';
+
+// Image component for PortableText
+const ImageComponent = ({ value }: { value: any }) => {
+  const imageUrl = imageUrlBuilder(client).image(value).width(800).height(400).url();
+  
+  return (
+    <div className="my-8">
+      <img 
+        src={imageUrl} 
+        alt={value.alt || ''} 
+        className="w-full max-w-[80%] h-auto rounded-xl shadow-lg mx-auto"
+        loading="lazy"
+      />
+      {value.caption && (
+        <p className="text-sm text-muted-foreground mt-2 text-center italic">
+          {value.caption}
+        </p>
+      )}
+    </div>
+  );
+};
+
+// PortableText components
+const components = {
+  types: {
+    image: ImageComponent,
+  },
+};
 
 export const BlogPost: React.FC = () => {
   const { slug = '' } = useParams<{ slug: string }>();
@@ -56,8 +86,9 @@ export const BlogPost: React.FC = () => {
           <div className="text-center space-y-4">
             <h1 className="text-4xl font-bold text-foreground">Post Not Found</h1>
             <p className="text-muted-foreground">{err ?? "The blog post you're looking for doesn't exist."}</p>
-            <Link to="/blog">
-              <Button>Back to posts</Button>
+            <Link to="/blog" className="group inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
+              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-300" />
+              Back to posts
             </Link>
           </div>
         </div>
@@ -86,16 +117,22 @@ export const BlogPost: React.FC = () => {
 
   return (
     <>
-      {/* Basic SEO (consider react-helmet like in your list page) */}
+     <Helmet>
       <title>{post.title} | ServiceAgent Blog</title>
       <meta name="description" content={desc} />
+      <meta name="author" content={post.author} />
+      <link rel="canonical" href={`https://fsagent.com/blog/${slug}`} />
       <meta property="og:title" content={`${post.title} | ServiceAgent Blog`} />
       <meta property="og:description" content={desc} />
       <meta property="og:image" content={post.image} />
       <meta property="og:type" content="article" />
+      <meta property="og:url" content={`https://fsagent.com/blog/${slug}`} />
       <meta name="twitter:card" content="summary_large_image" />
-
+      <meta name="twitter:image" content={post.image} />
+      <meta name="article:published_time" content={post.publishedAt} />
+      <meta name="article:author" content={post.author} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+    </Helmet>
 
       <Navigation />
 
@@ -117,8 +154,8 @@ export const BlogPost: React.FC = () => {
            {/* Back link */}
         <div className="sticky top-0 mt-4 backdrop-blur-sm  z-10">
           <div className="container mx-auto ml-32 py-4">
-            <Link to="/blog" className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
-              <ArrowLeft className="w-4 h-4" />
+            <Link to="/blog" className="group inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
+              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-300" />
               Back to posts
             </Link>
           </div>
@@ -156,8 +193,8 @@ export const BlogPost: React.FC = () => {
                 </div>
               </header>
 
-              <div className="prose prose-lg max-w-none">
-                {Array.isArray(post.body) && <PortableText value={post.body} />}
+              <div className="prose prose-base max-w-none prose-headings:text-foreground">
+                {Array.isArray(post.body) && <PortableText value={post.body} components={components} />}
               </div>
             </div>
           </div>
