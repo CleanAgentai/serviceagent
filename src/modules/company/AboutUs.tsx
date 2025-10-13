@@ -28,7 +28,7 @@ export function AboutUs() {
         el.scrollIntoView({ behavior: "smooth" });
       } else {
         // If not on landing, go home and scroll after navigation
-        navigate('/');
+        navigate(`/#${id}`);
         setTimeout(() => {
           const el2 = document.getElementById(id);
           if (el2) el2.scrollIntoView({ behavior: "smooth" });
@@ -54,7 +54,7 @@ export function AboutUs() {
         <div className="max-w-7xl mx-auto py-20 bg-gradient-to-br from-blue-50 via-white to-teal-50">
           <div className="text-center">
             <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-teal-500 rounded-full mb-8 shadow-lg">
-              <Lightbulb className="w-10 h-10 text-white" />
+              <Target className="w-10 h-10 text-white" />
             </div>
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
               Our Mission
@@ -74,12 +74,8 @@ export function AboutUs() {
               A Letter From Our Founder
             </h2>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-gray-600">
-              <div className="w-16 h-16 rounded-full overflow-hidden flex items-center justify-center border-4 border-teal/70">
-                <img 
-                  src="/Porter_AboutUs.JPG" 
-                  alt="Porter Stanley" 
-                  className="w-full h-full object-cover"
-                />
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-teal-100 rounded-full flex items-center justify-center">
+                <Users className="w-8 h-8 text-blue-600" />
               </div>
               <div className="text-center sm:text-left">
                 <h3 className="text-lg font-semibold text-gray-900">Porter Stanley</h3>
