@@ -82,11 +82,8 @@ export const Blog: React.FC = () => {
       ? posts.slice(1) 
       : [];
       
-    // Calculate total pages - simplified approach
-    // Page 0: 7 posts (1 featured + 6 grid), Page 1+: 6 posts each
-    const totalPages = Math.ceil(totalPosts / 6) + 1; // +1 for page 0
-  //   const totalPages =
-  // totalPosts <= 7 ? 1 : 1 + Math.ceil((totalPosts - 7) / 6);
+
+    const totalPages = totalPosts <= 7 ? 1 : 1 + Math.ceil((totalPosts - 7) / 6);
     const hasNextPage = currentPage < totalPages - 1;
     const hasPrevPage = currentPage > 0;
     // SEO structured data
