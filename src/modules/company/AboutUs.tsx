@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Quote, Users, Target, Zap, Heart, Building2, Wrench, Sparkles, ArrowLeft } from "lucide-react";
+import { ArrowRight, Quote, Users, Target, Zap, Heart, Building2, Wrench, Sparkles, ArrowLeft, Lightbulb } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 

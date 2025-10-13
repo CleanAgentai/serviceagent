@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { Building, Upload, Trash2, ArrowRight, ChevronRight } from "lucide-react";
+import React, { useState, useEffect, useCallback,useRef } from "react";
+import { Building, Upload, Trash2, ArrowRight, ChevronRight, Lock } from "lucide-react";
 import { supabase } from "@/app/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import { Loader } from "@googlemaps/js-api-loader"; 
 import {
   Card,
   CardContent,
@@ -16,6 +17,10 @@ import {
 } from '@/components/ui/card';
 import { toast } from 'sonner';
 import { ColorPicker } from '@/components/ui/color-picker';
+import { FeatureGate } from "./FeatureGate";
+import { usePlan } from "@/hooks/usePlan";
+import { LockedSection, LockedLabel } from "@/components/ui/locked-label";
+
 
 interface CompanyProfileFormProps {
   mode: 'create' | 'update';
@@ -26,6 +31,7 @@ export function CompanyProfileForm({
   mode,
   onComplete,
 }: CompanyProfileFormProps) {
+  const { hasAccess } = usePlan();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [firstName, setFirstName] = useState("");
@@ -41,6 +47,9 @@ export function CompanyProfileForm({
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const [willoKey, setWilloKey] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [formData, setFormData] = useState({ location: "" });
+  const locationInputRef = useRef<HTMLInputElement | null>(null);
+  const googleAPIKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
   // Load existing profile data if available
   useEffect(() => {
@@ -141,6 +150,41 @@ export function CompanyProfileForm({
       isMounted = false;
     };
   }, []);
+
+  useEffect(() => {
+    if (!googleAPIKey) return;
+
+    const loader = new Loader({
+      apiKey: googleAPIKey,
+      libraries: ["places"],
+    });
+
+    loader.importLibrary("places").then((placesLib: any) => {
+      if (!locationInputRef.current) return;
+
+      // Attach autocomplete to the existing input
+      const autocomplete = new placesLib.Autocomplete(locationInputRef.current, {
+        types: ["(cities)"],   // uncomment if you only want cities
+        componentRestrictions: { country: "us" }, // restrict to US 
+      });
+
+      // Listen for selection
+      autocomplete.addListener("place_changed", () => {
+        const place = autocomplete.getPlace();
+        if (!place) return;
+
+        const address = place.formatted_address || place.name || "";
+
+        // ✅ This updates React state AFTER Google updates the DOM
+        setCompanyLocation(address);
+      });
+    });
+  }, [googleAPIKey]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+};
+
 
   const handleLogoChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -279,9 +323,7 @@ export function CompanyProfileForm({
           : `${apiBaseUrl}/api/departments`;
 
       const method = mode === 'update' ? 'PATCH' : 'POST';
-
-      console.log(endpoint);
-
+    
       //  Willow BackendAPI Call
       const departmentRes = await fetch(endpoint, {
         method,
@@ -374,7 +416,7 @@ export function CompanyProfileForm({
             </div>
           )}
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <Label htmlFor="firstName">First Name <span className="text-red-500">*</span></Label>
               <Input
@@ -419,11 +461,16 @@ export function CompanyProfileForm({
                 <p className="text-xs text-gray-500 mt-1">Shown to candidates and on your hiring portal.</p>
               </div>
               <Input
+                ref={locationInputRef}  // ✅ Google Autocomplete attaches here
                 id="companyLocation"
-                value={companyLocation}
+                // value={companyLocation}
+                defaultValue={companyLocation}
                 onChange={(e) => setCompanyLocation(e.target.value)}
-                placeholder="City, State"
+                // placeholder="City, State"
+                placeholder="Enter your location"
                 required
+                className=" pr-3 py-2 border border-gray-300 rounded-lg
+                            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
 
@@ -441,7 +488,7 @@ export function CompanyProfileForm({
                 required
               />
                 <Select value={companyNiche} onValueChange={setCompanyNiche}>
-                  <SelectTrigger id="companyNiche" className="text-[16px] text-gray-500">
+                  <SelectTrigger id="companyNiche" className="text-[16px">
                     <SelectValue placeholder="Select your industry" />
                   </SelectTrigger>
                 <SelectContent>
@@ -470,9 +517,10 @@ export function CompanyProfileForm({
                  {isOpen && <p className="text-xs text-gray-500">Don't worry, you can always do this later in Settings.</p>}
                  </div>
               </summary>
+              
               <div className="mt-4 space-y-6">
                 <div className="space-y-2 pr-6">
-                  <Label htmlFor="companyWebsite">Website (Optional)</Label>
+                <LockedLabel htmlFor="companyWebsite" locked={!hasAccess('LAUNCH')} tooltip="Upgrade to Launch to unlock this feature">Website (Optional)</LockedLabel>
                   <Input
                     id="companyWebsite"
                     value={companyWebsite}
@@ -480,38 +528,38 @@ export function CompanyProfileForm({
                     placeholder="https://example.com"
                     type="url"
                     className="h-10"
-                  />
+                    disabled={!hasAccess('LAUNCH')}
+                  />    
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <Label htmlFor="companyPrimaryColour">
-                      Primary Color (Optional)
-                    </Label>
-                    <ColorPicker
-                      id="companyPrimaryColour"
-                      value={companyPrimaryColour}
-                      onChange={setCompanyPrimaryColour}
-                    />
+                    <LockedLabel htmlFor="companyPrimaryColour" locked={!hasAccess('LAUNCH') }>Primary Color (Optional)</LockedLabel>
+                      <LockedSection locked={!hasAccess('LAUNCH')}>
+                        <ColorPicker id="companyPrimaryColour" value={companyPrimaryColour} onChange={setCompanyPrimaryColour} />
+                      </LockedSection>
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="companySecondaryColour">
+                    <LockedLabel htmlFor="companySecondaryColour" locked={!hasAccess('LAUNCH') }>
                       Secondary Color (Optional)
-                    </Label>
+                    </LockedLabel>
+                    <LockedSection locked={!hasAccess('LAUNCH')}>
                     <ColorPicker
                       id="companySecondaryColour"
                       value={companySecondaryColour}
                       onChange={setCompanySecondaryColour}
                     />
+                    </LockedSection>
                   </div>
                 </div>
 
                 <div className="space-y-2">
                   <div>
-                  <Label htmlFor="companyLogo">Company Logo (Optional)</Label>
-                  <p className="text-xs text-gray-500 mt-1">Used on your hiring portal and candidate emails.</p>
+                  <LockedLabel htmlFor="companyLogo" locked={!hasAccess('LAUNCH') }>Company Logo (Optional)</LockedLabel>
+                  <p className={`text-xs mt-1 ${!hasAccess('LAUNCH') ? 'text-gray-400' : 'text-gray-500'}`}>Used on your hiring portal and candidate emails.</p>
                   </div>
+                  <LockedSection locked={!hasAccess('LAUNCH')}>
                   <div className="space-y-4 pr-6">
                     {logoPreview && (
                       <div className="w-16 h-16 rounded overflow-hidden border border-gray-200">
@@ -528,10 +576,9 @@ export function CompanyProfileForm({
                       accept="image/*"
                       onChange={handleLogoChange}
                     />
-                  </div>
-                  <p className="text-xs text-gray-500 mt-1">
-                    Maximum file size: 5MB. Recommended formats: PNG, JPG, SVG.
-                  </p>
+                    </div>
+                  </LockedSection>
+                  <p className={`text-xs mt-1 ${!hasAccess('LAUNCH') ? 'text-gray-400' : 'text-gray-500'}`}>Maximum file size: 5MB. Recommended formats: PNG, JPG, SVG.</p>
                 </div>
               </div>
             </details>

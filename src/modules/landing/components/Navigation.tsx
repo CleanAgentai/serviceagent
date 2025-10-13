@@ -62,7 +62,7 @@ export function Navigation({ isNavVisible = true }: { isNavVisible?: boolean }) 
           el.scrollIntoView({ behavior: "smooth" });
         } else {
           // If not on landing, go home and scroll after navigation
-          navigate(`/#${id}`);
+          navigate('/');
           setTimeout(() => {
             const el2 = document.getElementById(id);
             if (el2) el2.scrollIntoView({ behavior: "smooth" });
