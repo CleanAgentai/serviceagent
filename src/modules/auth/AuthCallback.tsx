@@ -24,9 +24,9 @@ export function AuthCallback() {
         }
 
         if (session) {
-          console.log("Session found, checking user profile completion...");
+          console.log("Session found, checking user profile completion and subscription...");
           
-          // Check if user has completed company profile
+          // Check if user has completed company profile and subscription status
           const { data: user } = await supabase.auth.getUser();
           const { data: profile } = await supabase
             .from("company_profiles")
@@ -34,15 +34,28 @@ export function AuthCallback() {
             .eq("created_by_user_id", user.user?.id)
             .single();
           
+          // Check subscription status
+          const { data: userProfile } = await supabase
+            .from("profiles")
+            .select("subscription")
+            .eq("id", user.user?.id)
+            .single();
+          
           if (!hasNavigated.current) {
             hasNavigated.current = true;
+            
+            // Check if user has an active subscription
+            const hasSubscription = userProfile?.subscription && userProfile.subscription.trim() !== '';
             
             // If company profile is not completed, redirect to company setup
             if (!profile?.company_profile_completed) {
               console.log("Company profile not completed, redirecting to post-signup...");
               navigate("/post-signup", { replace: true });
+            } else if (!hasSubscription) {
+              console.log("No active subscription found, redirecting to payment page...");
+              navigate("/plan-onboarding", { replace: true });
             } else {
-              console.log("Company profile completed, redirecting to dashboard...");
+              console.log("Company profile completed and subscription active, redirecting to dashboard...");
               navigate("/dashboard", { replace: true });
             }
           }
@@ -56,9 +69,9 @@ export function AuthCallback() {
           console.log("Auth state changed:", event, !!session);
 
           if (session && !hasNavigated.current) {
-            console.log("Session established, checking user profile completion...");
+            console.log("Session established, checking user profile completion and subscription...");
             
-            // Check if user has completed company profile
+            // Check if user has completed company profile and subscription status
             const { data: user } = await supabase.auth.getUser();
             const { data: profile } = await supabase
               .from("company_profiles")
@@ -66,14 +79,27 @@ export function AuthCallback() {
               .eq("created_by_user_id", user.user?.id)
               .single();
             
+            // Check subscription status
+            const { data: userProfile } = await supabase
+              .from("profiles")
+              .select("subscription")
+              .eq("id", user.user?.id)
+              .single();
+            
             hasNavigated.current = true;
+            
+            // Check if user has an active subscription
+            const hasSubscription = userProfile?.subscription && userProfile.subscription.trim() !== '';
             
             // If company profile is not completed, redirect to company setup
             if (!profile?.company_profile_completed) {
               console.log("Company profile not completed, redirecting to post-signup...");
               navigate("/post-signup", { replace: true });
+            } else if (!hasSubscription) {
+              console.log("No active subscription found, redirecting to payment page...");
+              navigate("/plan-onboarding", { replace: true });
             } else {
-              console.log("Company profile completed, redirecting to dashboard...");
+              console.log("Company profile completed and subscription active, redirecting to dashboard...");
               navigate("/dashboard", { replace: true });
             }
           } else if (!session && !hasNavigated.current) {
