@@ -135,7 +135,7 @@ const Footer = () => {
                 <Link to="/blog" className="block text-muted-foreground hover:text-gold transition-all duration-200 hover:translate-x-1">
                   Blog
                 </Link>
-                <a href="https://calendly.com/serviceagent/25min" target="_blank" rel="noopener noreferrer" className="block text-muted-foreground hover:text-gold transition-all duration-200 hover:translate-x-1">
+                <a href="https://calendly.com/serviceagent/strategy-call" target="_blank" rel="noopener noreferrer" className="block text-muted-foreground hover:text-gold transition-all duration-200 hover:translate-x-1">
                   Get a Demo
                 </a>
                 <button 

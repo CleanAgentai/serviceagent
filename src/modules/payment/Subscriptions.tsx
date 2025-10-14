@@ -362,7 +362,7 @@ export const Subscriptions: React.FC = () => {
                   <h3 className="text-2xl font-bold text-primary text-center lg:text-left mb-1">Need your own pricing?</h3>
                   <p className="text-muted-foreground text-center lg:text-left">We can tailor a plan for your team and workflow.</p>
                 </div>
-                <a href="https://calendly.com/serviceagent/25min" target="_blank" rel="noopener noreferrer">
+                <a href="https://calendly.com/serviceagent/strategy-call" target="_blank" rel="noopener noreferrer">
                   <Button variant="outline" className="border-terracotta/30 text-terracotta hover:bg-terracotta hover:text-white py-3 px-6 text-base font-bold rounded-xl">
                     Talk to us
                 </Button>
