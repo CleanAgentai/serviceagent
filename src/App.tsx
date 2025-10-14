@@ -77,8 +77,6 @@ const OutsourcingFirms = React.lazy(() => import("@/modules/industries/Outsourci
 const Restaurants = React.lazy(() => import("@/modules/industries/Restaurants"));
 const Hospitality = React.lazy(() => import("@/modules/industries/Hospitality"));
 
-
-
 const App = () => {
   useEffect(() => {
     document.title = "ServiceAgent - Automate hiring for hourly roles";
