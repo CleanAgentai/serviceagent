@@ -184,13 +184,13 @@ const Hero = () => {
                   <div className="flex items-center gap-2">
                      <div className="flex -space-x-2">
                        <div className="w-10 h-10 rounded-full border-2 border-background overflow-hidden">
-                         <img src="/Clementines_Original.png" alt="Clementines" className="w-[140%] h-full object-cover" />
+                         <img src="/logos/companies/Clementines_Original.png" alt="Clementines" className="w-[140%] h-full object-cover" />
                         </div>
                         <div className="w-10 h-10 rounded-full border-2 border-background overflow-hidden">
-                          <img src="/ConnectedPower_Logo.png" alt="Connected Power" className="w-full h-full object-cover scale-75" />
+                          <img src="/logos/companies/ConnectedPower_Logo.png" alt="Connected Power" className="w-full h-full object-cover scale-75" />
                         </div>
                         <div className="w-10 h-10 rounded-full border-2 border-background overflow-hidden">
-                          <img src="/SmartEnroll.png" alt="SmartEnroll" className="w-full h-full object-cover" />
+                          <img src="/logos/companies/SmartEnroll.png" alt="SmartEnroll" className="w-full h-full object-cover" />
                        </div>
                      </div>
                     <span className="font-medium">150+ companies hiring better</span>
@@ -214,7 +214,7 @@ const Hero = () => {
                     onClick={() => navigate('/signup', { state: { plan: 'LAUNCH' } })}
                   >
                   <img 
-                    src="/DashboardWorker.png" 
+                    src="/landing/DashboardWorker.png" 
                     alt="ServiceAgent worker with hard hat in active call showing professional hiring assistance" 
                     className="w-full rounded-lg shadow-xl"
                     style={{ 

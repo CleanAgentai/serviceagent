@@ -8,10 +8,6 @@ import "./index.css";
 import "./app/shared/styles/mobileOptimizations.css";
 
 
-
-
-
-
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>

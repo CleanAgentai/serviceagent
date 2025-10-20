@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { cn } from '@/lib/utils';
+import { cn } from '@/app/lib/utils';
 import { Button } from '@/components/ui/button';
 
 interface SidebarItemProps {

@@ -23,7 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { cn } from "@/lib/utils";
+import { cn } from "@/app/lib/utils";
 import ProgressBar from "@/components/stripe/ProgressBar";
 import PlanUsage from "@/modules/dashboard/PlanUsage";
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';

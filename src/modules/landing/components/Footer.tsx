@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Linkedin, Flag } from 'lucide-react';
+import { Linkedin, Flag, BookOpen, ArrowRight } from 'lucide-react';
 
 const Footer = () => {
   const navigate = useNavigate()
@@ -61,7 +61,8 @@ const Footer = () => {
             style={{ animationDelay: '0.1s', animationFillMode: 'forwards' }}
           >
             <div className="space-y-4">
-              <div className="text-3xl font-bold text-primary">
+              <div className="text-3xl font-bold text-primary"
+              style={{ fontFamily: '"Inter Variable", sans-serif' }}>
                 ServiceAgent
               </div>
               <p className="text-lg text-muted-foreground leading-relaxed max-w-lg">
@@ -80,6 +81,7 @@ const Footer = () => {
                 <Linkedin className="w-6 h-6 text-teal group-hover:text-gold transition-colors" />
               </a>
             </div>
+            
           </div>
 
           {/* Right Side - Navigation Links */}
@@ -169,6 +171,37 @@ const Footer = () => {
             </div>
           </div>
         </div>
+        
+        {/* Blog Section - Only show if not on blog route */}
+        {location.pathname !== '/blog' && (
+          <div 
+            className="bg-gradient-to-r from-teal/5 via-gold/5 to-terracotta/5 rounded-2xl p-8 mb-12 opacity-0 animate-fade-in"
+            style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}
+          >
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+              <div className="flex items-center gap-4">
+                <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-teal/20 to-gold/20 rounded-xl border border-teal/30">
+                  <BookOpen className="w-6 h-6 text-teal" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-foreground mb-1">
+                    Check Out Our Blog
+                  </h3>
+                  <p className="text-muted-foreground">
+                    Latest insights on AI hiring, recruitment trends, and industry best practices
+                  </p>
+                </div>
+              </div>
+              <Link 
+                to="/blog"
+                className="group flex items-center gap-2 px-6 py-3 bg-teal text-white rounded-xl hover:shadow-lg transition-all duration-300 hover:scale-105"
+              >
+                <span className="font-semibold">Read Articles</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
+          </div>
+        )}
         
         {/* Bottom Section */}
         <div 

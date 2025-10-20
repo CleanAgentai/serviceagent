@@ -433,7 +433,7 @@ export const Subscriptions: React.FC = () => {
         {/* Trust badges */}
         <div className="flex justify-center items-center gap-8 mt-8">
             <div className="flex items-center gap-2 text-slate-600">
-              <img src="/Powered by Stripe - blurple.svg" alt="Stripe" className="w-full max-sm:w-[30vw] h-4 md:h-10" />
+              <img src="/logos/stripe/Powered by Stripe - blurple.svg" alt="Stripe" className="w-full max-sm:w-[30vw] h-4 md:h-10" />
             </div>
             <div className="flex items-center gap-2 text-slate-600">
               <div className="w-5 h-5 bg-blue-100 rounded-full flex items-center justify-center">

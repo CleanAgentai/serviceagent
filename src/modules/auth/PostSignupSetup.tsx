@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/app/lib/supabase";
 import { CompanyProfileForm } from "@/modules/dashboard/CompanyProfileForm";
-import { routes } from "@/lib/constants";
+import { routes } from "@/app/lib/constants";
 import {
   Card,
   CardContent,

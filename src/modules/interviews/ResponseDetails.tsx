@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Video, X, Star, MessageCircle, ArrowRight, Eye, Lock } from "lucide-react";
 import { useLocation } from "react-router-dom";
-import { cn } from "@/lib/utils";
+import { cn } from "@/app/lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   Dialog,

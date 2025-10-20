@@ -45,13 +45,10 @@ import { ResetPasswordHandoff } from "./modules/auth/ResetPasswordHandoff";
 import CheckoutSuccess from "./modules/payment/CheckoutSuccess";
 import CancelSubscription from "./modules/payment/ManageSubscriptions";
 import ManageSubscriptions from "./modules/payment/ManageSubscriptions";
-import Integrations from "./pages/integrations";
+import Integrations from "./components/integrations/integrations";
 import GettingStarted from "./components/onboarding/GettingStarted";
 import WelcomePopupController from "@/components/onboarding/PopupController";
 import LoggedInConfetti from "./components/onboarding/Confetti";
-
-// Sales Routes
-// const SalesRoutes = React.lazy(() => import("@/pages/sales/setup"));
 
 // Help Articles
 const QuickStartGuide = React.lazy(
