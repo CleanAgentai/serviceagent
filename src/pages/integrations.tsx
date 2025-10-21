@@ -4,6 +4,7 @@ import ATSGrid, { atsIntegrations as defaultAtsIntegrations } from "@/pages/ATSG
 import { supabase } from "@/app/lib/supabase";
 import { FeatureGate } from "@/modules/dashboard/FeatureGate";
 import { usePlan } from "@/hooks/usePlan";
+import { toast } from "sonner";
 
 interface CurrentUser {
   id: string;
@@ -132,7 +133,11 @@ const Integrations: React.FC = () => {
         }
       } else if (response.status === 404) {
         console.log("ℹ️ Integrations endpoint not implemented yet");
-      } else {
+      } else if (response.status === 500) {
+        toast.error("Server error: Please try again later");
+      } else if(response.status === 401){
+        toast.error("Session expired: Please log in again");
+      }else {
         console.log(`❌ HTTP error: ${response.status} - ${response.statusText}`);
         const errorText = await response.text();
         console.log("❌ Error response body:", errorText);
@@ -142,6 +147,7 @@ const Integrations: React.FC = () => {
       console.log("❌ Fetch error:", error);
       if (error.message?.includes('Failed to fetch') || error.message?.includes('hostname could not be found')) {
         console.log("ℹ️ Backend not available, skipping integration loading");
+        toast.error("Network error: Please check your connection");
       } else {
         console.log("ℹ️ Could not load existing integrations:", error.message);
       }

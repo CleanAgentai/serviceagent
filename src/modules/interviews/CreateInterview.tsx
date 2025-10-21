@@ -171,6 +171,32 @@ export default function CreateInterview() {
     [formData.questions]
   );
 
+  const validateHourlyRate = (input) => {
+    const cleanInput = input.trim();
+
+    // If it contains a dash, it must be a valid range
+    if(cleanInput.includes('-')){
+      const parts = cleanInput.split('-');
+      if(parts.length === 2 && 
+         parts[0] && 
+         parts[1] && 
+         !isNaN(parseFloat(parts[0])) && 
+         !isNaN(parseFloat(parts[1])) &&
+         parseFloat(parts[0]) > 0 &&
+         parseFloat(parts[1]) > 0){
+        return true;
+      }
+      return false; // Invalid range
+    }
+
+    // If no dash, check if it's a single number
+    if(!isNaN(parseFloat(cleanInput)) && parseFloat(cleanInput) > 0){
+      return true;
+    }
+
+    return false;
+  }
+
   // Navigate to next tab
   const nextTab = () => {
     if (activeTab === "basic-details") {
@@ -183,12 +209,20 @@ export default function CreateInterview() {
         toast.error("Interview description is required");
         return;
       }
+      if(!formData.hourlyRate.trim() || !validateHourlyRate(formData.hourlyRate)){
+        toast.error("Hourly rate must be a valid number");
+        return;
+      } 
+      if(!formData.language.trim()){
+        toast.error("Interview language must be selected");
+        return;
+      }
       setActiveTab("questions");
     } else if (activeTab === "questions") {
       // Validate questions
       const invalidQuestions = formData.questions.filter((q) => !q.text.trim());
       if (invalidQuestions.length > 0) {
-        toast.error("All questions must have text");
+        toast.error("Question text cannot be empty");
         return;
       }
 

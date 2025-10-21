@@ -17,7 +17,7 @@ import { TermsOfService } from "@/modules/legal/TermsOfService";
 import { CookiePolicy } from "@/modules/legal/CookiePolicy";
 import { NotFound } from "@/modules/error/NotFound";
 import setupDatabase from "@/utils/setupDatabase";
-import { Toaster } from "sonner";
+import { Toaster, toast } from "sonner";
 
 // Dashboard Components
 import DashboardLayout from "@/modules/dashboard/DashboardLayout";
@@ -78,6 +78,19 @@ const Restaurants = React.lazy(() => import("@/modules/industries/Restaurants"))
 const Hospitality = React.lazy(() => import("@/modules/industries/Hospitality"));
 
 const App = () => {
+
+  useEffect(() => {
+    const handleOffline = () => {
+      toast.error("Network error: Please check your connection");
+    };
+
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+  
   useEffect(() => {
     document.title = "ServiceAgent - Automate hiring for hourly roles";
     // Initialize database

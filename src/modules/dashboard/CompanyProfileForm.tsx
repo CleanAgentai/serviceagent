@@ -81,6 +81,7 @@ export function CompanyProfileForm({
 
         if (profileError && profileError.code !== 'PGRST116') {
           // Ignore 'PGRST116' (single row not found)
+          toast.error("Company profile not found: Please complete your profile setup");
           console.error('Error loading company profile:', profileError);
           setError('Failed to load company profile.');
         } else if (companyProfile) {
