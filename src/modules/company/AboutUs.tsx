@@ -60,7 +60,7 @@ export function AboutUs() {
               Our Mission
             </h1>
             <p className="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed font-medium">
-              To empowerthe backbone of America by giving service businesses the tools to hire faster, hire better, and finally scale without being crippled by turnover.
+              To empower the backbone of America by giving service businesses the tools to hire faster, hire better, and finally scale without being crippled by turnover.
             </p>
           </div>
         </div>
