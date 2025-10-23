@@ -3,7 +3,7 @@ import { Input } from './input';
 import { Label } from './label';
 import { Popover, PopoverContent, PopoverTrigger } from './popover';
 import { Button } from './button';
-import { cn } from '@/lib/utils';
+import { cn } from '@/app/lib/utils';
 
 interface ColorPickerProps {
   id?: string;

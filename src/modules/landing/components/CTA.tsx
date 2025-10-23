@@ -75,7 +75,6 @@ const CTA = () => {
                   </div>
                   <span className="relative">
                     Watch Demo
-                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-gold transition-all duration-300 group-hover:w-full"></span>
                   </span>
                 </button>
               </div>

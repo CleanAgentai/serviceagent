@@ -105,14 +105,10 @@ export function Navigation({ isNavVisible = true }: { isNavVisible?: boolean }) 
             <div className="flex items-center justify-center gap-3">
               <Link to="/" aria-label="ServiceAgent Home" className="flex items-center">
                 <img
-                  src="/logos/Brandmark.svg"
+                  src="/logos/Logo.svg"
                   alt="ServiceAgent Logo"
-                  className="block w-12 h-12 transition-all duration-200"
+                  className="block w-52 h-auto transition-all duration-200"
                 />
-              <span className="text-xl font-bold text-primary group-hover:text-gold transition-colors duration-300 ml-1">
-                ServiceAgent
-                <div className="w-0 group-hover:w-full h-0.5 bg-gradient-to-r from-gold to-teal transition-all duration-500 rounded-full"></div>
-              </span>
               </Link>
             </div>
           </motion.a>
