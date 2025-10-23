@@ -38,6 +38,25 @@ export function Signup() {
     window.scrollTo(0, 0);
   }, []);
 
+  const handleCustomerio = async () => {
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+    const { data: { user } } = await supabase.auth.getUser();
+    try {
+      const identifyRes = await fetch(`${apiBaseUrl}/api/customerio/identify`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: user.id,
+          traits: { email: user.email, last_seen_at: new Date().toISOString() },
+        }),
+      });
+      if (!identifyRes.ok) throw new Error(`identify failed: ${identifyRes.status}`);
+
+    } catch (cioErr) {
+      console.error("Customer.io backend calls failed:", cioErr);
+    }
+  }
+
   const validatePassword = (password: string) => {
     const errors: string[] = [];
     
@@ -145,6 +164,7 @@ export function Signup() {
           throw signUpError;
         }
       } else {
+        handleCustomerio();
         // Persist plan selection and navigate to checkout
         if ((location.state as any)?.plan) {
           localStorage.setItem('selectedPlan', (location.state as any).plan);

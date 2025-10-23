@@ -210,6 +210,25 @@ export function CompanyProfileForm({
     [],
   );
 
+  const handleCustomerio = async () => {
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+    const { data: { user } } = await supabase.auth.getUser();
+    try {
+      const identifyRes = await fetch(`${apiBaseUrl}/api/customerio/identify`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: user.id,
+          traits: { first_name: firstName || "", last_seen_at: new Date().toISOString(), niche: companyNiche},
+        }),
+      });
+      if (!identifyRes.ok) throw new Error(`identify failed: ${identifyRes.status}`);
+
+    } catch (cioErr) {
+      console.error("Customer.io backend calls failed:", cioErr);
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -314,6 +333,8 @@ export function CompanyProfileForm({
       } else {
         console.log("Successfully updated user display name to:", fullName);
       }
+
+      handleCustomerio();
 
       const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 

@@ -41,6 +41,26 @@ export function Login() {
   //   setRememberMe(e.target.checked);
   // };
 
+  const handleCustomerio = async (event: string) => {
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+    const { data: { user } } = await supabase.auth.getUser();
+    try {
+      const trackRes = await fetch(`${apiBaseUrl}/api/customerio/track`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: user.id,
+          event: event,
+          traits: { last_seen_at: new Date().toISOString() },
+        }),
+      });
+      if (!trackRes.ok) throw new Error(`track failed: ${trackRes.status}`);
+
+    } catch (cioErr) {
+      console.error("Customer.io backend calls failed:", cioErr);
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (rememberMe) {
@@ -54,6 +74,8 @@ export function Login() {
     try {
       const { error: signInError } = await signIn(email, password);
       if (signInError) throw signInError;
+      
+      handleCustomerio("login");
       
       // After successful login, check subscription status
       const { data: user } = await supabase.auth.getUser();

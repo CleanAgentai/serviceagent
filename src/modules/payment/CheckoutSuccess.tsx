@@ -10,6 +10,59 @@ const CheckoutSuccess = () => {
   const sessionId = new URLSearchParams(window.location.search).get("session_id");
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
+  const handleCustomerio = async (event: string) => {
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+    const { data: { user } } = await supabase.auth.getUser();
+    try {
+      const identifyRes = await fetch(`${apiBaseUrl}/api/customerio/identify`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: user.id,
+          traits: { email: user.email,first_name: user.user_metadata?.full_name?.split(" ")[0] || "", plan_status: "onboarding", last_seen_at: new Date().toISOString() },
+        }),
+      });
+      if (!identifyRes.ok) throw new Error(`identify failed: ${identifyRes.status}`);
+
+      const rowAdd = [{
+        created_at: new Date().toISOString(),
+        user_id: user.id,
+        plan_status: "onboarding",
+        trial_ends_at: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
+      }];
+
+      try {
+        const { data, error } = await supabase
+          .from('customerio')
+          .insert(rowAdd)
+          .select();
+      
+        if (error) {
+          console.error('Insert customerio error:', error);
+          throw error;
+        }
+      
+        console.log('Inserted customerio data:', data);
+      } catch (err) {
+        console.error('Error:', err);
+      }
+
+      const trackRes = await fetch(`${apiBaseUrl}/api/customerio/track`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: user.id,
+          event: event,
+          traits: { },
+        }),
+      });
+      if (!trackRes.ok) throw new Error(`track failed: ${trackRes.status}`);
+
+    } catch (cioErr) {
+      console.error("Customer.io backend calls failed:", cioErr);
+    }
+  }
+
 
   useEffect(() => {
     if (!sessionId) {
@@ -28,6 +81,9 @@ const CheckoutSuccess = () => {
       .then(async (data) => {
         if (data.paid) {
           setStatus("success");
+
+          handleCustomerio("trial_started");
+
           
           // Clear the cached plan data to force refresh after upgrade
           try {
