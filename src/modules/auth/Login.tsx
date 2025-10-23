@@ -14,6 +14,14 @@ export function Login() {
   const [rememberMe, setRememberMe] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
+  React.useEffect(() => {
+  // On component mount, check if there is a saved email
+    const savedEmail = localStorage.getItem('rememberedEmail');
+    if (savedEmail) {
+      setEmail(savedEmail);
+      setRememberMe(true);
+    }
+  }, []);
   // Set meta title and description
   React.useEffect(() => {
     document.title = "Sign In - ServiceAgent";
@@ -26,6 +34,12 @@ export function Login() {
     }
     window.scrollTo(0, 0);
   }, []);
+  // const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setEmail(e.target.value);
+  // };
+  // const handleRememberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setRememberMe(e.target.checked);
+  // };
 
   const handleCustomerio = async (event: string) => {
     const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
@@ -49,14 +63,40 @@ export function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (rememberMe) {
+      localStorage.setItem('rememberedEmail', email);
+    } else {
+      localStorage.removeItem('rememberedEmail');
+    }
     setError("");
     setIsLoading(true);
 
     try {
       const { error: signInError } = await signIn(email, password);
       if (signInError) throw signInError;
+      
       handleCustomerio("login");
-      navigate("/dashboard");
+      
+      // After successful login, check subscription status
+      const { data: user } = await supabase.auth.getUser();
+      if (user.user) {
+        const { data: userProfile } = await supabase
+          .from("profiles")
+          .select("subscription")
+          .eq("id", user.user.id)
+          .single();
+        
+        const hasSubscription = userProfile?.subscription && userProfile.subscription.trim() !== '';
+        
+        if (!hasSubscription) {
+          console.log("No active subscription found, redirecting to payment page...");
+          navigate("/plan-onboarding", { replace: true });
+        } else {
+          navigate("/dashboard", { replace: true });
+        }
+      } else {
+        navigate("/dashboard", { replace: true });
+      }
     } catch (err: any) {
       setError(err.message || "Invalid email or password. Please try again.");
     } finally {
@@ -187,13 +227,14 @@ export function Login() {
                   <button
                     type="button"
                     onClick={() => setRememberMe(!rememberMe)}
-                    className={`flex items-center justify-center !min-h-0 !min-w-0 h-8 w-8 rounded-3xl border-2 transition-all duration-200 ${
+                    // onChange={handleRememberChange}
+                    className={`flex items-center justify-center !min-h-0 !min-w-0 h-6 w-6 rounded-3xl border-2 transition-all duration-200 ${
                       rememberMe
                         ? 'bg-blue-600 border-blue-600 text-white'
                         : 'bg-white border-gray-300 text-transparent hover:border-blue-600'
                     }`}
                   >
-                    <Check className="h-4 w-4" />
+                    <Check className="h-3 w-3" />
                   </button>
                   <span className="ml-2 block text-sm text-gray-700">
                     Remember me

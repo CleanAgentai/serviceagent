@@ -19,5 +19,5 @@ export const openCalendly = (e?: React.MouseEvent) => {
   if (e) {
     e.preventDefault();
   }
-  window.location.href = "https://calendly.com/serviceagent/25min";
+  window.location.href = "https://calendly.com/serviceagent/strategy-call";
 };

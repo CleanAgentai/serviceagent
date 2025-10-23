@@ -20,6 +20,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { supabase } from "@/app/lib/supabase";
+import PlanUsage from "./PlanUsage";
 
 interface Interview {
   id: string;
@@ -229,13 +230,16 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="relative z-0 md:container max-sm:mx-8 max-md:mt-8 md:mx-auto px-2 sm:px-6">
-      <div className="flex flex-col gap-6">
+    <div className="relative z-0 md:container max-sm:mx-8 max-md:mt-8 md:mx-auto px-2 sm:px-6 bg-background/95">
+      <div className="flex justify-between items-center mb-6">
         {/* Header */}
         <div>
           <h1 className="text-left text-2xl font-bold text-gray-900">Dashboard</h1>
           <p className="text-left text-gray-500 mt-1">Welcome to ServiceAgent!</p>
         </div>
+        <PlanUsage />
+        </div>
+      <div className="flex flex-col gap-6">
 
         {/* Metrics Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -281,7 +285,7 @@ const Dashboard = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Create Interview Card */}
             <Card
-              className="p-6 cursor-pointer hover:bg-gray-50 transition-all duration-300 shadow-lg border-0 bg-white hover:shadow-xl hover:scale-105"
+              className="p-6 cursor-pointer hover:bg-gray-50 transition-all duration-300 shadow-lg border-0 bg-white hover:shadow-xl hover:scale-[1.01]"
               onClick={() => navigate("/interviews/create")}
             >
               <div className="flex items-center gap-4">
@@ -299,7 +303,7 @@ const Dashboard = () => {
 
             {/* View Responses Card */}
             <Card
-              className="p-6 cursor-pointer hover:bg-gray-50 transition-all duration-300 shadow-lg border-0 bg-white hover:shadow-xl hover:scale-105"
+              className="p-6 cursor-pointer hover:bg-gray-50 transition-all duration-300 shadow-lg border-0 bg-white hover:shadow-xl hover:scale-[1.01]"
               onClick={() => navigate("/interviews/responses")}
             >
               <div className="flex items-center gap-4">
