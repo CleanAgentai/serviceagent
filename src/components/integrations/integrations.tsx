@@ -22,30 +22,30 @@ interface ATSIntegration {
 
 // ATS integrations data based on available SVG logos
 const atsIntegrations: ATSIntegration[] = [
-  { id: 'greenhouse', name: 'Greenhouse', category: 'ATS API', logo: '/greenhouse_logo.svg', isConnected: false },
-  { id: 'lever', name: 'Lever', category: 'ATS API', logo: '/lever_logo.svg', isConnected: false },
-  { id: 'bamboohr', name: 'BambooHR', category: 'ATS API', logo: '/bamboo_logo.svg', isConnected: false },
-  { id: 'workable', name: 'Workable', category: 'ATS API', logo: '/workable_logo.svg', isConnected: false },
-  { id: 'ashby', name: 'Ashby', category: 'ATS API', logo: '/ashby_logo.svg', isConnected: false },
-  { id: 'jobvite', name: 'Jobvite', category: 'ATS API', logo: '/jobvite_logo.svg', isConnected: false },
-  { id: 'oracle', name: 'Oracle Recruiting', category: 'ATS API', logo: '/oracle_logo.svg', isConnected: false },
-  { id: 'smartrecruiters', name: 'SmartRecruiters', category: 'ATS API', logo: '/Smartrecruiters_logo.svg', isConnected: false },
-  { id: 'successfactors', name: 'SuccessFactors', category: 'ATS API', logo: '/SAP_SuccessFactors_logo.svg', isConnected: false },
-  { id: 'taleo', name: 'Oracle Taleo', category: 'ATS API', logo: '/oracle_taleo_logo.svg', isConnected: false },
-  { id: 'teamtailor', name: 'Teamtailor', category: 'ATS API', logo: '/team_tailor_logo.svg', isConnected: false },
-  { id: 'ukg', name: 'UKG Pro Recruiting', category: 'ATS API', logo: '/ukg_logo.svg', isConnected: false },
-  { id: 'cornerstone', name: 'Cornerstone', category: 'ATS API', logo: '/Cornerstone_Square_Logo-thumbnail-144x144-70.jpg', isConnected: false },
-  { id: 'cats', name: 'CATS', category: 'ATS API', logo: '/CATS_Square_Logo_J4NkqoE-thumbnail-144x144-70.jpg', isConnected: false },
-  { id: 'fountain', name: 'Fountain', category: 'ATS API', logo: '/Fountain_Square_Logo-thumbnail-144x144.png', isConnected: false },
-  { id: 'hrcloud', name: 'HR Cloud', category: 'ATS API', logo: '/HR_Cloud_Square_Logo-thumbnail-144x144-70.jpg', isConnected: false },
-  { id: 'pinpoint', name: 'Pinpoint', category: 'ATS API', logo: '/Pinpoint_square-thumbnail-144x144.png', isConnected: false },
-  { id: 'breezy', name: 'Breezy HR', category: 'ATS API', logo: '/breezy_logo.svg', isConnected: false },
-  { id: 'applicantstack', name: 'ApplicantStack', category: 'ATS API', logo: '/ApplicantStack_Square_Logo_wBHYVRL-thumbnail-144x144-70.jpg', isConnected: false },
-  { id: 'recruiterflow', name: 'RecruiterFlow', category: 'ATS API', logo: '/RecruiterFlow_Square_Logo_0pzjFF2-thumbnail-144x144-70.jpg', isConnected: false },
-  { id: 'zoho', name: 'Zoho Recruit', category: 'ATS API', logo: '/PlatformZoho_recruit_square-thumbnail-144x144.png', isConnected: false },
-  { id: 'bullhorn', name: 'Bullhorn', category: 'ATS API', logo: '/Property_1Integration_Property_2Generic_Property_3Square_Property_4Bullhorn-thumbnail-144x144.png', isConnected: false },
-  { id: 'icims', name: 'iCIMS', category: 'ATS API', logo: '/iCIMS_logo.svg', isConnected: false },
-  { id: 'jobdiva', name: 'JobDiva', category: 'ATS API', logo: '/PlatformJobDiva-thumbnail-144x144.png', isConnected: false },
+  { id: 'greenhouse', name: 'Greenhouse', category: 'ATS API', logo: '/ATS/greenhouse_logo.svg', isConnected: false },
+  { id: 'lever', name: 'Lever', category: 'ATS API', logo: '/ATS/lever_logo.svg', isConnected: false },
+  { id: 'bamboohr', name: 'BambooHR', category: 'ATS API', logo: '/ATS/bamboo_logo.svg', isConnected: false },
+  { id: 'workable', name: 'Workable', category: 'ATS API', logo: '/ATS/workable_logo.svg', isConnected: false },
+  { id: 'ashby', name: 'Ashby', category: 'ATS API', logo: '/ATS/ashby_logo.svg', isConnected: false },
+  { id: 'jobvite', name: 'Jobvite', category: 'ATS API', logo: '/ATS/jobvite_logo.svg', isConnected: false },
+  { id: 'oracle', name: 'Oracle Recruiting', category: 'ATS API', logo: '/ATS/oracle_logo.svg', isConnected: false },
+  { id: 'smartrecruiters', name: 'SmartRecruiters', category: 'ATS API', logo: '/ATS/Smartrecruiters_logo.svg', isConnected: false },
+  { id: 'successfactors', name: 'SuccessFactors', category: 'ATS API', logo: '/ATS/SAP_SuccessFactors_logo.svg', isConnected: false },
+  { id: 'taleo', name: 'Oracle Taleo', category: 'ATS API', logo: '/ATS/oracle_taleo_logo.svg', isConnected: false },
+  { id: 'teamtailor', name: 'Teamtailor', category: 'ATS API', logo: '/ATS/team_tailor_logo.svg', isConnected: false },
+  { id: 'ukg', name: 'UKG Pro Recruiting', category: 'ATS API', logo: '/ATS/ukg_logo.svg', isConnected: false },
+  { id: 'cornerstone', name: 'Cornerstone', category: 'ATS API', logo: '/ATS/Cornerstone_Square_Logo-thumbnail-144x144-70.jpg', isConnected: false },
+  { id: 'cats', name: 'CATS', category: 'ATS API', logo: '/ATS/CATS_Square_Logo_J4NkqoE-thumbnail-144x144-70.jpg', isConnected: false },
+  { id: 'fountain', name: 'Fountain', category: 'ATS API', logo: 'ATS/Fountain_Square_Logo-thumbnail-144x144.png', isConnected: false },
+  { id: 'hrcloud', name: 'HR Cloud', category: 'ATS API', logo: 'ATS/HR_Cloud_Square_Logo-thumbnail-144x144-70.jpg', isConnected: false },
+  { id: 'pinpoint', name: 'Pinpoint', category: 'ATS API', logo: 'ATS/Pinpoint_square-thumbnail-144x144.png', isConnected: false },
+  { id: 'breezy', name: 'Breezy HR', category: 'ATS API', logo: 'ATS/breezy_logo.svg', isConnected: false },
+  { id: 'applicantstack', name: 'ApplicantStack', category: 'ATS API', logo: 'ATS/ApplicantStack_Square_Logo_wBHYVRL-thumbnail-144x144-70.jpg', isConnected: false },
+  { id: 'recruiterflow', name: 'RecruiterFlow', category: 'ATS API', logo: 'ATS/RecruiterFlow_Square_Logo_0pzjFF2-thumbnail-144x144-70.jpg', isConnected: false },
+  { id: 'zoho', name: 'Zoho Recruit', category: 'ATS API', logo: 'ATS/PlatformZoho_recruit_square-thumbnail-144x144.png', isConnected: false },
+  { id: 'bullhorn', name: 'Bullhorn', category: 'ATS API', logo: 'ATS/Property_1Integration_Property_2Generic_Property_3Square_Property_4Bullhorn-thumbnail-144x144.png', isConnected: false },
+  { id: 'icims', name: 'iCIMS', category: 'ATS API', logo: 'ATS/iCIMS_logo.svg', isConnected: false },
+  { id: 'jobdiva', name: 'JobDiva', category: 'ATS API', logo: 'ATS/PlatformJobDiva-thumbnail-144x144.png', isConnected: false },
 ];
 
 // (unchanged) helper to grab the logged‑in user/profile
@@ -347,7 +347,7 @@ const Integrations: React.FC = () => {
   ]);
 
   return (
-    <FeatureGate requiredPlan="SCALE" featureName="ATS integrations" title="Scale Your Hiring with Powerful ATS Integrations" extra={<ATSGrid items={atsIntegrations.slice(0, 12)} title="Available Integrations" />}>
+    <FeatureGate requiredPlan="SCALE" featureName="ATS integrations" title="Scale Your Hiring with Powerful ATS Integrations" extra={<ATSGrid items={atsIntegrations} />}>
     <div className="min-h-[100vh] bg-background/95">
       {/* Main Content Container */}
       <div style={{ 

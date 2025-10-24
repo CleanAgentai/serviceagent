@@ -1,21 +1,17 @@
 import React, { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { supabase } from "@/app/lib/supabase";
 import { usePlan } from "@/hooks/usePlan";
 import { useParams, useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Video, X, Star, MessageCircle, ArrowRight, Eye, Lock } from "lucide-react";
+import { ArrowLeft, Video, X, Star, Shield, ArrowRight, Eye, Lock, Lightbulb, AlertCircle } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { cn } from "@/app/lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import { CandidateStats, getTextColorForScore, getColorForScoreHex, getBgColorForScore } from "@/components/ui/statbar";
 
 // interface MetricEvaluation {
 //   title: string;
@@ -70,7 +66,7 @@ export function ResponseDetails() {
   const navigate = useNavigate();
   const [response, setResponse] = useState<Response | null>(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<"questions" | "reviews" | "pdf" | "transcript">("questions");
+  const [activeTab, setActiveTab] = useState<"questions" | "reviews" | "pdf" | "transcript">("reviews");
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const [transcriptUrl, setTranscriptUrl] = useState<string | null>(null);
   const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);
@@ -82,8 +78,23 @@ export function ResponseDetails() {
     location.state || {};
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
   const [fileName, setFileName] = useState<string | null>(null);
+  const [isMetricsOpen, setIsMetricsOpen] = useState(false);
   
   const canDownload = hasAccess('LAUNCH');
+
+  // Lock body scroll when popup is open
+  useEffect(() => {
+    if (isMetricsOpen) {
+      // Store original overflow value
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      
+      // Cleanup function
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
+  }, [isMetricsOpen]);
 
   useEffect(() => {
     // TODO: Replace with actual API call
@@ -183,11 +194,7 @@ export function ResponseDetails() {
     fetchResponse();
   }, [responseId]);
 
-  const getColorForScore = (score) => {
-    if (score >= 8) return '#4caf50';       // Green
-    if (score >= 5) return '#ff9800';       // Orange
-    return '#f44336';                       // Red
-  };
+
 
   function ProgressOnLoad({ rating }: { rating?: number | null }) {
     const target = Math.max(0, Math.min(100, (rating ?? 0) * 10));
@@ -199,11 +206,11 @@ export function ResponseDetails() {
     }, [target]);
   
     return (
-      <div style={{ width: 50, height: 50 }}>
+      <div className="w-[100px] h-[100px]">
         <CircularProgressbar
           value={value}
           styles={buildStyles({
-            pathColor: getColorForScore(rating),
+            pathColor: getColorForScoreHex(rating),
             pathTransitionDuration: 0.7,
             pathTransition: "stroke-dashoffset 0.7s ease 0.3s"
           })}
@@ -330,102 +337,45 @@ export function ResponseDetails() {
         return (
           <div className="space-y-6">
             <Card className="p-6 shadow-lg">
-              <h2 className="text-xl font-semibold mb-4">Overall Rating</h2>
-              <div className="flex items-center justify-center gap-4">
-                <span className="text-4xl font-bold text-blue-600">
-                  {response.overallRating}/10
-                </span>
-                <div className="flex justify-center items-center">{renderProgress(response.overallRating)}</div>
+              <div className="flex justify-between items-center mb-8">
+                <h2 className="text-xl font-semibold">
+                  Overall Rating: <span className={` text-xl font-bold ${getTextColorForScore(response.overallRating)}`}>{response.overallRating}/10</span>
+                </h2>
+                <Button 
+                  onClick={() => setIsMetricsOpen(true)}
+                  className="group inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-full
+                  border-0 shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent px-8 py-3 "
+                >
+                  View Metrics
+                  <ArrowRight className="w-4 h-4 inline-block ml-2 group-hover:translate-x-1 transition-transform duration-300" />
+                </Button>
+
+              </div>
+              <div className="w-full">
+                <div className="flex items-center mb-4">
+                  <CandidateStats categories={[
+                    { label: "Communication", value: response.metrics.communication },
+                    { label: "Experience", value: response.metrics.experience },
+                    { label: "Professionalism", value: response.metrics.professionalism },
+                    { label: "Reliability", value: response.metrics.reliability },
+                    { label: "Problem Solving", value: response.metrics.problemSolving },
+                    { label: "Cognitive Ability", value: response.metrics.cognitiveAbility },
+                  ]} />
+                </div>
               </div>
             </Card>
 
-            <Card className="p-6 shadow-lg">
-              <h2 className="text-xl font-semibold mb-4">Ratings</h2>
-              <div className="overflow-x-auto scrollbar-hide">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b">
-                      <th className="text-left py-2 px-4 font-semibold text-gray-700">
-                        Metric
-                      </th>
-                      <th className="text-left py-2 px-4 font-semibold text-gray-700">
-                        Rating
-                      </th>
-                      <th className="text-left py-2 px-4 font-semibold text-gray-700">
-                        Evaluation and Feedback
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr className="border-b">
-                      <td className="py-2 px-4">Communication</td>
-                      <td className="py-2 px-4">
-                        {response.metrics.communication}/10
-                      </td>
-                      <td className="py-2 px-4">
-                        {response.metricEvaluations.communication}
-                      </td>
-                    </tr>
-                    <tr className="border-b">
-                      <td className="py-2 px-4">Experience</td>
-                      <td className="py-2 px-4">
-                        {response.metrics.experience}/10
-                      </td>
-                      <td className="py-2 px-4">
-                        {response.metricEvaluations.experience}
-                      </td>
-                    </tr>
-                    <tr className="border-b">
-                      <td className="py-2 px-4">Professionalism</td>
-                      <td className="py-2 px-4">
-                        {response.metrics.professionalism}/10
-                      </td>
-                      <td className="py-2 px-4">
-                        {response.metricEvaluations.professionalism}
-                      </td>
-                    </tr>
-                    <tr className="border-b">
-                      <td className="py-2 px-4">Reliability</td>
-                      <td className="py-2 px-4">
-                        {response.metrics.reliability}/10
-                      </td>
-                      <td className="py-2 px-4">
-                        {response.metricEvaluations.reliability}
-                      </td>
-                    </tr>
-                    <tr className="border-b">
-                      <td className="py-2 px-4">Problem Solving</td>
-                      <td className="py-2 px-4">
-                        {response.metrics.problemSolving}/10
-                      </td>
-                      <td className="py-2 px-4">
-                        {response.metricEvaluations.problemSolving}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="py-2 px-4">Cognitive Ability</td>
-                      <td className="py-2 px-4">
-                        {response.metrics.cognitiveAbility}/10
-                      </td>
-                      <td className="py-2 px-4">
-                        {response.metricEvaluations.cognitiveAbility}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </Card>
 
             <div>
               <h2 className="text-xl font-semibold mb-4">AI Analysis</h2>
-              <Card className="p-6 mb-4 bg-blue-50 shadow-lg">
+              <Card className="p-6 mb-4 bg-gradient-to-br from-card to-accent/5 shadow-lg border-2 border-accent/40">
                 <div className="flex items-start gap-3">
-                  <MessageCircle className="w-5 h-5 text-blue-600 mt-1" />
+                  <Lightbulb className="flex-shrink-0 w-4 h-4 text-accent mt-1" />
                   <div>
-                    <h3 className="font-medium text-blue-900 mb-2">
+                    <h3 className="font-medium text-accent mb-2">
                       Key Observations
                     </h3>
-                    <p className="text-blue-800">
+                    <p className="text-blue-700">
                       {response.aiAnalysis.keyObservations}
                     </p>
                   </div>
@@ -433,28 +383,40 @@ export function ResponseDetails() {
               </Card>
 
               <div className="grid grid-cols-2 gap-4">
-                <Card className="p-6 bg-green-50 shadow-lg">
-                  <h3 className="font-medium text-green-900 mb-3">Strengths</h3>
-                  <ul className="space-y-2">
-                    {response.aiAnalysis.strengths.map((strength, index) => (
-                      <li key={index} className="flex items-center text-green-800">
-                        <span className="w-2 h-2 bg-green-600 rounded-full mr-2"></span>
-                        {strength.replace(/^[-•]\s*/, "")}
-                      </li>
-                    ))}
-                  </ul>
+                <Card className="p-6 bg-gradient-to-br from-card to-teal/5 shadow-lg border-2 border-teal/40">
+                  <div className="flex items-start gap-3">
+                    <Shield className="flex-shrink-0 w-4 h-4 text-teal mt-1" />
+                    <div>
+                      <h3 className="font-medium text-teal mb-3">Strengths</h3>
+                    <p>
+                      <ul className="space-y-2">
+                      {response.aiAnalysis.strengths.map((strength, index) => (
+                        <li key={index} className="flex items-start text-teal-500">
+                          <span className="w-2 h-2 bg-teal-500 rounded-full mr-2 mt-1.5 flex-shrink-0"></span>
+                          <span>{strength.replace(/^[-•]\s*/, "")}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </p>
+                  </div>
+                  </div>
                 </Card>
 
-                <Card className="p-6 bg-red-50 shadow-lg">
-                  <h3 className="font-medium text-red-900 mb-3">Weaknesses</h3>
-                  <ul className="space-y-2">
-                    {response.aiAnalysis.weaknesses.map((weakness, index) => (
-                      <li key={index} className="flex items-center text-red-800">
-                        <span className="w-2 h-2 bg-red-600 rounded-full mr-2"></span>
-                        {weakness.replace(/^[-•]\s*/, "")}
-                      </li>
-                    ))}
-                  </ul>
+                <Card className="p-6 bg-gradient-to-br from-card to-terracotta/5 shadow-lg border-2 border-terracotta/40">
+                  <div className="flex items-start gap-3">
+                    <AlertCircle className="flex-shrink-0 w-4 h-4 text-terracotta mt-1" />
+                    <div>
+                      <h3 className="font-medium text-terracotta mb-3">Weaknesses</h3>
+                      <ul className="space-y-2">
+                        {response.aiAnalysis.weaknesses.map((weakness, index) => (
+                          <li key={index} className="flex items-start text-red-600">
+                            <span className="w-2 h-2 bg-red-600 rounded-full mr-2 mt-1.5 flex-shrink-0"></span>
+                            <span>{weakness.replace(/^[-•]\s*/, "")}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
                 </Card>
               </div>
             </div>
@@ -527,18 +489,6 @@ export function ResponseDetails() {
             <div className="flex gap-4">
               <button
                 className={`px-4 py-2 font-medium whitespace-nowrap ${
-                  activeTab === "questions"
-                    ? "text-blue-500 border-b-2 border-blue-500"
-                    : "text-gray-600 hover:text-blue-500"
-                }`}
-                onClick={() => setActiveTab("questions")}
-              >
-                <Video className="w-4 h-4 inline-block mr-2" />
-                Video & Transcripts
-              </button>
-
-              <button
-                className={`px-4 py-2 font-medium whitespace-nowrap ${
                   activeTab === "reviews"
                     ? "text-purple-500 border-b-2 border-purple-500"
                     : "text-gray-600 hover:text-purple-500"
@@ -547,6 +497,17 @@ export function ResponseDetails() {
               >
                 <Star className="w-4 h-4 inline-block mr-2" />
                 Reviews & Ratings
+              </button>
+              <button
+                className={`px-4 py-2 font-medium whitespace-nowrap ${
+                  activeTab === "questions"
+                    ? "text-blue-500 border-b-2 border-blue-500"
+                    : "text-gray-600 hover:text-blue-500"
+                }`}
+                onClick={() => setActiveTab("questions")}
+              >
+                <Video className="w-4 h-4 inline-block mr-2" />
+                Video & Transcripts
               </button>
             </div>
 
@@ -561,8 +522,8 @@ export function ResponseDetails() {
                   !canDownload
                     ? "text-gray-400"
                     : activeTab === "transcript"
-                    ? "text-green-500 border-b-2 border-green-500"
-                    : "text-gray-600 hover:text-green-500"
+                    ? "text-teal border-b-2 border-teal"
+                    : "text-gray-600 hover:text-teal"
                 )}
                 disabled={!canDownload}
                 onClick={async () => {
@@ -629,6 +590,81 @@ export function ResponseDetails() {
       </div>
 
       {renderContent()}
+      
+      {/* Evaluation Dialog */}
+      {isMetricsOpen && createPortal(
+        <div className="fixed inset-0 bg-black/50 z-[9999] flex items-center justify-center rounded-lg shadow-lg">
+          <div className="flex flex-col bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh]">
+            {/* Fixed Header */}
+            <div className="flex justify-between items-center p-8 pb-4 border-b bg-white rounded-t-lg">
+              <div className="flex flex-col gap-1">
+              <h2 className="text-2xl font-bold">
+                Detailed Metrics: {response?.candidateName}
+              </h2>
+              <p className="text-gray-600">Applied for: {passedTitle || response?.appliedPosition || "Interview"}</p>
+              </div>
+              <button
+                onClick={() => setIsMetricsOpen(false)}
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:text-red-600 h-10 w-10 hover:bg-red-50"
+              >
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+            
+            {/* Scrollable Content */}
+            <div className="flex-1 overflow-y-auto p-8 pt-4 no-scrollbar">
+              <div className="space-y-6">
+                <div>
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className={`${getBgColorForScore(response?.metrics.communication)} p-4 rounded-lg`}>
+                        <h4 className="text-gray-900 font-medium mb-2">Communication</h4>
+                        <p className="text-2xl font-bold mb-2 text-blue-600">{response?.metrics.communication}/10</p>
+                        <p className="text-gray-500 text-sm leading-relaxed">{response?.metricEvaluations.communication}</p>
+                      </div>  
+                      <div className={`${getBgColorForScore(response?.metrics.experience)} p-4 rounded-lg`}>
+                        <h4 className="text-gray-900 font-medium mb-2">Experience</h4>
+                        <p className="text-2xl font-bold mb-2 text-blue-600">{response?.metrics.experience}/10</p>
+                        <p className="text-gray-500 text-sm leading-relaxed">{response?.metricEvaluations.experience}</p>
+                      </div>
+                      <div className={`${getBgColorForScore(response?.metrics.professionalism)} p-4 rounded-lg`}>
+                        <h4 className="text-gray-900 font-medium mb-2">Professionalism</h4>
+                        <p className="text-2xl font-bold mb-2 text-blue-600">{response?.metrics.professionalism}/10</p>
+                        <p className="text-gray-500 text-sm leading-relaxed">{response?.metricEvaluations.professionalism}</p>
+                      </div>
+                      <div className={`${getBgColorForScore(response?.metrics.reliability)} p-4 rounded-lg`}>
+                        <h4 className="text-gray-900 font-medium mb-2">Reliability</h4>
+                        <p className="text-2xl font-bold mb-2 text-blue-600">{response?.metrics.reliability}/10</p>
+                        <p className="text-gray-500 text-sm leading-relaxed">{response?.metricEvaluations.reliability}</p>
+                      </div>
+                      <div className={`${getBgColorForScore(response?.metrics.problemSolving)} p-4 rounded-lg`}>
+                        <h4 className="text-gray-900 font-medium mb-2">Problem Solving</h4>
+                        <p className="text-2xl font-bold mb-2 text-blue-600">{response?.metrics.problemSolving}/10</p>
+                        <p className="text-gray-500 text-sm leading-relaxed">{response?.metricEvaluations.problemSolving}</p>
+                      </div>
+                      <div className={`${getBgColorForScore(response?.metrics.cognitiveAbility)} p-4 rounded-lg`}>
+                        <h4 className="text-gray-900 font-medium mb-2">Cognitive Ability</h4>
+                        <p className="text-2xl font-bold mb-2 text-blue-600">{response?.metrics.cognitiveAbility}/10</p>
+                        <p className="text-gray-500 text-sm leading-relaxed">{response?.metricEvaluations.cognitiveAbility}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-4 flex gap-2">
+                  <Button
+                    onClick={() => setIsMetricsOpen(false)}
+                    className="w-full bg-red-600 hover:bg-red-700 text-white shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-300"
+                  >
+                    Close
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>, document.body)
+      }
+      
       {/* <MetricEvaluationDialog /> */}
     </div>
   );

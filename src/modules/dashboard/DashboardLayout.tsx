@@ -231,7 +231,7 @@ export default function DashboardLayout() {
       {/* Main Content */}
       <div className="md:pl-56 flex flex-col flex-1 min-w-0">
         {/* Top Navigation - Added border-b back */}
-        <div className="sticky top-0 z-10 flex-shrink-0 h-24 md:h-16 backdrop-blur-sm border-b flex items-center">
+        <div className="sticky top-0 z-10 flex-shrink-0 h-24 md:h-16 border-b flex items-center">
           {/* Mobile menu button */}
           <Button
             variant="ghost"
