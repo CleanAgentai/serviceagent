@@ -28,6 +28,7 @@ import ProgressBar from "@/components/stripe/ProgressBar";
 import PlanUsage from "@/modules/dashboard/PlanUsage";
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import { getColorForScoreHex, getTextColorForScore } from "@/components/ui/statbar";
 
 interface InterviewAttempt {
   id: string;
@@ -65,6 +66,20 @@ export function ViewResponses() {
     weaknesses: string[];
     summary: string;
   } | null>(null);
+
+  // Lock body scroll when popup is open
+  useEffect(() => {
+    if (selectedAttempt) {
+      // Store original overflow value
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      
+      // Cleanup function
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
+  }, [selectedAttempt]);
 
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -458,11 +473,6 @@ export function ViewResponses() {
     );
   }
 
-  const getColorForScore = (score) => {
-    if (score >= 8) return '#4caf50';       // Green
-    if (score >= 5) return '#ff9800';       // Orange
-    return '#f44336';                       // Red
-  };
   
   function ProgressOnLoad({ rating }: { rating?: number | null }) {
     const target = Math.max(0, Math.min(100, (rating ?? 0) * 10));
@@ -478,7 +488,7 @@ export function ViewResponses() {
         <CircularProgressbar
           value={value}
           styles={buildStyles({
-            pathColor: getColorForScore(rating),
+            pathColor: getColorForScoreHex(rating),
             pathTransitionDuration: 0.7,
             pathTransition: "stroke-dashoffset 0.7s ease 0.3s"
           })}
@@ -748,11 +758,11 @@ export function ViewResponses() {
                 AI Analysis: {selectedAttempt.candidateName}
               </h2>
               <button
-                onClick={() => setSelectedAttempt(null)}
-                className="text-gray-400 hover:text-gray-600"
-              >
-                <X className="h-6 w-6" />
-              </button>
+            onClick={() => setSelectedAttempt(null)}
+            className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:text-red-600 h-10 w-10 hover:bg-red-50"
+        >
+          <X className="h-6 w-6" />
+        </button>
             </div>
             
             {/* Scrollable Content */}
@@ -799,7 +809,7 @@ export function ViewResponses() {
             <Card className="p-4 pl-0 border-0 shadow-none">
               <div className="flex items-center justify-start max-md:justify-center  gap-4">
                 <div className="flex justify-center items-center">{renderProgress(selectedAttempt.generalScore)}</div>
-                <span className="text-4xl font-bold text-blue-600">
+                <span className={`text-4xl font-bold ${getTextColorForScore(selectedAttempt.generalScore)}`}>
                   {selectedAttempt.generalScore}/10
                 </span>
               </div>
@@ -854,9 +864,8 @@ export function ViewResponses() {
 
               <div className="pt-4 flex gap-2">
                 <Button
-                  variant="outline"
                   onClick={() => setSelectedAttempt(null)}
-                  className="w-full"
+                  className="w-full bg-red-600 hover:bg-red-700 text-white shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-300"
                 >
                   Close
                 </Button>
