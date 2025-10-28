@@ -74,8 +74,13 @@ const Integrations: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [connectedIntegrations, setConnectedIntegrations] = useState<Set<string>>(new Set());
+  const [authToken, setAuthToken] = useState<string | null>(null);
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
   const { hasPlan, isLoading, hasAccess } = usePlan();
+  
+  // Debug log
+  console.log("Integrations component render - API Base URL:", apiBaseUrl);
+  console.log("Integrations component render - Auth Token:", authToken ? "Set" : "Not set");
   
   // 1) Fetch existing integrations from backend
   const fetchExistingIntegrations = useCallback(async () => {
@@ -206,8 +211,8 @@ const Integrations: React.FC = () => {
       console.log("🔑 Auth session:", success ? "✅ Success" : "❌ Failed");
       
       if (success && token) {
-        knitRef.current?.setAttribute("authsessiontoken", token);
-        console.log("✅ Token set on knit-auth element");
+        setAuthToken(token);
+        console.log("Token stored in state");
       } else {
         throw new Error("Authentication session failed");
       }
@@ -306,13 +311,24 @@ const Integrations: React.FC = () => {
     });
   }, [fetchExistingIntegrations]);
 
-  // 4) Wire up listeners & kick off auth session
+  // 4) Initialize auth session separately from event listeners
+  useEffect(() => {
+    console.log("useEffect: Initializing auth session...");
+    fetchSessionToken().catch(err => {
+      console.error("Auth session initialization failed:", err.message);
+    });
+  }, [fetchSessionToken]);
+
+  // 5) Wire up event listeners
   useEffect(() => {
     const el = knitRef.current;
     if (!el) {
       console.warn("⚠️ Knit component not ready, retrying...");
       return;
     }
+    
+    console.log("useEffect: Setting up event listeners...");
+    
     el.addEventListener("onNewSession", handleNewSession as EventListener);
     el.addEventListener("onFinish", handleFinish as EventListener);
     el.addEventListener(
@@ -320,11 +336,6 @@ const Integrations: React.FC = () => {
       handleDeactivate as EventListener
     );
     el.addEventListener("onKnitClose", handleClose as EventListener);
-
-    // Initialize auth session
-    fetchSessionToken().catch(err => {
-      console.error("🚨 Auth session initialization failed:", err.message);
-    });
 
     return () => {
       el.removeEventListener(
@@ -339,7 +350,6 @@ const Integrations: React.FC = () => {
       el.removeEventListener("onKnitClose", handleClose as EventListener);
     };
   }, [
-    fetchSessionToken,
     handleNewSession,
     handleFinish,
     handleDeactivate,
@@ -348,7 +358,7 @@ const Integrations: React.FC = () => {
 
   return (
     <FeatureGate requiredPlan="SCALE" featureName="ATS integrations" title="Scale Your Hiring with Powerful ATS Integrations" extra={<ATSGrid items={atsIntegrations} />}>
-    <div className="min-h-[100vh] bg-background/95">
+      <div className="min-h-[100vh] bg-background/95">
       {/* Main Content Container */}
       <div style={{ 
         maxWidth: '800px', 
@@ -407,10 +417,13 @@ const Integrations: React.FC = () => {
             </div>
           )}
 
-          <knit-auth ref={knitRef} skipIntro="">
+          <knit-auth 
+            ref={knitRef} 
+            authsessiontoken={authToken || ""}
+          >
             <button
               slot="trigger"
-              disabled={loading}
+              disabled={loading || !authToken}
               className="group bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full font-bold
               border-0 shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent inline-flex items-center gap-2"
             >
@@ -506,7 +519,7 @@ const Integrations: React.FC = () => {
         />
 
       </div>
-    </div>
+      </div>
     </FeatureGate>
   );
 };

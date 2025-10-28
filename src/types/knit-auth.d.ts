@@ -5,7 +5,7 @@ declare namespace JSX {
         HTMLElement
       > & {
         authsessiontoken?: string;
-        skipIntro?: "";
+        skipIntro?: boolean | string;
         onNewSession?: (e: CustomEvent) => void;
         onFinish?: (
           e: CustomEvent & { detail: { integrationDetails: any } }
