@@ -8,6 +8,8 @@ import { toast } from "sonner";
 import {
   Search,
   ArrowUpDown,
+  ArrowUp,
+  ArrowDown,
   X,
   Check,
   AlertCircle,
@@ -15,6 +17,8 @@ import {
   FileText,
   Calendar,
   Trash2,
+  Lightbulb,
+  Shield,
 } from "lucide-react";
 import {
   Select,
@@ -56,6 +60,7 @@ export function ViewResponses() {
   const customLimit = 100000; //fix to unlimited
   const [sortBy, setSortBy] = useState<"date" | "name">("date");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+  const [userSorted, setUserSorted] = useState(false);
   const [selectedAttempt, setSelectedAttempt] =
     useState<InterviewAttempt | null>(null);
   const [selectedAttemptId, setSelectedAttemptId] = useState<string | null>(
@@ -277,11 +282,12 @@ export function ViewResponses() {
   }, []);
 
   const handleSort = (field: "date" | "name") => {
-    if (sortBy === field) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
+    setUserSorted(true);
+    if (sortBy !== field) {
       setSortBy(field);
       setSortOrder("asc");
+    } else {
+      setSortOrder(prev => (prev === "asc" ? "desc" : "asc"));
     }
   };
 
@@ -501,6 +507,16 @@ export function ViewResponses() {
     <ProgressOnLoad rating={rating} />
   );
 
+  function SortIcon({
+    active = false,
+    order = "desc",
+  }: { active?: boolean; order?: "asc" | "desc" }) {
+    if (!active) return <ArrowUpDown className="w-4 h-4 text-gray-500 hover:text-gray-600 transition-colors" />;
+    return order === "asc"
+      ? <ArrowUp className="w-4 h-4 text-gray-500 hover:text-gray-600 transition-colors" />
+      : <ArrowDown className="w-4 h-4 text-gray-500 hover:text-gray-600 transition-colors" />;
+  }
+
   return (
    <div className="mx-auto w-full px-2 sm:px-4 md:px-6 lg:px-8 sm:max-w-screen-md md:max-w-screen-lg lg:max-w-screen-xl">
       <div className="flex sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
@@ -542,7 +558,7 @@ export function ViewResponses() {
                 className="flex items-center gap-2 text-left"
               >
                 CANDIDATE
-                <ArrowUpDown className="w-4 h-4" />
+                <SortIcon active={userSorted && sortBy === "name"} order={sortOrder} />
               </button>
             </th>
             <th className="px-2 sm:px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -554,7 +570,7 @@ export function ViewResponses() {
                 className="flex items-center gap-2 text-left"
               >
                 SUBMITTED
-                <ArrowUpDown className="w-4 h-4" />
+                <SortIcon active={userSorted && sortBy === "date"} order={sortOrder} />
               </button>
             </th>
             <th className="px-4 sm:px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -609,8 +625,8 @@ export function ViewResponses() {
                       className={cn(
                         "pointer-events-none px-3 py-2 text-xs text-center leading-tight",
                         attempt.qualified
-                          ? "bg-green-600 text-white"
-                          : "bg-red-600 text-white"
+                          ? "bg-teal/90 text-white"
+                          : "bg-terracotta text-white"
                       )}
                     >
                       {attempt.qualified ? "Qualified" : (
@@ -658,7 +674,7 @@ export function ViewResponses() {
                       onClick={() => handleDelete(attempt.id, attempt.candidateName)}
                       className="hover:bg-red-50"
                     >
-                      <Trash2 className="h-4 w-4 text-red-600" />
+                      <Trash2 className="h-4 w-4 text-terracotta" />
                     </Button>
                   </div>
                 </td>
@@ -818,47 +834,55 @@ export function ViewResponses() {
               </div>
 
               <div>
-                <h3 className="text-lg font-semibold mb-2">AI Analysis</h3>
-                <div className="bg-blue-50 p-4 rounded-lg">
-                  {selectedEvaluation?.summary && (
-                    <p className="text-blue-800 mb-4">
-                      {selectedEvaluation.summary}
-                    </p>
-                  )}
-                  <div className="grid grid-cols-2 gap-4">
+                <h3 className="text-lg font-semibold mb-3">AI Analysis</h3>
+                <Card className="p-6 mb-4 bg-gradient-to-br from-card to-accent/5 shadow-lg border-2 border-accent/40">
+                  <div className="flex items-start gap-3">
+                    <Lightbulb className="flex-shrink-0 w-4 h-4 text-accent mt-1" />
                     <div>
-                      <h4 className="font-medium text-blue-900 mb-2">
-                        Strengths
-                      </h4>
-                      <ul className="space-y-1">
-                        {selectedEvaluation?.strengths?.map((item, i) => (
-                          <li
-                            key={i}
-                            className="flex items-start gap-2 text-blue-800"
-                          >
-                            <Check className="h-4 w-4 text-green-500 mt-0.5" />
-                            <span>{item.replace(/^-\s*/, "")}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div>
-                      <h4 className="font-medium text-blue-900 mb-2">
-                        Weaknesses
-                      </h4>
-                      <ul className="space-y-1">
-                        {selectedEvaluation?.weaknesses?.map((item, i) => (
-                          <li
-                            key={i}
-                            className="flex items-start gap-2 text-blue-800"
-                          >
-                            <AlertCircle className="h-4 w-4 text-amber-500 mt-0.5" />
-                            <span>{item.replace(/^-\s*/, "")}</span>
-                          </li>
-                        ))}
-                      </ul>
+                      <h3 className="font-medium text-accent mb-2">
+                        Key Observations
+                      </h3>
+                      <p className="text-blue-700">
+                        {selectedEvaluation?.summary}
+                      </p>
                     </div>
                   </div>
+                </Card>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <Card className="p-6 bg-gradient-to-br from-card to-teal/5 shadow-lg border-2 border-teal/40">
+                    <div className="flex items-start gap-3">
+                      <Shield className="flex-shrink-0 w-4 h-4 text-teal mt-1" />
+                      <div>
+                        <h3 className="font-medium text-teal mb-3">Strengths</h3>
+                        <ul className="space-y-2">
+                          {selectedEvaluation?.strengths?.map((strength, index) => (
+                            <li key={index} className="flex items-start text-teal-500">
+                              <span className="w-2 h-2 bg-teal-500 rounded-full mr-2 mt-1.5 flex-shrink-0"></span>
+                              <span>{strength.replace(/^[-•]\s*/, "")}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </Card>
+
+                  <Card className="p-6 bg-gradient-to-br from-card to-terracotta/5 shadow-lg border-2 border-terracotta/40">
+                    <div className="flex items-start gap-3">
+                      <AlertCircle className="flex-shrink-0 w-4 h-4 text-terracotta mt-1" />
+                      <div>
+                        <h3 className="font-medium text-terracotta mb-3">Weaknesses</h3>
+                        <ul className="space-y-2">
+                          {selectedEvaluation?.weaknesses?.map((weakness, index) => (
+                            <li key={index} className="flex items-start text-red-600">
+                              <span className="w-2 h-2 bg-red-600 rounded-full mr-2 mt-1.5 flex-shrink-0"></span>
+                              <span>{weakness.replace(/^[-•]\s*/, "")}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </Card>
                 </div>
               </div>
 

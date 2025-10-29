@@ -5,7 +5,7 @@ import { usePlan } from "@/hooks/usePlan";
 import { useParams, useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Video, X, Star, Shield, ArrowRight, Eye, Lock, Lightbulb, AlertCircle } from "lucide-react";
+import { ArrowLeft, Video, X, Star, Shield, ArrowRight, Eye, Lock, Lightbulb, AlertCircle, ArrowDown, Sparkles } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { cn } from "@/app/lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -79,8 +79,17 @@ export function ResponseDetails() {
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
   const [fileName, setFileName] = useState<string | null>(null);
   const [isMetricsOpen, setIsMetricsOpen] = useState(false);
+  const [showScrollButton, setShowScrollButton] = useState(true);
   
   const canDownload = hasAccess('LAUNCH');
+
+  const scrollToAISummary = () => {
+    const element = document.getElementById('summary-section');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      setShowScrollButton(false);
+    }
+  };
 
   // Lock body scroll when popup is open
   useEffect(() => {
@@ -95,6 +104,28 @@ export function ResponseDetails() {
       };
     }
   }, [isMetricsOpen]);
+
+  // Show scroll button when scrolling back up
+  useEffect(() => {
+    const handleScroll = () => {
+      const overallRatingElement = document.getElementById('summary-section');
+      if (overallRatingElement) {
+        const rect = overallRatingElement.getBoundingClientRect();
+        const elementHeight = rect.height;
+        const elementTopPosition = rect.top;
+        const elementBottomPosition = rect.bottom;
+        const viewportHeight = window.innerHeight;
+        
+        const isHalfwayOutFromTop = elementTopPosition > viewportHeight * 0.65;
+        const isHalfwayOutFromBottom = elementBottomPosition < viewportHeight * 0.65;
+        
+        setShowScrollButton(isHalfwayOutFromTop || isHalfwayOutFromBottom);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     // TODO: Replace with actual API call
@@ -336,7 +367,7 @@ export function ResponseDetails() {
     } else if (activeTab === "reviews") {
         return (
           <div className="space-y-6">
-            <Card className="p-6 shadow-lg">
+          <Card className="p-6 shadow-lg">
               <div className="flex justify-between items-center mb-8">
                 <h2 className="text-xl font-semibold">
                   Overall Rating: <span className={` text-xl font-bold ${getTextColorForScore(response.overallRating)}`}>{response.overallRating}/10</span>
@@ -344,7 +375,7 @@ export function ResponseDetails() {
                 <Button 
                   onClick={() => setIsMetricsOpen(true)}
                   className="group inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-full
-                  border-0 shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent px-8 py-3 "
+                  border-0 shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent px-8 "
                 >
                   View Metrics
                   <ArrowRight className="w-4 h-4 inline-block ml-2 group-hover:translate-x-1 transition-transform duration-300" />
@@ -365,8 +396,7 @@ export function ResponseDetails() {
               </div>
             </Card>
 
-
-            <div>
+            <div id="summary-section">
               <h2 className="text-xl font-semibold mb-4">AI Analysis</h2>
               <Card className="p-6 mb-4 bg-gradient-to-br from-card to-accent/5 shadow-lg border-2 border-accent/40">
                 <div className="flex items-start gap-3">
@@ -590,6 +620,17 @@ export function ResponseDetails() {
       </div>
 
       {renderContent()}
+      
+       {/* Mobile floating button to scroll to overall rating */}
+       <div className={`lg:hidden fixed bottom-6 left-1/2 transform -translate-x-1/2 flex justify-center z-50 transition-opacity duration-500 ${showScrollButton ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+         <Button
+           onClick={scrollToAISummary}
+           className="bg-blue-600 border-2 hover:bg-blue-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 px-12 py-6 text-xl font-semibold"
+         >
+           <Sparkles className="w-4 h-4 mr-2" />
+           View Summary
+         </Button>
+       </div>
       
       {/* Evaluation Dialog */}
       {isMetricsOpen && createPortal(
