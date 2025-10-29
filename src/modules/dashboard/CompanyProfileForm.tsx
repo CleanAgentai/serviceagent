@@ -156,7 +156,7 @@ export function CompanyProfileForm({
 
     // Set the API key globally
     setOptions({
-      apiKey: googleAPIKey,
+      key: googleAPIKey,
     });
 
     // Import the places library
