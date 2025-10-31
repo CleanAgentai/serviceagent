@@ -429,6 +429,7 @@ const Integrations: React.FC = () => {
           <knit-auth 
             ref={knitRef} 
             authsessiontoken={authToken || ""}
+            skipIntro={''}
           >
             <button
               slot="trigger"
