@@ -152,9 +152,9 @@ img {
   } */
 
   /* Improve touch targets */
-  .flex-col > * {
+  /* .flex-col > * {
     min-height: 36px;
-  }
+  } */
 
   /* Reduce paddings and margins for mobile */
   .px-8 {
@@ -399,4 +399,21 @@ img {
 .pac-item:hover,
 .pac-item-selected {
   background-color: #f3f4f6;         /* hover:bg-gray-100 */
+}
+
+/* React Beautiful DnD styles */
+[data-rbd-draggable-id] {
+  transition: opacity 0.2s ease;
+}
+
+[data-rbd-drag-handle-draggable-id] {
+  cursor: grab;
+}
+
+[data-rbd-drag-handle-draggable-id]:active {
+  cursor: grabbing;
+}
+
+[data-rbd-droppable-id] {
+  position: relative;
 }

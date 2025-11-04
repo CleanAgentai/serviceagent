@@ -33,7 +33,7 @@ import PlanUsage from "@/modules/dashboard/PlanUsage";
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { getColorForScoreHex, getTextColorForScore } from "@/components/ui/statbar";
-
+import Loading from "@/components/common/Loading.tsx";
 interface InterviewAttempt {
   id: string;
   candidateName: string;
@@ -473,9 +473,7 @@ export function ViewResponses() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-      </div>
+     <Loading />
     );
   }
 

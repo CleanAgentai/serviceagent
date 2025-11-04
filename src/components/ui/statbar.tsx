@@ -110,3 +110,9 @@ export const getBgColorForScore = (score: number) => {
     if (score >= 5 && score <= 7) return "bg-gradient-to-br from-card to-accent/10"; 
     return "bg-gradient-to-br from-card to-accent/30";
 };
+
+export const getBadgeBgColorForScore = (score: number) => {
+    if (score <= 4) return "bg-terracotta/10 border-terracotta";
+    if (score >= 5 && score <= 7) return "bg-gold/10 border-gold";
+    return "bg-teal/10 border-teal";
+};
