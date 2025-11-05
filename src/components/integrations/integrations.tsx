@@ -234,6 +234,7 @@ const Integrations: React.FC = () => {
   );
 
   const handleFinish = useCallback(async (e: CustomEvent) => {
+    console.log("handleFinish event triggered!", e);
     const details = e.detail.integrationDetails;
     console.log("Knit integration completed:", details);
     
@@ -328,6 +329,12 @@ const Integrations: React.FC = () => {
     }
     
     console.log("useEffect: Setting up event listeners...");
+    console.log("Event listeners being added:", {
+      onNewSession: !!handleNewSession,
+      onFinish: !!handleFinish,
+      onDeactivate: !!handleDeactivate,
+      onKnitClose: !!handleClose
+    });
     
     el.addEventListener("onNewSession", handleNewSession as EventListener);
     el.addEventListener("onFinish", handleFinish as EventListener);
@@ -336,6 +343,8 @@ const Integrations: React.FC = () => {
       handleDeactivate as EventListener
     );
     el.addEventListener("onKnitClose", handleClose as EventListener);
+    
+    console.log("All event listeners added successfully");
 
     return () => {
       el.removeEventListener(
@@ -420,6 +429,7 @@ const Integrations: React.FC = () => {
           <knit-auth 
             ref={knitRef} 
             authsessiontoken={authToken || ""}
+            skipIntro={''}
           >
             <button
               slot="trigger"

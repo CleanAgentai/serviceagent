@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
-import { Loader } from "@googlemaps/js-api-loader"; 
+import { setOptions, importLibrary } from "@googlemaps/js-api-loader"; 
 import {
   Card,
   CardContent,
@@ -154,12 +154,13 @@ export function CompanyProfileForm({
   useEffect(() => {
     if (!googleAPIKey) return;
 
-    const loader = new Loader({
-      apiKey: googleAPIKey,
-      libraries: ["places"],
+    // Set the API key globally
+    setOptions({
+      key: googleAPIKey,
     });
 
-    loader.importLibrary("places").then((placesLib: any) => {
+    // Import the places library
+    importLibrary("places").then((placesLib: any) => {
       if (!locationInputRef.current) return;
 
       // Attach autocomplete to the existing input
