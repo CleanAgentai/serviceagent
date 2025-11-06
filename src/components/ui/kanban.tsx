@@ -193,7 +193,7 @@ export const KanbanCards = <T extends KanbanItemProps = KanbanItemProps>({
           className={cn(
             'flex flex-grow gap-2 p-2',
             'flex-row overflow-x-auto overflow-y-hidden',
-            'lg:flex-col lg:overflow-x-hidden lg:overflow-y-auto',
+            'xl:flex-col xl:overflow-x-hidden xl:overflow-y-auto',
             className
           )}
           {...props}
@@ -201,8 +201,8 @@ export const KanbanCards = <T extends KanbanItemProps = KanbanItemProps>({
           {filteredData.map(children)}
         </div>
       </SortableContext>
-      <ScrollBar orientation="horizontal" className="lg:hidden" />
-      <ScrollBar orientation="vertical" className="hidden lg:block" />
+      <ScrollBar orientation="horizontal" className="xl:hidden" />
+      <ScrollBar orientation="vertical" className="hidden xl:block" />
     </ScrollArea>
   );
 };
@@ -397,7 +397,7 @@ export const KanbanProvider = <
           className={cn(
             'flex size-full gap-4',
             'flex-col overflow-y-auto',
-            'lg:flex-row lg:overflow-x-auto lg:overflow-y-visible lg:scroll-smooth',
+            'xl:flex-row xl:overflow-x-auto xl:overflow-y-visible',
             className
           )}
         >

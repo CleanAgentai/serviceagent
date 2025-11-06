@@ -72,10 +72,10 @@ export const ApplicantCard: React.FC<ApplicantCardProps> = ({
               <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 shrink-0">
                 {applicant.candidate?.name?.charAt(0)}
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 truncate group-hover:underline">
+              <h3 className="text-lg font-semibold text-gray-900 truncate group-hover:underline  group-hover:text-blue-600">
                 {applicant.candidate?.name}
               </h3>
-              <ArrowRight className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity duration-200 shrink-0" />
+              <ArrowRight className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 group-hover:text-blue-600 hover:text-blue-700 transition-opacity duration-200 shrink-0" />
             </div>
             </Link>
             <div className="flex items-center gap-1 mt-1">
