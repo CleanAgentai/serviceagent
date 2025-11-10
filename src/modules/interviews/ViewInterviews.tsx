@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Copy, Check, Trash2, Pencil } from "lucide-react";
+import { Copy, Check, Trash2, Pencil, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 
 import {
@@ -14,14 +14,16 @@ import {
   Plus,
 } from "lucide-react";
 import { supabase } from "@/app/lib/supabase";
-
+import Loading from "@/components/common/Loading.tsx";
 interface Interview {
   id: string;
+  willoKey: string;
   title: string;
   createdAt: string;
   deadline: string;
   location?: string;
   interviewLink?: string;
+  applicantCount?: number;
 }
 
 export function ViewInterviews() {
@@ -95,14 +97,30 @@ export function ViewInterviews() {
           setInterviews([]); // Set to empty array on error
         } else if (data && data.length > 0) {
           console.log("Successfully fetched interviews:", data);
-          const formattedInterviews = data.map((interview) => ({
+          const interviewsWithCounts = await Promise.all(
+            data.map(async (interview) => {
+              if (!interview.willo_interview_key) {
+                return { ...interview, applicantCount: 0 };
+              }
+              const { count, error } = await supabase
+                .from("interview_attempts")
+                .select("id", { count: "exact", head: true })
+                .eq("interview_id", interview.willo_interview_key)
+                .eq("status", "Pending");
+                console.log("Interview attempts count:", {count, error });
+            return {
+              ...interview,
+              applicantCount: count || 0,
+            };
+          }));
+          const formattedInterviews = interviewsWithCounts.map((interview) => ({
             id: interview.id,
             title: interview.title,
             createdAt: new Date(interview.created_at).toLocaleDateString(
               "en-US"
             ),
-            //.toISOString()
-            //.split("T")[0],
+            willoKey: interview.willo_interview_key,
+            applicantCount: interview.applicantCount || 0,
             deadline: interview.deadline
               ? new Date(interview.deadline).toLocaleDateString("en-US")
               : "No deadline",
@@ -165,9 +183,7 @@ export function ViewInterviews() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-      </div>
+     <Loading />
     );
   }
 
@@ -238,8 +254,14 @@ export function ViewInterviews() {
             {filteredInterviews.map((interview) => (
               <tr key={interview.id} className="hover:bg-gray-50">
                 <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm font-medium text-gray-900 whitespace-nowrap">
-                    {interview.title}
+                  <div className=" group flex items-center gap-2 text-sm font-medium text-gray-900 whitespace-nowrap">
+                    <Link to={`/interviews/${interview.willoKey}/applicants`} className="block hover:text-blue-600 hover:underline group-hover:text-blue-600 group-hover:underline group-hover:transition-colors duration-200">{interview.title}</Link>
+                    {interview.applicantCount !== undefined && interview.applicantCount > 0 && (
+                      <Link to={`/interviews/${interview.willoKey}/applicants`} className="inline-flex items-center justify-center w-6 h-6 text-xs font-semibold text-white bg-blue-600 rounded-full hover:bg-blue-700 transition-colors duration-200 !p-0">
+                        {interview.applicantCount}
+                      </Link>
+                    )}
+                    <Link to={`/interviews/${interview.willoKey}/applicants`}><ArrowRight className="w-4 h-4 group-hover:translate-x-1 group-hover:text-blue-600 transition-transform duration-200 cursor-pointer" /></Link>  
                   </div>
                 </td>
                 <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">

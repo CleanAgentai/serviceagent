@@ -21,9 +21,10 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { supabase } from "@/app/lib/supabase";
 import PlanUsage from "./PlanUsage";
-
+import Loading from "@/components/common/Loading.tsx";
 interface Interview {
   id: string;
+  willoKey: string;
   title: string;
   location: string;
   deadline: string;
@@ -44,7 +45,7 @@ const Dashboard = () => {
     try {
       const { data, error } = await supabase
         .from("interviews")
-        .select("id, title, created_at, deadline, language")
+        .select("id, title, created_at, deadline, language, willo_interview_key")
         .order("created_at", { ascending: false })
         .limit(3);
 
@@ -55,6 +56,7 @@ const Dashboard = () => {
         const formattedInterviews = data.map((interview) => ({
           id: interview.id,
           title: interview.title,
+          willoKey: interview.willo_interview_key,
           location: interview.language || "Remote",
           deadline: interview.deadline
             ? new Date(interview.deadline).toLocaleDateString("en-US")
@@ -223,9 +225,7 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900" />
-      </div>
+      <Loading />
     );
   }
 
@@ -373,7 +373,7 @@ const Dashboard = () => {
                     <div
                       key={index}
                       className="p-4 hover:bg-blue-50 hover:shadow-md transition-all duration-200 cursor-pointer"
-                      onClick={() => navigate(`/interviews/${interview.id}`)}
+                      onClick={() => navigate(`/interviews/${interview.willoKey}/applicants`)}
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center">

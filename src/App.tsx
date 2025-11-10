@@ -31,6 +31,7 @@ import { ViewInterviews } from "@/modules/interviews/ViewInterviews";
 import { ViewResponses } from "@/modules/interviews/ViewResponses";
 import { ResponseDetails } from "@/modules/interviews/ResponseDetails";
 import EditInterview from "@/modules/interviews/EditInterview";
+import { ViewApplicants } from "@/modules/interviews/ViewApplicants";
 
 // Public Pages
 import LandingPage from "@/modules/landing/LandingPage";
@@ -207,6 +208,10 @@ const App = () => {
                     element={<ResponseDetails />}
                   />
                   <Route path=":interviewId" element={<ViewResponses />} />
+                  <Route 
+                    path=":interviewId/applicants" 
+                    element={<ViewApplicants />} 
+                  />
                 </Route>
                 
                 {/* Integrations Route */}
